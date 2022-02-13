@@ -29,6 +29,7 @@ In italics, you will find some additional explanations of the agenda points. You
 - Things to research:
     - Git (see lecture 2)
         - discuss branch names
+        - discuss when to merge with main
     - Code structure (see lecture 4)
         - How will you use packages?
         - What will your code structure look like? (UML)

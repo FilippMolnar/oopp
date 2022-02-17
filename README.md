@@ -8,6 +8,8 @@ Add your own name (do not add the names for others!) to the section below.
 
 ## Group members
 
+![](https://ibb.co/2gxLN0h)
+
 | Profile Picture | Name | Email |
 |---|---|---|
 | ![](https://eu.ui-avatars.com/api/?name=Nicolae+Filat&length=2&size=50&color=DDD&background=558&font-size=0.325) | Nicolae Filat | N.Filat@student.tudelft.nl |

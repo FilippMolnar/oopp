@@ -14,7 +14,7 @@ Add your own name (do not add the names for others!) to the section below.
 |------------------------------------------------------------------------------------------------------------------|----------------------|------------------------------------|
 | ![](https://eu.ui-avatars.com/api/?name=Nicolae+Filat&length=2&size=50&color=DDD&background=558&font-size=0.325) | Nicolae Filat        | N.Filat@student.tudelft.nl         |
 | ![](https://eu.ui-avatars.com/api/?name=Izzy+Giessen&length=2&size=50&color=DDD&background=558&font-size=0.325)  | Izzy van der Giessen | I.VanDerGiessen@student.tudelft.nl |
-
+| ![](https://eu.ui-avatars.com/api/?name=Maria+Mihai&length=2&size=50&color=DDD&background=558&font-size=0.325)   | Maria Mihai          | M.T.Mihai@student.tudelft.nl       |
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
 <!-- - Mention your *student* email address -->

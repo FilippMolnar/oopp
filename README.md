@@ -21,11 +21,17 @@ Add your own name (do not add the names for others!) to the section below.
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
-<!-- - Mention your *student* email address -->
+<!-- - Mention your student email address -->
 <!-- - Preferably add a recognizable photo, otherwise add your GitLab photo -->
 <!-- - (please make sure the photos have the same size) -->
 
 ## How to run it
+Clone the git repository using the following command\
+```git clone https://gitlab.ewi.tudelft.nl/cse1105/2021-2022/team-repositories/oopp-group-33/repository-template.git``` \
+Then move into the newly created folder and run the server and the client:
+1. ```cd repository-template```
+2. ```./gradlew bootrun```
+3. ```./gradlew run```
 
 ## How to contribute to it
 

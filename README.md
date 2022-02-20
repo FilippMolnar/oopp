@@ -10,8 +10,11 @@ Add your own name (do not add the names for others!) to the section below.
 
 | Profile Picture | Name | Email |
 |---|---|---|
+
 | ![](C:\Users\Lieke\Downloads\Screenshot 2022-02-10 184835.png) | Lieke Sanders | L.Sanders@student.tudelft.nl |
 | ![](D:\downloads\picture.png) | Ivan Smilenov | I.Y.Smilenov@student.tudelft.nl |
+| ![](./photos/filip_photo.jpg) | Filip Molnar | F.M.T.Molnar@student.tudelft.nl |
+
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->

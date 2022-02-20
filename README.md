@@ -8,19 +8,22 @@ Add your own name (do not add the names for others!) to the section below.
 
 ## Group members
 
-| Profile Picture | Name | Email |
-|---|---|---|
-
+| Profile Picture                                                                                                  | Name                 | Email                              |
+|------------------------------------------------------------------------------------------------------------------|----------------------|------------------------------------|
 | ![](C:\Users\Lieke\Downloads\Screenshot 2022-02-10 184835.png) | Lieke Sanders | L.Sanders@student.tudelft.nl |
 | ![](D:\downloads\picture.png) | Ivan Smilenov | I.Y.Smilenov@student.tudelft.nl |
 | ![](./photos/filip_photo.jpg) | Filip Molnar | F.M.T.Molnar@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=Nicolae+Filat&length=2&size=50&color=DDD&background=558&font-size=0.325) | Nicolae Filat        | N.Filat@student.tudelft.nl         |
+| ![](https://eu.ui-avatars.com/api/?name=Izzy+Giessen&length=2&size=50&color=DDD&background=558&font-size=0.325)  | Izzy van der Giessen | I.VanDerGiessen@student.tudelft.nl |
+| ![](https://eu.ui-avatars.com/api/?name=Maria+Mihai&length=2&size=50&color=DDD&background=558&font-size=0.325)   | Maria Mihai          | M.T.Mihai@student.tudelft.nl       |
+
 
 
 <!-- Instructions (remove once assignment has been completed -->
 <!-- - Add (only!) your own name to the table above (use Markdown formatting) -->
 <!-- - Mention your *student* email address -->
 <!-- - Preferably add a recognizable photo, otherwise add your GitLab photo -->
-<!-- - (please make sure the photos have the same size) --> 
+<!-- - (please make sure the photos have the same size) -->
 
 ## How to run it
 

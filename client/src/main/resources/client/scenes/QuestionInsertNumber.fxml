@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane accessibleRole="TEXT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.scenes.QuestionInsertNumber">
+    <children>
+        <Button layoutX="420.0" layoutY="145.0" mnemonicParsing="false" text="Submit" />
+        <ImageView fitHeight="133.0" fitWidth="150.0" layoutX="121.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true" />
+        <Text layoutX="289.0" layoutY="358.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time" />
+        <Button layoutX="395.0" layoutY="341.0" mnemonicParsing="false" text="J1" />
+        <Button layoutX="447.0" layoutY="341.0" mnemonicParsing="false" text="J2" />
+        <Button layoutX="499.0" layoutY="340.0" mnemonicParsing="false" text="J3" />
+        <Button layoutX="37.0" layoutY="274.0" mnemonicParsing="false" text="E1" />
+        <Button layoutX="37.0" layoutY="314.0" mnemonicParsing="false" text="E2" />
+        <Button layoutX="37.0" layoutY="354.0" mnemonicParsing="false" text="E3" />
+        <Text layoutX="99.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="How much energy does it take to ... for ...?">
+            <font>
+                <Font name="Marlett" size="20.0" />
+            </font>
+        </Text>
+        <Text layoutX="250.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question 8/20" />
+      <TextField layoutX="302.0" layoutY="145.0" prefHeight="26.0" prefWidth="75.0" />
+      <Label layoutX="383.0" layoutY="150.0" text="kWh" />
+    </children>
+</AnchorPane>

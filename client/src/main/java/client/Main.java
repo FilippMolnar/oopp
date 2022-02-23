@@ -18,32 +18,71 @@ package client;
 import static com.google.inject.Guice.createInjector;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
 
+import client.scenes.template.AddQuoteCtrl;
+import client.scenes.template.MainCtrl;
+import client.scenes.template.QuoteOverviewCtrl;
 import com.google.inject.Injector;
 
-import client.scenes.AddQuoteCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.QuoteOverviewCtrl;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private static final Injector INJECTOR = createInjector(new MyModule());
+    private static final Injector INJECTOR = createInjector(new MyModule()); // creates Guice injector based on the module
     private static final MyFXML FXML = new MyFXML(INJECTOR);
 
-    public static void main(String[] args) throws URISyntaxException, IOException {
-        launch();
+    public static void main(String[] args) {
+        launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws IOException {
+    /**
+     * return the URL to the .fxml file
+     * @param parts path to the .fxml file
+     * @return the location of the path
+     */
+    private URL getLocation(String... parts) {
+        var path = Path.of("", parts).toString();
+        return Main.class.getClassLoader().getResource(path);
+    }
 
-        var overview = FXML.load(QuoteOverviewCtrl.class, "client", "scenes", "QuoteOverview.fxml");
-        var add = FXML.load(AddQuoteCtrl.class, "client", "scenes", "AddQuote.fxml");
+    /**
+     * Simple example that creates a scene without dependency injection.
+     * If you provide <code>QuoteOverviewCtrl</code> or <code>AddQuoteCtrl</code> in the <code>example.fxml</code> file then
+     * the code will not compile because the constructor of those classes relies on dependency injection from <code>Juice</code>
+     * We can delete this function because we can just use what they have done.
+     * @param primaryStage - stage received by JavaFX in the start method
+     * @throws IOException
+     */
+    private void loadSimpleExample(Stage primaryStage) throws IOException{
+        String[] path = {"client","scenes","example.fxml"};
+        FXMLLoader loader = new FXMLLoader(getLocation(path));
+        Scene scene = new Scene(loader.load());
+        primaryStage.setTitle("FXML simple load.No Controller");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
+    /**
+     * This way of loading the stages makes sure the <code>Juice</code> injects the right dependencies to the controllers
+     * @param primaryStage
+     */
+    private void loadUsingTemplateDependencyInjection(Stage primaryStage){
+        var overview = FXML.load(QuoteOverviewCtrl.class,
+                "client", "scenes","template", "QuoteOverview.fxml");
+        var add = FXML.load(AddQuoteCtrl.class,
+                "client", "scenes", "template","AddQuote.fxml");
         var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
         mainCtrl.initialize(primaryStage, overview, add);
+    }
+    @Override
+    public void start(Stage primaryStage) throws IOException{
+
+        loadUsingTemplateDependencyInjection(primaryStage);
+//        loadSimpleExample(primaryStage);
     }
 }

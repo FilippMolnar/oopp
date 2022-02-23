@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package client.scenes;
+package client.scenes.template;
 
 import java.net.URL;
 import java.util.ResourceBundle;

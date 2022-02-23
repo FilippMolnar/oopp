@@ -15,6 +15,7 @@
  */
 package client;
 
+import client.controllers.MainAppController;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;

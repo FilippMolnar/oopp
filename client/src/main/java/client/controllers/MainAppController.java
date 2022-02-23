@@ -1,4 +1,4 @@
-package client;
+package client.controllers;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,7 +27,6 @@ public class MainAppController {
     public void changeScene(String name){
         this.name = name;
         System.out.println("Changing scene " + name);
-        waitingRoomCtrl.setNewName(name);
         primaryStage.setScene(waitingRoomScene);
         primaryStage.show();
     }

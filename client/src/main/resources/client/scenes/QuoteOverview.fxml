@@ -16,5 +16,7 @@
             <TableColumn fx:id="colQuote" prefWidth="344.0" text="Quote" />
         </columns>
       </TableView>
+      <Button layoutX="24.0" layoutY="359.0" mnemonicParsing="false" onAction="#addQuestionMulti" prefHeight="26.0" prefWidth="186.0" text="Multiple choice question" />
+      <Button layoutX="219.0" layoutY="359.0" mnemonicParsing="false" onAction="#addQuestionInsert" prefHeight="26.0" prefWidth="186.0" text="Insert num question" />
    </children>
 </AnchorPane>

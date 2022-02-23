@@ -30,14 +30,27 @@ public class MainCtrl {
     private AddQuoteCtrl addCtrl;
     private Scene add;
 
+    private QuestionInsertNumberCtrl qInsertCtrl;
+    private Scene qInsert;
+
+    private QuestionMultiOptionsCtrl qMultiCtrl;
+    private Scene qMulti;
+
     public void initialize(Stage primaryStage, Pair<QuoteOverviewCtrl, Parent> overview,
-            Pair<AddQuoteCtrl, Parent> add) {
+           Pair<AddQuoteCtrl, Parent> add,
+           Pair<QuestionInsertNumberCtrl, Parent> qInsert,
+           Pair<QuestionMultiOptionsCtrl, Parent> qMulti) {
         this.primaryStage = primaryStage;
         this.overviewCtrl = overview.getKey();
         this.overview = new Scene(overview.getValue());
 
         this.addCtrl = add.getKey();
         this.add = new Scene(add.getValue());
+
+        this.qInsertCtrl = qInsert.getKey();
+        this.qInsert = new Scene(qInsert.getValue());
+        this.qMultiCtrl = qMulti.getKey();
+        this.qMulti = new Scene(qMulti.getValue());
 
         showOverview();
         primaryStage.show();
@@ -53,5 +66,15 @@ public class MainCtrl {
         primaryStage.setTitle("Quotes: Adding Quote");
         primaryStage.setScene(add);
         add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+    public void showQuestionInsert() {
+        primaryStage.setTitle("Insert Number question");
+        primaryStage.setScene(qInsert);
+//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+    public void showQuestionMulti() {
+        primaryStage.setTitle("Multiple choice question");
+        primaryStage.setScene(qMulti);
+//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
 }

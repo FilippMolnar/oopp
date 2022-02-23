@@ -6,8 +6,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="146.0"
-            prefWidth="470.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-            <!--fx:controller="client.scenes.AddQuoteCtrl"  Add this to see that an error is thrown-->
+            prefWidth="470.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.scenes.template.AddQuoteCtrl" >
    <Button layoutX="419.0" layoutY="105.0" mnemonicParsing="false"  text="Ok"/>
    <Button layoutX="350.0" layoutY="105.0" mnemonicParsing="false"  text="Cancel"/>
    <TextField fx:id="firstName" layoutX="109.0" layoutY="24.0" prefHeight="26.0" prefWidth="79.0"/>

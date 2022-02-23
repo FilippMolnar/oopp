@@ -5,13 +5,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 import javax.inject.Inject;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Stack;
 
 public class WaitingRoomCtrl implements Initializable {
 

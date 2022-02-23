@@ -72,17 +72,16 @@ public class Main extends Application {
      * @param primaryStage
      */
     private void loadUsingTemplateDependencyInjection(Stage primaryStage){
-        var overview = FXML.load(QuoteOverviewCtrl.class,
-                "client", "scenes","template", "QuoteOverview.fxml");
-        var add = FXML.load(AddQuoteCtrl.class,
-                "client", "scenes", "template","AddQuote.fxml");
-        var mainCtrl = INJECTOR.getInstance(MainCtrl.class);
-        mainCtrl.initialize(primaryStage, overview, add);
+        var waitingRoom = FXML.load(WaitingRoomCtrl.class,
+                "client", "scenes", "waiting_room.fxml");
+        var enterName = FXML.load(EnterNameCtrl.class,
+                "client", "scenes", "waiting_room_name.fxml");
+        MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
+        appcontroller.initialize(primaryStage, waitingRoom, enterName);
     }
     @Override
     public void start(Stage primaryStage) throws IOException{
 
         loadUsingTemplateDependencyInjection(primaryStage);
-//        loadSimpleExample(primaryStage);
     }
 }

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane maxHeight="-Infinity" maxWidth="1200" minHeight="-Infinity" minWidth="1200" prefHeight="600" prefWidth="1200" style="-fx-background-color: #625998;"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.WaitingRoomCtrl">
+
+   <AnchorPane prefHeight="500" minWidth="1000">
+      <Label layoutX="34.0" layoutY="29.0" prefHeight="134.0" prefWidth="344.0" text="You are in the waiting room with..." textFill="#d6d3ee" wrapText="true">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <GridPane prefHeight="100.0" prefWidth="452.0" layoutY="100">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
+            <ColumnConstraints hgrow="SOMETIMES"/>
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+         </rowConstraints>
+         <Label fx:id="labelMessage" alignment="TOP_LEFT" maxWidth="Infinity" wrapText="true"/>
+         <AnchorPane fx:id="pane" GridPane.columnIndex="1">
+            <StackPane layoutX="33.0" layoutY="212.0" prefHeight="50.0" prefWidth="52.0">
+               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+               <Label text="Filip" textFill="WHITE"/>
+            </StackPane>
+            <StackPane layoutX="150.0" layoutY="212.0" prefHeight="50.0" prefWidth="52.0">
+               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+               <Label text="Lieke" textFill="WHITE"/>
+            </StackPane>
+            <StackPane layoutX="271.0" layoutY="212.0" prefHeight="15.0" prefWidth="52.0">
+               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+               <Label text="Nicolae" textFill="WHITE"/>
+            </StackPane>
+            <StackPane layoutX="396.0" layoutY="212.0" prefHeight="50.0" prefWidth="52.0">
+               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+               <Label text="Maria" textFill="WHITE"/>
+            </StackPane>
+            <StackPane layoutX="148.0" layoutY="323.0" prefHeight="50.0" prefWidth="52.0">
+               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+               <Label text="Ivan" textFill="WHITE"/>
+            </StackPane>
+            <StackPane layoutX="33.0" layoutY="323.0" prefHeight="15.0" prefWidth="52.0">
+               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+               <Label text="Izzy" textFill="WHITE"/>
+            </StackPane>
+            <StackPane layoutX="271.0" layoutY="323.0" prefHeight="50.0" prefWidth="52.0">
+               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+               <Label text="Bob" textFill="WHITE"/>
+            </StackPane>
+            <StackPane layoutX="396.0" layoutY="323.0" prefHeight="50.0" prefWidth="52.0" >
+               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+               <Label text="Anna" textFill="WHITE"/>
+            </StackPane>
+         </AnchorPane>
+      </GridPane>
+
+
+      <Label layoutX="316.0" layoutY="438.0" prefHeight="59.0" prefWidth="206.0" text="and 7 more players" textFill="#d6d3ee" wrapText="true">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </AnchorPane>
+   <AnchorPane layoutX="555.0" layoutY="-1.0" prefHeight="900" prefWidth="50" style="-fx-background-color: #837ABA;">
+      <Label layoutX="145.0" layoutY="90.0" prefHeight="58.0" prefWidth="230.0" text="Choose your jokers" textFill="#d6d3ee" wrapText="true">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="55.0" layoutY="212.0" prefHeight="58.0" prefWidth="121.0" text="Eliminate a wrong answer" textFill="#d6d3ee" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+      <StackPane layoutX="55.0" layoutY="277.0" prefHeight="15.0" prefWidth="52.0">
+         <Circle fill="#625998" radius="45.0" smooth="false" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="4.0" />
+         <ImageView fitHeight="59.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@images/eliminate_one_answer.png" />
+         </ImageView>
+      </StackPane>
+      <StackPane layoutX="181.0" layoutY="277.0" prefHeight="90.0" prefWidth="108.0">
+         <Circle fill="#625998" radius="45.0" smooth="false" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="4.0" />
+         <ImageView fitHeight="62.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+            <Image url="@images/time_icon.png" />
+         </ImageView>
+      </StackPane>
+      <Label layoutX="177.0" layoutY="212.0" prefHeight="58.0" prefWidth="134.0" text="Decrease other player's time" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="318.0" layoutY="212.0" prefHeight="58.0" prefWidth="122.0" text="Double points for this answer" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <StackPane layoutX="330.0" layoutY="277.0" prefHeight="15.0" prefWidth="52.0">
+         <Circle fill="#625998" radius="45.0" smooth="false" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="4.0" />
+         <ImageView fitHeight="59.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@images/joker.png" />
+         </ImageView>
+      </StackPane>
+      <Button layoutX="162.0" layoutY="424.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="163.0" style="-fx-background-color: #625998; -fx-border-radius: 20px;" text="Start game" textFill="#d6d3ee">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+   </AnchorPane>
+
+</AnchorPane>

@@ -45,7 +45,8 @@ public class ServerUtils {
 
     // use this variable to define the server address and port to connect to
     private static final String SERVER = "http://localhost:8080";
-    private StompSession session = connect("ws://localhost:8080/websocket");
+    private static final String WEBSOCKET_SERVER = "ws://localhost:8080/websocket";
+    private final StompSession session = connect(WEBSOCKET_SERVER);
 
     public void getQuotesTheHardWay() throws IOException {
         var url = new URL(SERVER + "api/quotes");
@@ -74,45 +75,68 @@ public class ServerUtils {
         throw new IllegalArgumentException("Something went bad here!");
     }
 
-    public void registerForMessages(String dest, Consumer<Player> consumer) {
+    /**
+     * Utility function to be used from the client to register events when there is a message on a channel. <br\>
+     * The client <code>StompSession</code>(A subprotocol of websockets) listens to messages coming and calls
+     * the consumer function
+     * @param dest the channel name where the client wants to listen to
+     * @param classType the class type of the expected object response. eg: <code>Player</code> maybe in the future
+     *                   <code> Emoji</code>
+     * @param consumer the callback to execute when a message is received
+     */
+    public <T> void registerForMessages(String dest,Class<T> classType, Consumer<T> consumer) {
         System.out.println("Registered to listen on the track " + dest);
         session.subscribe(dest, new StompFrameHandler() {
             @Override
             public Type getPayloadType(StompHeaders headers) {
-                return Player.class;
+                return classType;
             }
 
             @Override
+            @SuppressWarnings("unchecked")
             public void handleFrame(StompHeaders headers, Object payload) {
                 System.out.println("Consumer called!");
-                new Thread(
-                        () -> consumer.accept((Player) payload)
-                ).start();
-
+                consumer.accept((T) payload);
             }
         });
     }
 
-    public void send(String destination, Object o) {
-        System.out.println("Sending object to " + destination);
-        session.send(destination, o);
+    /**
+     * Method to be used in the future to send data from the client to the server through websockets
+     * @param destination url provided in a socket controller with <code>@MessageMapping</code>
+     * @param obj object to send over the socket protocol
+     */
+    public void send(String destination, Object obj) {
+        System.out.println("Sending object " + obj + "to " + destination);
+        session.send(destination, obj);
     }
 
-    public List<String> getAllNamesInWaitingRoom() {
+    /**
+     * Does a get request on the mapping <code>api/wait</code> receiving a list of players that are
+     * already in the waiting room. <br\>
+     * It is used by the <code>WaitingRoomCtrl</code> class to initialize the
+     * UI based on the list it receives.
+     * @return List of players that are currently in the waiting room
+     */
+    public List<Player> getAllNamesInWaitingRoom() {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/enterRoom/")
+                .target(SERVER).path("api/wait")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<>() {
                 });
     }
 
+    /**
+     * Does a post request to the api endpoint <code>api/wait</code> sending a Player object
+     * @param name the name of the player
+     */
     public void postName(String name) {
         ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("/enterRoom/")
+                .target(SERVER).path("api/wait")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .post(Entity.entity(name, APPLICATION_JSON), String.class);
+                .post(Entity.entity(new Player(name), APPLICATION_JSON), Player.class);
     }
 
     public List<Quote> getQuotes() {
@@ -130,5 +154,13 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+    }
+
+    public String addName(String name) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/wait") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(name, APPLICATION_JSON), String.class);
     }
 }

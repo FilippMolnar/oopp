@@ -1,5 +1,6 @@
-package client.controllers;
+package client;
 
+import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -9,23 +10,21 @@ import javax.inject.Inject;
 public class EnterNameCtrl {
 
     private final MainAppController appController;
-    private final ServerUtils serverUtils;
+    private final ServerUtils server;
 
     @FXML
     private TextField nameString;
 
     @Inject
-    EnterNameCtrl(ServerUtils serverUtils,MainAppController appController){
+    EnterNameCtrl(MainAppController appController, ServerUtils server){
         this.appController = appController;
-        this.serverUtils = serverUtils;
-
+        this.server = server;
     }
 
     public void enterRoom(){
         String name = nameString.getText();
+//        this.server.addName(name);
+        this.server.postName(name);
         this.appController.changeScene(name);
-        this.serverUtils.postName(name);
-        // this.serverUtils.send("/app/waitingRoom", new Player(name));
-        // this line of code was used to send the data through the socket connection
     }
 }

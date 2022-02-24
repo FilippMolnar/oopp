@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import commons.Player;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -11,7 +12,6 @@ import javafx.scene.layout.StackPane;
 
 import javax.inject.Inject;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -19,7 +19,7 @@ public class WaitingRoomCtrl implements Initializable {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
-    private List<Player> nameList = new ArrayList<>();
+    private List<Player> playerList;
 
     @FXML
     private AnchorPane pane;
@@ -32,21 +32,33 @@ public class WaitingRoomCtrl implements Initializable {
         this.serverUtils = serverUtils;
     }
 
-    public void addName(Player player) {
-        nameList.add(player);
-        System.out.println("Adding new player " + player);
-        displayPlayer(player.name, nameList.size() - 1);
+    /**
+     * function called whenever the playerlist changes
+     */
+    public void handleNameAdded() {
+        displayPlayer(playerList.size() - 1);
     }
 
-    public void displayPlayer(String playerName, int index) {
+    /**
+     * Sets the text field of newly added player
+     * @param index the array index of the player
+     */
+    public void displayPlayer(int index) {
         try {
-            StackPane child = (StackPane) pane.getChildren().get(index);
-            Label label = (Label) child.getChildren().get(1);
-            System.out.println(playerName);
-            label.setText(playerName);
-            child.setVisible(true);
+            // this is used to make sure that this code is run on the JAVAFX thread
+            // if you don't add this it won't work :)
+            Platform.runLater(() -> {
+                String playerName = playerList.get(index).name;
+                StackPane child = (StackPane) pane.getChildren().get(index);
+                Label label = (Label) child.getChildren().get(1);
+                System.out.println(playerName);
+                label.setText(playerName);
+                child.setVisible(true);
+            });
+
         } catch (Exception e) {
-            throw new IllegalArgumentException("The index " + index + " is out of range for the stackpane uf");
+            // TODO : alter the text of the bottom corner
+            throw new IllegalArgumentException("The index " + index + " is out of range for the stack pane uf");
         }
     }
 
@@ -54,15 +66,15 @@ public class WaitingRoomCtrl implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Initialize called by the waiting roomCtrl");
         for (Node node : pane.getChildren()) {
-            node.setVisible(false);
+            node.setVisible(false); // there are 6-7 circle added by default but I hide them
         }
-//        this.nameList = serverUtils.getAllNamesInWaitingRoom();
-//        for(int i = 0; i < this.nameList.size(); i++){
-//            displayPlayer(this.nameList.get(i),i);
-//        }
-        this.serverUtils.registerForMessages("/topic/waitingRoom", player -> {
-            addName(player);
-            System.out.println("Receiving a message!");
+        this.playerList = serverUtils.getAllNamesInWaitingRoom(); // get request on the players that are currently waiting
+        for (int i = 0; i < this.playerList.size(); i++) {
+            displayPlayer(i); // display them
+        }
+        this.serverUtils.registerForMessages("/topic/waitingRoom", Player.class, player -> {
+            playerList.add(player);
+            handleNameAdded();
         });
     }
 }

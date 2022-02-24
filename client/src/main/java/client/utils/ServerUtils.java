@@ -60,4 +60,12 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
+
+    public String addName(String name) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/wait") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(name, APPLICATION_JSON), String.class);
+    }
 }

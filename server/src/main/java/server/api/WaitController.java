@@ -37,16 +37,19 @@ public class WaitController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
+    public List<Player> getLobbyPlayers() {
+        return lobbyPlayers;
+    }
+
     /**
      * Adds the player to the current player list in the lobby and then pushes it to the socket channel
      * @param player Player that is sent in the request
      */
     @PostMapping(path = { "", "/" })
-    public List<Player> addName(@RequestBody Player player) {
+    public void addName(@RequestBody Player player) {
         lobbyPlayers.add(player);
         simpMessagingTemplate.convertAndSend("/topic/waitingRoom",player);
         System.out.println(lobbyPlayers);
-        return lobbyPlayers;
     }
 
     @GetMapping(path = { "", "/" })

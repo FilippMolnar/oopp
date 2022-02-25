@@ -39,9 +39,9 @@ public class WaitControllerTest {
 
     @Test
     public void addsNameTest() {
-        var actual = sut.addName(new Player("Name"));
+        sut.addName(new Player("Name"));
         lobby.add(new Player("Name"));
-        assertEquals(lobby, actual);
+        assertEquals(lobby, sut.getLobbyPlayers());
     }
     @Test
     public void checkSocketCalledAfterPostRequest(){

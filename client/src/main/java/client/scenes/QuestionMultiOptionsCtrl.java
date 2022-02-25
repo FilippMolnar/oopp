@@ -2,14 +2,7 @@ package client.scenes;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Person;
-import commons.Quote;
-import jakarta.ws.rs.WebApplicationException;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 
 public class QuestionMultiOptionsCtrl {
     private final ServerUtils server;

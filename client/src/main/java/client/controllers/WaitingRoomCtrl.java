@@ -24,7 +24,10 @@ public class WaitingRoomCtrl implements Initializable {
     @FXML
     private AnchorPane pane;
 
-    private int index = 0;
+    @FXML
+    private Label morePlayersWaitingRoomLabel;
+    private int otherPlayersWaitingRoom = 0;
+
 
     @Inject
     WaitingRoomCtrl(MainAppController appController, ServerUtils serverUtils) {
@@ -44,22 +47,25 @@ public class WaitingRoomCtrl implements Initializable {
      * @param index the array index of the player
      */
     public void displayPlayer(int index) {
-        try {
-            // this is used to make sure that this code is run on the JAVAFX thread
-            // if you don't add this it won't work :)
-            Platform.runLater(() -> {
+        // this Platform.runLater() is used to make sure that this code is run on the JAVAFX thread
+        // if you don't add this it won't work :)
+        Platform.runLater(() -> {
+            try {
                 String playerName = playerList.get(index).name;
                 StackPane child = (StackPane) pane.getChildren().get(index);
                 Label label = (Label) child.getChildren().get(1);
                 System.out.println(playerName);
                 label.setText(playerName);
                 child.setVisible(true);
-            });
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Running the label!");
+                morePlayersWaitingRoomLabel.setVisible(true);
+                otherPlayersWaitingRoom++;
+                morePlayersWaitingRoomLabel.setText("and " + otherPlayersWaitingRoom + " more players");
+            }
+        });
 
-        } catch (Exception e) {
-            // TODO : alter the text of the bottom corner
-            throw new IllegalArgumentException("The index " + index + " is out of range for the stack pane uf");
-        }
+
     }
 
     @Override
@@ -68,6 +74,7 @@ public class WaitingRoomCtrl implements Initializable {
         for (Node node : pane.getChildren()) {
             node.setVisible(false); // there are 6-7 circle added by default but I hide them
         }
+        morePlayersWaitingRoomLabel.setVisible(false); // hide the label
         this.playerList = serverUtils.getAllNamesInWaitingRoom(); // get request on the players that are currently waiting
         for (int i = 0; i < this.playerList.size(); i++) {
             displayPlayer(i); // display them

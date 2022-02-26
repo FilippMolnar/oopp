@@ -40,13 +40,13 @@
                <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                <Label text="Maria" textFill="WHITE" />
             </StackPane>
-            <StackPane layoutX="148.0" layoutY="323.0" prefHeight="50.0" prefWidth="52.0">
-               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-               <Label text="Ivan" textFill="WHITE" />
-            </StackPane>
             <StackPane layoutX="33.0" layoutY="323.0" prefHeight="15.0" prefWidth="52.0">
                <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                <Label text="Izzy" textFill="WHITE" />
+            </StackPane>
+            <StackPane layoutX="150.0" layoutY="323.0" prefHeight="50.0" prefWidth="52.0">
+               <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+               <Label text="Ivan" textFill="WHITE" />
             </StackPane>
             <StackPane layoutX="271.0" layoutY="323.0" prefHeight="50.0" prefWidth="52.0">
                <Circle fill="#837aba" radius="45.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />

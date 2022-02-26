@@ -22,6 +22,7 @@ While the project can be run out of the box via Gradle, running it from within E
 
     --module-path="path/to/javafx-sdk-17.0.2/lib" --add-modules=javafx.controls,javafx.fxml
 
+
 ### Connecting to a remote server
 
 To connect to a remote server, open the file called _ServerUtils.java_ in the _client/src/main/java/client/utils_ folder. This file contains basic utilities to communicate with the server.

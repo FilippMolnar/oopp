@@ -58,6 +58,12 @@ public class ServerUtils {
         }
     }
 
+    /**
+     * Connects the websockets to a url specifed in <code>WebSocketConfig</code> class on the server side
+     *
+     * @param url url to connect to
+     * @return a new StompSession
+     */
     private StompSession connect(String url) {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
@@ -154,13 +160,5 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
-    }
-
-    public String addName(String name) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/wait") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(name, APPLICATION_JSON), String.class);
     }
 }

@@ -64,8 +64,6 @@ public class WaitingRoomCtrl implements Initializable {
                 morePlayersWaitingRoomLabel.setText("and " + otherPlayersWaitingRoom + " more players");
             }
         });
-
-
     }
 
     @Override

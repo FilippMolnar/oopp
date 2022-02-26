@@ -54,7 +54,6 @@ public class WaitingRoomCtrl implements Initializable {
                 String playerName = playerList.get(index).name;
                 StackPane child = (StackPane) pane.getChildren().get(index);
                 Label label = (Label) child.getChildren().get(1);
-                System.out.println(playerName);
                 label.setText(playerName);
                 child.setVisible(true);
             } catch (IndexOutOfBoundsException e) {
@@ -66,9 +65,11 @@ public class WaitingRoomCtrl implements Initializable {
         });
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Initialize called by the waiting roomCtrl");
+    /**
+     * Update the UI based on the <code>playerList</code>
+     */
+    public void updateUI() {
+        otherPlayersWaitingRoom = 0;
         for (Node node : pane.getChildren()) {
             node.setVisible(false); // there are 6-7 circle added by default but I hide them
         }
@@ -77,9 +78,21 @@ public class WaitingRoomCtrl implements Initializable {
         for (int i = 0; i < this.playerList.size(); i++) {
             displayPlayer(i); // display them
         }
-        this.serverUtils.registerForMessages("/topic/waitingRoom", Player.class, player -> {
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("Initialize called by the waiting roomCtrl");
+        this.playerList = serverUtils.getAllNamesInWaitingRoom(); // get request on the players that are currently waiting
+        updateUI();
+        this.serverUtils.subscribeForSocketMessages("/topic/waitingRoom", Player.class, player -> {
             playerList.add(player);
             handleNameAdded();
+        });
+        this.serverUtils.subscribeForSocketMessages("/topic/disconnect", Player.class, player -> {
+            System.out.println("Player " + player.name + " disconnected");
+            playerList.remove(player);
+            updateUI();
         });
     }
 }

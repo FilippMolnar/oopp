@@ -29,6 +29,7 @@ import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
+import javax.annotation.Nonnull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -60,7 +61,6 @@ public class ServerUtils {
 
     /**
      * Connects the websockets to a url specifed in <code>WebSocketConfig</code> class on the server side
-     *
      * @param url url to connect to
      * @return a new StompSession
      */
@@ -68,13 +68,13 @@ public class ServerUtils {
         var client = new StandardWebSocketClient();
         var stomp = new WebSocketStompClient(client);
         stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        System.out.println("calling connect");
         try {
             return stomp.connect(url, new StompSessionHandlerAdapter() {
             }).get();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } catch (ExecutionException e) {
-            System.out.println(e);
             System.out.println(Arrays.toString(e.getStackTrace()));
             throw new RuntimeException();
         }
@@ -85,23 +85,25 @@ public class ServerUtils {
      * Utility function to be used from the client to register events when there is a message on a channel. <br\>
      * The client <code>StompSession</code>(A subprotocol of websockets) listens to messages coming and calls
      * the consumer function
-     * @param dest the channel name where the client wants to listen to
+     *
+     * @param dest      the channel name where the client wants to listen to
      * @param classType the class type of the expected object response. eg: <code>Player</code> maybe in the future
-     *                   <code> Emoji</code>
-     * @param consumer the callback to execute when a message is received
+     *                  <code> Emoji</code>
+     * @param consumer  the callback to execute when a message is received
      */
-    public <T> void registerForMessages(String dest,Class<T> classType, Consumer<T> consumer) {
+    public <T> void subscribeForSocketMessages(String dest, Class<T> classType, Consumer<T> consumer) {
         System.out.println("Registered to listen on the track " + dest);
         session.subscribe(dest, new StompFrameHandler() {
             @Override
-            public Type getPayloadType(StompHeaders headers) {
+            @Nonnull
+            public Type getPayloadType(@Nonnull StompHeaders headers) {
                 return classType;
             }
 
             @Override
             @SuppressWarnings("unchecked")
-            public void handleFrame(StompHeaders headers, Object payload) {
-                System.out.println("Consumer called!");
+            public void handleFrame(@Nonnull StompHeaders headers, Object payload) {
+                System.out.println("Consumer called! for track" + dest);
                 consumer.accept((T) payload);
             }
         });
@@ -109,10 +111,11 @@ public class ServerUtils {
 
     /**
      * Method to be used in the future to send data from the client to the server through websockets
+     *
      * @param destination url provided in a socket controller with <code>@MessageMapping</code>
-     * @param obj object to send over the socket protocol
+     * @param obj         object to send over the socket protocol
      */
-    public void send(String destination, Object obj) {
+    public void sendThroughSocket(String destination, Object obj) {
         System.out.println("Sending object " + obj + "to " + destination);
         session.send(destination, obj);
     }
@@ -150,7 +153,7 @@ public class ServerUtils {
                 .target(SERVER).path("api/quotes") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Quote>>() {
+                .get(new GenericType<>() {
                 });
     }
 

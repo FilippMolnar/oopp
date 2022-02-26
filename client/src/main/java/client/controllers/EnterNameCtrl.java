@@ -23,7 +23,7 @@ public class EnterNameCtrl {
 
     public void enterRoom(){
         String name = nameString.getText();
-        this.appController.changeScene(name);
+        this.appController.enterWaitingRoom(name);
         this.serverUtils.postName(name);
         // this.serverUtils.send("/app/waitingRoom", new Player(name));
         // this line of code was used to send the data through the socket connection

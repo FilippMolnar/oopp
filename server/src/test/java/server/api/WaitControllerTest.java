@@ -29,6 +29,9 @@ public class WaitControllerTest {
     private WaitController sut;
     private List<Player> lobby;
     private MockSimpMessagingTemplate mockSimpMessagingTemplate;
+    private final Player player1 = new Player("player1");
+    private final Player player2 = new Player("player3");
+    private final Player player3 = new Player("player3");
 
     @BeforeEach
     public void setup() {
@@ -43,15 +46,38 @@ public class WaitControllerTest {
         lobby.add(new Player("Name"));
         assertEquals(lobby, sut.getLobbyPlayers());
     }
+
     @Test
-    public void checkSocketCalledAfterPostRequest(){
+    public void remove2PlayersTest() {
+        sut.addName(player1);
+        sut.addName(player2);
+        sut.addName(player3);
+
+        sut.playerDisconnect(player2); // [1,2,3] - [2] = [1,3]
+        assertEquals(sut.getLobbyPlayers(), List.of(player1, player3));
+
+        sut.playerDisconnect(player1);// [1,3] - 1 = [3]
+        assertEquals(sut.getLobbyPlayers(), List.of(player3));
+
+    }
+
+    @Test
+    public void removeInexistentPlayer() {
+        sut.addName(player1);
+
+        sut.playerDisconnect(player2);
+        assertEquals(sut.getLobbyPlayers(), List.of(player1));
+    }
+
+    @Test
+    public void checkSocketCalledAfterPostRequest() {
         sut.addName(new Player("Name"));
         assertTrue(mockSimpMessagingTemplate.sendMesasgeToUser);
         assertEquals(Player.class, mockSimpMessagingTemplate.objectSend.getClass(),
                 "Object send to the socket should be of type player");
-        try{
+        try {
             Player player = (Player) mockSimpMessagingTemplate.objectSend;
-        }catch (ClassCastException e){
+        } catch (ClassCastException e) {
             fail();
         }
     }

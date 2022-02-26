@@ -17,7 +17,6 @@ package server.api;
 
 import commons.Player;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,22 +44,25 @@ public class WaitController {
      * Adds the player to the current player list in the lobby and then pushes it to the socket channel
      * @param player Player that is sent in the request
      */
-    @PostMapping(path = { "", "/" })
+    @PostMapping(path = {"", "/"})
     public void addName(@RequestBody Player player) {
         lobbyPlayers.add(player);
-        simpMessagingTemplate.convertAndSend("/topic/waitingRoom",player);
+        simpMessagingTemplate.convertAndSend("/topic/waitingRoom", player);
         System.out.println(lobbyPlayers);
     }
 
-    @GetMapping(path = { "", "/" })
-    public List<Player> getPlayersAlreadyWaiting(){
+    @GetMapping(path = {"", "/"})
+    public List<Player> getPlayersAlreadyWaiting() {
         return lobbyPlayers;
     }
 
-    @MessageMapping("/waitingRoom") // /app/waitingRoom
-    @SendTo("/topic/waitingRoom")
-    public Player newPlayerInWaitingRoom(Player player){
-        System.out.println("Sending newPlayer message in waitingRoom to all listeners");
-        return player;
+
+    @MessageMapping("/disconnect")
+    public void playerDisconnect(Player player) {
+        if (lobbyPlayers.remove(player)) {
+            System.out.println("Player " + player.name + " disconnected!");
+            simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
+        }
     }
+
 }

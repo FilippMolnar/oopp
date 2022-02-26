@@ -26,7 +26,6 @@ public class WaitingRoomCtrl implements Initializable {
 
     @FXML
     private Label morePlayersWaitingRoomLabel;
-    private int otherPlayersWaitingRoom = 0;
 
 
     @Inject
@@ -46,7 +45,7 @@ public class WaitingRoomCtrl implements Initializable {
         Platform.runLater(() -> {
             String name = toAdd.getName();
             var places = pane.getChildren();
-            for(int i = 0; i < places.size(); i++) {
+            for(int i = 0; i < Math.min(places.size(), playerList.size()); i++) {
                 StackPane place = (StackPane) places.get(i);
                 Label label = (Label) place.getChildren().get(1);
                 String nextName = label.getText();
@@ -56,8 +55,7 @@ public class WaitingRoomCtrl implements Initializable {
             }
             if(playerList.size() > 8) {
                 morePlayersWaitingRoomLabel.setVisible(true);
-                otherPlayersWaitingRoom++;
-                morePlayersWaitingRoomLabel.setText("and " + otherPlayersWaitingRoom + " more players");
+                morePlayersWaitingRoomLabel.setText("and " + (playerList.size()-8) + " more players");
             }
         });
     }
@@ -66,12 +64,12 @@ public class WaitingRoomCtrl implements Initializable {
      * Update the UI based on the <code>playerList</code>
      */
     public void updateUI() {
-        otherPlayersWaitingRoom = 0;
         for (Node node : pane.getChildren()) {
             node.setVisible(false); // there are 6-7 circle added by default but I hide them
         }
         morePlayersWaitingRoomLabel.setVisible(false); // hide the label
         this.playerList = serverUtils.getAllNamesInWaitingRoom(); // get request on the players that are currently waiting
+        System.out.println(this.playerList);
         for (int i = 0; i < this.playerList.size(); i++) {
             movePlayers(playerList.get(i));
         }

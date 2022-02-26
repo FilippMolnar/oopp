@@ -36,16 +36,17 @@ public class WaitingRoomCtrl implements Initializable {
 
 
     /**
-      * Moves all players one to the right and adds one player up front.
-      * @param toAdd the player to add at the front
-      */
+     * Moves all players one to the right and adds one player up front.
+     *
+     * @param toAdd the player to add at the front
+     */
     public void movePlayers(Player toAdd) {
         // this Platform.runLater() is used to make sure that this code is run on the JAVAFX thread
         // if you don't add this it won't work :)
         Platform.runLater(() -> {
             String name = toAdd.getName();
             var places = pane.getChildren();
-            for(int i = 0; i < Math.min(places.size(), playerList.size()); i++) {
+            for (int i = 0; i < Math.min(places.size(), playerList.size()); i++) {
                 StackPane place = (StackPane) places.get(i);
                 Label label = (Label) place.getChildren().get(1);
                 String nextName = label.getText();
@@ -53,9 +54,9 @@ public class WaitingRoomCtrl implements Initializable {
                 place.setVisible(true);
                 name = nextName;
             }
-            if(playerList.size() > 8) {
+            if (playerList.size() > pane.getChildren().size()) {
                 morePlayersWaitingRoomLabel.setVisible(true);
-                morePlayersWaitingRoomLabel.setText("and " + (playerList.size()-8) + " more players");
+                morePlayersWaitingRoomLabel.setText("and " + (playerList.size() - pane.getChildren().size()) + " more players");
             }
         });
     }
@@ -70,8 +71,8 @@ public class WaitingRoomCtrl implements Initializable {
         morePlayersWaitingRoomLabel.setVisible(false); // hide the label
         this.playerList = serverUtils.getAllNamesInWaitingRoom(); // get request on the players that are currently waiting
         System.out.println(this.playerList);
-        for (int i = 0; i < this.playerList.size(); i++) {
-            movePlayers(playerList.get(i));
+        for (Player player : this.playerList) {
+            movePlayers(player);
         }
     }
 

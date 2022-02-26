@@ -30,7 +30,7 @@ public class WaitControllerTest {
     private List<Player> lobby;
     private MockSimpMessagingTemplate mockSimpMessagingTemplate;
     private final Player player1 = new Player("player1");
-    private final Player player2 = new Player("player3");
+    private final Player player2 = new Player("player2");
     private final Player player3 = new Player("player3");
 
     @BeforeEach

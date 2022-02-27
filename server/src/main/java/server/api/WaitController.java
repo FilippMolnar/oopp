@@ -13,24 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package client.scenes;
+package server.api;
 
-import client.scenes.template.MainCtrl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainCtrlTest {
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-    private MainCtrl sut;
 
-    @BeforeEach
-    public void setup() {
-        sut = new MainCtrl();
-    }
+@RestController
+@RequestMapping("/api/wait")
+public class WaitController {
 
-    @Test
-    public void writeSomeTests() {
-        // TODO create replacement objects and write some tests
-        // sut.initialize(null, null, null);
+    private List<String> lobby = new ArrayList();
+
+    @PostMapping(path = { "", "/" })
+    public List<String> addName(@RequestBody String name) {
+        lobby.add(name);
+        System.out.println(lobby);
+        return lobby;
     }
 }

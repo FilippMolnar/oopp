@@ -32,10 +32,11 @@ import jakarta.ws.rs.core.GenericType;
 
 public class ServerUtils {
 
-    private static final String SERVER = "http://localhost:8080/";
+    // use this variable to define the server address and port to connect to
+    private static final String SERVER = "http://localhost:8080";
 
     public void getQuotesTheHardWay() throws IOException {
-        var url = new URL("http://localhost:8080/api/quotes");
+        var url = new URL(SERVER + "api/quotes");
         var is = url.openConnection().getInputStream();
         var br = new BufferedReader(new InputStreamReader(is));
         String line;
@@ -58,5 +59,13 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+    }
+
+    public String addName(String name) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/wait") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(name, APPLICATION_JSON), String.class);
     }
 }

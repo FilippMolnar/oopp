@@ -13,20 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package server;
+package server.api;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-@Configuration
-public class Config {
+import java.util.List;
+import java.util.ArrayList;
 
-    @Bean
-    public Random getRandom() {
-        return new Random();
+public class WaitControllerTest {
+
+    private WaitController sut;
+    private List<String> lobby;
+
+    @BeforeEach
+    public void setup() {
+        sut = new WaitController();
+        lobby = new ArrayList();
     }
 
+    @Test
+    public void addsNameTest() {
+        var actual = sut.addName("Name");
+        lobby.add("Name");
+        assertEquals(lobby, actual);
+    }
 
 }

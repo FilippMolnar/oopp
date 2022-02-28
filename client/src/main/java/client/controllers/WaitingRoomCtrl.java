@@ -45,8 +45,9 @@ public class WaitingRoomCtrl implements Initializable {
         // if you don't add this it won't work :)
         Platform.runLater(() -> {
             String name = toAdd.getName();
+            int numOfPlaces = pane.getChildren().size();
             var places = pane.getChildren();
-            for (int i = 0; i < Math.min(places.size(), playerList.size()); i++) {
+            for (int i = 0; i < Math.min(numOfPlaces, playerList.size()); i++) {
                 StackPane place = (StackPane) places.get(i);
                 Label label = (Label) place.getChildren().get(1);
                 String nextName = label.getText();
@@ -54,9 +55,9 @@ public class WaitingRoomCtrl implements Initializable {
                 place.setVisible(true);
                 name = nextName;
             }
-            if (playerList.size() > pane.getChildren().size()) {
+            if (playerList.size() > numOfPlaces) {
                 morePlayersWaitingRoomLabel.setVisible(true);
-                morePlayersWaitingRoomLabel.setText("and " + (playerList.size() - pane.getChildren().size()) + " more players");
+                morePlayersWaitingRoomLabel.setText("and " + (playerList.size() - numOfPlaces) + " more players");
             }
         });
     }

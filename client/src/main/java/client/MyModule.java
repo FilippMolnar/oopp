@@ -15,14 +15,20 @@
  */
 package client;
 
+import client.controllers.MainAppController;
+import client.scenes.template.AddQuoteCtrl;
+import client.scenes.template.MainCtrl;
+import client.scenes.template.QuoteOverviewCtrl;
+import client.utils.ServerUtils;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Scopes;
 
-import client.scenes.AddQuoteCtrl;
-import client.scenes.MainCtrl;
-import client.scenes.QuoteOverviewCtrl;
-
+/**
+ * class that tells <b><code>Google Guice</code></b> what dependencies are needed and how to bind them?
+ * In this case everytime a class requires a <code>MainCtrl</code> it will receive the same instance, that is what
+ * <b>SINGLETON</b> means.
+ */
 public class MyModule implements Module {
 
     @Override
@@ -30,5 +36,7 @@ public class MyModule implements Module {
         binder.bind(MainCtrl.class).in(Scopes.SINGLETON);
         binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
+        binder.bind(MainAppController.class).in(Scopes.SINGLETON);
+        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
     }
 }

@@ -15,30 +15,70 @@
  */
 package server.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import commons.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WaitControllerTest {
 
     private WaitController sut;
-    private List<String> lobby;
+    private List<Player> lobby;
+    private MockSimpMessagingTemplate mockSimpMessagingTemplate;
+    private final Player player1 = new Player("player1");
+    private final Player player2 = new Player("player2");
+    private final Player player3 = new Player("player3");
 
     @BeforeEach
     public void setup() {
-        sut = new WaitController();
-        lobby = new ArrayList();
+        mockSimpMessagingTemplate = new MockSimpMessagingTemplate();
+        sut = new WaitController(mockSimpMessagingTemplate);
+        lobby = new ArrayList<>();
     }
 
     @Test
     public void addsNameTest() {
-        var actual = sut.addName("Name");
-        lobby.add("Name");
-        assertEquals(lobby, actual);
+        sut.addName(new Player("Name"));
+        lobby.add(new Player("Name"));
+        assertEquals(lobby, sut.getLobbyPlayers());
     }
 
+    @Test
+    public void remove2PlayersTest() {
+        sut.addName(player1);
+        sut.addName(player2);
+        sut.addName(player3);
+
+        sut.playerDisconnect(player2); // [1,2,3] - [2] = [1,3]
+        assertEquals(sut.getLobbyPlayers(), List.of(player1, player3));
+
+        sut.playerDisconnect(player1);// [1,3] - 1 = [3]
+        assertEquals(sut.getLobbyPlayers(), List.of(player3));
+
+    }
+
+    @Test
+    public void removeInexistentPlayer() {
+        sut.addName(player1);
+
+        sut.playerDisconnect(player2);
+        assertEquals(sut.getLobbyPlayers(), List.of(player1));
+    }
+
+    @Test
+    public void checkSocketCalledAfterPostRequest() {
+        sut.addName(new Player("Name"));
+        assertTrue(mockSimpMessagingTemplate.sendMesasgeToUser);
+        assertEquals(Player.class, mockSimpMessagingTemplate.objectSend.getClass(),
+                "Object send to the socket should be of type player");
+        try {
+            Player player = (Player) mockSimpMessagingTemplate.objectSend;
+        } catch (ClassCastException e) {
+            fail();
+        }
+    }
 }

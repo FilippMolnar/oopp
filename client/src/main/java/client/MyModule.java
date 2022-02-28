@@ -15,13 +15,14 @@
  */
 package client;
 
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.Scopes;
-
+import client.controllers.MainAppController;
 import client.scenes.template.AddQuoteCtrl;
 import client.scenes.template.MainCtrl;
 import client.scenes.template.QuoteOverviewCtrl;
+import client.utils.ServerUtils;
+import com.google.inject.Binder;
+import com.google.inject.Module;
+import com.google.inject.Scopes;
 
 /**
  * class that tells <b><code>Google Guice</code></b> what dependencies are needed and how to bind them?
@@ -36,5 +37,6 @@ public class MyModule implements Module {
         binder.bind(AddQuoteCtrl.class).in(Scopes.SINGLETON);
         binder.bind(QuoteOverviewCtrl.class).in(Scopes.SINGLETON);
         binder.bind(MainAppController.class).in(Scopes.SINGLETON);
+        binder.bind(ServerUtils.class).in(Scopes.SINGLETON);
     }
 }

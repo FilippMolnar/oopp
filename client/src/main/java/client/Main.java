@@ -15,6 +15,9 @@
  */
 package client;
 
+import client.controllers.EnterNameCtrl;
+import client.controllers.MainAppController;
+import client.controllers.WaitingRoomCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -77,7 +80,6 @@ public class Main extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws IOException{
-
         loadUsingTemplateDependencyInjection(primaryStage);
     }
 }

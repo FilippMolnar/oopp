@@ -15,25 +15,39 @@
  */
 package client.utils;
 
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.List;
-
-import org.glassfish.jersey.client.ClientConfig;
-
+import commons.Player;
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import org.glassfish.jersey.client.ClientConfig;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+
+import javax.annotation.Nonnull;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
     // use this variable to define the server address and port to connect to
     private static final String SERVER = "http://localhost:8080";
+    private static final String WEBSOCKET_SERVER = "ws://localhost:8080/websocket";
+    private final StompSession session = connect(WEBSOCKET_SERVER);
 
     public void getQuotesTheHardWay() throws IOException {
         var url = new URL(SERVER + "api/quotes");
@@ -45,12 +59,102 @@ public class ServerUtils {
         }
     }
 
+    /**
+     * Connects the websockets to a url specifed in <code>WebSocketConfig</code> class on the server side
+     * @param url url to connect to
+     * @return a new StompSession
+     */
+    private StompSession connect(String url) {
+        var client = new StandardWebSocketClient();
+        var stomp = new WebSocketStompClient(client);
+        stomp.setMessageConverter(new MappingJackson2MessageConverter());
+        System.out.println("calling connect");
+        try {
+            return stomp.connect(url, new StompSessionHandlerAdapter() {
+            }).get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
+            throw new RuntimeException();
+        }
+        throw new IllegalArgumentException("Something went bad here!");
+    }
+
+    /**
+     * Utility function to be used from the client to register events when there is a message on a channel. <br\>
+     * The client <code>StompSession</code>(A subprotocol of websockets) listens to messages coming and calls
+     * the consumer function
+     *
+     * @param dest      the channel name where the client wants to listen to
+     * @param classType the class type of the expected object response. eg: <code>Player</code> maybe in the future
+     *                  <code> Emoji</code>
+     * @param consumer  the callback to execute when a message is received
+     */
+    public <T> void subscribeForSocketMessages(String dest, Class<T> classType, Consumer<T> consumer) {
+        System.out.println("Registered to listen on the track " + dest);
+        session.subscribe(dest, new StompFrameHandler() {
+            @Override
+            @Nonnull
+            public Type getPayloadType(@Nonnull StompHeaders headers) {
+                return classType;
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public void handleFrame(@Nonnull StompHeaders headers, Object payload) {
+                System.out.println("Consumer called! for track" + dest);
+                consumer.accept((T) payload);
+            }
+        });
+    }
+
+    /**
+     * Method to be used in the future to send data from the client to the server through websockets
+     *
+     * @param destination url provided in a socket controller with <code>@MessageMapping</code>
+     * @param obj         object to send over the socket protocol
+     */
+    public void sendThroughSocket(String destination, Object obj) {
+        System.out.println("Sending object " + obj + "to " + destination);
+        session.send(destination, obj);
+    }
+
+    /**
+     * Does a get request on the mapping <code>api/wait</code> receiving a list of players that are
+     * already in the waiting room. <br\>
+     * It is used by the <code>WaitingRoomCtrl</code> class to initialize the
+     * UI based on the list it receives.
+     * @return List of players that are currently in the waiting room
+     */
+    public List<Player> getAllNamesInWaitingRoom() {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/wait")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<>() {
+                });
+    }
+
+    /**
+     * Does a post request to the api endpoint <code>api/wait</code> sending a Player object
+     * @param name the name of the player
+     */
+    public void postName(String name) {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/wait")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(new Player(name), APPLICATION_JSON), Player.class);
+    }
+
     public List<Quote> getQuotes() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/quotes") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
-                .get(new GenericType<List<Quote>>() {});
+                .get(new GenericType<>() {
+                });
     }
 
     public Quote addQuote(Quote quote) {
@@ -59,13 +163,5 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
-    }
-
-    public String addName(String name) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/wait") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(name, APPLICATION_JSON), String.class);
     }
 }

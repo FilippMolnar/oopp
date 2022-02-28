@@ -15,25 +15,54 @@
  */
 package server.api;
 
+import commons.Player;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 @RequestMapping("/api/wait")
 public class WaitController {
 
-    private List<String> lobby = new ArrayList();
+    private final SimpMessageSendingOperations simpMessagingTemplate;
+    private final List<Player> lobbyPlayers = new ArrayList<>();
 
-    @PostMapping(path = { "", "/" })
-    public List<String> addName(@RequestBody String name) {
-        lobby.add(name);
-        System.out.println(lobby);
-        return lobby;
+
+    WaitController(SimpMessageSendingOperations simpMessagingTemplate){
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
+
+    public List<Player> getLobbyPlayers() {
+        return lobbyPlayers;
+    }
+
+    /**
+     * Adds the player to the current player list in the lobby and then pushes it to the socket channel
+     * @param player Player that is sent in the request
+     */
+    @PostMapping(path = {"", "/"})
+    public void addName(@RequestBody Player player) {
+        lobbyPlayers.add(player);
+        simpMessagingTemplate.convertAndSend("/topic/waitingRoom", player);
+        System.out.println(lobbyPlayers);
+    }
+
+    @GetMapping(path = {"", "/"})
+    public List<Player> getPlayersAlreadyWaiting() {
+        return lobbyPlayers;
+    }
+
+
+    @MessageMapping("/disconnect")
+    public void playerDisconnect(Player player) {
+        if (lobbyPlayers.remove(player)) {
+            System.out.println("Player " + player.name + " disconnected!");
+            simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
+        }
+    }
+
 }

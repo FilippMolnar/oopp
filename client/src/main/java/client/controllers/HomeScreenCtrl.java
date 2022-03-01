@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 import javax.inject.Inject;
 import java.util.List;
 
-public class EnterNameCtrl {
+public class HomeScreenCtrl {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
@@ -21,15 +21,17 @@ public class EnterNameCtrl {
     private Label labelErrors;
 
     @Inject
-    EnterNameCtrl(ServerUtils serverUtils,MainAppController appController){
+    HomeScreenCtrl(ServerUtils serverUtils, MainAppController appController){
         this.appController = appController;
         this.serverUtils = serverUtils;
     }
 
     public void enterRoom(){
+        System.out.println("This is being called!");
         labelErrors.setText("");
         String name = nameString.getText();
-        String finalName = name.substring(0,15);
+        System.out.println(name);
+        String finalName = name.substring(0,Math.min(name.length(),16));
         if (!name.equals(finalName)) {
             // Send message to player that their name was too long
             labelErrors.setText("Your name was too long, we limited the number of characters");
@@ -39,8 +41,8 @@ public class EnterNameCtrl {
         if (!playersInWaitingRoom.isEmpty()) {
             // Check if the player has a unique name
             boolean flag = true;
-            for (int i = 0; i < playersInWaitingRoom.size(); i++) {
-                if (playersInWaitingRoom.get(i).getName().equals(finalName)) { // Another player with this name was found
+            for (Player player : playersInWaitingRoom) {
+                if (player.getName().equals(finalName)) { // Another player with this name was found
                     labelErrors.setText("This name is already taken, please try another");
                     flag = false;
                 }

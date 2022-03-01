@@ -15,7 +15,7 @@
  */
 package client;
 
-import client.controllers.EnterNameCtrl;
+import client.controllers.HomeScreenCtrl;
 import client.controllers.MainAppController;
 import client.controllers.WaitingRoomCtrl;
 import com.google.inject.Injector;
@@ -73,8 +73,8 @@ public class Main extends Application {
     private void loadUsingTemplateDependencyInjection(Stage primaryStage){
         var waitingRoom = FXML.load(WaitingRoomCtrl.class,
                 "client", "scenes", "waiting_room.fxml");
-        var enterName = FXML.load(EnterNameCtrl.class,
-                "client", "scenes", "waiting_room_name.fxml");
+        var enterName = FXML.load(HomeScreenCtrl.class,
+                "client", "scenes", "HomeScreen.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
         appcontroller.initialize(primaryStage, waitingRoom, enterName);
     }

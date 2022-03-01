@@ -19,7 +19,7 @@ public class MainAppController {
     }
 
     public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Parent> waitingRoomPair,
-                           Pair<EnterNameCtrl, Parent> enterName) {
+                           Pair<HomeScreenCtrl, Parent> enterName) {
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         Scene enterNameScene = new Scene(enterName.getValue());
         this.primaryStage = primaryStage;

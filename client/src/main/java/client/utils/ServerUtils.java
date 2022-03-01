@@ -45,8 +45,8 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ServerUtils {
 
     // use this variable to define the server address and port to connect to
-    private static final String SERVER = "http://localhost:8080";
-    private static final String WEBSOCKET_SERVER = "ws://localhost:8080/websocket";
+    private static final String SERVER = "http://83.87.39.232:8080";
+    private static final String WEBSOCKET_SERVER = "ws://83.87.39.232:8080/websocket";
     private final StompSession session = connect(WEBSOCKET_SERVER);
 
     public void getQuotesTheHardWay() throws IOException {

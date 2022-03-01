@@ -30,7 +30,7 @@ public class EnterNameCtrl {
         labelErrors.setText("");
         String name = nameString.getText();
         String finalName = name.substring(0,15);
-        if (name != finalName) {
+        if (!name.equals(finalName)) {
             // Send message to player that their name was too long
             labelErrors.setText("Your name was too long, we limited the number of characters");
         }

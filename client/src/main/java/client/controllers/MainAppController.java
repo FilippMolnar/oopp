@@ -30,6 +30,7 @@ public class MainAppController {
 
     public void enterWaitingRoom(String name) {
         System.out.println("Changing scene " + name);
+        waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         primaryStage.setScene(waitingRoomScene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(name)));

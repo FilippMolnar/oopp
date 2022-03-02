@@ -24,8 +24,12 @@ public class MainAppController {
         Scene enterNameScene = new Scene(enterName.getValue());
         this.primaryStage = primaryStage;
 
+
         primaryStage.setScene(enterNameScene);
         primaryStage.show();
+
+        enterNameScene.getStylesheets().add("client/scenes/waiting_room.css");
+
     }
 
     public void enterWaitingRoom(String name) {

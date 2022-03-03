@@ -30,6 +30,12 @@ public class HomeScreenCtrl {
         String name = nameString.getText();
         System.out.println(name);
         String finalName = name.substring(0,Math.min(name.length(),16));
+        
+        if(name.isEmpty()){
+            labelErrors.setText("Please enter your name");
+            return;
+        }
+
         if (!name.equals(finalName)) {
             // Send message to player that their name was too long
             labelErrors.setText("Your name was too long, we limited the number of characters");
@@ -47,6 +53,19 @@ public class HomeScreenCtrl {
             }
         }
         this.appController.enterWaitingRoom(finalName);
+        this.serverUtils.postName(finalName);
+    }
+
+    public void enterSinglePlayer(){
+        String name = nameString.getText();
+        System.out.println(name);
+        String finalName = name.substring(0,Math.min(name.length(),16));
+        if (!name.equals(finalName)) {
+            // Send message to player that their name was too long
+            labelErrors.setText("Your name was too long, we limited the number of characters");
+        }
+
+        this.appController.enterSinglePlayerGame(finalName);
         this.serverUtils.postName(finalName);
     }
 }

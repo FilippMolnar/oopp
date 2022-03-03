@@ -17,6 +17,8 @@ package client;
 
 import client.controllers.EnterNameCtrl;
 import client.controllers.MainAppController;
+import client.controllers.QuestionInsertNumberCtrl;
+import client.controllers.QuestionMultiOptionsCtrl;
 import client.controllers.WaitingRoomCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
@@ -75,8 +77,12 @@ public class Main extends Application {
                 "client", "scenes", "waiting_room.fxml");
         var enterName = FXML.load(EnterNameCtrl.class,
                 "client", "scenes", "waiting_room_name.fxml");
+        var qMulti = FXML.load(QuestionMultiOptionsCtrl.class,
+                "client", "scenes", "QuestionMultiOptions.fxml");
+        var qInsert = FXML.load(QuestionInsertNumberCtrl.class,
+                "client", "scenes", "QuestionInsertNumber.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
-        appcontroller.initialize(primaryStage, waitingRoom, enterName);
+        appcontroller.initialize(primaryStage, waitingRoom, enterName, qMulti, qInsert);
     }
     @Override
     public void start(Stage primaryStage) throws IOException{

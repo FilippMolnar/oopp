@@ -77,6 +77,10 @@ public class Main extends Application {
                 "client", "scenes", "waiting_room.fxml");
         var enterName = FXML.load(HomeScreenCtrl.class,
                 "client", "scenes", "HomeScreen.fxml");
+        var qMulti = FXML.load(QuestionMultiOptionsCtrl.class,
+                "client", "scenes", "QuestionMultiOptions.fxml");
+        var qInsert = FXML.load(QuestionInsertNumberCtrl.class,
+                "client", "scenes", "QuestionInsertNumber.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
         appcontroller.initialize(primaryStage, waitingRoom, enterName, qMulti, qInsert);
     }

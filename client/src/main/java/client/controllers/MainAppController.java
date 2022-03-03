@@ -25,11 +25,18 @@ public class MainAppController {
     }
 
     public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Parent> waitingRoomPair,
-                           Pair<HomeScreenCtrl, Parent> enterName) {
+                           Pair<HomeScreenCtrl, Parent> enterName,
+                           Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
+                           Pair<QuestionInsertNumberCtrl, Parent> qInsert){
+
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         Scene enterNameScene = new Scene(enterName.getValue());
         this.primaryStage = primaryStage;
 
+        this.qInsertCtrl = qInsert.getKey();
+        this.qInsert = new Scene(qInsert.getValue());
+        this.qMultiCtrl = qMulti.getKey();
+        this.qMulti = new Scene(qMulti.getValue());
 
         primaryStage.setScene(enterNameScene);
         primaryStage.show();

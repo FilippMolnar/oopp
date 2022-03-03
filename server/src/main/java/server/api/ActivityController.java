@@ -1,7 +1,6 @@
 package server.api;
 
 import commons.Activity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.database.ActivityRepository;
 

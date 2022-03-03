@@ -36,25 +36,19 @@ public class HomeScreenCtrl {
             // Send message to player that their name was too long
             labelErrors.setText("Your name was too long, we limited the number of characters");
         }
+
         // Get request for the players that are currently waiting
         List<Player> playersInWaitingRoom = serverUtils.getAllNamesInWaitingRoom();
         if (!playersInWaitingRoom.isEmpty()) {
             // Check if the player has a unique name
-            boolean flag = true;
             for (Player player : playersInWaitingRoom) {
                 if (player.getName().equals(finalName)) { // Another player with this name was found
                     labelErrors.setText("This name is already taken, please try another");
-                    flag = false;
+                    return;
                 }
             }
-            if (flag) {
-                this.appController.enterWaitingRoom(finalName);
-                this.serverUtils.postName(finalName);
-            }
         }
-        else { // If the waiting room is empty, the player will for sure have a unique name
-            this.appController.enterWaitingRoom(finalName);
-            this.serverUtils.postName(finalName);
-        }
+        this.appController.enterWaitingRoom(finalName);
+        this.serverUtils.postName(finalName);
     }
 }

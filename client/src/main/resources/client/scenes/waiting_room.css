@@ -31,3 +31,12 @@
     -fx-border-radius: 50px;
     -fx-background-radius: 50px;
 }
+* {
+    -fx-text-fill: #D6D3EE;
+}
+.non-clickable {
+    -fx-background-color: #837ABA;
+    -fx-background-radius: 50px;
+    -fx-min-width: 80px;
+    -fx-border-radius: 50px;
+}

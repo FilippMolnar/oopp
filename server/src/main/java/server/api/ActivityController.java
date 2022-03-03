@@ -29,6 +29,8 @@ public class ActivityController {
     {
         long size = activities.count();
         int idx = (int)(Math.random()*size);
+
         return activities.findAll().get(idx);
+
     }
 }

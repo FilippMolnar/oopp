@@ -52,4 +52,10 @@ public class ImportData {
 
         return "Data was loaded in database!";
     }
+    @GetMapping(path = "/rand")
+    public static Activity GetRandomElement()
+    {
+        Activity act = ActivityController.getRandom();
+        return act;
+    }
 }

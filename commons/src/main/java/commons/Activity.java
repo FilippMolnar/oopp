@@ -11,12 +11,14 @@ public class Activity implements Comparable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
-    private final String TITLE;
-    private final String IMGPATH;
+    private String TITLE;
+    private String IMGPATH;
 
     // Consumption is in WH
-    private final int CONSUMPTION;
+    private int CONSUMPTION;
 
+    public Activity() {
+    }
 
     public Activity(String title, int consumption, String imgPath) {
         this.IMGPATH = imgPath;

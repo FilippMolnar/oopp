@@ -1,0 +1,57 @@
+import javax.persistence.Entity;
+
+@Entity
+public class Activity implements Comparable{
+
+    private final String TITLE;
+    private final String IMGPATH;
+
+    // Consumption is in WH
+    private final Long CONSUMPTION;
+
+
+    public Activity(String title, Long consumption, String imgPath) {
+        this.IMGPATH = imgPath;
+        this.TITLE = title;
+        this.CONSUMPTION = consumption;
+    }
+
+    public String getTitle() {
+        return this.TITLE;
+    }
+
+    public String getImagePath() {
+        return this.IMGPATH;
+    }
+
+    public Long getConsumption() {
+        return this.CONSUMPTION;
+    }
+
+    /*
+     * Compares the consumption of two activities.
+     * @parameters Activity to be compared to 'this'.
+     * @return int -1 if this is greater than the input activity, 0 if both are equal
+     * and 1 if the input activity is greater.
+     */
+    @Override
+    public int compareTo(Object o) {
+        if(!(o instanceof Activity)) {
+            throw new IllegalArgumentException();
+        }
+        Activity a = (Activity) o;
+        if(a.CONSUMPTION > this.CONSUMPTION) {
+            return 1;
+        }
+        return this.CONSUMPTION > a.CONSUMPTION ? -1 : 0;
+    }
+
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        if(!(o instanceof Activity)) return false;
+        Activity that = (Activity) o;
+        return this.TITLE.equals(that.TITLE)
+            && this.CONSUMPTION == that.CONSUMPTION;
+    }
+
+}

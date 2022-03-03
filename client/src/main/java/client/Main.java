@@ -15,7 +15,7 @@
  */
 package client;
 
-import client.controllers.EnterNameCtrl;
+import client.controllers.HomeScreenCtrl;
 import client.controllers.MainAppController;
 import client.controllers.QuestionInsertNumberCtrl;
 import client.controllers.QuestionMultiOptionsCtrl;
@@ -75,8 +75,8 @@ public class Main extends Application {
     private void loadUsingTemplateDependencyInjection(Stage primaryStage){
         var waitingRoom = FXML.load(WaitingRoomCtrl.class,
                 "client", "scenes", "waiting_room.fxml");
-        var enterName = FXML.load(EnterNameCtrl.class,
-                "client", "scenes", "waiting_room_name.fxml");
+        var enterName = FXML.load(HomeScreenCtrl.class,
+                "client", "scenes", "HomeScreen.fxml");
         var qMulti = FXML.load(QuestionMultiOptionsCtrl.class,
                 "client", "scenes", "QuestionMultiOptions.fxml");
         var qInsert = FXML.load(QuestionInsertNumberCtrl.class,

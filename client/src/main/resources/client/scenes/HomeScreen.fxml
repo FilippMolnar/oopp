@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -10,106 +12,94 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.VBox?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #625998;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #625998;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.HomeScreenCtrl">
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints percentHeight="33" />
-      <RowConstraints percentHeight="33" />
-      <RowConstraints percentHeight="33"/>
+      <RowConstraints percentHeight="23.0" prefHeight="276.79998779296875" />
+      <RowConstraints percentHeight="53.0" prefHeight="515.2000122070312" />
+      <RowConstraints percentHeight="23.0" prefHeight="75.99996948242188" />
    </rowConstraints>
-   <ImageView fitHeight="203.0" fitWidth="222.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="0">
-      <image>
-         <Image url="@../pictures/quizzz.PNG" />
-      </image>
+   <ImageView fitHeight="203.0" fitWidth="222.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+      <viewport>
+         <Rectangle2D minX="-2.0" />
+      </viewport>
       <GridPane.margin>
-         <Insets bottom="50.0" />
+         <Insets left="-10.0" />
       </GridPane.margin>
+      <Image url="@../pictures/quizzz.PNG" />
    </ImageView>
-   <GridPane alignment="CENTER" prefHeight="218.0" prefWidth="600.0" GridPane.rowIndex="1">
-      <rowConstraints>
-         <RowConstraints percentHeight="50.0" />
-         <RowConstraints percentHeight="50.0" />
-         <RowConstraints />
-      </rowConstraints>
-      <HBox alignment="CENTER" GridPane.rowIndex="1">
-         <TextField alignment="CENTER" layoutX="170.0" layoutY="160.0" maxWidth="-Infinity" prefHeight="40.0" prefWidth="229.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50;" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+   <GridPane alignment="CENTER" prefHeight="218.0" prefWidth="600.0" vgap="40.0" GridPane.rowIndex="1">
+      <HBox alignment="CENTER" minHeight="-Infinity" prefHeight="62.0" prefWidth="553.0" GridPane.columnSpan="2147483647">
+         <Label alignment="CENTER" text="Please enter your name" textAlignment="CENTER" textFill="WHITE">
             <font>
-               <Font size="18.0" />
+               <Font size="19.0" />
             </font>
-         </TextField>
+         </Label>
+         <GridPane.margin>
+            <Insets top="30.0" />
+         </GridPane.margin>
+
       </HBox>
-
-      <HBox alignment="CENTER" minHeight="-Infinity" prefHeight="27.0" prefWidth="374.0" GridPane.rowIndex="0">
-         <GridPane>
-            <columnConstraints>
-               <ColumnConstraints percentWidth="80" />
-               <ColumnConstraints percentWidth="20" />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints />
-            </rowConstraints>
-
-            <ImageView fitHeight="59.0" fitWidth="46.0" layoutX="405.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <image>
-                  <Image url="@../pictures/faq.png" />
-               </image>
-               <GridPane.margin>
-                  <Insets top="70.0" />
-               </GridPane.margin>
-            </ImageView>
-            <Label alignment="CENTER" layoutX="227.0" layoutY="126.0" text="Please enter your name" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <VBox alignment="CENTER" prefHeight="48.0" prefWidth="430.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+         <HBox alignment="CENTER" prefWidth="684.0">
+            <TextField fx:id="nameString" maxWidth="-Infinity" prefHeight="54.0" prefWidth="297.0" snapToPixel="false" style="-fx-background-color: #837ABA; -fx-background-radius: 50; -fx-text-fill: white;" text="nickname">
                <font>
-                  <Font size="16.0" />
+                  <Font size="19.0" />
                </font>
-               <GridPane.margin>
+               <opaqueInsets>
                   <Insets />
-               </GridPane.margin>
-               <padding>
-                  <Insets top="50.0" />
-               </padding>
-            </Label>
-            <rowConstraints>
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-            </rowConstraints>
-         </GridPane>
+               </opaqueInsets>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
 
-      </HBox>
+            </TextField>
 
-      <HBox spacing="30" GridPane.rowIndex="2">
-         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="232.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="172.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50;" text="Single player mode" textAlignment="CENTER" textFill="WHITE">
+            <ImageView fitHeight="59.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@../pictures/faq.png" />
+               <HBox.margin>
+                  <Insets bottom="30.0" left="-2.0" />
+               </HBox.margin>
+            </ImageView>
+         </HBox>
+      </VBox>
+      <HBox spacing="30" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="232.0" mnemonicParsing="false" prefHeight="92.0" prefWidth="267.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50;" text="Single player mode" textAlignment="CENTER" textFill="WHITE">
             <font>
                <Font size="16.0" />
             </font>
          </Button>
-         <Button layoutX="328.0" layoutY="232.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="165.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50;" text="Multiplayer mode" textAlignment="CENTER" textFill="WHITE">
+         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="232.0" mnemonicParsing="false" onAction="#enterRoom" prefHeight="92.0" prefWidth="267.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50;" text="Multiplayer mode" textAlignment="CENTER" textFill="WHITE">
             <font>
                <Font size="16.0" />
             </font>
          </Button>
       </HBox>
-
 
 
       <columnConstraints>
-         <ColumnConstraints />
+         <ColumnConstraints maxWidth="302.4" minWidth="47.19998779296874" prefWidth="287.1999877929687" />
+         <ColumnConstraints maxWidth="327.20001220703125" minWidth="10.0" prefWidth="87.20001220703125" />
       </columnConstraints>
+      <rowConstraints>
+         <RowConstraints maxHeight="38.4" minHeight="10.0" prefHeight="25.60001220703125" />
+         <RowConstraints maxHeight="60.80000000000001" minHeight="0.0" prefHeight="42.400006103515636" />
+         <RowConstraints maxHeight="116.80000000000001" minHeight="56.0" prefHeight="74.39999389648438" />
+      </rowConstraints>
+
    </GridPane>
-   <HBox GridPane.rowIndex="2">
+   <HBox alignment="CENTER" prefHeight="364.0" prefWidth="1920.0" GridPane.rowIndex="2">
       <VBox alignment="CENTER">
-         <Label alignment="CENTER" prefHeight="18.0" prefWidth="629.0" text="This name is already taken!" textFill="WHITE" GridPane.rowIndex="2">
+         <Label fx:id="labelErrors" alignment="CENTER" prefHeight="31.0" prefWidth="561.0" text="" textFill="WHITE">
             <font>
-               <Font size="18.0" />
-            </font></Label>
+               <Font size="16.0" />
+            </font>
+         </Label>
       </VBox>
 
    </HBox>

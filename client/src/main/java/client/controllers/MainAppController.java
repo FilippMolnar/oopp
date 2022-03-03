@@ -25,9 +25,10 @@ public class MainAppController {
     }
 
     public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Parent> waitingRoomPair,
-                           Pair<EnterNameCtrl, Parent> enterName,
+                           Pair<HomeScreenCtrl, Parent> enterName,
                            Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
-                           Pair<QuestionInsertNumberCtrl, Parent> qInsert) {
+                           Pair<QuestionInsertNumberCtrl, Parent> qInsert){
+
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         Scene enterNameScene = new Scene(enterName.getValue());
         this.primaryStage = primaryStage;
@@ -39,10 +40,14 @@ public class MainAppController {
 
         primaryStage.setScene(enterNameScene);
         primaryStage.show();
+
+        enterNameScene.getStylesheets().add("client/scenes/waiting_room.css");
+
     }
 
     public void enterWaitingRoom(String name) {
         System.out.println("Changing scene " + name);
+        waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         primaryStage.setScene(waitingRoomScene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(name)));

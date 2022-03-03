@@ -110,7 +110,6 @@
 
 
          <Button layoutX="197.0" layoutY="434.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="149.0"
-                 style="-fx-background-color: #625998; -fx-border-radius: 20px;  -fx-background-radius: 50px;"
                  text="Start game" textFill="#d6d3ee">
             <font>
                <Font size="24.0"/>

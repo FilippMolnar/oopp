@@ -1,9 +1,16 @@
 package commons;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Activity implements Comparable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public long id;
+
     private final String TITLE;
     private final String IMGPATH;
 

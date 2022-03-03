@@ -1,10 +1,8 @@
 package commons;
 
-import javax.persistence.Entity;
 import java.util.List;
+import java.util.Comparator;
 
-
-@Entity
 public class Question{
 
     private final List<Activity> CHOICES;
@@ -17,7 +15,8 @@ public class Question{
         this.CHOICES = choices;
 
         // sorts in decending order
-        CHOICES.sort(new ActivityComparator());
+        //CHOICES.sort(new ActivityComparator());
+        CHOICES.sort(Comparator.naturalOrder());
         this.CORRECT = correct;
     }
 

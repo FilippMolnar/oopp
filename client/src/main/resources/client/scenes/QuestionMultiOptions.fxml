@@ -1,32 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane accessibleRole="TEXT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.QuestionMultiOptionsCtrl">
+<AnchorPane accessibleRole="TEXT" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #625998;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.QuestionMultiOptionsCtrl">
    <children>
-      <Button fx:id="optionA" layoutX="159.0" layoutY="206.0" mnemonicParsing="false" onAction="#pressedA" text="A" />
-      <Button fx:id="optionB" layoutX="290.0" layoutY="206.0" mnemonicParsing="false" onAction="#pressedB" text="B" />
-      <Button fx:id="optionC" layoutX="396.0" layoutY="206.0" mnemonicParsing="false" onAction="#pressedC" text="C" />
       <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="121.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="251.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="358.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
-      <Text layoutX="289.0" layoutY="358.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time" />
-      <Button layoutX="395.0" layoutY="341.0" mnemonicParsing="false" text="J1" />
-      <Button layoutX="447.0" layoutY="341.0" mnemonicParsing="false" text="J2" />
-      <Button layoutX="499.0" layoutY="340.0" mnemonicParsing="false" text="J3" />
-      <Button layoutX="37.0" layoutY="274.0" mnemonicParsing="false" text="E1" />
-      <Button layoutX="37.0" layoutY="314.0" mnemonicParsing="false" text="E2" />
-      <Button layoutX="37.0" layoutY="354.0" mnemonicParsing="false" text="E3" />
-      <Text layoutX="121.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Which activity takes the most energy?">
+      <Text fill="#d6d3ee" layoutX="121.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Which activity takes the most energy?">
          <font>
             <Font name="Marlett" size="20.0" />
          </font>
       </Text>
-      <Text layoutX="250.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question 8/20" />
-      <Text layoutX="156.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score" />
+      <Text fill="#d6d3ee" layoutX="250.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question 8/20" />
+      <GridPane layoutX="50.0" layoutY="128.0" prefHeight="150.0" prefWidth="600.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="175.0" minHeight="10.0" prefHeight="116.88798522949219" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="33.11201477050781" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="optionC" mnemonicParsing="false" onAction="#pressedC" prefHeight="45.0" prefWidth="100.0" styleClass="question-button" text="C" textFill="#d6d3ee" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="optionB" mnemonicParsing="false" onAction="#pressedB" prefHeight="45.0" prefWidth="100.0" styleClass="question-button" text="B" textFill="#d6d3ee" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedA" prefHeight="45.0" prefWidth="100.0" styleClass="question-button" text="A" textFill="#d6d3ee" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ImageView fitHeight="100.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true" GridPane.rowSpan="2" />
+         </children>
+      </GridPane>
+      <GridPane layoutX="10.0" layoutY="278.0" prefHeight="110.0" prefWidth="574.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="98.15383911132812" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.0" minWidth="10.0" prefWidth="230.84616088867188" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="40.0" prefWidth="70.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="40.0" prefWidth="70.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="426.0" minWidth="10.0" prefWidth="70.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Circle fill="#837aba" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </Circle>
+            <ImageView fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../pictures/joker_elim_wrong.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </ImageView>
+            <Circle fill="#837aba" layoutX="449.0" layoutY="98.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </Circle>
+            <ImageView fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../pictures/joker_double_points.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </ImageView>
+            <Circle fill="#837aba" layoutX="503.0" layoutY="98.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </Circle>
+            <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../pictures/joker_decrease_time.png" />
+               </image>
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </ImageView>
+            <Circle fill="#837aba" radius="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </Circle>
+            <Arc fill="#d6d3ee" length="270.0" radiusX="20.0" radiusY="20.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </Arc>
+            <Circle fill="#625998" layoutX="300.0" layoutY="98.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </Circle>
+            <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="5" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" />
+               </GridPane.margin>
+            </Text>
+            <AnchorPane prefHeight="35.0" prefWidth="94.0" styleClass="question-button" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Text fill="#d6d3ee" layoutX="12.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE 9999">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </AnchorPane>
+            <ImageView fitHeight="150.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../pictures/angel.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../pictures/angry.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../pictures/happy.png" />
+               </image>
+            </ImageView>
+         </children>
+      </GridPane>
+      <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="30.0" fitWidth="20.0" layoutX="552.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../pictures/exit_button.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

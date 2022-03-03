@@ -13,6 +13,12 @@ public class MainAppController {
     private Scene waitingRoomScene;
     private Stage primaryStage;
 
+    private QuestionInsertNumberCtrl qInsertCtrl;
+    private Scene qInsert;
+
+    private QuestionMultiOptionsCtrl qMultiCtrl;
+    private Scene qMulti;
+
     @Inject
     MainAppController(ServerUtils serverUtils) {
         this.serverUtils = serverUtils;
@@ -40,5 +46,15 @@ public class MainAppController {
         primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(name)));
     }
 
+    public void showQuestionInsert() {
+        primaryStage.setTitle("Insert Number question");
+        primaryStage.setScene(qInsert);
+//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+    public void showQuestionMulti() {
+        primaryStage.setTitle("Multiple choice question");
+        primaryStage.setScene(qMulti);
+//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
 
 }

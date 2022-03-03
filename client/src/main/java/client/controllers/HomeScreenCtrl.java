@@ -27,8 +27,6 @@ public class HomeScreenCtrl {
     }
 
     public void enterRoom(){
-        System.out.println("This is being called!");
-        labelErrors.setText("");
         String name = nameString.getText();
         System.out.println(name);
         String finalName = name.substring(0,Math.min(name.length(),16));

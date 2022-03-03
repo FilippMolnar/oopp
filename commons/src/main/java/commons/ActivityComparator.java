@@ -1,3 +1,5 @@
+package commons;
+
 import javax.persistence.Entity;
 import java.util.Comparator;
 

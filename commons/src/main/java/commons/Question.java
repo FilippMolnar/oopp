@@ -1,3 +1,5 @@
+package commons;
+
 import javax.persistence.Entity;
 import java.util.List;
 
@@ -13,6 +15,8 @@ public class Question{
     public Question(Activity correct, List<Activity> choices, String type) {
         this.TYPE = type;
         this.CHOICES = choices;
+
+        // sorts in decending order
         CHOICES.sort(new ActivityComparator());
         this.CORRECT = correct;
     }
@@ -29,7 +33,22 @@ public class Question{
         return this.CORRECT;
     }
 
-    public Boolean isCorrect() {
-        return this.equals(CORRECT);
+    public Boolean isCorrect(Activity a) {
+        return a.equals(CORRECT);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("Question type: ");
+        str.append(TYPE);
+        str.append("\nCorrect answer:\n");
+        str.append(CORRECT.toString());
+        str.append("\nOptions:\n");
+        for(Activity choice : CHOICES) {
+            str.append(choice.toString());
+            str.append("\n");
+        }
+        return str.toString();
     }
 }

@@ -1,16 +1,17 @@
+package commons;
+
 import javax.persistence.Entity;
 
 @Entity
 public class Activity implements Comparable{
-
     private final String TITLE;
     private final String IMGPATH;
 
     // Consumption is in WH
-    private final Long CONSUMPTION;
+    private final int CONSUMPTION;
 
 
-    public Activity(String title, Long consumption, String imgPath) {
+    public Activity(String title, int consumption, String imgPath) {
         this.IMGPATH = imgPath;
         this.TITLE = title;
         this.CONSUMPTION = consumption;
@@ -24,7 +25,7 @@ public class Activity implements Comparable{
         return this.IMGPATH;
     }
 
-    public Long getConsumption() {
+    public int getConsumption() {
         return this.CONSUMPTION;
     }
 
@@ -51,7 +52,19 @@ public class Activity implements Comparable{
         if(!(o instanceof Activity)) return false;
         Activity that = (Activity) o;
         return this.TITLE.equals(that.TITLE)
-            && this.CONSUMPTION == that.CONSUMPTION;
+            && this.CONSUMPTION == that.CONSUMPTION
+            && this.IMGPATH == that.IMGPATH;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append(TITLE);
+        str.append(":\n");
+        str.append(CONSUMPTION);
+        str.append(" WH\n");
+        str.append(IMGPATH);
+        return str.toString();
     }
 
 }

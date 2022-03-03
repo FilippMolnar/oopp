@@ -7,7 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 import javax.inject.Inject;
@@ -22,7 +22,7 @@ public class WaitingRoomCtrl implements Initializable {
     private List<Player> playerList;
 
     @FXML
-    private AnchorPane pane;
+    private GridPane pane;
 
     @FXML
     private Label morePlayersWaitingRoomLabel;

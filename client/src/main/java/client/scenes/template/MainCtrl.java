@@ -15,6 +15,8 @@
  */
 package client.scenes.template;
 
+import client.controllers.QuestionInsertNumberCtrl;
+import client.controllers.QuestionMultiOptionsCtrl;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

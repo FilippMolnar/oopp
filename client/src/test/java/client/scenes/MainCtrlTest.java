@@ -15,9 +15,10 @@
  */
 package client.scenes;
 
-import client.scenes.template.MainCtrl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import client.scenes.template.MainCtrl;
 
 public class MainCtrlTest {
 

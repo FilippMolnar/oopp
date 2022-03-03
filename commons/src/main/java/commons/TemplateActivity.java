@@ -2,6 +2,10 @@ package commons;
 
 import java.util.Objects;
 
+/**
+ * This class is needed in order to convert JSON files to it and then to the actual Activity one
+ */
+
 public class TemplateActivity {
     public String title;
     public int consumption_in_wh;
@@ -9,6 +13,12 @@ public class TemplateActivity {
 
     public TemplateActivity() {
 
+    }
+
+    public TemplateActivity(String title, int consumption_in_wh, String source) {
+        this.title = title;
+        this.consumption_in_wh = consumption_in_wh;
+        this.source = source;
     }
 
     public String getTitle() {
@@ -32,12 +42,12 @@ public class TemplateActivity {
         if (this == o) return true;
         if (!(o instanceof TemplateActivity)) return false;
         TemplateActivity that = (TemplateActivity) o;
-        return consumption_in_wh == that.consumption_in_wh && Objects.equals(title, that.title) && Objects.equals(title, that.title);
+        return consumption_in_wh == that.consumption_in_wh && Objects.equals(title, that.title) && Objects.equals(source, that.source);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, consumption_in_wh, title);
+        return Objects.hash(title, consumption_in_wh, source);
     }
 
     @Override

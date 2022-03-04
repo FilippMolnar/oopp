@@ -2,7 +2,6 @@ package server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Activity;
-import commons.TemplateActivity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +28,7 @@ public class ImportData {
             ObjectMapper mapper = new ObjectMapper();
             try {
                 // Read the activity from JSON file
-                TemplateActivity temp = mapper.readValue(log, TemplateActivity.class);
+                Activity temp = mapper.readValue(log, Activity.class);
 
                 // Create a new activity to add to database
                 if (id >= 0) {
@@ -39,7 +38,8 @@ public class ImportData {
                     image = listing[i + 1];
                     id = -2;
                 }
-                Activity act = new Activity(temp.title, temp.consumption_in_wh, location + "/" + image.getName());
+                Activity act = new Activity(temp.getTitle(), temp.getConsumption(),
+                        location + "/" + image.getName());
 
                 // Add activity to database
                 ActivityController.addActivity(act);

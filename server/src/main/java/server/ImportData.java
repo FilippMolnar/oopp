@@ -39,7 +39,8 @@ public class ImportData {
                     image = listing[i + 1];
                     id = -2;
                 }
-                Activity act = new Activity(temp.title, temp.consumption_in_wh, location + "/" + image.getName());
+                Activity act = new Activity(temp.title, temp.consumption_in_wh,
+                        location + "/" + image.getName());
 
                 // Add activity to database
                 ActivityController.addActivity(act);

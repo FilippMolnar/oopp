@@ -15,9 +15,11 @@ public class ActivityController {
         this.activities = act;
     }
 
-    public static void addActivity(Activity act)
+    public static boolean addActivity(Activity act)
     {
+        if(act == null) return false;
         activities.save(act);
+        return true;
     }
 
     public static List<Activity> getAllActivities()
@@ -31,6 +33,5 @@ public class ActivityController {
         int idx = (int)(Math.random()*size);
 
         return activities.findAll().get(idx);
-
     }
 }

@@ -5,11 +5,11 @@ import java.util.Comparator;
 
 public class Question{
 
-    private final List<Activity> CHOICES;
-    private final String TYPE;
-    private final Activity CORRECT;
+    private List<Activity> CHOICES;
+    private String TYPE;
+    private Activity CORRECT;
 
-
+    public Question(){}
     public Question(Activity correct, List<Activity> choices, String type) {
         this.TYPE = type;
         this.CHOICES = choices;
@@ -18,6 +18,18 @@ public class Question{
         //CHOICES.sort(new ActivityComparator());
         CHOICES.sort(Comparator.naturalOrder());
         this.CORRECT = correct;
+    }
+
+    public void setCHOICES(List<Activity> CHOICES) {
+        this.CHOICES = CHOICES;
+    }
+
+    public void setTYPE(String TYPE) {
+        this.TYPE = TYPE;
+    }
+
+    public void setCORRECT(Activity CORRECT) {
+        this.CORRECT = CORRECT;
     }
 
     public List<Activity> getActivities() {

@@ -44,12 +44,6 @@ public class ActivityController {
     {
         List<Activity> ls = activities.getByConsumption(cons);
         return ls;
-    }
 
-    @GetMapping(path = "/data/diff/{cons}")
-    public static List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
-    {
-        List<Activity> ls = activities.getAllDiff(cons);
-        return ls;
     }
 }

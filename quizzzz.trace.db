@@ -1,3 +1,0 @@
-2022-03-04 00:52:30 jdbc[13]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE *[*] FROM ACTIVITY"; expected "identifier"; SQL statement:
-DELETE * FROM ACTIVITY [42001-200]

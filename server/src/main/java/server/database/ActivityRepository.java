@@ -15,10 +15,4 @@ public interface ActivityRepository extends JpaRepository<Activity,Long> {
      */
     @Query("SELECT a FROM Activity a WHERE a.CONSUMPTION=?1")
     public List<Activity> getByConsumption(int cons);
-
-    // Should make it Fetch only part of database, not everything ** OPTIMIZATION NEEDED **
-    @Query("SELECT a FROM Activity a WHERE a.CONSUMPTION<>?1")
-    public List<Activity> getAllDiff(int cons);
-
-
 }

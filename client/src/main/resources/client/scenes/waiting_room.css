@@ -2,7 +2,7 @@
 
     -fx-background-color: #625998;
     -fx-background-radius: 50px;
-
+    -fx-min-width: 80px;
     -fx-border-radius: 50px;
 }
 .button:hover{
@@ -14,4 +14,29 @@
     -fx-border-width: 2px;
     -fx-border-radius: 50px;
     -fx-background-radius: 50px;
+}
+.question-button {
+    -fx-background-color: #837ABA;
+    -fx-background-radius: 50px;
+    -fx-min-width: 80px;
+    -fx-border-radius: 50px;
+}
+.question-button:hover{
+    -fx-background-color: #4B427D;
+    -fx-transition: ease-in;
+}
+.question-button:pressed{
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+}
+* {
+    -fx-text-fill: #D6D3EE;
+}
+.non-clickable {
+    -fx-background-color: #837ABA;
+    -fx-background-radius: 50px;
+    -fx-min-width: 80px;
+    -fx-border-radius: 50px;
 }

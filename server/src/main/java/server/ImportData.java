@@ -49,13 +49,6 @@ public class ImportData {
                 else id = i;
             }
         }
-
         return "Data was loaded in database!";
-    }
-    @GetMapping(path = "/rand")
-    public static Activity GetRandomElement()
-    {
-        Activity act = ActivityController.getRandom();
-        return act;
     }
 }

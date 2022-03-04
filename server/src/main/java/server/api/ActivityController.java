@@ -1,6 +1,8 @@
 package server.api;
 
 import commons.Activity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import server.database.ActivityRepository;
 
@@ -25,12 +27,19 @@ public class ActivityController {
         return activities.findAll();
     }
 
+    @GetMapping(path = "/data/rand")
     public static Activity getRandom()
     {
         long size = activities.count();
         int idx = (int)(Math.random()*size);
 
         return activities.findAll().get(idx);
+    }
 
+    @GetMapping(path = "/data/fetch/{cons}")
+    public static List<Activity> getAllByConsumption(@PathVariable("cons")int cons)
+    {
+        List<Activity> ls = activities.getByConsumption(cons);
+        return ls;
     }
 }

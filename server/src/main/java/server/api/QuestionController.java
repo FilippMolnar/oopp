@@ -12,7 +12,7 @@ import java.util.List;
 public class QuestionController {
     /**
      * Fetches data and constructs a question of type estimate
-     * @return question of type estimate    !!!    CHOICES ARE AN AEMPTY LIST  !!!
+     * @return question of type estimate    !!!    CHOICES ARE AN EMPTY LIST  !!!
      */
     @GetMapping(path = {"/estimate"})
     public static Question getTypeEstimate()

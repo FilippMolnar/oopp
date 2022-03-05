@@ -1,24 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #625998;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #625998#625998;" stylesheets="@waiting_room.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" percentWidth="20.0" prefWidth="83.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="10.0" percentWidth="60.0" prefWidth="317.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="600.0" minHeight="10.0" prefHeight="253.2881622314453" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="144.9860076904297" minHeight="10.0" prefHeight="46.71183776855469" vgrow="SOMETIMES" />
+   </rowConstraints>
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="129.0" layoutY="24.0" prefHeight="50.0" prefWidth="312.0" text="Leaderboard" textFill="WHITE">
-         <font>
-            <Font size="48.0" />
-         </font>
-      </Label>
-      <ImageView fitHeight="80.0" fitWidth="169.0" layoutX="441.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../pictures/podium.png" />
-         </image>
-      </ImageView>
-      <ListView layoutX="185.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #837ABA;" />
+      <ScrollPane maxHeight="480.0" maxWidth="360.0" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #625998;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+         <content>
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="360.0" prefHeight="488.0" prefWidth="344.0" style="-fx-background-color: #625998#625998; -fx-border-style: none;">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <AnchorPane maxHeight="50.0" maxWidth="500.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="29.0" layoutY="25.0" radius="16.0" stroke="#cbbc50" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#cbbc50" layoutX="25.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
+                        <Text fill="#d6d3ee" layoutX="60.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maria">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <Label layoutX="276.0" layoutY="17.0" text="7800" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="30.0" layoutY="24.0" radius="16.0" stroke="#5e5c69" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#5e5c69" layoutX="26.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" />
+                        <Text fill="#d6d3ee" layoutX="62.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nic">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <Label layoutX="274.0" layoutY="17.0" text="6346" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="30.0" layoutY="25.0" radius="16.0" stroke="#cb5708" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#cb5708" layoutX="25.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" />
+                        <Text fill="#d6d3ee" layoutX="63.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Izzy">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <Label layoutX="278.0" layoutY="16.0" text="5670" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="29.0" layoutY="25.0" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#d6d3ee" layoutX="24.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" />
+                        <Text fill="#d6d3ee" layoutX="64.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Maria">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <Label layoutX="278.0" layoutY="16.0" text="4997" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="30.0" layoutY="25.0" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#d6d3ee" layoutX="25.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" />
+                        <Text fill="#d6d3ee" layoutX="67.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ivan">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <Label layoutX="278.0" layoutY="17.0" text="4503" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="30.0" layoutY="25.0" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#d6d3ee" layoutX="25.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" />
+                        <Text fill="#d6d3ee" layoutX="67.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Filip">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <Label layoutX="276.0" layoutY="17.0" text="4023" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="30.0" layoutY="25.0" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#d6d3ee" layoutX="25.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7" />
+                        <Text fill="#d6d3ee" layoutX="67.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gijs">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                        <Label layoutX="279.0" layoutY="17.0" text="2007" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </GridPane>
+         </content>
+      </ScrollPane>
+      <GridPane maxWidth="360.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="227.13150024414062" minWidth="10.0" prefWidth="225.12591552734375" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="174.98599243164062" minWidth="10.0" prefWidth="134.87408447265625" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Leaderboard" GridPane.valignment="BOTTOM">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+               <image>
+                  <Image url="@../pictures/podium.png" />
+               </image>
+            </ImageView>
+         </children>
+      </GridPane>
+      <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Rematch" GridPane.halignment="RIGHT">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets right="20.0" />
+               </GridPane.margin>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+      </GridPane>
    </children>
-</Pane>
+</GridPane>

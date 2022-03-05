@@ -23,7 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class QuestionTest {
     Activity a = new Activity("Activity1", 100, "/path/to/img");
@@ -35,6 +37,33 @@ public class QuestionTest {
     @Test
     public void constructorTest() {
         assertNotNull(q);
+    }
+
+    @Test
+    public void setChoicesTest()
+    {
+        Question q = new Question();
+        List<Activity> ls = new ArrayList<>();
+        ls.add(a);
+        ls.add(c);
+        q.setCHOICES(ls);
+        assertTrue(q.getActivities().equals(ls));
+    }
+
+    @Test
+    public void setTypeTest()
+    {
+        Question q = new Question();
+        q.setTYPE("Equals");
+        assertTrue(q.getType().equals("Equals"));
+    }
+
+    @Test
+    public void setCorrectTest()
+    {
+        Question q = new Question();
+        q.setCORRECT(a);
+        assertTrue(q.getCorrect().equals(a));
     }
 
     @Test

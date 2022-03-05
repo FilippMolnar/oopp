@@ -12,6 +12,8 @@ public class MainAppController {
     private final ServerUtils serverUtils;
     private Scene waitingRoomScene;
     private Stage primaryStage;
+    private Scene enterNameScene;
+    private String name;
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private Scene qInsert;
@@ -29,8 +31,9 @@ public class MainAppController {
                            Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
                            Pair<QuestionInsertNumberCtrl, Parent> qInsert){
 
+        this.name = "";
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
-        Scene enterNameScene = new Scene(enterName.getValue());
+        this.enterNameScene = new Scene(enterName.getValue());
         this.primaryStage = primaryStage;
 
         this.qInsertCtrl = qInsert.getKey();
@@ -45,23 +48,38 @@ public class MainAppController {
 
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public void enterWaitingRoom(String name) {
         System.out.println("Changing scene " + name);
+        this.name = name;
         waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         primaryStage.setScene(waitingRoomScene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(name)));
     }
 
+    public void enterSinglePlayerGame(String name) {
+        System.out.println("Changing scene " + name);
+        primaryStage.setScene(qInsert);
+        primaryStage.show();
+    }
+
     public void showQuestionInsert() {
         primaryStage.setTitle("Insert Number question");
         primaryStage.setScene(qInsert);
-//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
     }
     public void showQuestionMulti() {
         primaryStage.setTitle("Multiple choice question");
         primaryStage.setScene(qMulti);
-//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+    }
+
+    public void showHomeScreen() {
+        primaryStage.setTitle("Home");
+        primaryStage.setScene(enterNameScene);
+        primaryStage.show();
     }
 
 }

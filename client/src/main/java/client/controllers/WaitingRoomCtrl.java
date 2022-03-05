@@ -77,6 +77,12 @@ public class WaitingRoomCtrl implements Initializable {
         }
     }
 
+    public void goBack(){
+        System.out.println("tu");
+        serverUtils.sendThroughSocket("/app/disconnect", new Player(this.appController.getName()));
+        this.appController.showHomeScreen();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Initialize called by the waiting roomCtrl");

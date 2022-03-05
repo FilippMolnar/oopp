@@ -79,7 +79,6 @@ public class WaitingRoomCtrl implements Initializable {
 
     public void goBack(){
         System.out.println("tu");
-        //TODO post request to disconnect
         serverUtils.sendThroughSocket("/app/disconnect", new Player(this.appController.getName()));
         this.appController.showHomeScreen();
     }

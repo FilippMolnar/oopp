@@ -70,6 +70,7 @@ public class MainAppController {
     public void showQuestionInsert() {
         primaryStage.setTitle("Insert Number question");
         primaryStage.setScene(qInsert);
+        primaryStage.show();
     }
     public void showQuestionMulti() {
         primaryStage.setTitle("Multiple choice question");

@@ -136,8 +136,18 @@ public class ServerUtils {
                 });
     }
 
+
+    public void postStartGame() {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/wait/start")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(null);
+    }
+
     /**
      * Does a post request to the api endpoint <code>api/wait</code> sending a Player object
+     *
      * @param name the name of the player
      */
     public void postName(String name) {

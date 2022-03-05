@@ -2,7 +2,6 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import commons.Player;
-import commons.Question;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +13,6 @@ import javafx.scene.layout.StackPane;
 import javax.inject.Inject;
 import java.net.URL;
 import java.util.List;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class WaitingRoomCtrl implements Initializable {
@@ -86,7 +84,7 @@ public class WaitingRoomCtrl implements Initializable {
 
     public void startGame(){
         serverUtils.sendThroughSocket("/app/startGame", new Player(this.appController.getName()));
-
+        serverUtils.postStartGame();
     }
 
     @Override
@@ -106,6 +104,11 @@ public class WaitingRoomCtrl implements Initializable {
         this.serverUtils.subscribeForSocketMessages("/topic/render_question", Player.class, player -> {
             System.out.println("Rendering question type: " + player);
             this.renderQuestion();
+        });
+
+        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame", Integer.class, gameID -> {
+            System.out.println("Want to switch scenes!");
+            Platform.runLater(appController::showQuestionInsert);
         });
     }
 

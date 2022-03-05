@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import commons.Player;
+import commons.Question;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javax.inject.Inject;
 import java.net.URL;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class WaitingRoomCtrl implements Initializable {
@@ -78,9 +80,13 @@ public class WaitingRoomCtrl implements Initializable {
     }
 
     public void goBack(){
-        System.out.println("tu");
         serverUtils.sendThroughSocket("/app/disconnect", new Player(this.appController.getName()));
         this.appController.showHomeScreen();
+    }
+
+    public void startGame(){
+        serverUtils.sendThroughSocket("/app/startGame", new Player(this.appController.getName()));
+
     }
 
     @Override
@@ -97,5 +103,13 @@ public class WaitingRoomCtrl implements Initializable {
             playerList.remove(player);
             updateUI();
         });
+        this.serverUtils.subscribeForSocketMessages("/topic/render_question", Player.class, player -> {
+            System.out.println("Rendering question type: " + player);
+            this.renderQuestion();
+        });
+    }
+
+    private void renderQuestion() {
+        this.appController.showQuestionMulti();
     }
 }

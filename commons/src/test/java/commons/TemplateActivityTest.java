@@ -31,6 +31,22 @@ class TemplateActivityTest {
     void setConsumption_in_wh() {
         temp.setConsumption_in_wh(200);
         assertEquals(temp.getConsumption_in_wh(),200);
+        assertNotEquals(temp.getConsumption_in_wh(),2000);
+    }
+
+    @Test
+    void getSource()
+    {
+        assertTrue(temp.getSource().equals("Source"));
+        assertFalse(temp.getSource().equals("source"));
+    }
+
+    @Test
+    void setSource()
+    {
+        temp.setSource("source");
+        assertTrue(temp.getSource().equals("source"));
+        assertFalse(temp.getSource().equals("Source"));
     }
 
     @Test
@@ -39,5 +55,16 @@ class TemplateActivityTest {
         TemplateActivity neq = new TemplateActivity("Name" , 100 , "Sourcee");
         assertTrue(temp.equals(eq));
         assertFalse(temp.equals(neq));
+    }
+
+    @Test
+    void toStringTest()
+    {
+        String exp = "TemplateActivity{" +
+                "title='" + temp.getTitle() + '\'' +
+                ", consumption_in_wh=" + temp.getConsumption_in_wh() +
+                ", source='" + temp.getSource() + '\'' +
+                '}';
+        assertTrue(exp.equals(temp.toString()));
     }
 }

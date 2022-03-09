@@ -1,8 +1,7 @@
 package commons;
 
 public enum QuestionType {
-    MultipleChoice,
-    InputNumber,
+    EqualEnergy,
+    Estimate,
     HighestEnergy
-
 }

@@ -18,8 +18,6 @@ package server.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Activity;
 import commons.Player;
-import commons.Question;
-import commons.QuestionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -34,7 +32,10 @@ import org.springframework.web.socket.messaging.SessionConnectEvent;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -89,7 +90,7 @@ public class WaitController {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
-        var question = createRandomQuestion();
+        var question = QuestionController.getRandomQuestion();
         for (String playerID : playerList) {
             LOGGER.info("Sending question " + question.getChoices());
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame", question);
@@ -140,25 +141,6 @@ public class WaitController {
         return res;
     }
 
-    @GetMapping("/question")
-    public Question createRandomQuestion() {
-        List<Activity> activities = new ArrayList<>();
-        for (int i = 1; i <= 3; i++) {
-            var activity = getRandomActivity();
-            while (activities.contains(activity))
-                activity = getRandomActivity();
-            activities.add(activity);
-        }
-        Random random = new Random();
-        int pick = new Random().nextInt(QuestionType.values().length); // get Random question Type
-        QuestionType questionType = QuestionType.values()[pick];
-        return new Question(activities.get(random.nextInt(3)), activities, questionType);
-    }
-
-    @MessageMapping("/newQuestion")
-    public void sendNewQuestion() {
-//        simpMessagingTemplate.convertAndSendToUser();
-    }
 
     @EventListener
     private void handleSessionConnected(SessionConnectEvent event) {
@@ -174,18 +156,4 @@ public class WaitController {
             simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
         }
     }
-
-//    @MessageMapping("/startGame")
-//    public void startGame(Player player) {
-//        //TODO set counter to 0th question in (map of games)
-//        for (Player p : lobbyPlayers) {
-//            simpMessagingTemplate.convertAndSend("/topic/render_question", p);
-//        }
-//    }
-
-//    public void createQuestion() {
-//        Random r = new Random();
-//        System.out.println(r.nextInt(2));
-//    }
-
 }

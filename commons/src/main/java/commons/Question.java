@@ -16,11 +16,11 @@ public class Question{
     public Question(Activity correct, List<Activity> choices, QuestionType type) {
         this.type = type;
         this.choices = choices;
+        this.correct = correct;
 
         // sorts in decending order
         //CHOICES.sort(new ActivityComparator());
         this.choices.sort(Comparator.naturalOrder());
-        this.correct = correct;
     }
 
     public List<Activity> getChoices() {
@@ -28,11 +28,23 @@ public class Question{
     }
 
     public QuestionType getType() {
-        return this.type;
+        return type;
     }
 
     public Activity getCorrect() {
-        return this.correct;
+        return correct;
+    }
+
+    public void setChoices(List<Activity> choices) {
+        this.choices = choices;
+    }
+
+    public void setType(QuestionType type) {
+        this.type = type;
+    }
+
+    public void setCorrect(Activity correct) {
+        this.correct = correct;
     }
 
     public Boolean isCorrect(Activity a) {

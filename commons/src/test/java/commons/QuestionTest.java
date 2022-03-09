@@ -17,7 +17,9 @@ package commons;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,6 +33,33 @@ public class QuestionTest {
     @Test
     public void constructorTest() {
         assertNotNull(q);
+    }
+
+    @Test
+    public void setChoicesTest()
+    {
+        Question q = new Question();
+        List<Activity> ls = new ArrayList<>();
+        ls.add(a);
+        ls.add(c);
+        q.setChoices(ls);
+        assertTrue(q.getChoices().equals(ls));
+    }
+
+    @Test
+    public void setTypeTest()
+    {
+        Question q = new Question();
+        q.setType(QuestionType.HighestEnergy);
+        assertEquals(q.getType(), QuestionType.HighestEnergy);
+    }
+
+    @Test
+    public void setCorrectTest()
+    {
+        Question q = new Question();
+        q.setCorrect(a);
+        assertEquals(q.getCorrect(), a);
     }
 
     @Test
@@ -65,7 +94,7 @@ public class QuestionTest {
 
     @Test
     public void toStringTest() {
-        assertEquals("Question type: highest\nCorrect answer:\n" + c.toString()
+        assertEquals("Question type: HighestEnergy\nCorrect answer:\n" + c.toString()
                 + "\nOptions:\n" + c.toString() + "\n" + b.toString() + "\n"
                 + a.toString() + "\n", q.toString());
     }

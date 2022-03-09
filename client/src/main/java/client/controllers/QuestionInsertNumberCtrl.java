@@ -4,7 +4,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Question;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class QuestionInsertNumberCtrl {
@@ -14,8 +13,6 @@ public class QuestionInsertNumberCtrl {
 
     @FXML
     private TextField number;
-
-
 
 
     @Inject
@@ -37,5 +34,4 @@ public class QuestionInsertNumberCtrl {
         var n = number.getText();
         return Integer.parseInt(n);
     }
-
 }

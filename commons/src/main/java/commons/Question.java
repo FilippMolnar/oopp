@@ -5,46 +5,49 @@ import java.util.Comparator;
 
 public class Question{
 
-    private final List<Activity> CHOICES;
-    private final String TYPE;
-    private final Activity CORRECT;
+    private List<Activity> choices;
+    private QuestionType type;
+    private Activity correct;
 
+    public Question(){
 
-    public Question(Activity correct, List<Activity> choices, String type) {
-        this.TYPE = type;
-        this.CHOICES = choices;
+    }
+
+    public Question(Activity correct, List<Activity> choices, QuestionType type) {
+        this.type = type;
+        this.choices = choices;
 
         // sorts in decending order
         //CHOICES.sort(new ActivityComparator());
-        CHOICES.sort(Comparator.naturalOrder());
-        this.CORRECT = correct;
+        this.choices.sort(Comparator.naturalOrder());
+        this.correct = correct;
     }
 
-    public List<Activity> getActivities() {
-        return this.CHOICES;
+    public List<Activity> getChoices() {
+        return this.choices;
     }
 
-    public String getType() {
-        return this.TYPE;
+    public QuestionType getType() {
+        return this.type;
     }
 
     public Activity getCorrect() {
-        return this.CORRECT;
+        return this.correct;
     }
 
     public Boolean isCorrect(Activity a) {
-        return a.equals(CORRECT);
+        return a.equals(correct);
     }
 
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append("Question type: ");
-        str.append(TYPE);
+        str.append(type);
         str.append("\nCorrect answer:\n");
-        str.append(CORRECT.toString());
+        str.append(correct.toString());
         str.append("\nOptions:\n");
-        for(Activity choice : CHOICES) {
+        for(Activity choice : choices) {
             str.append(choice.toString());
             str.append("\n");
         }

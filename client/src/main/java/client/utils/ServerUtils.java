@@ -16,6 +16,7 @@
 package client.utils;
 
 import commons.Player;
+import commons.Question;
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
@@ -130,6 +131,15 @@ public class ServerUtils {
     public List<Player> getAllNamesInWaitingRoom() {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/wait")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<>() {
+                });
+    }
+
+    public Question getRandomQuestion() {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/wait/question")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<>() {

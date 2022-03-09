@@ -15,22 +15,18 @@
  */
 package commons;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QuestionTest {
     Activity a = new Activity("Activity1", 100, "/path/to/img");
     Activity b = new Activity("Activity2", 200, "/path/to/img");
     Activity c = new Activity("Activity3", 300, "/path/to/img");
 
-    Question q = new Question(c, Arrays.asList(a, b, c), "highest");
+    Question q = new Question(c, Arrays.asList(a, b, c), QuestionType.HighestEnergy);
 
     @Test
     public void constructorTest() {
@@ -39,9 +35,9 @@ public class QuestionTest {
 
     @Test
     public void getterTest() {
-        assertEquals("highest", q.getType());
+        assertEquals(QuestionType.HighestEnergy, q.getType());
         assertEquals(c, q.getCorrect());
-        assertEquals(Arrays.asList(c, b, a), q.getActivities());
+        assertEquals(Arrays.asList(c, b, a), q.getChoices());
     }
 
     @Test
@@ -64,7 +60,7 @@ public class QuestionTest {
 
     @Test
     public void sortTest() {
-        assertNotEquals(q.getActivities(), Arrays.asList(a, b, c));
+        assertNotEquals(q.getChoices(), Arrays.asList(a, b, c));
     }
 
     @Test

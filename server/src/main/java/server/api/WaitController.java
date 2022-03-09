@@ -18,9 +18,12 @@ package server.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Activity;
 import commons.Player;
+import commons.Question;
+import commons.QuestionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.util.Pair;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -42,9 +45,11 @@ public class WaitController {
     private final List<Player> lobbyPlayers = new ArrayList<>();
     private final RestTemplate restTemplate;
 
-    // A player is identified by a uniquely assigned string and not by the name because people in different games might have the same name
-    // Thus we need associate a random string to each new web socket connection and talk with that connection
-    private final Map<String, Integer> playerToGameId = new HashMap<>(); // map the player's string id to the game id
+    /**
+     * A <b>player</b> is identified by a uniquely assigned <b>string</b> and not by the name because people in different games might have the same name.
+     * Thus we need associate a random string to each new web socket connection and talk with that connection
+     */
+    private final Map<String, Pair<Integer, Player>> playerToGameId = new HashMap<>(); // map the player's string id to the game id
     private final Map<Integer, List<String>> IDToPlayers = new HashMap<>(); // given an id get all the players with that id
     private final Logger LOGGER = LoggerFactory.getLogger(WaitController.class);
     private int gameID = 0;
@@ -71,27 +76,31 @@ public class WaitController {
         LOGGER.info("Players in waiting room are\n" + lobbyPlayers);
     }
 
+    /**
+     * Post mapping from a player to <b>Start</b> the game
+     * Sends a message to start the game to all players
+     */
     @PostMapping(path = {"", "/start"})
     public void startGame() {
         LOGGER.info("Starting game with id " + gameID);
-        // e283524 -> 0
-        // dfhsjfhs -> 0
-        // 0 -> [e283524,dfhsjfhs]
-
+        lobbyPlayers.clear();
         var playerList = IDToPlayers.get(gameID);
         if (playerList == null) {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
+        var question = createRandomQuestion();
         for (String playerID : playerList) {
-            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame", gameID);
-            LOGGER.info("Sent message to start game to " + playerID);
+            LOGGER.info("Sending question " + question.getChoices());
+            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame", question);
+            LOGGER.info("Sent message to start game to " + playerToGameId.get(playerID).getSecond().getName());
         }
+
         gameID++;
     }
 
-    public void addPlayerToGameID(String playerID) {
-        playerToGameId.put(playerID, gameID);
+    public void addPlayerToGameID(String playerID, Player player) {
+        playerToGameId.put(playerID, Pair.of(gameID, player));
         var currentList = IDToPlayers.getOrDefault(gameID, new ArrayList<>());
         if (currentList.size() == 0)
             IDToPlayers.put(gameID, currentList);
@@ -103,7 +112,7 @@ public class WaitController {
     public void socketAddName(@Payload Player player, Principal principal) {
         LOGGER.info("add player with name " + player.name + " to the waiting room with sockets. The player's id is " + principal.getName());
         addName(player);
-        addPlayerToGameID(principal.getName());
+        addPlayerToGameID(principal.getName(), player);
     }
 
     @GetMapping(path = {"", "/"})
@@ -111,11 +120,14 @@ public class WaitController {
         return lobbyPlayers;
     }
 
-    @GetMapping(path = "/act")
-    public Activity getAct() {
+    /**
+     * get a random activity by calling the api through the server
+     *
+     * @return a random Activity
+     */
+    public Activity getRandomActivity() {
         String json = restTemplate.getForObject("http://localhost:8080/data/rand", String.class);
         Activity res;
-        LOGGER.info("Json got is" + json);
 
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -126,6 +138,21 @@ public class WaitController {
             return null;
         }
         return res;
+    }
+
+    @GetMapping("/question")
+    public Question createRandomQuestion() {
+        List<Activity> activities = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            var activity = getRandomActivity();
+            while (activities.contains(activity))
+                activity = getRandomActivity();
+            activities.add(activity);
+        }
+        Random random = new Random();
+        int pick = new Random().nextInt(QuestionType.values().length); // get Random question Type
+        QuestionType questionType = QuestionType.values()[pick];
+        return new Question(activities.get(random.nextInt(3)), activities, questionType);
     }
 
     @MessageMapping("/newQuestion")
@@ -148,17 +175,17 @@ public class WaitController {
         }
     }
 
-    @MessageMapping("/startGame")
-    public void startGame(Player player) {
-        //TODO set counter to 0th question in (map of games)
-        for(Player p : lobbyPlayers){
-            simpMessagingTemplate.convertAndSend("/topic/render_question", p);
-        }
-    }
+//    @MessageMapping("/startGame")
+//    public void startGame(Player player) {
+//        //TODO set counter to 0th question in (map of games)
+//        for (Player p : lobbyPlayers) {
+//            simpMessagingTemplate.convertAndSend("/topic/render_question", p);
+//        }
+//    }
 
-    public void createQuestion(){
-        Random r = new Random();
-        System.out.println(r.nextInt(2));
-    }
+//    public void createQuestion() {
+//        Random r = new Random();
+//        System.out.println(r.nextInt(2));
+//    }
 
 }

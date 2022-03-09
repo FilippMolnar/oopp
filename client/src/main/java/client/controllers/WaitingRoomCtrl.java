@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import commons.Player;
+import commons.Question;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -101,15 +102,20 @@ public class WaitingRoomCtrl implements Initializable {
             playerList.remove(player);
             updateUI();
         });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame", Question.class, question -> {
+            System.out.println("Received a question to render");
+            Platform.runLater(() -> appController.showQuestion(question));
+        });
+
         this.serverUtils.subscribeForSocketMessages("/topic/render_question", Player.class, player -> {
             System.out.println("Rendering question type: " + player);
             this.renderQuestion();
         });
 
-        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame", Integer.class, gameID -> {
-            System.out.println("Want to switch scenes!");
-            Platform.runLater(appController::showQuestionInsert);
-        });
+//        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame", Integer.class, gameID -> {
+//            System.out.println("Want to switch scenes!");
+//            Platform.runLater(appController::showQuestionInsert);
+//        });
     }
 
     private void renderQuestion() {

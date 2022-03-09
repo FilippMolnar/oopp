@@ -3,6 +3,7 @@ package client.controllers;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Player;
+import commons.Question;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -19,7 +20,7 @@ public class MainAppController {
     private Scene qInsert;
 
     private QuestionMultiOptionsCtrl qMultiCtrl;
-    private Scene qMulti;
+    private Scene qMultiScene;
 
     @Inject
     MainAppController(ServerUtils serverUtils) {
@@ -39,11 +40,14 @@ public class MainAppController {
         this.qInsertCtrl = qInsert.getKey();
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
-        this.qMulti = new Scene(qMulti.getValue());
+        this.qMultiScene = new Scene(qMulti.getValue());
 
-        primaryStage.setScene(enterNameScene);
+//        primaryStage.setScene(enterNameScene);
+        primaryStage.setScene(this.enterNameScene);
         primaryStage.show();
 
+        waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
+        qMultiScene.getStylesheets().add("client/scenes/waiting_room.css");
         enterNameScene.getStylesheets().add("client/scenes/waiting_room.css");
 
     }
@@ -67,6 +71,15 @@ public class MainAppController {
         primaryStage.show();
     }
 
+    public void showQuestion(Question question) {
+//        if(question.getType() == QuestionType.InputNumber){
+//            qInsertCtrl.setQuestion(question);
+//            showQuestionInsert();
+//        }else{
+            qMultiCtrl.setQuestion(question);
+            showQuestionMulti();
+//        }
+    }
     public void showQuestionInsert() {
         primaryStage.setTitle("Insert Number question");
         primaryStage.setScene(qInsert);
@@ -74,7 +87,8 @@ public class MainAppController {
     }
     public void showQuestionMulti() {
         primaryStage.setTitle("Multiple choice question");
-        primaryStage.setScene(qMulti);
+        primaryStage.setScene(qMultiScene);
+        primaryStage.show();
     }
 
     public void showHomeScreen() {
@@ -84,3 +98,4 @@ public class MainAppController {
     }
 
 }
+

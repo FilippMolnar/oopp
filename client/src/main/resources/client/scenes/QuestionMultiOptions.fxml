@@ -1,192 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
-<GridPane xmlns:fx="http://javafx.com/fxml/1" accessibleRole="TEXT" alignment="CENTER" prefHeight="800.0"
-          prefWidth="1280.0" style="-fx-background-color: #625998; -fx-border-color: black;"
-          stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17"
-          fx:controller="client.controllers.QuestionMultiOptionsCtrl">
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane accessibleRole="TEXT" alignment="CENTER" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #625998; -fx-border-color: black;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.QuestionMultiOptionsCtrl">
    <columnConstraints>
-      <ColumnConstraints percentWidth="33.0"/>
-      <ColumnConstraints minWidth="10.0" percentWidth="33.0" prefWidth="100.0"/>
-      <ColumnConstraints minWidth="10.0" percentWidth="33.0" prefWidth="100.0"/>
+      <ColumnConstraints percentWidth="33.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="33.0" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="33.0" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints percentHeight="33.0" vgrow="ALWAYS"/>
-      <RowConstraints minHeight="10.0" percentHeight="43.0" prefHeight="30.0"/>
-      <RowConstraints minHeight="10.0" percentHeight="23.0" prefHeight="30.0"/>
+      <RowConstraints percentHeight="33.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" percentHeight="43.0" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="23.0" prefHeight="30.0" />
    </rowConstraints>
-   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647"
-         GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
+   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
       <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Question 8/20">
          <font>
-            <Font size="18.0"/>
+            <Font size="18.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="10.0"/>
+            <Insets bottom="10.0" />
          </VBox.margin>
       </Text>
       <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Which activity takes the most energy?">
          <font>
-            <Font name="Marlett" size="24.0"/>
+            <Font name="Marlett" size="24.0" />
          </font>
       </Text>
    </VBox>
-   <GridPane alignment="CENTER" layoutX="13.0" layoutY="289.0" prefHeight="263.0" prefWidth="1269.0"
-             GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+   <GridPane alignment="CENTER" layoutX="13.0" layoutY="289.0" prefHeight="263.0" prefWidth="1269.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
       <columnConstraints>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="30.0"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.99998474121094" minWidth="10.0" percentWidth="25.0"
-                            prefWidth="340.3999481201172"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="665.6000122070312" minWidth="0.0" percentWidth="21.0"
-                            prefWidth="77.60005187988281"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="40.0" percentWidth="19.0"
-                            prefWidth="154.60001220703123"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="595.3999694824219" minWidth="6.399987792968773"
-                            percentWidth="15.0" prefWidth="595.3999694824219"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="40.0" percentWidth="20.0"
-                            prefWidth="354.20000000000005"/>
-         <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="8.3" prefWidth="0.0"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="426.0" minWidth="0.0" percentWidth="8.3" prefWidth="0.0"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="426.0" minWidth="10.0" percentWidth="8.3"
-                            prefWidth="10.400000000000091"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="426.0" minWidth="10.0" percentWidth="8.3" prefWidth="100.0"/>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="30.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.99998474121094" minWidth="10.0" percentWidth="25.0" prefWidth="340.3999481201172" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="665.6000122070312" minWidth="0.0" percentWidth="21.0" prefWidth="77.60005187988281" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="334.0" minWidth="40.0" percentWidth="19.0" prefWidth="154.60001220703123" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="595.3999694824219" minWidth="6.399987792968773" percentWidth="15.0" prefWidth="595.3999694824219" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="395.0" minWidth="40.0" percentWidth="20.0" prefWidth="354.20000000000005" />
+         <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="8.3" prefWidth="0.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="426.0" minWidth="0.0" percentWidth="8.3" prefWidth="0.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="426.0" minWidth="10.0" percentWidth="8.3" prefWidth="10.400000000000091" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="426.0" minWidth="10.0" percentWidth="8.3" prefWidth="100.0" />
       </columnConstraints>
       <rowConstraints>
-         <RowConstraints maxHeight="113.6" minHeight="10.0" prefHeight="77.0000244140625" vgrow="SOMETIMES"/>
-         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="51.199987792968756"
-                         vgrow="SOMETIMES"/>
-         <RowConstraints maxHeight="55.20001220703125" minHeight="10.0" prefHeight="55.20001220703125"
-                         vgrow="SOMETIMES"/>
+         <RowConstraints maxHeight="113.6" minHeight="10.0" prefHeight="77.0000244140625" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="51.199987792968756" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="55.20001220703125" minHeight="10.0" prefHeight="55.20001220703125" vgrow="SOMETIMES" />
       </rowConstraints>
       <StackPane GridPane.columnIndex="8" GridPane.rowIndex="1">
-         <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+         <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
          <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../pictures/joker_elim_wrong.png"/>
+            <Image url="@client/pictures/joker_elim_wrong.png" />
          </ImageView>
       </StackPane>
       <StackPane GridPane.columnIndex="6" GridPane.rowIndex="1">
-         <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+         <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
          <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../pictures/joker_double_points.png"/>
+            <Image url="@client/pictures/joker_double_points.png" />
          </ImageView>
       </StackPane>
       <StackPane GridPane.columnIndex="7" GridPane.rowIndex="1">
-         <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+         <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
          <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../pictures/joker_decrease_time.png"/>
+            <Image url="@client/pictures/joker_decrease_time.png" />
          </ImageView>
       </StackPane>
-      <StackPane prefHeight="97.0" prefWidth="102.0" GridPane.columnIndex="4" GridPane.halignment="CENTER"
-                 GridPane.rowIndex="1" GridPane.valignment="CENTER">
-         <Circle fill="#837aba" radius="29.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
-         <Arc fill="#d6d3ee" length="270.0" radiusX="30.0" radiusY="30.0" startAngle="90.0" stroke="BLACK"
-              strokeType="INSIDE" strokeWidth="0.0" type="ROUND"/>
-         <Circle fill="#625998" radius="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+      <StackPane prefHeight="97.0" prefWidth="102.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <Circle fill="#837aba" radius="29.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+         <Arc fill="#d6d3ee" length="270.0" radiusX="30.0" radiusY="30.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND" />
+         <Circle fill="#625998" radius="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
          <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
             <font>
-               <Font size="18.0"/>
+               <Font size="18.0" />
             </font>
          </Text>
       </StackPane>
-      <AnchorPane prefHeight="60.0" prefWidth="153.0" styleClass="question-button" GridPane.columnIndex="2"
-                  GridPane.rowIndex="1">
+      <AnchorPane prefHeight="60.0" prefWidth="153.0" styleClass="question-button" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <padding>
-            <Insets bottom="10.0"/>
+            <Insets bottom="10.0" />
          </padding>
-         <HBox alignment="CENTER" layoutX="73.0" layoutY="-5.0" prefHeight="60.0" prefWidth="214.0"
-               AnchorPane.bottomAnchor="-11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-               AnchorPane.topAnchor="0.0">
+         <HBox alignment="CENTER" layoutX="73.0" layoutY="-5.0" prefHeight="60.0" prefWidth="214.0" AnchorPane.bottomAnchor="-11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <VBox alignment="CENTER">
                <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE 1200">
                   <font>
-                     <Font size="16.0"/>
+                     <Font size="16.0" />
                   </font>
                </Text>
             </VBox>
          </HBox>
       </AnchorPane>
    </GridPane>
-   <GridPane fx:id="images" alignment="CENTER" hgap="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0"
-             GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+   <GridPane fx:id="images" alignment="CENTER" hgap="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
       <columnConstraints>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="20.0"
-                            prefWidth="100.0"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="0.0"
-                            prefWidth="100.0"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0"/>
-         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="20.0"
-                            prefWidth="100.0"/>
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
       </columnConstraints>
       <rowConstraints>
-         <RowConstraints maxHeight="242.79998168945312" minHeight="10.0" percentHeight="60.0"
-                         prefHeight="210.59999389648436" vgrow="SOMETIMES"/>
-         <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0"
-                         prefHeight="33.00000610351563" valignment="CENTER" vgrow="SOMETIMES"/>
-         <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0"
-                         prefHeight="107.8000244140625" valignment="CENTER" vgrow="SOMETIMES"/>
-         <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0"
-                         prefHeight="46.999975585937534" valignment="CENTER" vgrow="SOMETIMES"/>
+         <RowConstraints maxHeight="242.79998168945312" minHeight="10.0" percentHeight="60.0" prefHeight="210.59999389648436" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0" prefHeight="33.00000610351563" valignment="CENTER" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0" prefHeight="107.8000244140625" valignment="CENTER" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0" prefHeight="46.999975585937534" valignment="CENTER" vgrow="SOMETIMES" />
       </rowConstraints>
-      <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0"
-              styleClass="question-button" text="Forgetting a single light bulb on for a week"
-              textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2"
-              GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3"
-              GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS"/>
-      <ImageView fitHeight="215.0" fitWidth="208.0" pickOnBounds="true" preserveRatio="true"
-                 GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS"
-                 GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-         <Image url="@../../../../../../server/src/main/resources/33/bulb-removebg.png"/>
+      <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="Forgetting a single light bulb on for a week" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <ImageView fitHeight="176.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+         <Image url="@../../../resources/33/bulb-removebg.png" />
       </ImageView>
-      <ImageView fitHeight="123.0" fitWidth="308.0" pickOnBounds="true" preserveRatio="true"
-                 GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <Image url="@../../../../../../server/src/main/resources/33/computer-removebg.png"/>
+      <ImageView fitHeight="146.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <Image url="@../../../../../../server/src/main/resources/33/computer-removebg.png" />
       </ImageView>
-      <ImageView fitHeight="169.0" fitWidth="268.0" pickOnBounds="true" preserveRatio="true"
-                 GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <Image url="@../../../../../../server/src/main/resources/33/Dishwasher.jpg"/>
+      <ImageView fitHeight="169.0" fitWidth="381.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+
+<!--         server/src/main/resources/33/traffic_light.png-->
+         <Image url="@../../../../../../server/src/main/resources/33/Dishwasher.jpg" />
       </ImageView>
-      <Button fx:id="optionA1" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0"
-              styleClass="question-button" text="Running a dishwasher for two hours" textAlignment="CENTER"
-              textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER"
-              GridPane.rowIndex="1" GridPane.rowSpan="3"/>
-      <Button fx:id="optionA2" alignment="CENTER" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0"
-              prefWidth="206.0" styleClass="question-button" text="A computer staying in sleep mode for 10 days"
-              textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3"
-              GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3"
-              GridPane.valignment="CENTER"/>
+      <Button fx:id="optionB" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="Running a dishwasher for two hours" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+      <Button fx:id="optionC" alignment="CENTER" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="A computer staying in sleep mode for 10 days" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
       <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
          <GridPane.margin>
-            <Insets left="10.0"/>
+            <Insets left="10.0" />
          </GridPane.margin>
-         <Image url="@../pictures/happy.png"/>
+         <Image url="@client/pictures/happy.png" />
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
          <GridPane.margin>
-            <Insets left="10.0"/>
+            <Insets left="10.0" />
          </GridPane.margin>
-         <Image url="@../pictures/angry.png"/>
+         <Image url="@client/pictures/angry.png" />
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
          <GridPane.margin>
-            <Insets left="10.0"/>
+            <Insets left="10.0" />
          </GridPane.margin>
-         <Image url="@../pictures/angel.png"/>
+         <Image url="@client/pictures/angel.png" />
       </ImageView>
    </GridPane>
-   <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true"
-              preserveRatio="true" GridPane.columnIndex="2"/>
-   <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="552.0" layoutY="15.0" pickOnBounds="true"
-              preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+   <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+   <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="552.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="TOP">
       <GridPane.margin>
-         <Insets left="10.0" top="40.0"/>
+         <Insets left="10.0" top="40.0" />
       </GridPane.margin>
-      <Image url="@../pictures/exit_button.png"/>
+      <Image url="@client/pictures/exit_button.png" />
    </ImageView>
 </GridPane>

@@ -32,10 +32,7 @@ import org.springframework.web.socket.messaging.SessionConnectEvent;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -77,6 +74,24 @@ public class WaitController {
         LOGGER.info("Players in waiting room are\n" + lobbyPlayers);
     }
 
+    private List<Integer> getRandomQuestionTypes(){
+        // 0 -> equal energy
+        // 1 -> highest energy
+        // 2 -> estimate answer
+        final int nrEqual = 4;
+        final int nrEstimate = 3;
+        final int nrHighest = 13;
+        List<Integer> list = new ArrayList<>();
+        for(int i = 0; i < nrEqual; i++)
+            list.add(0);
+        for(int i = 0; i < nrHighest; i++)
+            list.add(1);
+        for(int i = 0; i < nrEstimate; i++)
+            list.add(2);
+        Collections.shuffle(list);
+        return list;
+    }
+
     /**
      * Post mapping from a player to <b>Start</b> the game
      * Sends a message to start the game to all players
@@ -91,9 +106,12 @@ public class WaitController {
             return;
         }
         var question = QuestionController.getRandomQuestion();
+        var questionTypeList = getRandomQuestionTypes();
         for (String playerID : playerList) {
             LOGGER.info("Sending question " + question.getChoices());
-            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame", question);
+            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/renderQuestion", question);
+            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/gameID",gameID);
+            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/questionTypes", questionTypeList);
             LOGGER.info("Sent message to start game to " + playerToGameId.get(playerID).getSecond().getName());
         }
 

@@ -120,15 +120,15 @@
       </rowConstraints>
       <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="Forgetting a single light bulb on for a week" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
       <ImageView fitHeight="176.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-         <Image url="@../../../resources/33/bulb-removebg.png" />
+         <Image url="@/33/bulb-removebg.png" />
       </ImageView>
       <ImageView fitHeight="146.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-         <Image url="@../../../../../../server/src/main/resources/33/computer-removebg.png" />
+         <Image url="@/33/computer-removebg.png" />
       </ImageView>
       <ImageView fitHeight="169.0" fitWidth="381.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 
 <!--         server/src/main/resources/33/traffic_light.png-->
-         <Image url="@../../../../../../server/src/main/resources/33/Dishwasher.jpg" />
+         <Image url="@/33/Dishwasher.jpg" />
       </ImageView>
       <Button fx:id="optionB" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="Running a dishwasher for two hours" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
       <Button fx:id="optionC" alignment="CENTER" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="A computer staying in sleep mode for 10 days" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" />

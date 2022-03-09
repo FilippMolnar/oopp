@@ -73,12 +73,12 @@ public class WaitingRoomCtrl implements Initializable {
         }
     }
 
-    public void goBack(){
+    public void goBack() {
         serverUtils.sendThroughSocket("/app/disconnect", new Player(this.appController.getName()));
         this.appController.showHomeScreen();
     }
 
-    public void startGame(){
+    public void startGame() {
         serverUtils.sendThroughSocket("/app/startGame", new Player(this.appController.getName()));
         serverUtils.postStartGame();
     }
@@ -86,7 +86,6 @@ public class WaitingRoomCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Initialize called by the waiting roomCtrl");
-        this.playerList = serverUtils.getAllNamesInWaitingRoom(); // get request on the players that are currently waiting
         updateUI();
         this.serverUtils.subscribeForSocketMessages("/topic/waitingRoom", Player.class, player -> {
             playerList.add(player);
@@ -97,9 +96,16 @@ public class WaitingRoomCtrl implements Initializable {
             playerList.remove(player);
             updateUI();
         });
-        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame", Question.class, question -> {
+        this.serverUtils.subscribeForSocketMessages("/user/queue/renderQuestion", Question.class, question -> {
             System.out.println("Received a question to render");
             appController.showQuestion(question);
+            this.serverUtils.sendThroughSocket("/app/disconnect", new Player(appController.getName()));
+        });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, this.appController::setGameID);
+
+        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/questionTypes", List.class, questionTypes -> {
+            // TODO : create Linked scene graph out of this list information
+            System.out.println(questionTypes);
         });
 
         this.serverUtils.subscribeForSocketMessages("/topic/render_question", Player.class, player -> {

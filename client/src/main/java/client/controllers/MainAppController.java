@@ -22,6 +22,8 @@ public class MainAppController {
     private QuestionMultiOptionsCtrl qMultiCtrl;
     private Scene qMultiScene;
 
+    private int gameID; // Game ID that the client stores and is sent to get the question
+
     @Inject
     MainAppController(ServerUtils serverUtils) {
         this.serverUtils = serverUtils;
@@ -42,7 +44,6 @@ public class MainAppController {
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
 
-//        primaryStage.setScene(enterNameScene);
         primaryStage.setScene(this.enterNameScene);
         primaryStage.show();
 
@@ -51,15 +52,18 @@ public class MainAppController {
         enterNameScene.getStylesheets().add("client/scenes/waiting_room.css");
 
     }
-
     public String getName(){
         return this.name;
+    }
+
+    public void setGameID(int gameID){
+        this.gameID = gameID;
+        System.out.println(gameID);
     }
 
     public void enterWaitingRoom(String name) {
         System.out.println("Changing scene " + name);
         this.name = name;
-        waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         primaryStage.setScene(waitingRoomScene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(name)));
@@ -71,14 +75,17 @@ public class MainAppController {
         primaryStage.show();
     }
 
+
     public void showQuestion(Question question) {
 //        if(question.getType() == QuestionType.InputNumber){
 //            qInsertCtrl.setQuestion(question);
 //            showQuestionInsert();
 //        }else{
-            qMultiCtrl.setQuestion(question);
-            showQuestionMulti();
+//            qMultiCtrl.setQuestion(question);
+//            showQuestionMulti();
 //        }
+        // TODO : pass the question information the UI on all 3 cases
+        showQuestionMulti();
     }
     public void showQuestionInsert() {
         primaryStage.setTitle("Insert Number question");

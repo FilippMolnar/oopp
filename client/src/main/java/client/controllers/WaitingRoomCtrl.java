@@ -3,7 +3,6 @@ package client.controllers;
 import client.utils.ServerUtils;
 import commons.Player;
 import commons.Question;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -42,25 +41,21 @@ public class WaitingRoomCtrl implements Initializable {
      * @param toAdd the player to add at the front
      */
     public void movePlayers(Player toAdd) {
-        // this Platform.runLater() is used to make sure that this code is run on the JAVAFX thread
-        // if you don't add this it won't work :)
-        Platform.runLater(() -> {
-            String name = toAdd.getName();
-            int numOfPlaces = pane.getChildren().size();
-            var places = pane.getChildren();
-            for (int i = 0; i < Math.min(numOfPlaces, playerList.size()); i++) {
-                StackPane place = (StackPane) places.get(i);
-                Label label = (Label) place.getChildren().get(1);
-                String nextName = label.getText();
-                label.setText(name);
-                place.setVisible(true);
-                name = nextName;
-            }
-            if (playerList.size() > numOfPlaces) {
-                morePlayersWaitingRoomLabel.setVisible(true);
-                morePlayersWaitingRoomLabel.setText("and " + (playerList.size() - numOfPlaces) + " more players");
-            }
-        });
+        String name = toAdd.getName();
+        int numOfPlaces = pane.getChildren().size();
+        var places = pane.getChildren();
+        for (int i = 0; i < Math.min(numOfPlaces, playerList.size()); i++) {
+            StackPane place = (StackPane) places.get(i);
+            Label label = (Label) place.getChildren().get(1);
+            String nextName = label.getText();
+            label.setText(name);
+            place.setVisible(true);
+            name = nextName;
+        }
+        if (playerList.size() > numOfPlaces) {
+            morePlayersWaitingRoomLabel.setVisible(true);
+            morePlayersWaitingRoomLabel.setText("and " + (playerList.size() - numOfPlaces) + " more players");
+        }
     }
 
     /**
@@ -72,7 +67,7 @@ public class WaitingRoomCtrl implements Initializable {
         }
         morePlayersWaitingRoomLabel.setVisible(false); // hide the label
         this.playerList = serverUtils.getAllNamesInWaitingRoom(); // get request on the players that are currently waiting
-        System.out.println(this.playerList);
+        System.out.println("The player list is " + this.playerList);
         for (Player player : this.playerList) {
             movePlayers(player);
         }
@@ -104,18 +99,13 @@ public class WaitingRoomCtrl implements Initializable {
         });
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame", Question.class, question -> {
             System.out.println("Received a question to render");
-            Platform.runLater(() -> appController.showQuestion(question));
+            appController.showQuestion(question);
         });
 
         this.serverUtils.subscribeForSocketMessages("/topic/render_question", Player.class, player -> {
             System.out.println("Rendering question type: " + player);
             this.renderQuestion();
         });
-
-//        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame", Integer.class, gameID -> {
-//            System.out.println("Want to switch scenes!");
-//            Platform.runLater(appController::showQuestionInsert);
-//        });
     }
 
     private void renderQuestion() {

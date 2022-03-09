@@ -21,6 +21,7 @@ import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import javafx.application.Platform;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
@@ -104,8 +105,10 @@ public class ServerUtils {
             @Override
             @SuppressWarnings("unchecked")
             public void handleFrame(@Nonnull StompHeaders headers, Object payload) {
-                System.out.println("Consumer called! for track" + dest);
-                consumer.accept((T) payload);
+                Platform.runLater(() -> {
+                    System.out.println("Consumer called! for track" + dest);
+                    consumer.accept((T) payload);
+                });
             }
         });
     }

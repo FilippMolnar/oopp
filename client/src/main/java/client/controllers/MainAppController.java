@@ -94,8 +94,6 @@ public class MainAppController {
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
                     Arrays.asList(homeScreenLinked, homeScreenLinked.getNext(mode))));
-        current.addNext(homeScreenLinked);
-        current.addNext(homeScreenLinked.getNext(mode));
     }
 
     /*

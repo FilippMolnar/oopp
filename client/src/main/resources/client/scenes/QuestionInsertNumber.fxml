@@ -16,9 +16,32 @@
 
 <AnchorPane accessibleRole="TEXT" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #625998;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.QuestionInsertNumberCtrl">
     <children>
-        <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="121.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
-        <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="251.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
-        <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="358.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" />
+        <GridPane fx:id="images" hgap="30.0" layoutX="120.0" layoutY="95.0">
+            <columnConstraints>
+                <ColumnConstraints />
+                <ColumnConstraints />
+                <ColumnConstraints />
+            </columnConstraints>
+            <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="121.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@images/remove_one_anser.png" />
+                </image>
+         </ImageView>
+            <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="251.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                <image>
+                    <Image url="@images/remove_one_anser.png" />
+                </image>
+         </ImageView>
+            <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="358.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                <image>
+                    <Image url="@images/remove_one_anser.png" />
+                </image>
+            </ImageView>
+         <rowConstraints>
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+
         <Text fill="#d6d3ee" layoutX="115.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="How much energy does it take to ... for ... ?">
             <font>
                 <Font name="Marlett" size="20.0" />

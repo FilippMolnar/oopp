@@ -221,4 +221,9 @@ public class TestActivityRepository implements ActivityRepository {
     public List<Activity> getByConsumption(int cons) {
         return null;
     }
+
+    @Override
+    public List<Activity> getAllDiff(int cons) {
+        return null;
+    }
 }

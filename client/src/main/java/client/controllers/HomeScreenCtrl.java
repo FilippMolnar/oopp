@@ -53,7 +53,8 @@ public class HomeScreenCtrl {
             }
         }
         this.appController.enterWaitingRoom(finalName);
-        this.serverUtils.postName(finalName);
+//        this.serverUtils.postName(finalName);
+        this.serverUtils.sendThroughSocket("/app/enterRoom", new Player(finalName));
     }
 
     public void enterSinglePlayer(){

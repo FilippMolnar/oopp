@@ -2,7 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import commons.Player;
-import javafx.application.Platform;
+import commons.Question;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -41,25 +41,21 @@ public class WaitingRoomCtrl implements Initializable {
      * @param toAdd the player to add at the front
      */
     public void movePlayers(Player toAdd) {
-        // this Platform.runLater() is used to make sure that this code is run on the JAVAFX thread
-        // if you don't add this it won't work :)
-        Platform.runLater(() -> {
-            String name = toAdd.getName();
-            int numOfPlaces = pane.getChildren().size();
-            var places = pane.getChildren();
-            for (int i = 0; i < Math.min(numOfPlaces, playerList.size()); i++) {
-                StackPane place = (StackPane) places.get(i);
-                Label label = (Label) place.getChildren().get(1);
-                String nextName = label.getText();
-                label.setText(name);
-                place.setVisible(true);
-                name = nextName;
-            }
-            if (playerList.size() > numOfPlaces) {
-                morePlayersWaitingRoomLabel.setVisible(true);
-                morePlayersWaitingRoomLabel.setText("and " + (playerList.size() - numOfPlaces) + " more players");
-            }
-        });
+        String name = toAdd.getName();
+        int numOfPlaces = pane.getChildren().size();
+        var places = pane.getChildren();
+        for (int i = 0; i < Math.min(numOfPlaces, playerList.size()); i++) {
+            StackPane place = (StackPane) places.get(i);
+            Label label = (Label) place.getChildren().get(1);
+            String nextName = label.getText();
+            label.setText(name);
+            place.setVisible(true);
+            name = nextName;
+        }
+        if (playerList.size() > numOfPlaces) {
+            morePlayersWaitingRoomLabel.setVisible(true);
+            morePlayersWaitingRoomLabel.setText("and " + (playerList.size() - numOfPlaces) + " more players");
+        }
     }
 
     /**
@@ -71,22 +67,25 @@ public class WaitingRoomCtrl implements Initializable {
         }
         morePlayersWaitingRoomLabel.setVisible(false); // hide the label
         this.playerList = serverUtils.getAllNamesInWaitingRoom(); // get request on the players that are currently waiting
-        System.out.println(this.playerList);
+        System.out.println("The player list is " + this.playerList);
         for (Player player : this.playerList) {
             movePlayers(player);
         }
     }
 
-    public void goBack(){
-        System.out.println("tu");
+    public void goBack() {
         serverUtils.sendThroughSocket("/app/disconnect", new Player(this.appController.getName()));
         this.appController.showHomeScreen();
+    }
+
+    public void startGame() {
+        serverUtils.sendThroughSocket("/app/startGame", new Player(this.appController.getName()));
+        serverUtils.postStartGame();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Initialize called by the waiting roomCtrl");
-        this.playerList = serverUtils.getAllNamesInWaitingRoom(); // get request on the players that are currently waiting
         updateUI();
         this.serverUtils.subscribeForSocketMessages("/topic/waitingRoom", Player.class, player -> {
             playerList.add(player);
@@ -97,5 +96,25 @@ public class WaitingRoomCtrl implements Initializable {
             playerList.remove(player);
             updateUI();
         });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/renderQuestion", Question.class, question -> {
+            System.out.println("Received a question to render");
+            appController.showQuestion(question);
+            this.serverUtils.sendThroughSocket("/app/disconnect", new Player(appController.getName()));
+        });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, this.appController::setGameID);
+
+        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/questionTypes", List.class, questionTypes -> {
+            // TODO : create Linked scene graph out of this list information
+            System.out.println(questionTypes);
+        });
+
+        this.serverUtils.subscribeForSocketMessages("/topic/render_question", Player.class, player -> {
+            System.out.println("Rendering question type: " + player);
+            this.renderQuestion();
+        });
+    }
+
+    private void renderQuestion() {
+        this.appController.showQuestionMulti();
     }
 }

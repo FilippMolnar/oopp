@@ -29,6 +29,14 @@ public class TemplateActivity {
         this.title = title;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
     public int getConsumption_in_wh() {
         return consumption_in_wh;
     }
@@ -55,7 +63,7 @@ public class TemplateActivity {
         return "TemplateActivity{" +
                 "title='" + title + '\'' +
                 ", consumption_in_wh=" + consumption_in_wh +
-                ", title='" + title + '\'' +
+                ", source='" + source + '\'' +
                 '}';
     }
 }

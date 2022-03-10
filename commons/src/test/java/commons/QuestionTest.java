@@ -15,22 +15,20 @@
  */
 package commons;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QuestionTest {
     Activity a = new Activity("Activity1", 100, "/path/to/img");
     Activity b = new Activity("Activity2", 200, "/path/to/img");
     Activity c = new Activity("Activity3", 300, "/path/to/img");
 
-    Question q = new Question(c, Arrays.asList(a, b, c), "highest");
+    Question q = new Question(c, Arrays.asList(a, b, c), QuestionType.HighestEnergy);
 
     @Test
     public void constructorTest() {
@@ -38,10 +36,37 @@ public class QuestionTest {
     }
 
     @Test
+    public void setChoicesTest()
+    {
+        Question q = new Question();
+        List<Activity> ls = new ArrayList<>();
+        ls.add(a);
+        ls.add(c);
+        q.setChoices(ls);
+        assertTrue(q.getChoices().equals(ls));
+    }
+
+    @Test
+    public void setTypeTest()
+    {
+        Question q = new Question();
+        q.setType(QuestionType.HighestEnergy);
+        assertEquals(q.getType(), QuestionType.HighestEnergy);
+    }
+
+    @Test
+    public void setCorrectTest()
+    {
+        Question q = new Question();
+        q.setCorrect(a);
+        assertEquals(q.getCorrect(), a);
+    }
+
+    @Test
     public void getterTest() {
-        assertEquals("highest", q.getType());
+        assertEquals(QuestionType.HighestEnergy, q.getType());
         assertEquals(c, q.getCorrect());
-        assertEquals(Arrays.asList(c, b, a), q.getActivities());
+        assertEquals(Arrays.asList(c, b, a), q.getChoices());
     }
 
     @Test
@@ -64,12 +89,12 @@ public class QuestionTest {
 
     @Test
     public void sortTest() {
-        assertNotEquals(q.getActivities(), Arrays.asList(a, b, c));
+        assertNotEquals(q.getChoices(), Arrays.asList(a, b, c));
     }
 
     @Test
     public void toStringTest() {
-        assertEquals("Question type: highest\nCorrect answer:\n" + c.toString()
+        assertEquals("Question type: HighestEnergy\nCorrect answer:\n" + c.toString()
                 + "\nOptions:\n" + c.toString() + "\n" + b.toString() + "\n"
                 + a.toString() + "\n", q.toString());
     }

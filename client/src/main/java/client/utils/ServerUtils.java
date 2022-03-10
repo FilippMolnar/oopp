@@ -16,10 +16,12 @@
 package client.utils;
 
 import commons.Player;
+import commons.Question;
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import javafx.application.Platform;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
@@ -103,8 +105,10 @@ public class ServerUtils {
             @Override
             @SuppressWarnings("unchecked")
             public void handleFrame(@Nonnull StompHeaders headers, Object payload) {
-                System.out.println("Consumer called! for track" + dest);
-                consumer.accept((T) payload);
+                Platform.runLater(() -> {
+                    System.out.println("Consumer called! for track" + dest);
+                    consumer.accept((T) payload);
+                });
             }
         });
     }
@@ -136,8 +140,27 @@ public class ServerUtils {
                 });
     }
 
+    public Question getRandomQuestion() {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/wait/question")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<>() {
+                });
+    }
+
+
+    public void postStartGame() {
+        ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/wait/start")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(null);
+    }
+
     /**
      * Does a post request to the api endpoint <code>api/wait</code> sending a Player object
+     *
      * @param name the name of the player
      */
     public void postName(String name) {

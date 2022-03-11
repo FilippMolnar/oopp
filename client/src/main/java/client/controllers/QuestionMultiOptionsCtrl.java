@@ -77,14 +77,35 @@ public class QuestionMultiOptionsCtrl implements Initializable {
 
     }
 
-    public void elimWrongJoker(){
+    public void firstJoker(){
+        return;
+//        List<Joker> jokers = mainCtrl.getJokers().getJokers();
+//        if(jokers.get(0).isUsed()){
+//            System.out.println("used");
+//            return;
+//        }
+//        jokers.get(0).use();
+    }
+
+    public void secondJoker(){
+        return;
+//        List<Joker> jokers = mainCtrl.getJokers().getJokers();
+//        if(jokers.get(1).isUsed()){
+//            System.out.println("used");
+//            return;
+//        }
+//
+//        jokers.get(1).use();
+
+    }
+
+    public void thirdJoker(){
         List<Joker> jokers = mainCtrl.getJokers().getJokers();
         if(jokers.get(2).isUsed()){
             System.out.println("used");
             return;
         }
 
-        System.out.println("elim wrong");
         ArrayList<Integer> wrong_options = new ArrayList<>();
         int i = 0;
         for(Activity a : question.getChoices()){

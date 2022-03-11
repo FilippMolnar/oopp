@@ -3,33 +3,19 @@ package client.controllers;
 import client.scenes.template.MainCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Question;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class QuestionMultiOptionsCtrl  {
     private final ServerUtils server;

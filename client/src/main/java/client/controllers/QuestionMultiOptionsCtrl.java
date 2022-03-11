@@ -3,6 +3,8 @@ package client.controllers;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
+import commons.Joker;
+import commons.JokersList;
 import commons.Question;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -76,6 +78,12 @@ public class QuestionMultiOptionsCtrl implements Initializable {
     }
 
     public void elimWrongJoker(){
+        List<Joker> jokers = mainCtrl.getJokers().getJokers();
+        if(jokers.get(2).isUsed()){
+            System.out.println("used");
+            return;
+        }
+
         System.out.println("elim wrong");
         ArrayList<Integer> wrong_options = new ArrayList<>();
         int i = 0;
@@ -99,6 +107,7 @@ public class QuestionMultiOptionsCtrl implements Initializable {
                 optionC.setText("wrong");
                 break;
         }
+        jokers.get(2).use();
     }
 
     @Override

@@ -17,40 +17,26 @@ package commons;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Joker {
-    public String name;
-    public String imagePath;
-    private boolean used;
-    @SuppressWarnings("unused")
-    private Joker() {
-        // for object mapper
+import java.util.ArrayList;
+import java.util.List;
+
+public class JokersList {
+    private List<Joker> jokers;
+
+    public JokersList() {
+        this.jokers = new ArrayList<>();
+        //TODO randomly generate jokers, insert them to fxml
+        jokers.add(new DoublePointsJoker("double points", "@client/pictures/joker_double_points.png"));
+        jokers.add(new DecreaseTimeJoker("decrease time", "@client/pictures/joker_decrease_time.png"));
+        jokers.add(new ElimWrongJoker("eliminate wrong answer", "@client/pictures/joker_elim_wrong.png"));
     }
 
-    public Joker(String name, String imagePath) {
-        this.name = name;
-        this.imagePath = imagePath;
-        this.used = false;
-    }
-
-    public boolean isUsed(){
-        return this.used;
-    }
-
-    public void use(){
-        this.used = true;
-    }
-
-    public void onClick(){
-        return;
+    public List<Joker> getJokers() {
+        return jokers;
     }
 
     @Override

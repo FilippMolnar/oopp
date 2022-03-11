@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.JokersList;
 import commons.Player;
 import commons.Question;
 import javafx.scene.Parent;
@@ -19,11 +20,12 @@ public class MainAppController {
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private Scene qInsert;
-
     private QuestionMultiOptionsCtrl qMultiCtrl;
     private Scene qMultiScene;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
+
+    private JokersList jokers;
 
     @Inject
     MainAppController(ServerUtils serverUtils) {
@@ -45,6 +47,8 @@ public class MainAppController {
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
 
+        this.jokers = new JokersList();
+
         primaryStage.setScene(this.enterNameScene);
         primaryStage.show();
 
@@ -55,6 +59,9 @@ public class MainAppController {
     }
     public String getName(){
         return this.name;
+    }
+    public JokersList getJokers(){
+        return this.jokers;
     }
 
     public void setGameID(int gameID){

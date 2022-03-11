@@ -4,7 +4,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Joker;
-import commons.JokersList;
 import commons.Question;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

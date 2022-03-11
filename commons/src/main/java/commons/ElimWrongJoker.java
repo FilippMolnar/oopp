@@ -1,7 +1,5 @@
 package commons;
 
-import java.util.ArrayList;
-
 public class ElimWrongJoker extends Joker {
 
     public ElimWrongJoker(String name, String imagePath) {

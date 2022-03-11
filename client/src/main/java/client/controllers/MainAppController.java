@@ -69,7 +69,7 @@ public class MainAppController {
         primaryStage.show();
 
         this.homeScene.getStylesheets().add("client/scenes/waiting_room.css");
-        this.qMulti.getStylesheets().add("client/scenes/waiting_room.css");
+        this.qMultiScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
@@ -100,7 +100,7 @@ public class MainAppController {
                 current = current.getNext();
             }
             if(questionTypes.get(i) < 2) {
-                current.addNext(new LinkedScene(this.qMulti));
+                current.addNext(new LinkedScene(this.qMultiScene));
             } else {
                 current.addNext(new LinkedScene(this.qInsert));
             }
@@ -161,4 +161,3 @@ public class MainAppController {
     }
 
 }
-

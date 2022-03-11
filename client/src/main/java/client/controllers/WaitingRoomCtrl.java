@@ -115,6 +115,6 @@ public class WaitingRoomCtrl implements Initializable {
     }
 
     private void renderQuestion() {
-        this.appController.showQuestionMulti();
+        //this.appController.showQuestion();
     }
 }

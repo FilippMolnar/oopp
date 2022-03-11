@@ -3,6 +3,7 @@ package client.controllers;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Player;
+import commons.Question;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,12 +13,16 @@ public class MainAppController {
     private final ServerUtils serverUtils;
     private Scene waitingRoomScene;
     private Stage primaryStage;
+    private Scene enterNameScene;
+    private String name;
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private Scene qInsert;
 
     private QuestionMultiOptionsCtrl qMultiCtrl;
-    private Scene qMulti;
+    private Scene qMultiScene;
+
+    private int gameID; // Game ID that the client stores and is sent to get the question
 
     @Inject
     MainAppController(ServerUtils serverUtils) {
@@ -29,40 +34,76 @@ public class MainAppController {
                            Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
                            Pair<QuestionInsertNumberCtrl, Parent> qInsert){
 
+        this.name = "";
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
-        Scene enterNameScene = new Scene(enterName.getValue());
+        this.enterNameScene = new Scene(enterName.getValue());
         this.primaryStage = primaryStage;
 
         this.qInsertCtrl = qInsert.getKey();
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
-        this.qMulti = new Scene(qMulti.getValue());
+        this.qMultiScene = new Scene(qMulti.getValue());
 
         showQuestionMulti();
         //primaryStage.setScene(enterNameScene);
         primaryStage.show();
 
+        waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
+        qMultiScene.getStylesheets().add("client/scenes/waiting_room.css");
         enterNameScene.getStylesheets().add("client/scenes/waiting_room.css");
 
+    }
+    public String getName(){
+        return this.name;
+    }
+
+    public void setGameID(int gameID){
+        this.gameID = gameID;
+        System.out.println(gameID);
     }
 
     public void enterWaitingRoom(String name) {
         System.out.println("Changing scene " + name);
-        waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
+        this.name = name;
         primaryStage.setScene(waitingRoomScene);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(name)));
     }
 
+    public void enterSinglePlayerGame(String name) {
+        System.out.println("Changing scene " + name);
+        primaryStage.setScene(qInsert);
+        primaryStage.show();
+    }
+
+
+    public void showQuestion(Question question) {
+//        if(question.getType() == QuestionType.InputNumber){
+//            qInsertCtrl.setQuestion(question);
+//            showQuestionInsert();
+//        }else{
+//            qMultiCtrl.setQuestion(question);
+//            showQuestionMulti();
+//        }
+        // TODO : pass the question information the UI on all 3 cases
+        showQuestionMulti();
+    }
     public void showQuestionInsert() {
         primaryStage.setTitle("Insert Number question");
         primaryStage.setScene(qInsert);
-//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+        primaryStage.show();
     }
     public void showQuestionMulti() {
         primaryStage.setTitle("Multiple choice question");
-        primaryStage.setScene(qMulti);
-//        add.setOnKeyPressed(e -> addCtrl.keyPressed(e));
+        primaryStage.setScene(qMultiScene);
+        primaryStage.show();
+    }
+
+    public void showHomeScreen() {
+        primaryStage.setTitle("Home");
+        primaryStage.setScene(enterNameScene);
+        primaryStage.show();
     }
 
 }
+

@@ -1,6 +1,5 @@
 package client.controllers;
 
-import client.scenes.template.MainCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
@@ -19,50 +18,67 @@ import javafx.util.Duration;
 
 public class QuestionMultiOptionsCtrl  {
     private final ServerUtils server;
-    private final MainCtrl mainCtrl;
+    private final MainAppController mainCtrl;
+    private Question question;
+
+    @FXML
+    private Button optionA;
+
+    @FXML
+    private Button optionB;
+
+    @FXML
+    private Button optionC;
+
+
+    @FXML
+    private GridPane images;
 
     @Inject
-    public QuestionMultiOptionsCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+    }
 
+    public void setQuestion(Question question) {
+        this.question = question;
+        List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
+        optionA.setText(question.getChoices().get(0).getTitle());
+        optionB.setText(question.getChoices().get(1).getTitle());
+        optionC.setText(question.getChoices().get(2).getTitle());
+
+
+        System.out.println("Printing images" + imageViews);
+        for(int i = 0; i < imageViews.size(); i++){
+            var view = (ImageView) imageViews.get(i);
+            var choice = question.getChoices().get(i);
+            Path path = Paths.get(choice.getImagePath());
+            System.out.println(path.getFileName());
+            var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
+            System.out.println(actualPath);
+            var newImage = new Image(actualPath);
+            view.setImage(newImage);
+        }
     }
 
     @FXML
     GridPane parentGridPane;
 
     public void pressedA() {
-        mainCtrl.showOverview();
+
     }
 
     public void pressedB() {
-        mainCtrl.showOverview();
+
     }
 
     public void pressedC() {
-        mainCtrl.showOverview();
+
     }
 
-    private void clearFields() {
-        return;
-    }
 
-    public void cancel() {
-        clearFields();
-        mainCtrl.showOverview();
-    }
-
-    public void keyPressed(KeyEvent e) {
-        switch (e.getCode()) {
-            case ENTER:
-                pressedA();
-                break;
-            case ESCAPE:
-                cancel();
-                break;
-            default:
-                break;
-        }
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
     }
 
     /**

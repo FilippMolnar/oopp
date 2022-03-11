@@ -1,29 +1,30 @@
 package client.controllers;
 
-import client.scenes.template.MainCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Question;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 
 public class QuestionInsertNumberCtrl {
     private final ServerUtils server;
-    private final MainCtrl mainCtrl;
+    private final MainAppController mainCtrl;
+    private Question question;
 
     @FXML
     private TextField number;
 
+
     @Inject
-    public QuestionInsertNumberCtrl(ServerUtils server, MainCtrl mainCtrl) {
+    public QuestionInsertNumberCtrl(ServerUtils server, MainAppController mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
-
     }
 
-    public void submit() {
-        mainCtrl.showOverview();
+    public void setQuestion(Question question) {
+        this.question = question;
     }
+
 
     private void clearFields() {
         number.clear();
@@ -32,23 +33,5 @@ public class QuestionInsertNumberCtrl {
     private Integer getNumber() {
         var n = number.getText();
         return Integer.parseInt(n);
-    }
-
-    public void cancel() {
-        clearFields();
-        mainCtrl.showOverview();
-    }
-
-    public void keyPressed(KeyEvent e) {
-        switch (e.getCode()) {
-            case ENTER:
-                submit();
-                break;
-            case ESCAPE:
-                cancel();
-                break;
-            default:
-                break;
-        }
     }
 }

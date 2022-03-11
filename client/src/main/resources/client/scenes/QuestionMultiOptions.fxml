@@ -120,19 +120,19 @@
               textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER"
               GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER"
               GridPane.vgrow="ALWAYS"/>
-      <StackPane style="-fx-border-color: red;" GridPane.columnIndex="2" GridPane.halignment="CENTER"
+      <StackPane GridPane.columnIndex="2" GridPane.halignment="CENTER"
                  GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <ImageView fitHeight="57.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@/33/watch.png"/>
          </ImageView>
       </StackPane>
-      <StackPane style="-fx-border-color: red;" GridPane.columnIndex="3" GridPane.halignment="CENTER"
+      <StackPane  GridPane.columnIndex="3" GridPane.halignment="CENTER"
                  GridPane.valignment="CENTER">
          <ImageView fitHeight="50.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@/33/computer-removebg.png"/>
          </ImageView>
       </StackPane>
-      <StackPane style="-fx-border-color: red;" GridPane.columnIndex="4" GridPane.halignment="CENTER"
+      <StackPane  GridPane.columnIndex="4" GridPane.halignment="CENTER"
                  GridPane.valignment="CENTER">
          <ImageView fitHeight="92.0" fitWidth="208.0" pickOnBounds="true" preserveRatio="true">
 

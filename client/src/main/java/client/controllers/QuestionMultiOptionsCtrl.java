@@ -24,8 +24,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -33,7 +31,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class QuestionMultiOptionsCtrl implements Initializable {
+public class QuestionMultiOptionsCtrl  {
     private final ServerUtils server;
     private final MainCtrl mainCtrl;
 

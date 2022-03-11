@@ -4,6 +4,7 @@ import commons.Activity;
 import commons.Question;
 import commons.QuestionType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -99,5 +100,11 @@ public class QuestionController {
         q.setType(QuestionType.EqualEnergy);
         q.setChoices(choices);
         return q;
+    }
+    @GetMapping(path = "api/question/{gameID}")
+    public Question getQuestion(@PathVariable("gameID") int gameID)
+    {
+        Question q = getRandomQuestion();
+        return q ;
     }
 }

@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Activity;
 import commons.Question;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -73,6 +75,31 @@ public class QuestionMultiOptionsCtrl implements Initializable {
 
     }
 
+    public void elimWrongJoker(){
+        System.out.println("elim wrong");
+        ArrayList<Integer> wrong_options = new ArrayList<>();
+        int i = 0;
+        for(Activity a : question.getChoices()){
+            if(a.id != question.getCorrect().id){
+                wrong_options.add(i);
+            }
+            i++;
+        }
+        int index = (int)(Math.random() * wrong_options.size());
+        System.out.println(wrong_options);
+        System.out.println(index);
+        switch(wrong_options.get(index)){
+            case 0:
+                optionA.setText("wrong");
+                break;
+            case 1:
+                optionB.setText("wrong");
+                break;
+            case 2:
+                optionC.setText("wrong");
+                break;
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

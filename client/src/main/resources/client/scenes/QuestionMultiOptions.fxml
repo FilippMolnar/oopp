@@ -60,7 +60,7 @@
          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="51.199987792968756" vgrow="SOMETIMES" />
          <RowConstraints maxHeight="55.20001220703125" minHeight="10.0" prefHeight="55.20001220703125" vgrow="SOMETIMES" />
       </rowConstraints>
-      <StackPane GridPane.columnIndex="8" GridPane.rowIndex="1">
+      <StackPane onMouseClicked="#elimWrongJoker" GridPane.columnIndex="8" GridPane.rowIndex="1">
          <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
          <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
             <Image url="@client/pictures/joker_elim_wrong.png" />

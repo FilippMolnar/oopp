@@ -6,36 +6,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Activity implements Comparable{
+public class Activity implements Comparable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
-    private String TITLE;
-    private String IMGPATH;
+    private String title;
+    private String imagePath;
 
     // Consumption is in WH
-    private int CONSUMPTION;
+    private int consumption;
 
     public Activity() {
     }
 
     public Activity(String title, int consumption, String imgPath) {
-        this.IMGPATH = imgPath;
-        this.TITLE = title;
-        this.CONSUMPTION = consumption;
+        this.imagePath = imgPath;
+        this.title = title;
+        this.consumption = consumption;
     }
 
     public String getTitle() {
-        return this.TITLE;
+        return this.title;
     }
 
     public String getImagePath() {
-        return this.IMGPATH;
+        return this.imagePath;
     }
 
     public int getConsumption() {
-        return this.CONSUMPTION;
+        return this.consumption;
     }
 
     /*
@@ -50,29 +50,29 @@ public class Activity implements Comparable{
             throw new IllegalArgumentException();
         }
         Activity a = (Activity) o;
-        if(a.CONSUMPTION > this.CONSUMPTION) {
+        if (a.consumption > this.consumption) {
             return 1;
         }
-        return this.CONSUMPTION > a.CONSUMPTION ? -1 : 0;
+        return this.consumption > a.consumption ? -1 : 0;
     }
 
     public boolean equals(Object o) {
-        if(o == null) return false;
-        if(!(o instanceof Activity)) return false;
+        if (o == null) return false;
+        if (!(o instanceof Activity)) return false;
         Activity that = (Activity) o;
-        return this.TITLE.equals(that.TITLE)
-            && this.CONSUMPTION == that.CONSUMPTION
-            && this.IMGPATH == that.IMGPATH;
+        return this.title.equals(that.title)
+                && this.consumption == that.consumption
+                && this.imagePath == that.imagePath;
     }
 
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append(TITLE);
+        str.append(title);
         str.append(":\n");
-        str.append(CONSUMPTION);
+        str.append(consumption);
         str.append(" WH\n");
-        str.append(IMGPATH);
+        str.append(imagePath);
         return str.toString();
     }
 

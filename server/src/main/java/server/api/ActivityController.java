@@ -36,7 +36,6 @@ public class ActivityController {
         int idx = (int)(Math.random()*size);
 
         return activities.findAll().get(idx);
-
     }
 
     @GetMapping(path = "/data/fetch/{cons}")
@@ -44,6 +43,12 @@ public class ActivityController {
     {
         List<Activity> ls = activities.getByConsumption(cons);
         return ls;
+    }
 
+    @GetMapping(path = "/data/diff/{cons}")
+    public static List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
+    {
+        List<Activity> ls = activities.getAllDiff(cons);
+        return ls;
     }
 }

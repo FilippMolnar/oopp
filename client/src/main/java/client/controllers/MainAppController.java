@@ -2,6 +2,9 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+
+import commons.Player;
+import commons.Question;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -26,7 +29,9 @@ public class MainAppController {
     private Scene qInsert;
 
     private QuestionMultiOptionsCtrl qMultiCtrl;
-    private Scene qMulti;
+    private Scene qMultiScene;
+
+    private int gameID; // Game ID that the client stores and is sent to get the question
 
     @Inject
     MainAppController(ServerUtils serverUtils) {
@@ -58,17 +63,26 @@ public class MainAppController {
         this.qInsertCtrl = qInsert.getKey();
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
-        this.qMulti = new Scene(qMulti.getValue());
+        this.qMultiScene = new Scene(qMulti.getValue());
 
         primaryStage.setScene(homeScene);
         primaryStage.show();
 
-        homeScene.getStylesheets().add("client/scenes/waiting_room.css");
-
+        this.homeScene.getStylesheets().add("client/scenes/waiting_room.css");
+        this.qMulti.getStylesheets().add("client/scenes/waiting_room.css");
+        this.waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
     public String getName(){
         return this.name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setGameID(int gameID){
+        this.gameID = gameID;
+        System.out.println(gameID);
     }
 
     /*
@@ -118,6 +132,20 @@ public class MainAppController {
         if(this.currentScene.getTitle() != null) {
             primaryStage.setTitle(this.currentScene.getTitle());
         }
+        primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(this.name)));
+    }
+
+    public void showQuestion(Question question) {
+//        if(question.getType() == QuestionType.InputNumber){
+//            qInsertCtrl.setQuestion(question);
+//            showQuestionInsert();
+//        }else{
+//            qMultiCtrl.setQuestion(question);
+//            showQuestionMulti();
+//        }
+        // TODO : pass the question information the UI on all 3 cases
+        // showQuestionMulti();
+        showNext();
     }
 
     /*
@@ -133,3 +161,4 @@ public class MainAppController {
     }
 
 }
+

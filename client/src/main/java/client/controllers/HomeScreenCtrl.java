@@ -52,9 +52,12 @@ public class HomeScreenCtrl {
                 }
             }
         }
+
         // Show single player. 0 would be single player.
         this.appController.showNext(1);
-        this.serverUtils.postName(finalName);
+        //this.serverUtils.postName(finalName);
+        this.appController.setName(finalName);
+        this.serverUtils.sendThroughSocket("/app/enterRoom", new Player(finalName));
     }
 
     public void enterSinglePlayer(){

@@ -1,6 +1,7 @@
 package server.api;
 
 import commons.Activity;
+import commons.Game;
 import commons.Question;
 import commons.QuestionType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -104,7 +105,8 @@ public class QuestionController {
     @GetMapping(path = "api/question/{gameID}")
     public Question getQuestion(@PathVariable("gameID") int gameID)
     {
-        Question q = getRandomQuestion();
-        return q ;
+        Game cur = GameController.getGame(gameID);
+
+        return cur.getQuestion();
     }
 }

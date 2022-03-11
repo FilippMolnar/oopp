@@ -3,6 +3,7 @@ package commons;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  TO BE TESTED
@@ -12,8 +13,9 @@ public class Game {
     private int size;
     private List<Question> questions = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
-    private Map<Player,int> scoreboard = new HashMap<>();
-    private int count = 0; // Keeps track how many players have requested a new question
+    private Map<Player, Integer> scoreboard = new HashMap<>(); // Maps a player to his current score
+    private int count = 0; // Keeps track of how many players have requested a new question
+    private int qnum = 0 ; // Keeps track on which question we are throughout the game
 
     public Game(){}
 
@@ -39,8 +41,23 @@ public class Game {
         this.count = count;
     }
 
-    public void IncrementCount() {
+    /**
+     * Increments the number of players that have requested a new question
+     * @return true if all players have requested a new question, false otherwise
+     */
+    public boolean IncrementCount() {
         this.count++;
+        if(this.count == this.size)
+        {
+            this.count = 0;
+            return true;
+        }
+        return false;
+    }
+
+    public void IncrementQNum()
+    {
+        this.qnum++;
     }
 
     public int getGameID() {
@@ -67,16 +84,25 @@ public class Game {
         this.players = players;
     }
 
-    public Map<Player, int> getScoreboard() {
+    public Map<Player, Integer> getScoreboard() {
         return scoreboard;
     }
 
-    public void setScoreboard(Map<Player, int> scoreboard) {
+    public void setScoreboard(Map<Player, Integer> scoreboard) {
         this.scoreboard = scoreboard;
     }
 
     public void setScore(Player player,int score)
     {
         this.scoreboard.replace(player,score);
+    }
+
+    /**
+     * Retrieves the current question
+     * @return a question
+     */
+    public Question getQuestion()
+    {
+        return questions.get(this.qnum);
     }
 }

@@ -118,7 +118,7 @@
          <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0" prefHeight="107.8000244140625" valignment="CENTER" vgrow="SOMETIMES" />
          <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0" prefHeight="46.999975585937534" valignment="CENTER" vgrow="SOMETIMES" />
       </rowConstraints>
-      <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="Forgetting a single light bulb on for a week" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="option A" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
       <ImageView fitHeight="176.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <Image url="@/33/bulb-removebg.png" />
       </ImageView>
@@ -130,8 +130,8 @@
 <!--         server/src/main/resources/33/traffic_light.png-->
          <Image url="@/33/Dishwasher.jpg" />
       </ImageView>
-      <Button fx:id="optionB" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="Running a dishwasher for two hours" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
-      <Button fx:id="optionC" alignment="CENTER" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="A computer staying in sleep mode for 10 days" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
+      <Button fx:id="optionC" mnemonicParsing="false" onAction="#pressedC" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="option C" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+      <Button fx:id="optionB" alignment="CENTER" mnemonicParsing="false" onAction="#pressedB" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="option B" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
       <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="10.0" />

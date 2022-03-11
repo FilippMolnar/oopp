@@ -54,11 +54,12 @@ public class QuestionMultiOptionsCtrl implements Initializable {
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
             Path path = Paths.get(choice.getImagePath());
-            System.out.println(path.getFileName());
             var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
-            System.out.println(actualPath);
             var newImage = new Image(actualPath);
             view.setImage(newImage);
+
+            System.out.println(path.getFileName());
+            System.out.println(actualPath);
         }
     }
 

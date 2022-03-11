@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import commons.QuestionType;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
@@ -77,22 +78,21 @@ public class MainAppController {
 
 
     public void showQuestion(Question question) {
-//        if(question.getType() == QuestionType.InputNumber){
-//            qInsertCtrl.setQuestion(question);
-//            showQuestionInsert();
-//        }else{
-//            qMultiCtrl.setQuestion(question);
-//            showQuestionMulti();
-//        }
-        // TODO : pass the question information the UI on all 3 cases
-        showQuestionMulti();
+        if(question.getType() == QuestionType.Estimate){
+            showQuestionInsert(question);
+        }else{
+            showQuestionMulti(question);
+        }
     }
-    public void showQuestionInsert() {
+
+    public void showQuestionInsert(Question q) {
+        qInsertCtrl.setQuestion(q);
         primaryStage.setTitle("Insert Number question");
         primaryStage.setScene(qInsert);
         primaryStage.show();
     }
-    public void showQuestionMulti() {
+    public void showQuestionMulti(Question q) {
+        qMultiCtrl.setQuestion(q);
         primaryStage.setTitle("Multiple choice question");
         primaryStage.setScene(qMultiScene);
         primaryStage.show();

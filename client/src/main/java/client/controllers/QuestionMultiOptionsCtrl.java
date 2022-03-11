@@ -43,7 +43,7 @@ public class QuestionMultiOptionsCtrl  {
     }
 
     @FXML
-    AnchorPane parentAnchorPane;
+    GridPane parentGridPane;
 
     public void pressedA() {
         mainCtrl.showOverview();
@@ -84,7 +84,7 @@ public class QuestionMultiOptionsCtrl  {
      * complete the reaction functionality.
      */
     public void userReaction() {
-        userReaction("angel", "Maria");
+        userReaction("angel", "Bianca");
     }
 
     /**
@@ -127,6 +127,6 @@ public class QuestionMultiOptionsCtrl  {
         fade.setToValue(0);
         fade.setNode(pane);
         fade.play();
-        parentAnchorPane.getChildren().add(pane);
+        parentGridPane.getChildren().add(pane);
     }
 }

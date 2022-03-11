@@ -38,7 +38,6 @@ public class MainAppController {
         this.qMultiCtrl = qMulti.getKey();
         this.qMulti = new Scene(qMulti.getValue());
 
-        this.qMulti = new Scene(qMulti.getValue());
         showQuestionMulti();
         //primaryStage.setScene(enterNameScene);
         primaryStage.show();

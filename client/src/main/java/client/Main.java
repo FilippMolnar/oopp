@@ -20,6 +20,7 @@ import client.controllers.MainAppController;
 import client.controllers.QuestionInsertNumberCtrl;
 import client.controllers.QuestionMultiOptionsCtrl;
 import client.controllers.WaitingRoomCtrl;
+import client.controllers.LeaderBoardCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -75,14 +76,16 @@ public class Main extends Application {
     private void loadUsingTemplateDependencyInjection(Stage primaryStage){
         var waitingRoom = FXML.load(WaitingRoomCtrl.class,
                 "client", "scenes", "waiting_room.fxml");
-        var enterName = FXML.load(HomeScreenCtrl.class,
+        var home = FXML.load(HomeScreenCtrl.class,
                 "client", "scenes", "HomeScreen.fxml");
+        var leaderBoard = FXML.load(LeaderBoardCtrl.class,
+                "client", "scenes", "Leaderboard.fxml");
         var qMulti = FXML.load(QuestionMultiOptionsCtrl.class,
                 "client", "scenes", "QuestionMultiOptions.fxml");
         var qInsert = FXML.load(QuestionInsertNumberCtrl.class,
                 "client", "scenes", "QuestionInsertNumber.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
-        appcontroller.initialize(primaryStage, waitingRoom, enterName, qMulti, qInsert);
+        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert);
     }
     @Override
     public void start(Stage primaryStage) throws IOException{

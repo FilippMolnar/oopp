@@ -72,7 +72,7 @@
          </HBox>
       </VBox>
       <HBox spacing="30" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
-         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="232.0" mnemonicParsing="false" prefHeight="92.0" prefWidth="267.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Single player mode" textAlignment="CENTER" textFill="WHITE">
+         <Button alignment="CENTER" contentDisplay="CENTER" layoutX="103.0" layoutY="232.0" mnemonicParsing="false" onAction="#enterSinglePlayer" prefHeight="92.0" prefWidth="267.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Single player mode" textAlignment="CENTER" textFill="WHITE">
             <font>
                <Font size="16.0" />
             </font>

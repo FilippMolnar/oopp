@@ -107,5 +107,14 @@ public class WaitingRoomCtrl implements Initializable {
             // TODO : create Linked scene graph out of this list information
             System.out.println(questionTypes);
         });
+
+        this.serverUtils.subscribeForSocketMessages("/topic/render_question", Player.class, player -> {
+            System.out.println("Rendering question type: " + player);
+            this.renderQuestion();
+        });
+    }
+
+    private void renderQuestion() {
+        //this.appController.showQuestion();
     }
 }

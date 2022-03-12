@@ -99,6 +99,9 @@ public class WaitController {
     @PostMapping(path = {"", "/start"})
     public void startGame() {
         LOGGER.info("Starting game with id " + gameID);
+
+        GameController.addNewGame(gameID,lobbyPlayers);
+
         lobbyPlayers.clear();
         var playerList = IDToPlayers.get(gameID);
         if (playerList == null) {
@@ -114,11 +117,13 @@ public class WaitController {
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/questionTypes", questionTypeList);
             LOGGER.info("Sent message to start game to " + playerToGameId.get(playerID).getSecond().getName());
         }
-
         gameID++;
     }
 
     public void addPlayerToGameID(String playerID, Player player) {
+
+        GameController.addPlayerToGame(gameID,player);
+
         playerToGameId.put(playerID, Pair.of(gameID, player));
         var currentList = IDToPlayers.getOrDefault(gameID, new ArrayList<>());
         if (currentList.size() == 0)

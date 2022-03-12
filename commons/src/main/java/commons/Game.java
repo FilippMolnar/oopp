@@ -76,6 +76,16 @@ public class Game {
         this.questions = questions;
     }
 
+    public void addPlayer(Player player)
+    {
+        this.players.add(player);
+    }
+
+    public void removePlayer(Player player)
+    {
+        this.players.remove(player);
+    }
+
     public List<Player> getPlayers() {
         return players;
     }

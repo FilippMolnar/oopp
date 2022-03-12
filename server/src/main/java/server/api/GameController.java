@@ -15,9 +15,19 @@ public class GameController {
 
     public GameController() {}
 
-    public void addNewGame(int gameID, List<Player> players)
+    public static void addNewGame(int gameID, List<Player> players)
     {
         games.put(gameID,new Game(gameID,players));
+    }
+
+    public static void addPlayerToGame(int gameID, Player player)
+    {
+        games.get(gameID).addPlayer(player);
+    }
+
+    public static void removePlayer(int gameID,Player player)
+    {
+        games.get(gameID).removePlayer(player);
     }
 
     public static Game getGame(int gameID)

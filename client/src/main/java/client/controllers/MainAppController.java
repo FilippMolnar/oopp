@@ -164,6 +164,7 @@ public class MainAppController {
         primaryStage.setTitle("Multiple choice question");
         primaryStage.setScene(qMultiScene);
         primaryStage.show();
+        qMultiCtrl.resizeImages();
     }
 
     /*

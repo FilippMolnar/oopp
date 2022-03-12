@@ -3,6 +3,7 @@ package client.controllers;
 import client.LinkedScene;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.JokersList;
 import commons.Player;
 import commons.Question;
 import commons.QuestionType;
@@ -10,7 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
+import commons.QuestionType;
+import client.LinkedScene;
+import java.util.List;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,11 +31,12 @@ public class MainAppController {
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private Scene qInsert;
-
     private QuestionMultiOptionsCtrl qMultiCtrl;
     private Scene qMultiScene;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
+
+    private JokersList jokers;
 
     @Inject
     MainAppController(ServerUtils serverUtils) {
@@ -65,6 +69,8 @@ public class MainAppController {
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
 
+        this.jokers = new JokersList();
+
         primaryStage.setScene(homeScene);
         primaryStage.show();
 
@@ -76,6 +82,10 @@ public class MainAppController {
     public String getName(){
         return this.name;
     }
+    public JokersList getJokers(){
+        return this.jokers;
+    }
+
     public void setName(String name){
         this.name = name;
     }
@@ -136,20 +146,22 @@ public class MainAppController {
     }
 
     public void showQuestion(Question question) {
-        // TODO : integrate nicely with linked scene this feature
-        // TODO : each controller for the 3 types of questions should make a GET request to set the question
-        // right now this method is called through websockets.
-        // in case the question is randomy chosen as estimate I am still showing the multiple choice which is wrong
-        // but will be fixed by the TODOs
-        showQuestionMulti(question);
+        if(question.getType() == QuestionType.Estimate){
+            showQuestionInsert(question);
+        }else{
+            showQuestionMulti(question);
+        }
     }
 
-    /**
-     * I added this method back to be possible to see that the images resize nicely
-     */
-    private void showQuestionMulti(Question question) {
-        if (question.getType() == QuestionType.HighestEnergy) // quick fix to show the question
-            qMultiCtrl.setQuestion(question);
+    public void showQuestionInsert(Question q) {
+        qInsertCtrl.setQuestion(q);
+        primaryStage.setTitle("Insert Number question");
+        primaryStage.setScene(qInsert);
+        primaryStage.show();
+    }
+    public void showQuestionMulti(Question q) {
+        qMultiCtrl.setQuestion(q);
+        primaryStage.setTitle("Multiple choice question");
         primaryStage.setScene(qMultiScene);
         primaryStage.show();
         qMultiCtrl.resizeImages();

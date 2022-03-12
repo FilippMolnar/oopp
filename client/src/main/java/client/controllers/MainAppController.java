@@ -1,10 +1,12 @@
 package client.controllers;
 
+import client.LinkedScene;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.JokersList;
 import commons.Player;
 import commons.Question;
+import commons.QuestionType;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -13,6 +15,7 @@ import commons.QuestionType;
 import client.LinkedScene;
 import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
@@ -50,7 +53,6 @@ public class MainAppController {
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         this.homeScene = new Scene(home.getValue());
         this.leaderBoardScene = new Scene(leaderBoard.getValue());
-        this.primaryStage = primaryStage;
 
 
         LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene);

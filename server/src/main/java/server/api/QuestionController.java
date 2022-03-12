@@ -1,16 +1,15 @@
 package server.api;
 
-import commons.Activity;
-import commons.Game;
-import commons.Question;
-import commons.QuestionType;
+import commons.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Consumer;
 
 @RestController
 public class QuestionController {
@@ -102,11 +101,17 @@ public class QuestionController {
         q.setChoices(choices);
         return q;
     }
+
+    /**
+     * Fetches the following question for the current game
+     * @param gameID identifier for the current game
+     * @return the following question
+     */
     @GetMapping(path = "api/question/{gameID}")
     public Question getQuestion(@PathVariable("gameID") int gameID)
     {
         Game cur = GameController.getGame(gameID);
-
-        return cur.getQuestion();
+        Question q = cur.getQuestion();
+        return q;
     }
 }

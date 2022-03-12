@@ -40,6 +40,7 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -197,5 +198,16 @@ public class ServerUtils {
        Question ret = new Question();
        ret = q.readEntity(Question.class);
        return ret;
+    }
+
+    public static Map<Player,Integer> getScoreboard(int gameID)
+    {
+        var q = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/leaderboard/" + gameID)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(Response.class);
+        Map<Player,Integer> scoreboard = q.readEntity(Map.class);
+        return scoreboard;
     }
 }

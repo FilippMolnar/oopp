@@ -10,14 +10,13 @@ import java.util.*;
  */
 public class Game {
     private int gameID;
-    private int size;
     private List<Question> questions = new ArrayList<>();
-    private List<Player> players = new ArrayList<>();
+    private Set<Player> players = new HashSet<>();
     private List<Integer> scoreboard = new ArrayList<>(); // A list of the scores according to playerID
     private Map<Player, Integer> playerToID = new HashMap<>(); // Maps a player to his id
     private Map<Integer, Player> idToPlayer = new HashMap<>(); // Maps a playerID to player
     private Map<Integer , Boolean> inGame = new HashMap<>(); // Keeps track if player with id is in game
-    private int count = 0; // Keeps track of how many players have requested a new question
+    private int requested = 0; // Keeps track of how many players have requested a new question
     private int qnum = 0 ; // Keeps track on which question we are throughout the game
     private int pnum = 0 ; // Keeps track of what the next player`s id should be
     private int pInGame = 0 ; // Keeps track of how many players are in current game
@@ -26,38 +25,29 @@ public class Game {
 
     public Game(int gameID, List<Player> players) {
         this.gameID = gameID;
-        this.size = players.size();
         for(var player:players)
         {
             addPlayer(player);
         }
     }
 
-    public int getSize() {
-        return size;
+    public int getRequested() {
+        return requested;
     }
 
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
+    public void setRequested(int count) {
+        this.requested = count;
     }
 
     /**
      * Increments the number of players that have requested a new question
      * @return true if all players have requested a new question, false otherwise
      */
-    public boolean IncrementCount() {
-        this.count++;
-        if(this.count == this.size)
+    public boolean newRequest() {
+        this.requested++;
+        if(this.requested == pInGame)
         {
-            this.count = 0;
+            this.requested = 0;
             return true;
         }
         return false;
@@ -102,15 +92,21 @@ public class Game {
      */
     public void removePlayer(Player player)
     {
+        players.remove(player);
         inGame.replace(playerToID.get(player),false);
         pInGame--;
     }
 
-    public List<Player> getPlayers() {
+    /**
+     * Get all players who have played at some point in time
+     * @return a list of all players who have played
+     */
+    public Set<Player> getPlayers() {
+        if(players.size()==0)return null;
         return players;
     }
 
-    public void setPlayers(List<Player> players) {
+    public void setPlayers(Set<Player> players) {
         this.players = players;
     }
 

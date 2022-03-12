@@ -17,11 +17,11 @@ package server.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Activity;
+import commons.Game;
 import commons.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
-import org.springframework.data.util.Pair;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -47,8 +47,8 @@ public class WaitController {
      * A <b>player</b> is identified by a uniquely assigned <b>string</b> and not by the name because people in different games might have the same name.
      * Thus we need associate a random string to each new web socket connection and talk with that connection
      */
-    private final Map<String, Pair<Integer, Player>> playerToGameId = new HashMap<>(); // map the player's string id to the game id
-    private final Map<Integer, List<String>> IDToPlayers = new HashMap<>(); // given an id get all the players with that id
+    //private final Map<String, Pair<Integer, Player>> playerToGameId = new HashMap<>(); // map the player's string id to the game id
+    //private final Map<Integer, List<String>> IDToPlayers = new HashMap<>(); // given an id get all the players with that id
     private final Logger LOGGER = LoggerFactory.getLogger(WaitController.class);
     private int gameID = 0;
 
@@ -102,20 +102,23 @@ public class WaitController {
 
         GameController.addNewGame(gameID,lobbyPlayers);
 
+        Game current = GameController.getGame(gameID);
         lobbyPlayers.clear();
-        var playerList = IDToPlayers.get(gameID);
+        //var playerList = IDToPlayers.get(gameID);
+        var playerList = current.getPlayers();
         if (playerList == null) {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
         var question = QuestionController.getRandomQuestion();
         var questionTypeList = getRandomQuestionTypes();
-        for (String playerID : playerList) {
+        for (Player player : playerList) {
+            String playerID = player.getName();
             LOGGER.info("Sending question " + question.getChoices());
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/renderQuestion", question);
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/gameID",gameID);
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/questionTypes", questionTypeList);
-            LOGGER.info("Sent message to start game to " + playerToGameId.get(playerID).getSecond().getName());
+            LOGGER.info("Sent message to start game to " + playerID);
         }
         gameID++;
     }
@@ -124,12 +127,12 @@ public class WaitController {
 
         GameController.addPlayerToGame(gameID,player);
 
-        playerToGameId.put(playerID, Pair.of(gameID, player));
+        /*playerToGameId.put(playerID, Pair.of(gameID, player));
         var currentList = IDToPlayers.getOrDefault(gameID, new ArrayList<>());
         if (currentList.size() == 0)
             IDToPlayers.put(gameID, currentList);
         currentList.add(playerID); // for this game ID we have a new player so we add it there
-        System.out.println(IDToPlayers);
+        System.out.println(IDToPlayers);*/
     }
 
     @MessageMapping("/enterRoom")

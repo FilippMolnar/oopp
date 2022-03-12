@@ -1,17 +1,18 @@
 package client.controllers;
 
+import client.LinkedScene;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-
 import commons.Player;
 import commons.Question;
+import commons.QuestionType;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import client.LinkedScene;
-import java.util.List;
+
 import java.util.Arrays;
+import java.util.List;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
@@ -48,7 +49,6 @@ public class MainAppController {
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         this.homeScene = new Scene(home.getValue());
         this.leaderBoardScene = new Scene(leaderBoard.getValue());
-        this.primaryStage = primaryStage;
 
 
         LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene);
@@ -136,16 +136,23 @@ public class MainAppController {
     }
 
     public void showQuestion(Question question) {
-//        if(question.getType() == QuestionType.InputNumber){
-//            qInsertCtrl.setQuestion(question);
-//            showQuestionInsert();
-//        }else{
-//            qMultiCtrl.setQuestion(question);
-//            showQuestionMulti();
-//        }
-        // TODO : pass the question information the UI on all 3 cases
-        // showQuestionMulti();
-        showNext();
+        // TODO : integrate nicely with linked scene this feature
+        // TODO : each controller for the 3 types of questions should make a GET request to set the question
+        // right now this method is called through websockets.
+        // in case the question is randomy chosen as estimate I am still showing the multiple choice which is wrong
+        // but will be fixed by the TODOs
+        showQuestionMulti(question);
+    }
+
+    /**
+     * I added this method back to be possible to see that the images resize nicely
+     */
+    private void showQuestionMulti(Question question) {
+        if (question.getType() == QuestionType.HighestEnergy) // quick fix to show the question
+            qMultiCtrl.setQuestion(question);
+        primaryStage.setScene(qMultiScene);
+        primaryStage.show();
+        qMultiCtrl.resizeImages();
     }
 
     /*

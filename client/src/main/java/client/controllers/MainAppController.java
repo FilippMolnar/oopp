@@ -1,17 +1,21 @@
 package client.controllers;
 
+import client.LinkedScene;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-
+import commons.JokersList;
 import commons.Player;
 import commons.Question;
+import commons.QuestionType;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import commons.QuestionType;
 import client.LinkedScene;
 import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
@@ -27,11 +31,12 @@ public class MainAppController {
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private Scene qInsert;
-
     private QuestionMultiOptionsCtrl qMultiCtrl;
     private Scene qMultiScene;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
+
+    private JokersList jokers;
 
     @Inject
     MainAppController(ServerUtils serverUtils) {
@@ -48,7 +53,6 @@ public class MainAppController {
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         this.homeScene = new Scene(home.getValue());
         this.leaderBoardScene = new Scene(leaderBoard.getValue());
-        this.primaryStage = primaryStage;
 
 
         LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene);
@@ -65,6 +69,8 @@ public class MainAppController {
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
 
+        this.jokers = new JokersList();
+
         primaryStage.setScene(homeScene);
         primaryStage.show();
 
@@ -76,6 +82,10 @@ public class MainAppController {
     public String getName(){
         return this.name;
     }
+    public JokersList getJokers(){
+        return this.jokers;
+    }
+
     public void setName(String name){
         this.name = name;
     }
@@ -136,16 +146,25 @@ public class MainAppController {
     }
 
     public void showQuestion(Question question) {
-//        if(question.getType() == QuestionType.InputNumber){
-//            qInsertCtrl.setQuestion(question);
-//            showQuestionInsert();
-//        }else{
-//            qMultiCtrl.setQuestion(question);
-//            showQuestionMulti();
-//        }
-        // TODO : pass the question information the UI on all 3 cases
-        // showQuestionMulti();
-        showNext();
+        if(question.getType() == QuestionType.Estimate){
+            showQuestionInsert(question);
+        }else{
+            showQuestionMulti(question);
+        }
+    }
+
+    public void showQuestionInsert(Question q) {
+        qInsertCtrl.setQuestion(q);
+        primaryStage.setTitle("Insert Number question");
+        primaryStage.setScene(qInsert);
+        primaryStage.show();
+    }
+    public void showQuestionMulti(Question q) {
+        qMultiCtrl.setQuestion(q);
+        primaryStage.setTitle("Multiple choice question");
+        primaryStage.setScene(qMultiScene);
+        primaryStage.show();
+        qMultiCtrl.resizeImages();
     }
 
     /*

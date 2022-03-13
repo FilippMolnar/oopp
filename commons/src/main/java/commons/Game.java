@@ -22,12 +22,8 @@ public class Game {
 
     public Game(){}
 
-    public Game(int gameID, List<Player> players) {
+    public Game(int gameID) {
         this.gameID = gameID;
-        for(var player:players)
-        {
-            addPlayer(player);
-        }
     }
 
     public int getRequested() {

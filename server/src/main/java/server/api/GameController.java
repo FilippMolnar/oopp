@@ -18,13 +18,17 @@ public class GameController {
 
     public GameController() {}
 
-    public void addNewGame(int gameID, List<Player> players)
+    public void addNewGame(int gameID)
     {
-        games.put(gameID,new Game(gameID,players));
+        games.put(gameID,new Game(gameID));
     }
 
     public void addPlayerToGame(int gameID, Player player)
     {
+        if(games.get(gameID) == null)
+        {
+            addNewGame(gameID);
+        }
         games.get(gameID).addPlayer(player);
     }
 

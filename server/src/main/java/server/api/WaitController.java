@@ -104,8 +104,6 @@ public class WaitController {
     public void startGame() {
         LOGGER.info("Starting game with id " + gameID);
 
-        gameController.addNewGame(gameID,lobbyPlayers);
-
         Game current = gameController.getGame(gameID);
         lobbyPlayers.clear();
         //var playerList = IDToPlayers.get(gameID);

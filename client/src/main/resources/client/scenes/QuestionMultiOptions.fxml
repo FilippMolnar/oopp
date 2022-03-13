@@ -63,19 +63,19 @@
       <StackPane onMouseClicked="#thirdJoker" GridPane.columnIndex="8" GridPane.rowIndex="1">
          <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
          <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@client/pictures/joker_elim_wrong.png" />
+             <Image url="@/client/pictures/joker_elim_wrong.png" />
          </ImageView>
       </StackPane>
       <StackPane onMouseClicked="#firstJoker" GridPane.columnIndex="6" GridPane.rowIndex="1">
          <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
          <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@client/pictures/joker_double_points.png" />
+             <Image url="@/client/pictures/joker_double_points.png" />
          </ImageView>
       </StackPane>
       <StackPane onMouseClicked="#secondJoker" GridPane.columnIndex="7" GridPane.rowIndex="1">
          <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
          <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@client/pictures/joker_decrease_time.png" />
+             <Image url="@/client/pictures/joker_decrease_time.png" />
          </ImageView>
       </StackPane>
       <StackPane prefHeight="97.0" prefWidth="102.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
@@ -126,7 +126,7 @@
       </StackPane>
       <StackPane GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <ImageView fitHeight="50.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@/33/computer-removebg.png" />
+             <Image url="@/33/watch.png" />
          </ImageView>
       </StackPane>
       <StackPane GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -142,19 +142,19 @@
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin>
-         <Image url="@client/pictures/happy.png" />
+         <Image url="@/client/pictures/happy.png" />
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin>
-         <Image url="@client/pictures/angry.png" />
+         <Image url="@/client/pictures/angry.png" />
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin>
-         <Image url="@client/pictures/angel.png" />
+         <Image url="@/client/pictures/angel.png" />
       </ImageView>
    </GridPane>
    <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
@@ -162,6 +162,6 @@
       <GridPane.margin>
          <Insets left="10.0" top="40.0" />
       </GridPane.margin>
-      <Image url="@client/pictures/exit_button.png" />
+      <Image url="@/client/pictures/exit_button.png" />
    </ImageView>
 </GridPane>

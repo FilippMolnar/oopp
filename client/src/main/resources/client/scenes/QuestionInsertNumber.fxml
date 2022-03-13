@@ -24,17 +24,17 @@
             </columnConstraints>
             <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="121.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@images/remove_one_anser.png" />
+                    <Image url="@/images/remove_one_anser.png" />
                 </image>
          </ImageView>
             <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="251.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                 <image>
-                    <Image url="@images/remove_one_anser.png" />
+                    <Image url="@/images/remove_one_anser.png" />
                 </image>
          </ImageView>
             <ImageView fitHeight="91.0" fitWidth="99.0" layoutX="358.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                 <image>
-                    <Image url="@images/remove_one_anser.png" />
+                    <Image url="@/images/remove_one_anser.png" />
                 </image>
             </ImageView>
          <rowConstraints>
@@ -70,7 +70,7 @@
                 </Circle>
                 <ImageView fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                     <image>
-                        <Image url="@../pictures/joker_elim_wrong.png" />
+                        <Image url="@/../pictures/joker_elim_wrong.png" />
                     </image>
                     <GridPane.margin>
                         <Insets bottom="10.0" />
@@ -83,7 +83,7 @@
                 </Circle>
                 <ImageView fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <image>
-                        <Image url="@../pictures/joker_double_points.png" />
+                        <Image url="@/../pictures/joker_double_points.png" />
                     </image>
                     <GridPane.margin>
                         <Insets bottom="10.0" />
@@ -96,7 +96,7 @@
                 </Circle>
                 <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <image>
-                        <Image url="@../pictures/joker_decrease_time.png" />
+                        <Image url="@/../pictures/joker_decrease_time.png" />
                     </image>
                     <GridPane.margin>
                         <Insets bottom="10.0" />
@@ -136,17 +136,17 @@
                 </AnchorPane>
                 <ImageView fitHeight="150.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
                     <image>
-                        <Image url="@../pictures/angel.png" />
+                        <Image url="@/../pictures/angel.png" />
                     </image>
                 </ImageView>
                 <ImageView fitHeight="150.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                     <image>
-                        <Image url="@../pictures/angry.png" />
+                        <Image url="@/../pictures/angry.png" />
                     </image>
                 </ImageView>
                 <ImageView fitHeight="150.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../pictures/happy.png" />
+                        <Image url="@/../pictures/happy.png" />
                     </image>
                 </ImageView>
             </children>
@@ -154,7 +154,7 @@
         <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fitHeight="30.0" fitWidth="20.0" layoutX="552.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../pictures/exit_button.png" />
+                <Image url="@/../pictures/exit_button.png" />
             </image>
         </ImageView>
       <GridPane layoutX="197.0" layoutY="95.0" prefHeight="192.0" prefWidth="200.0">

@@ -34,7 +34,7 @@
       <GridPane.margin>
          <Insets left="-10.0" />
       </GridPane.margin>
-      <Image url="@client/pictures/quizzz.PNG" />
+      <Image url="@/client/pictures/quizzz.PNG" />
    </ImageView>
    <GridPane alignment="CENTER" prefHeight="218.0" prefWidth="600.0" vgap="40.0" GridPane.rowIndex="2">
       <HBox alignment="CENTER" minHeight="-Infinity" prefHeight="62.0" prefWidth="553.0" GridPane.columnSpan="2147483647">
@@ -64,7 +64,7 @@
             </TextField>
 
             <ImageView fitHeight="59.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@client/pictures/faq.png" />
+                <Image url="@/client/pictures/faq.png" />
                <HBox.margin>
                   <Insets bottom="30.0" left="-2.0" />
                </HBox.margin>
@@ -108,7 +108,7 @@
    </HBox>
    <ImageView fitHeight="50.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
       <image>
-         <Image url="@client/pictures/exit_button.png" />
+          <Image url="@/client/pictures/exit_button.png" />
       </image>
    </ImageView>
 

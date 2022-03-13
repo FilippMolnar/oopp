@@ -5,8 +5,10 @@ import commons.Player;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,9 @@ public class GameController {
 
     public static void addPlayerToGame(int gameID, Player player)
     {
+        if (games.get(gameID) == null) {
+            games.put(gameID, new Game());
+        }
         games.get(gameID).addPlayer(player);
     }
 
@@ -54,5 +59,19 @@ public class GameController {
         Game cur = getGame(gameID);
 
         return cur.getLeaderboard();
+    }
+
+    @PostMapping(path = "api/game/score/{gameID}")
+    public void setScore(@PathVariable("gameID") int gameID, Pair<Player, Integer> pair) {
+        Game cur = getGame(gameID);
+        Player player = pair.getLeft();
+        int score = pair.getRight();
+        cur.setScore(player, score);
+    }
+
+    @GetMapping(path = "api/game/getGame/{gameID}")
+    public Game getGameMapping(@PathVariable("gameID") int gameID) {
+        Game cur = getGame(gameID);
+        return cur;
     }
 }

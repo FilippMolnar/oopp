@@ -5,6 +5,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 /**
  *  TO BE TESTED
  */
@@ -143,6 +145,18 @@ public class Game {
     {
         int id = playerToID.get(player);
         scoreboard.set(id,score);
+    }
+
+    public int getScore(Player player) {
+        List<Pair<Integer,Player>> scores = getLeaderboard();
+        int score = 0;
+        for (int i = 0; i < scores.size(); i++) {
+            Player p = scores.get(i).getRight();
+            if (p.equals(player)) {
+                score = scores.get(i).getLeft();
+            }
+        }
+        return score;
     }
 
     /**

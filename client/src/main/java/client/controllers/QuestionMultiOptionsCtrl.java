@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Player;
 import commons.Question;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -72,6 +74,25 @@ public class QuestionMultiOptionsCtrl implements Initializable {
 
     }
 
+    public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
+        int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
+
+        int scoreToBeAdded = 0;
+        int maxSeconds = 20;
+        int maxPoints = 100;
+        if (answerCorrect) {
+            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+        }
+
+        Integer score = currentScore + scoreToBeAdded;
+        Pair<Player, Integer> result = Pair.of(player, score);
+        server.postGameScore(mainCtrl.getGameID(), result);
+    }
+
+    public void dummy() {
+        Player player = new Player(mainCtrl.getName());
+        calculateScore(player, true, 20);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

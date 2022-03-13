@@ -61,6 +61,10 @@ public class MainAppController {
         System.out.println(gameID);
     }
 
+    public int getGameID() {
+        return this.gameID;
+    }
+
     public void enterWaitingRoom(String name) {
         System.out.println("Changing scene " + name);
         this.name = name;

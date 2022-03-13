@@ -110,6 +110,7 @@
          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0" />
          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0" />
          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" percentWidth="33.0" />
          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
       </columnConstraints>
       <rowConstraints>
@@ -122,16 +123,16 @@
       <ImageView fitHeight="176.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <Image url="@/33/bulb-removebg.png" />
       </ImageView>
-      <ImageView fitHeight="146.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <ImageView fitHeight="146.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <Image url="@/33/computer-removebg.png" />
       </ImageView>
-      <ImageView fitHeight="169.0" fitWidth="381.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <ImageView fitHeight="169.0" fitWidth="381.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 
 <!--         server/src/main/resources/33/traffic_light.png-->
          <Image url="@/33/Dishwasher.jpg" />
       </ImageView>
-      <Button fx:id="optionB" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="Running a dishwasher for two hours" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
-      <Button fx:id="optionC" alignment="CENTER" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="A computer staying in sleep mode for 10 days" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
+      <Button fx:id="optionB" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="Running a dishwasher for two hours" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+      <Button fx:id="optionC" alignment="CENTER" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="A computer staying in sleep mode for 10 days" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
       <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets left="10.0" />
@@ -150,6 +151,7 @@
          </GridPane.margin>
          <Image url="@client/pictures/angel.png" />
       </ImageView>
+      <Button mnemonicParsing="false" onAction="#dummy" text="Add Score" GridPane.rowIndex="3" />
    </GridPane>
    <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
    <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="552.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="TOP">

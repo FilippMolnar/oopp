@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Joker;
+import commons.Player;
 import commons.Question;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import org.apache.commons.lang3.tuple.Pair;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -89,7 +91,7 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
 
     }
 
-    public void firstJoker(){
+    public void firstJoker() {
         return;
 //        List<Joker> jokers = mainCtrl.getJokers().getJokers();
 //        if(jokers.get(0).isUsed()){
@@ -99,7 +101,7 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
 //        jokers.get(0).use();
     }
 
-    public void secondJoker(){
+    public void secondJoker() {
         return;
 //        List<Joker> jokers = mainCtrl.getJokers().getJokers();
 //        if(jokers.get(1).isUsed()){
@@ -111,25 +113,25 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
 
     }
 
-    public void thirdJoker(){
+    public void thirdJoker() {
         List<Joker> jokers = mainCtrl.getJokers().getJokers();
-        if(jokers.get(2).isUsed()){
+        if (jokers.get(2).isUsed()) {
             System.out.println("used");
             return;
         }
 
         ArrayList<Integer> wrong_options = new ArrayList<>();
         int i = 0;
-        for(Activity a : question.getChoices()){
-            if(a.id != question.getCorrect().id){
+        for (Activity a : question.getChoices()) {
+            if (a.id != question.getCorrect().id) {
                 wrong_options.add(i);
             }
             i++;
         }
-        int index = (int)(Math.random() * wrong_options.size());
+        int index = (int) (Math.random() * wrong_options.size());
         System.out.println(wrong_options);
         System.out.println(index);
-        switch(wrong_options.get(index)){
+        switch (wrong_options.get(index)) {
             case 0:
                 optionA.setText("wrong");
                 break;
@@ -142,6 +144,7 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
         }
         jokers.get(2).use();
     }
+
     /**
      * This method should be called after the scene is shown because otherwise the stackPane width/height won't exist
      * I wrapped the images into a <code>StackPane</code> that is resizable and fits the grid cell
@@ -156,11 +159,31 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
             view.setFitHeight(pane.getHeight());
             view.setFitWidth(pane.getWidth());
         }
+
+    }
+
+    public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
+        int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
+
+        int scoreToBeAdded = 0;
+        int maxSeconds = 20;
+        int maxPoints = 100;
+        if (answerCorrect) {
+            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+        }
+
+        Integer score = currentScore + scoreToBeAdded;
+        Pair<Player, Integer> result = Pair.of(player, score);
+        server.postGameScore(mainCtrl.getGameID(), result);
+    }
+
+    public void dummy() {
+        Player player = new Player(mainCtrl.getName());
+        calculateScore(player, true, 20);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     /**
@@ -214,3 +237,5 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
         parentGridPane.getChildren().add(pane);
     }
 }
+
+

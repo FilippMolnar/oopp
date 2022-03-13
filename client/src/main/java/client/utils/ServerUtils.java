@@ -15,13 +15,16 @@
  */
 package client.utils;
 
+import commons.Game;
 import commons.Player;
 import commons.Question;
 import commons.Quote;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import javafx.application.Platform;
+import org.apache.commons.lang3.tuple.Pair;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
@@ -39,11 +42,11 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-
 public class ServerUtils {
 
     // use this variable to define the server address and port to connect to
@@ -149,6 +152,13 @@ public class ServerUtils {
                 });
     }
 
+    public Pair postGameScore(int gameID, Pair<Player, Integer> result) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/game/score")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(result, APPLICATION_JSON), Pair.class);
+    }
 
     public void postStartGame() {
         ClientBuilder.newClient(new ClientConfig())
@@ -186,5 +196,36 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
+    }
+
+    public static Question getQuestion(int gameID) {
+       var q = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/question/" + gameID)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(Response.class);
+       Question ret = new Question();
+       ret = q.readEntity(Question.class);
+       return ret;
+    }
+
+    public static Map<Player,Integer> getScoreboard(int gameID)
+    {
+        var q = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/leaderboard/" + gameID)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(Response.class);
+        Map<Player,Integer> scoreboard = q.readEntity(Map.class);
+        return scoreboard;
+    }
+
+    public Game getGameMapping(int gameID) {
+        var q = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/game/getGame/" + gameID)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(Response.class);
+        return q.readEntity(Game.class);
     }
 }

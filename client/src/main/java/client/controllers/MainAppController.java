@@ -104,12 +104,12 @@ public class MainAppController {
      */
     public void addQuestionScenes(List<Integer> questionTypes, int mode) {
         LinkedScene current = this.currentScene;
-        for(int i = 0; i < questionTypes.size(); i++) {
-            if(i == 10) {
+        for (int i = 0; i < questionTypes.size(); i++) {
+            if (i == 10) {
                 current.addNext(new LinkedScene(this.leaderBoardScene));
                 current = current.getNext();
             }
-            if(questionTypes.get(i) < 2) {
+            if (questionTypes.get(i) < 2) {
                 current.addNext(new LinkedScene(this.qMultiScene));
             } else {
                 current.addNext(new LinkedScene(this.qInsert));
@@ -117,7 +117,19 @@ public class MainAppController {
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
-                    Arrays.asList(homeScreenLinked, homeScreenLinked.getNext(mode))));
+                Arrays.asList(homeScreenLinked, homeScreenLinked.getNext(mode))));
+    }
+
+    public int getGameID() {
+        return this.gameID;
+    }
+
+    public void enterWaitingRoom(String name) {
+        System.out.println("Changing scene " + name);
+        this.name = name;
+        primaryStage.setScene(waitingRoomScene);
+        primaryStage.show();
+        primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(name)));
     }
 
     /*
@@ -159,6 +171,7 @@ public class MainAppController {
         primaryStage.setScene(qInsert);
         primaryStage.show();
     }
+
     public void showQuestionMulti(Question q) {
         qMultiCtrl.setQuestion(q);
         primaryStage.setTitle("Multiple choice question");

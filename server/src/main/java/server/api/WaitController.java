@@ -17,11 +17,12 @@ package server.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Activity;
+import commons.Game;
 import commons.Player;
+import commons.Question;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
-import org.springframework.data.util.Pair;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -43,19 +44,22 @@ public class WaitController {
     private final List<Player> lobbyPlayers = new ArrayList<>();
     private final RestTemplate restTemplate;
 
+    private final GameController gameController;
+
     /**
      * A <b>player</b> is identified by a uniquely assigned <b>string</b> and not by the name because people in different games might have the same name.
      * Thus we need associate a random string to each new web socket connection and talk with that connection
      */
-    private final Map<String, Pair<Integer, Player>> playerToGameId = new HashMap<>(); // map the player's string id to the game id
-    private final Map<Integer, List<String>> IDToPlayers = new HashMap<>(); // given an id get all the players with that id
+    //private final Map<String, Pair<Integer, Player>> playerToGameId = new HashMap<>(); // map the player's string id to the game id
+    //private final Map<Integer, List<String>> IDToPlayers = new HashMap<>(); // given an id get all the players with that id
     private final Logger LOGGER = LoggerFactory.getLogger(WaitController.class);
     private int gameID = 0;
 
 
-    WaitController(SimpMessageSendingOperations simpMessagingTemplate) {
+    WaitController(SimpMessageSendingOperations simpMessagingTemplate,GameController gameController) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.restTemplate = new RestTemplate();
+        this.gameController = gameController;
     }
 
     public List<Player> getLobbyPlayers() {
@@ -99,32 +103,38 @@ public class WaitController {
     @PostMapping(path = {"", "/start"})
     public void startGame() {
         LOGGER.info("Starting game with id " + gameID);
+
+        Game current = gameController.getGame(gameID);
         lobbyPlayers.clear();
-        var playerList = IDToPlayers.get(gameID);
+        //var playerList = IDToPlayers.get(gameID);
+        var playerList = current.getPlayers();
         if (playerList == null) {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
         var question = QuestionController.getTypeMostLeast();
         var questionTypeList = getRandomQuestionTypes();
-        for (String playerID : playerList) {
+        for (Player player : playerList) {
+            String playerID = player.getSocketID();
             LOGGER.info("Sending question " + question.getChoices());
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/renderQuestion", question);
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/gameID",gameID);
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/questionTypes", questionTypeList);
-            LOGGER.info("Sent message to start game to " + playerToGameId.get(playerID).getSecond().getName());
+            LOGGER.info("Sent message to start game to " + player.getName());
         }
-
         gameID++;
     }
 
     public void addPlayerToGameID(String playerID, Player player) {
-        playerToGameId.put(playerID, Pair.of(gameID, player));
+
+        player.socketID = playerID;
+        gameController.addPlayerToGame(gameID,player);
+        /*playerToGameId.put(playerID, Pair.of(gameID, player));
         var currentList = IDToPlayers.getOrDefault(gameID, new ArrayList<>());
         if (currentList.size() == 0)
             IDToPlayers.put(gameID, currentList);
         currentList.add(playerID); // for this game ID we have a new player so we add it there
-        System.out.println(IDToPlayers);
+        System.out.println(IDToPlayers);*/
     }
 
     @MessageMapping("/enterRoom")
@@ -159,6 +169,18 @@ public class WaitController {
         return res;
     }
 
+    /**
+     * Fetches the following question for the current game
+     * @param gameID identifier for the current game
+     * @return the following question
+     */
+    @GetMapping(path = "api/question/{gameID}")
+    public Question getQuestion(@PathVariable("gameID") int gameID)
+    {
+        Game cur = gameController.getGame(gameID);
+        Question q = cur.getQuestion();
+        return q;
+    }
 
     @EventListener
     private void handleSessionConnected(SessionConnectEvent event) {

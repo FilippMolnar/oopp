@@ -2,14 +2,12 @@ package server.api;
 
 import commons.*;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
 @RestController
 public class QuestionController {
-
     @GetMapping("/question")
     public static Question getRandomQuestion() {
         int pick = new Random().nextInt(3);
@@ -98,16 +96,4 @@ public class QuestionController {
         return q;
     }
 
-    /**
-     * Fetches the following question for the current game
-     * @param gameID identifier for the current game
-     * @return the following question
-     */
-    @GetMapping(path = "api/question/{gameID}")
-    public Question getQuestion(@PathVariable("gameID") int gameID)
-    {
-        Game cur = GameController.getGame(gameID);
-        Question q = cur.getQuestion();
-        return q;
-    }
 }

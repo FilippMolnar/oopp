@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Activity;
 import commons.Game;
 import commons.Player;
+import commons.Question;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -43,6 +44,8 @@ public class WaitController {
     private final List<Player> lobbyPlayers = new ArrayList<>();
     private final RestTemplate restTemplate;
 
+    private final GameController gameController;
+
     /**
      * A <b>player</b> is identified by a uniquely assigned <b>string</b> and not by the name because people in different games might have the same name.
      * Thus we need associate a random string to each new web socket connection and talk with that connection
@@ -53,9 +56,10 @@ public class WaitController {
     private int gameID = 0;
 
 
-    WaitController(SimpMessageSendingOperations simpMessagingTemplate) {
+    WaitController(SimpMessageSendingOperations simpMessagingTemplate,GameController gameController) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.restTemplate = new RestTemplate();
+        this.gameController = gameController;
     }
 
     public List<Player> getLobbyPlayers() {
@@ -100,9 +104,9 @@ public class WaitController {
     public void startGame() {
         LOGGER.info("Starting game with id " + gameID);
 
-        GameController.addNewGame(gameID,lobbyPlayers);
+        gameController.addNewGame(gameID,lobbyPlayers);
 
-        Game current = GameController.getGame(gameID);
+        Game current = gameController.getGame(gameID);
         lobbyPlayers.clear();
         //var playerList = IDToPlayers.get(gameID);
         var playerList = current.getPlayers();
@@ -113,20 +117,20 @@ public class WaitController {
         var question = QuestionController.getRandomQuestion();
         var questionTypeList = getRandomQuestionTypes();
         for (Player player : playerList) {
-            String playerID = player.getName();
+            String playerID = player.getSocketID();
             LOGGER.info("Sending question " + question.getChoices());
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/renderQuestion", question);
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/gameID",gameID);
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/questionTypes", questionTypeList);
-            LOGGER.info("Sent message to start game to " + playerID);
+            LOGGER.info("Sent message to start game to " + player.getName());
         }
         gameID++;
     }
 
     public void addPlayerToGameID(String playerID, Player player) {
 
-        GameController.addPlayerToGame(gameID,player);
-
+        player.socketID = playerID;
+        gameController.addPlayerToGame(gameID,player);
         /*playerToGameId.put(playerID, Pair.of(gameID, player));
         var currentList = IDToPlayers.getOrDefault(gameID, new ArrayList<>());
         if (currentList.size() == 0)
@@ -167,6 +171,18 @@ public class WaitController {
         return res;
     }
 
+    /**
+     * Fetches the following question for the current game
+     * @param gameID identifier for the current game
+     * @return the following question
+     */
+    @GetMapping(path = "api/question/{gameID}")
+    public Question getQuestion(@PathVariable("gameID") int gameID)
+    {
+        Game cur = gameController.getGame(gameID);
+        Question q = cur.getQuestion();
+        return q;
+    }
 
     @EventListener
     private void handleSessionConnected(SessionConnectEvent event) {

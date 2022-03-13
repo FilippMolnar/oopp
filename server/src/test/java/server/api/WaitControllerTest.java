@@ -29,6 +29,7 @@ public class WaitControllerTest {
     private WaitController sut;
     private List<Player> lobby;
     private MockSimpMessagingTemplate mockSimpMessagingTemplate;
+    private GameController gameController;
     private final Player player1 = new Player("player1");
     private final Player player2 = new Player("player2");
     private final Player player3 = new Player("player3");
@@ -36,7 +37,7 @@ public class WaitControllerTest {
     @BeforeEach
     public void setup() {
         mockSimpMessagingTemplate = new MockSimpMessagingTemplate();
-        sut = new WaitController(mockSimpMessagingTemplate);
+        sut = new WaitController(mockSimpMessagingTemplate,gameController);
         lobby = new ArrayList<>();
     }
 

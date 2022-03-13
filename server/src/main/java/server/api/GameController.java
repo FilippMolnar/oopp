@@ -16,34 +16,35 @@ import java.util.Map;
 @RestController
 public class GameController {
 
-    private static Map<Integer, Game> games = new HashMap<>();
+    private Map<Integer, Game> games = new HashMap<>();
 
     public GameController() {}
 
-    public static void addNewGame(int gameID, List<Player> players)
+    public void addNewGame(int gameID)
     {
-        games.put(gameID,new Game(gameID,players));
+        games.put(gameID,new Game(gameID));
     }
 
-    public static void addPlayerToGame(int gameID, Player player)
+    public void addPlayerToGame(int gameID, Player player)
     {
-        if (games.get(gameID) == null) {
-            games.put(gameID, new Game());
+        if(games.get(gameID) == null)
+        {
+            addNewGame(gameID);
         }
         games.get(gameID).addPlayer(player);
     }
 
-    public static void setScore(int gameID,Player player, int score)
+    public void setScore(int gameID,Player player, int score)
     {
         games.get(gameID).setScore(player,score);
     }
 
-    public static void removePlayer(int gameID,Player player)
+    public void removePlayer(int gameID,Player player)
     {
         games.get(gameID).removePlayer(player);
     }
 
-    public static Game getGame(int gameID)
+    public Game getGame(int gameID)
     {
         return games.get(gameID);
     }
@@ -54,7 +55,7 @@ public class GameController {
      * @return a list of pairs of score and player sorted in descending order by their score
      */
     @GetMapping(path = "api/leaderboard/{gameID}")
-    public static List<Pair<Integer,Player>> getLeaderboard(@PathVariable("gameID") int gameID)
+    public List<Pair<Integer,Player>> getLeaderboard(@PathVariable("gameID") int gameID)
     {
         Game cur = getGame(gameID);
 

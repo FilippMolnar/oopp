@@ -35,6 +35,8 @@ public class Player {
 
     public String name;
 
+    public String socketID;
+
     @SuppressWarnings("unused")
     private Player() {
         // for object mapper
@@ -47,6 +49,8 @@ public class Player {
     public String getName() {
         return this.name;
     }
+
+    public String getSocketID() {return this.socketID;}
 
     @Override
     public boolean equals(Object obj) {

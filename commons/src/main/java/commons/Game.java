@@ -1,6 +1,5 @@
 package commons;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
@@ -25,12 +24,8 @@ public class Game {
 
     public Game(){}
 
-    public Game(int gameID, List<Player> players) {
+    public Game(int gameID) {
         this.gameID = gameID;
-        for(var player:players)
-        {
-            addPlayer(player);
-        }
     }
 
     public int getRequested() {
@@ -123,7 +118,7 @@ public class Game {
         for(int i=0;i<pnum;i++)
         {
             if(inGame.get(i) == false)continue; // Players which left the game won`t be in the scoreboard
-            Pair<Integer,Player> cscore = new ImmutablePair<Integer,Player>(scoreboard.get(i),idToPlayer.get(i));
+            Pair<Integer,Player> cscore =Pair.of(scoreboard.get(i),idToPlayer.get(i));
             scores.add(cscore);
         }
         Collections.sort(scores, new Comparator<Pair<Integer,Player>>(){

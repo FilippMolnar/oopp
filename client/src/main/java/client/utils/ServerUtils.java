@@ -221,11 +221,11 @@ public class ServerUtils {
     }
 
     public Game getGameMapping(int gameID) {
-        return ClientBuilder.newClient(new ClientConfig())
+        var q = ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/game/getGame/" + gameID)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(new GenericType<>() {
-                });
+                .get(Response.class);
+        return q.readEntity(Game.class);
     }
 }

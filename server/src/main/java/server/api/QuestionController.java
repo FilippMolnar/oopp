@@ -4,18 +4,19 @@ import commons.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class QuestionController {
     @GetMapping("/question")
     public static Question getRandomQuestion() {
-        int pick = new Random().nextInt(3);
-        if (pick == 0)
-            return getTypeEstimate();
-        else if (pick == 1)
-            return getTypeEqual();
-        else
+//        int pick = new Random().nextInt(3);
+//        if (pick == 0)
+//            return getTypeEstimate();
+//        else if (pick == 1)
+//            return getTypeEqual();
+//        else
             return getTypeMostLeast();
     }
 
@@ -42,17 +43,19 @@ public class QuestionController {
      */
     @GetMapping(path = {"/most"})
     public static Question getTypeMostLeast() {
-        Activity act = ActivityController.getRandom();
         List<Activity> choices = new ArrayList<>();
-        choices.add(act);
         while (choices.size() < 3) {
-            act = ActivityController.getRandom();
+            Activity act = ActivityController.getRandom();
             if (choices.contains(act)) continue;
             choices.add(act);
         }
+        Activity highest = choices.get(0);
+        for(Activity a : choices){
+            highest = highest.getConsumption() > a.getConsumption() ? highest : a;
+        }
 
         Question q = new Question();
-        q.setCorrect(new Activity());
+        q.setCorrect(highest);
         q.setType(QuestionType.HighestEnergy);
         q.setChoices(choices);
         return q;
@@ -90,7 +93,6 @@ public class QuestionController {
             if (choices.contains(diff.get(idx))) continue;
             choices.add(diff.get(idx));
         }
-
         q.setType(QuestionType.EqualEnergy);
         q.setChoices(choices);
         return q;

@@ -98,23 +98,20 @@ public class WaitingRoomCtrl implements Initializable {
         });
         this.serverUtils.subscribeForSocketMessages("/user/queue/renderQuestion", Question.class, question -> {
             System.out.println("Received a question to render");
-            appController.showQuestion(question);
             this.serverUtils.sendThroughSocket("/app/disconnect", new Player(appController.getName()));
         });
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, this.appController::setGameID);
 
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/questionTypes", List.class, questionTypes -> {
-            // TODO : create Linked scene graph out of this list information
-            System.out.println(questionTypes);
+            System.out.println("Receiving question types!");
+            appController.addQuestionScenes(questionTypes, 1);
+            appController.showNext();
         });
 
-        this.serverUtils.subscribeForSocketMessages("/topic/render_question", Player.class, player -> {
-            System.out.println("Rendering question type: " + player);
-            this.renderQuestion();
-        });
+//        this.serverUtils.subscribeForSocketMessages("/topic/render_question", Player.class, player -> {
+//            System.out.println("Rendering question type: " + player);
+//            this.renderQuestion();
+//        });
     }
 
-    private void renderQuestion() {
-        //this.appController.showQuestion();
-    }
 }

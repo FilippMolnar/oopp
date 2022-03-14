@@ -66,6 +66,7 @@ public class MainAppController {
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
+        jokers = new JokersList();
 
         primaryStage.setScene(homeScene);
         primaryStage.show();

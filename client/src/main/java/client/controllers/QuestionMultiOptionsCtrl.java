@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Joker;
+import commons.Player;
 import commons.Question;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -79,16 +80,24 @@ public class QuestionMultiOptionsCtrl {
         }
     }
 
-    public void pressedA() {
+    public void pressedOption(ActionEvent actionEvent) {
+        final Node source = (Node) actionEvent.getSource();
+        String button_id = source.getId();
+        Activity a;
+        if(button_id.equals("optionA")){
+            a = question.getChoices().get(0);
+        } else if(button_id.equals("optionB")){
+            a = question.getChoices().get(1);
+        } else {
+            a = question.getChoices().get(2);
+        }
+        optionA.setDisable(true);
+        optionB.setDisable(true);
+        optionC.setDisable(true);
 
-    }
-
-    public void pressedB() {
-
-    }
-
-    public void pressedC() {
-
+        System.out.println(question);
+        System.out.println(a.id == question.getCorrect().id);
+        server.sendThroughSocket("/app/submit_answer", a.id == question.getCorrect().id);
     }
 
     public void firstJoker(){

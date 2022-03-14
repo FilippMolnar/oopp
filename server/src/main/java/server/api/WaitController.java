@@ -173,4 +173,14 @@ public class WaitController {
             simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
         }
     }
+
+    @MessageMapping("/submit_answer")
+    public void submitAnswer(Principal principal, @Payload boolean answer) {
+        System.out.println(answer);
+        //TODO collect all the answers from players, then render new question from questionList
+//        var playerList = IDToPlayers.get(gameID);
+//        for (String playerID : playerList) {
+//
+//        }
+    }
 }

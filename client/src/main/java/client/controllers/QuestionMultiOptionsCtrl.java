@@ -4,13 +4,13 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Joker;
-import commons.Player;
 import commons.Question;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -25,14 +25,12 @@ import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-public class QuestionMultiOptionsCtrl implements ControllerIntializable {
+public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initializable {
     private final ServerUtils server;
     private final MainAppController mainCtrl;
     @FXML
@@ -51,6 +49,14 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable {
     @FXML
     private Text timerValue;
     private int timerIntegerValue;
+
+    private boolean hasSubmittedAnswer = false;
+    private boolean afterFXMLLOAD = false;
+
+    private AnimationTimer animationTimer;
+    private Timeline timeline;
+    TimerTask timerTask;
+    Timer numberTimer;
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -80,6 +86,11 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable {
         }
     }
 
+    /**
+     * function called when user submits an answer
+     * we mark that answer as final for now.
+     * @param actionEvent event used to get the button
+     */
     public void pressedOption(ActionEvent actionEvent) {
         final Node source = (Node) actionEvent.getSource();
         String button_id = source.getId();
@@ -97,7 +108,11 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable {
 
         System.out.println(question);
         System.out.println(a.id == question.getCorrect().id);
-        server.sendThroughSocket("/app/submit_answer", a.id == question.getCorrect().id);
+        hasSubmittedAnswer = true;
+        sendAnswerToServer(a.id == question.getCorrect().id);
+    }
+    private void sendAnswerToServer(boolean answer){
+        server.sendThroughSocket("/app/submit_answer", answer);
     }
 
     public void firstJoker(){
@@ -169,19 +184,27 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable {
         }
     }
 
+    public void stopTimer(){
+        timeline.stop();
+        animationTimer.stop();
+        timerTask.cancel();
+        numberTimer.cancel();
+    }
 
     public void startTimerAnimation() {
-        timerIntegerValue = Integer.parseInt(timerValue.getText());
+        timerIntegerValue = 10;
         timerArc.setLength(360);
+        timerArc.setFill(Paint.valueOf("#d6d3ee"));
+        timerValue.setFill(Paint.valueOf("#d6d3ee"));
         //create a timeline for moving the circle
-        Timeline timeline = new Timeline();
+        timeline = new Timeline();
         //You can add a specific action when each frame is started.
-        AnimationTimer animationTimer = new AnimationTimer() {
+        animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
             }
         };
-        TimerTask task = new TimerTask() {
+        timerTask = new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
@@ -194,9 +217,10 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable {
                 });
             }
         };
-        Timer numberTimer = new Timer();
-        int durationTime = timerIntegerValue;
-        numberTimer.scheduleAtFixedRate(task, 1000, 1000);
+        numberTimer = new Timer();
+        int durationTime = 10;
+        timerValue.setText(Integer.toString(durationTime));
+        numberTimer.scheduleAtFixedRate(timerTask, 1000, 1000);
 
         //create a keyValue with factory: scaling the circle 2times
         KeyValue lengthProperty = new KeyValue(timerArc.lengthProperty(), 0);
@@ -207,10 +231,15 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable {
         Duration duration = Duration.millis(durationTime * 1000);
 
         EventHandler<ActionEvent> onFinished = t -> {
-            System.out.println("animation finished!");
-            numberTimer.cancel();
-            timerIntegerValue = 0;
-            timerValue.setText("0");
+                System.out.println("animation finished!");
+                numberTimer.cancel();
+                timerIntegerValue = 0;
+                timerValue.setFill(Paint.valueOf("red"));
+                timerValue.setText("0");
+            if(!hasSubmittedAnswer){
+                System.out.println("Submitting an answer!");
+                sendAnswerToServer(false); // incorrect Answer
+            }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
@@ -219,6 +248,7 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable {
 
         timeline.play();
         animationTimer.start();
+
     }
 
 
@@ -276,5 +306,25 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable {
     @Override
     public void initializeController() {
         startTimerAnimation();
+        hasSubmittedAnswer = false;
+        System.out.println("Calling intialize please!!");
+        optionA.setDisable(false);
+        optionB.setDisable(false);
+        optionC.setDisable(false);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.server.subscribeForSocketMessages("/user/queue/renderQuestion", Question.class, question -> {
+            System.out.println("Received a question to render");
+            setQuestion(question);
+            if(afterFXMLLOAD) {
+                // triggered when a user has to load onther question
+                stopTimer();
+                mainCtrl.showNext();
+            }
+            afterFXMLLOAD = true;
+
+        });
     }
 }

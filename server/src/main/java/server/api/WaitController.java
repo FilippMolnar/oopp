@@ -49,6 +49,8 @@ public class WaitController {
      */
     private final Map<String, Pair<Integer, Player>> playerToGameId = new HashMap<>(); // map the player's string id to the game id
     private final Map<Integer, List<String>> IDToPlayers = new HashMap<>(); // given an id get all the players with that id
+    private final Map<Integer, Integer> IDtoNumPlayers = new HashMap<>(); // given an id get all the players with that id
+
     private final Logger LOGGER = LoggerFactory.getLogger(WaitController.class);
     private int gameID = 0;
 
@@ -74,7 +76,7 @@ public class WaitController {
         LOGGER.info("Players in waiting room are\n" + lobbyPlayers);
     }
 
-    private List<Integer> getRandomQuestionTypes(){
+    private List<Integer> getRandomQuestionTypes() {
         // 0 -> equal energy
         // 1 -> highest energy
         // 2 -> estimate answer
@@ -82,11 +84,11 @@ public class WaitController {
         final int nrEstimate = 3;
         final int nrHighest = 13;
         List<Integer> list = new ArrayList<>();
-        for(int i = 0; i < nrEqual; i++)
+        for (int i = 0; i < nrEqual; i++)
             list.add(0);
-        for(int i = 0; i < nrHighest; i++)
+        for (int i = 0; i < nrHighest; i++)
             list.add(1);
-        for(int i = 0; i < nrEstimate; i++)
+        for (int i = 0; i < nrEstimate; i++)
             list.add(2);
         Collections.shuffle(list);
         return list;
@@ -105,12 +107,13 @@ public class WaitController {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
+        IDtoNumPlayers.put(gameID, 0);
         var question = QuestionController.getTypeMostLeast();
         var questionTypeList = getRandomQuestionTypes();
         for (String playerID : playerList) {
             LOGGER.info("Sending question " + question.getChoices());
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/renderQuestion", question);
-            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/gameID",gameID);
+            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/gameID", gameID);
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/questionTypes", questionTypeList);
             LOGGER.info("Sent message to start game to " + playerToGameId.get(playerID).getSecond().getName());
         }
@@ -176,11 +179,23 @@ public class WaitController {
 
     @MessageMapping("/submit_answer")
     public void submitAnswer(Principal principal, @Payload boolean answer) {
-        System.out.println(answer);
-        //TODO collect all the answers from players, then render new question from questionList
-//        var playerList = IDToPlayers.get(gameID);
-//        for (String playerID : playerList) {
-//
-//        }
+        int gameID = playerToGameId.get(principal.getName()).getFirst();
+        int numPlayersTotal = IDToPlayers.get(gameID).size();
+        System.out.println("Number of players total is: " + numPlayersTotal);
+        int before = IDtoNumPlayers.get(gameID);
+        System.out.println("Before we had" + before);
+        before++;
+        IDtoNumPlayers.put(gameID, before);
+        System.out.println("now we have " + before + " players. The list size is" + numPlayersTotal);
+        if (before == numPlayersTotal) {
+            IDtoNumPlayers.put(gameID,0); // reset he number of players
+            var playerList = IDToPlayers.get(gameID);
+            System.out.println("Calling next send");
+            //TODO collect all the answers from players, then render new question from questionList
+            var question = QuestionController.getTypeMostLeast();
+            for (String playerID : playerList) {
+                simpMessagingTemplate.convertAndSendToUser(playerID, "queue/renderQuestion", question);
+            }
+        }
     }
 }

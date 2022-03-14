@@ -61,7 +61,7 @@ public class Main extends Application {
      * @throws IOException
      */
     private void loadSimpleExample(Stage primaryStage) throws IOException{
-        String[] path = {"client","scenes","example.fxml"};
+        String[] path = {"client","scenes","clock.fxml"};
         FXMLLoader loader = new FXMLLoader(getLocation(path));
         Scene scene = new Scene(loader.load());
         primaryStage.setTitle("FXML simple load.No Controller");

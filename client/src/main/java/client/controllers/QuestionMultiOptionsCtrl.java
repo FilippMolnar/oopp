@@ -5,39 +5,51 @@ import com.google.inject.Inject;
 import commons.Activity;
 import commons.Joker;
 import commons.Question;
+import javafx.animation.*;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Arc;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class QuestionMultiOptionsCtrl implements Initializable {
+public class QuestionMultiOptionsCtrl {
     private final ServerUtils server;
     private final MainAppController mainCtrl;
+    @FXML
+    GridPane parentGridPane;
     private Question question;
-
     @FXML
     private Button optionA;
-
     @FXML
     private Button optionB;
-
     @FXML
     private Button optionC;
-
-
     @FXML
     private GridPane images;
+    @FXML
+    private Arc timerArc;
+    @FXML
+    private Text timerValue;
+    private int timerIntegerValue;
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -148,8 +160,108 @@ public class QuestionMultiOptionsCtrl implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
 
+    public void startTimerAnimation() {
+        timerIntegerValue = Integer.parseInt(timerValue.getText());
+        timerArc.setLength(360);
+        //create a timeline for moving the circle
+        Timeline timeline = new Timeline();
+        //You can add a specific action when each frame is started.
+        AnimationTimer animationTimer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+            }
+        };
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    timerIntegerValue--;
+                    System.out.println(timerIntegerValue);
+                    timerValue.setText(Integer.toString(timerIntegerValue));
+                    if (timerIntegerValue <= 3) {
+                        timerArc.setFill(Paint.valueOf("red")); // set the color to red when the timer runs out
+                    }
+                });
+            }
+        };
+        Timer numberTimer = new Timer();
+        int durationTime = timerIntegerValue;
+        numberTimer.scheduleAtFixedRate(task, 1000, 1000);
+
+        //create a keyValue with factory: scaling the circle 2times
+        KeyValue lengthProperty = new KeyValue(timerArc.lengthProperty(), 0);
+
+
+        //create a keyFrame, the keyValue is reached at time 2s
+        System.out.println(timerValue.getText());
+        Duration duration = Duration.millis(durationTime * 1000);
+
+        EventHandler<ActionEvent> onFinished = t -> {
+            System.out.println("animation finished!");
+            numberTimer.cancel();
+            timerIntegerValue = 0;
+            timerValue.setText("0");
+        };
+        KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
+
+        //add the keyframe to the timeline
+        timeline.getKeyFrames().add(keyFrame);
+
+        timeline.play();
+        animationTimer.start();
+    }
+
+
+    /**
+     * Wrapper function used to showcase the userReaction method with the help of a button. Will be deleted once we
+     * complete the reaction functionality.
+     */
+    public void userReaction() {
+        userReaction("angel", "Bianca");
+    }
+
+    /**
+     * Animates the reactions of users.
+     *
+     * @param reaction - a String that can have one of the following values: "happy", "angry", "angel"
+     * @param name     - the nickname of the user who reacted
+     */
+    public void userReaction(String reaction, String name) {
+        Pane pane = new Pane();
+        ImageView iv;
+        Label label = new Label(name);
+        Image img;
+        switch (reaction) {
+            case "happy":
+                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
+                break;
+            case "angry":
+                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
+                break;
+            case "angel":
+                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
+                break;
+            default:
+                return;
+        }
+
+        iv = new ImageView(img);
+        pane.getChildren().add(iv);
+        pane.getChildren().add(label);
+        label.setPadding(new Insets(-20, 0, 0, 5));
+        TranslateTransition translate = new TranslateTransition();
+        translate.setByY(200);
+        translate.setDuration(Duration.millis(2000));
+        translate.setNode(pane);
+        translate.play();
+
+        FadeTransition fade = new FadeTransition();
+        fade.setDuration(Duration.millis(2000));
+        fade.setFromValue(10);
+        fade.setToValue(0);
+        fade.setNode(pane);
+        fade.play();
+        parentGridPane.getChildren().add(pane);
     }
 }

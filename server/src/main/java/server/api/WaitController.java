@@ -114,7 +114,6 @@ public class WaitController {
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/questionTypes", questionTypeList);
             LOGGER.info("Sent message to start game to " + playerToGameId.get(playerID).getSecond().getName());
         }
-
         gameID++;
     }
 

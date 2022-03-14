@@ -1,8 +1,6 @@
 package server.api;
 
-import commons.Activity;
-import commons.Question;
-import commons.QuestionType;
+import commons.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,7 +9,6 @@ import java.util.List;
 
 @RestController
 public class QuestionController {
-
     @GetMapping("/question")
     public static Question getRandomQuestion() {
 //        int pick = new Random().nextInt(3);
@@ -100,4 +97,5 @@ public class QuestionController {
         q.setChoices(choices);
         return q;
     }
+
 }

@@ -28,6 +28,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
+import server.Utils;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class WaitController {
     private final SimpMessageSendingOperations simpMessagingTemplate;
     private final List<Player> lobbyPlayers = new ArrayList<>();
     private final RestTemplate restTemplate;
-
+    private final Utils utils;
 
     private final Logger LOGGER = LoggerFactory.getLogger(WaitController.class);
     private final GameController gameController;
@@ -51,6 +52,7 @@ public class WaitController {
 
     WaitController(SimpMessageSendingOperations simpMessagingTemplate, GameController gameController) {
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.utils = new Utils(simpMessagingTemplate);
         this.restTemplate = new RestTemplate();
         this.gameController = gameController;
     }
@@ -115,11 +117,9 @@ public class WaitController {
         }
         var questionList = get20RandomMostLeastQuestions();
         currentGame.setQuestions(questionList);
-        for (Player player : playerList) {
-            String playerID = player.getSocketID();
-            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/startGame/gameID", gameID);
-            LOGGER.info("Sent message to start game to along with 20 questions! " + player.getName());
-        }
+
+        utils.sendToAllPlayers(playerList, "queue/startGame/gameID", gameID);
+
         gameID++;
     }
 

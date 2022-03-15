@@ -4,7 +4,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Joker;
-import commons.Player;
 import commons.Question;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -27,10 +26,7 @@ import javafx.util.Duration;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerIntializable {
     @FXML
@@ -49,6 +45,14 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private Text timerValue;
     private int timerIntegerValue;
 
+    private boolean hasSubmittedAnswer = false;
+    private final boolean afterFXMLLOAD = false;
+
+    private AnimationTimer animationTimer;
+    private Timeline timeline;
+    TimerTask timerTask;
+    Timer numberTimer;
+
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
         super(server, mainCtrl);
@@ -61,28 +65,39 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionB.setText(question.getChoices().get(1).getTitle());
         optionC.setText(question.getChoices().get(2).getTitle());
 
-
-        System.out.println("Printing images" + imageViews);
         for (int i = 0; i < imageViews.size(); i++) {
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
             Path path = Paths.get(choice.getImagePath());
-            var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
-            var newImage = new Image(actualPath);
-            view.setImage(newImage);
+            try {
+                var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
+                var newImage = new Image(actualPath);
+                view.setFitWidth(1);
+                view.setFitHeight(1);
+                view.setImage(newImage);
 
-            System.out.println(path.getFileName());
-            System.out.println(actualPath);
+                System.out.println(path.getFileName() + " " + actualPath);
+            } catch (NullPointerException e) {
+                System.out.println("Having an issue with the image " + path.getFileName() +
+                        " it can't be found on the client");
+                System.out.println(Arrays.toString(e.getStackTrace()));
+
+            }
         }
     }
 
+    /**
+     * function called when user submits an answer
+     * we mark that answer as final for now.
+     * @param actionEvent event used to get the button
+     */
     public void pressedOption(ActionEvent actionEvent) {
         final Node source = (Node) actionEvent.getSource();
         String button_id = source.getId();
         Activity a;
-        if(button_id.equals("optionA")){
+        if (button_id.equals("optionA")) {
             a = question.getChoices().get(0);
-        } else if(button_id.equals("optionB")){
+        } else if (button_id.equals("optionB")) {
             a = question.getChoices().get(1);
         } else {
             a = question.getChoices().get(2);
@@ -90,17 +105,20 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         sendAnswer(a.id == question.getCorrect().id);
     }
 
-    public void sendAnswer(boolean answer){
+    /**
+     * send answer to the server
+     *
+     * @param answer true/false depending if the selected answer was good
+     */
+    public void sendAnswer(boolean answer) {
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-
-        System.out.println(question);
-        System.out.println(answer);
+        hasSubmittedAnswer = true;
         server.sendThroughSocket("/app/submit_answer", answer);
     }
 
-    public void firstJoker(){
+    public void firstJoker() {
         return;
 //        List<Joker> jokers = mainCtrl.getJokers().getJokers();
 //        if(jokers.get(0).isUsed()){
@@ -164,24 +182,32 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             var view = (ImageView) imageView;
             StackPane pane = (StackPane) view.getParent();
             view.setPreserveRatio(true);
-            view.setFitHeight(pane.getHeight());
-            view.setFitWidth(pane.getWidth());
+            view.setFitHeight(pane.getHeight() - 5);
+            view.setFitWidth(pane.getWidth() - 5);
         }
     }
 
+    public void stopTimer(){
+        timeline.stop();
+        animationTimer.stop();
+        timerTask.cancel();
+        numberTimer.cancel();
+    }
 
     public void startTimerAnimation() {
-        timerIntegerValue = Integer.parseInt(timerValue.getText());
+        timerIntegerValue = 10;
         timerArc.setLength(360);
+        timerArc.setFill(Paint.valueOf("#d6d3ee"));
+        timerValue.setFill(Paint.valueOf("#d6d3ee"));
         //create a timeline for moving the circle
-        Timeline timeline = new Timeline();
+        timeline = new Timeline();
         //You can add a specific action when each frame is started.
-        AnimationTimer animationTimer = new AnimationTimer() {
+        animationTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
             }
         };
-        TimerTask task = new TimerTask() {
+        timerTask = new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
@@ -194,9 +220,10 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
                 });
             }
         };
-        Timer numberTimer = new Timer();
-        int durationTime = timerIntegerValue;
-        numberTimer.scheduleAtFixedRate(task, 1000, 1000);
+        numberTimer = new Timer();
+        int durationTime = 10;
+        timerValue.setText(Integer.toString(durationTime));
+        numberTimer.scheduleAtFixedRate(timerTask, 1000, 1000);
 
         //create a keyValue with factory: scaling the circle 2times
         KeyValue lengthProperty = new KeyValue(timerArc.lengthProperty(), 0);
@@ -211,7 +238,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            sendAnswer(false);
+            if (!hasSubmittedAnswer)
+                sendAnswer(false);
+            mainCtrl.showNext(); // show next scene when timer runs out
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
@@ -278,5 +307,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @Override
     public void initializeController() {
         startTimerAnimation();
+        resizeImages();
+        hasSubmittedAnswer = false;
+        System.out.println("Enabling scene");
+        optionA.setDisable(false);
+        optionB.setDisable(false);
+        optionC.setDisable(false);
     }
+
+
 }

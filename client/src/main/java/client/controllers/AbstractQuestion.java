@@ -48,9 +48,10 @@ public abstract class AbstractQuestion {
         this.question = question;
     }
 
-//    public void triggerJoker(ActionEvent actionEvent){
-//
-//    }
+    public void triggerJoker(ActionEvent actionEvent){
+        final Node source = (Node) actionEvent.getSource();
+        System.out.println(source.getId());
+    }
 }
 
 

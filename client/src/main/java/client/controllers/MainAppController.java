@@ -144,6 +144,10 @@ public class MainAppController {
     public void showNext(int i) {
         this.currentScene = this.currentScene.getNext(i);
         primaryStage.setScene(this.currentScene.getScene());
+        Object controller = currentScene.getController();
+        if(controller instanceof QuestionMultiOptionsCtrl){
+
+        }
         if (this.currentScene.getTitle() != null) {
             primaryStage.setTitle(this.currentScene.getTitle());
         }

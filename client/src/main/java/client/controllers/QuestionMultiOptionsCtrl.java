@@ -32,12 +32,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class QuestionMultiOptionsCtrl implements ControllerIntializable {
-    private final ServerUtils server;
-    private final MainAppController mainCtrl;
+public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerIntializable {
     @FXML
     GridPane parentGridPane;
-    private Question question;
     @FXML
     private Button optionA;
     @FXML
@@ -54,12 +51,11 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable {
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+        super(server, mainCtrl);
     }
 
     public void setQuestion(Question question) {
-        this.question = question;
+        super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         optionA.setText(question.getChoices().get(0).getTitle());
         optionB.setText(question.getChoices().get(1).getTitle());

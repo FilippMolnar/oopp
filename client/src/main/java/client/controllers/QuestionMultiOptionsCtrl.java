@@ -91,13 +91,17 @@ public class QuestionMultiOptionsCtrl {
         } else {
             a = question.getChoices().get(2);
         }
+        sendAnswer(a.id == question.getCorrect().id);
+    }
+
+    public void sendAnswer(boolean answer){
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
 
         System.out.println(question);
-        System.out.println(a.id == question.getCorrect().id);
-        server.sendThroughSocket("/app/submit_answer", a.id == question.getCorrect().id);
+        System.out.println(answer);
+        server.sendThroughSocket("/app/submit_answer", answer);
     }
 
     public void firstJoker(){
@@ -211,6 +215,7 @@ public class QuestionMultiOptionsCtrl {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
+            sendAnswer(false);
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 

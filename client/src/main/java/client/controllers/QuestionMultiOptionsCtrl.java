@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class QuestionMultiOptionsCtrl {
+public class QuestionMultiOptionsCtrl implements ControllerIntializable {
     private final ServerUtils server;
     private final MainAppController mainCtrl;
     @FXML
@@ -259,7 +259,6 @@ public class QuestionMultiOptionsCtrl {
             default:
                 return;
         }
-
         iv = new ImageView(img);
         pane.getChildren().add(iv);
         pane.getChildren().add(label);
@@ -277,5 +276,10 @@ public class QuestionMultiOptionsCtrl {
         fade.setNode(pane);
         fade.play();
         parentGridPane.getChildren().add(pane);
+    }
+
+    @Override
+    public void initializeController() {
+        startTimerAnimation();
     }
 }

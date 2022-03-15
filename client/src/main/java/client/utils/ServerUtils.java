@@ -180,6 +180,15 @@ public class ServerUtils {
                 });
     }
 
+    public List<Question> getAllGameQuestions(int gameID) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/game/getQuestions/" + gameID) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {
+                });
+    }
+
     public Quote addQuote(Quote quote) {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/quotes") //
@@ -187,4 +196,5 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
     }
+
 }

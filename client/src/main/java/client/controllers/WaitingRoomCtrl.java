@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import commons.Player;
+import commons.Question;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -96,14 +97,16 @@ public class WaitingRoomCtrl implements Initializable {
             updateUI();
         });
 
-        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, this.appController::setGameID);
-
-        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/questionTypes", List.class, questionTypes -> {
-            System.out.println("Receiving question types!");
-            appController.addQuestionScenes(questionTypes, 1);
+        this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, gameID -> {
+            appController.setGameID(gameID);
+            List<Question> questions = serverUtils.getAllGameQuestions(gameID);
+            appController.addQuestionScenes(questions, 1);
             appController.showNext();
+
+            // disconnect from waiting room
             this.serverUtils.sendThroughSocket("/app/disconnect", new Player(appController.getName()));
         });
+
 
     }
 

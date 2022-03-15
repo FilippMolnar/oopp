@@ -10,7 +10,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -25,12 +24,11 @@ import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initializable {
+public class QuestionMultiOptionsCtrl implements ControllerIntializable {
     private final ServerUtils server;
     private final MainAppController mainCtrl;
     @FXML
@@ -51,7 +49,7 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
     private int timerIntegerValue;
 
     private boolean hasSubmittedAnswer = false;
-    private boolean afterFXMLLOAD = false;
+    private final boolean afterFXMLLOAD = false;
 
     private AnimationTimer animationTimer;
     private Timeline timeline;
@@ -71,18 +69,24 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
         optionB.setText(question.getChoices().get(1).getTitle());
         optionC.setText(question.getChoices().get(2).getTitle());
 
-
-        System.out.println("Printing images" + imageViews);
         for (int i = 0; i < imageViews.size(); i++) {
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
             Path path = Paths.get(choice.getImagePath());
-            var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
-            var newImage = new Image(actualPath);
-            view.setImage(newImage);
+            try {
+                var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
+                var newImage = new Image(actualPath);
+                view.setFitWidth(1);
+                view.setFitHeight(1);
+                view.setImage(newImage);
 
-            System.out.println(path.getFileName());
-            System.out.println(actualPath);
+                System.out.println(path.getFileName() + " " + actualPath);
+            } catch (NullPointerException e) {
+                System.out.println("Having an issue with the image " + path.getFileName() +
+                        " it can't be found on the client");
+                System.out.println(Arrays.toString(e.getStackTrace()));
+
+            }
         }
     }
 
@@ -95,9 +99,9 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
         final Node source = (Node) actionEvent.getSource();
         String button_id = source.getId();
         Activity a;
-        if(button_id.equals("optionA")){
+        if (button_id.equals("optionA")) {
             a = question.getChoices().get(0);
-        } else if(button_id.equals("optionB")){
+        } else if (button_id.equals("optionB")) {
             a = question.getChoices().get(1);
         } else {
             a = question.getChoices().get(2);
@@ -105,17 +109,20 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
         sendAnswer(a.id == question.getCorrect().id);
     }
 
-    public void sendAnswer(boolean answer){
+    /**
+     * send answer to the server
+     *
+     * @param answer true/false depending if the selected answer was good
+     */
+    public void sendAnswer(boolean answer) {
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-
-        System.out.println(question);
-        System.out.println(answer);
+        hasSubmittedAnswer = true;
         server.sendThroughSocket("/app/submit_answer", answer);
     }
 
-    public void firstJoker(){
+    public void firstJoker() {
         return;
 //        List<Joker> jokers = mainCtrl.getJokers().getJokers();
 //        if(jokers.get(0).isUsed()){
@@ -179,8 +186,8 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
             var view = (ImageView) imageView;
             StackPane pane = (StackPane) view.getParent();
             view.setPreserveRatio(true);
-            view.setFitHeight(pane.getHeight());
-            view.setFitWidth(pane.getWidth());
+            view.setFitHeight(pane.getHeight() - 5);
+            view.setFitWidth(pane.getWidth() - 5);
         }
     }
 
@@ -235,7 +242,9 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            sendAnswer(false);
+            if (!hasSubmittedAnswer)
+                sendAnswer(false);
+            mainCtrl.showNext(); // show next scene when timer runs out
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
@@ -244,7 +253,6 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
 
         timeline.play();
         animationTimer.start();
-
     }
 
 
@@ -302,25 +310,13 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
     @Override
     public void initializeController() {
         startTimerAnimation();
+        resizeImages();
         hasSubmittedAnswer = false;
-        System.out.println("Calling intialize please!!");
+        System.out.println("Enabling scene");
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        this.server.subscribeForSocketMessages("/user/queue/renderQuestion", Question.class, question -> {
-            System.out.println("Received a question to render");
-            setQuestion(question);
-            if(afterFXMLLOAD) {
-                // triggered when a user has to load onther question
-                stopTimer();
-                mainCtrl.showNext();
-            }
-            afterFXMLLOAD = true;
 
-        });
-    }
 }

@@ -11,9 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import commons.QuestionType;
-import client.LinkedScene;
-import java.util.List;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,8 +66,7 @@ public class MainAppController {
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
-
-        this.jokers = new JokersList();
+        jokers = new JokersList();
 
         primaryStage.setScene(homeScene);
         primaryStage.show();
@@ -178,6 +175,7 @@ public class MainAppController {
         primaryStage.setScene(qMultiScene);
         primaryStage.show();
         qMultiCtrl.resizeImages();
+        qMultiCtrl.startTimerAnimation();
     }
 
     /*

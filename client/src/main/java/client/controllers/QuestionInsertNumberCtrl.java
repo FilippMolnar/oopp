@@ -6,9 +6,7 @@ import commons.Question;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class QuestionInsertNumberCtrl {
-    private final ServerUtils server;
-    private final MainAppController mainCtrl;
+public class QuestionInsertNumberCtrl extends AbstractQuestion {
     private Question question;
 
     @FXML
@@ -17,12 +15,11 @@ public class QuestionInsertNumberCtrl {
 
     @Inject
     public QuestionInsertNumberCtrl(ServerUtils server, MainAppController mainCtrl) {
-        this.mainCtrl = mainCtrl;
-        this.server = server;
+        super(server, mainCtrl);
     }
 
     public void setQuestion(Question question) {
-        this.question = question;
+        super.setQuestion(question);
     }
 
 

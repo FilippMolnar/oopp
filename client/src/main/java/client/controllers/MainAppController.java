@@ -137,6 +137,7 @@ public class MainAppController {
         primaryStage.setScene(this.currentScene.getScene());
         if(this.currentScene.getTitle() != null) {
             primaryStage.setTitle(this.currentScene.getTitle());
+
         }
     }
 

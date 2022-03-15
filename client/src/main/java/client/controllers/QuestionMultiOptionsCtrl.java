@@ -2,10 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.Joker;
-import commons.Player;
-import commons.Question;
+import commons.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -184,6 +181,10 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("bbbb");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
     }
 
     /**
@@ -200,6 +201,7 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
      * @param name - the nickname of the user who reacted
      */
     public void userReaction(String reaction, String name) {
+
         Pane pane = new Pane();
         ImageView iv;
         Label label = new Label(name);
@@ -217,24 +219,49 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
             default:
                 return;
         }
-
         iv = new ImageView(img);
         pane.getChildren().add(iv);
         pane.getChildren().add(label);
+        iv.setDisable(false);
+        label.setDisable(false);
         label.setPadding(new Insets(-20,0,0,5));
         TranslateTransition translate = new TranslateTransition();
-        translate.setByY(200);
-        translate.setDuration(Duration.millis(2000));
+        translate.setByY(700);
+        translate.setDuration(Duration.millis(2800));
         translate.setNode(pane);
+        translate.setOnFinished( t -> {
+            System.out.println("deleted");
+            pane.getChildren().remove(iv);
+            pane.getChildren().remove(label);
+                }
+        );
         translate.play();
 
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(2000));
+        //fade.setDelay(Duration.millis(1000));
         fade.setFromValue(10);
         fade.setToValue(0);
         fade.setNode(pane);
         fade.play();
         parentGridPane.getChildren().add(pane);
+
+    }
+
+    public void angryReact() {
+        userReaction("angry", mainCtrl.getName());
+        String path = "/app/reactions";
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+    }
+    public void angelReact() {
+        userReaction("angel", mainCtrl.getName());
+        String path = "/app/reactions";
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+    }
+    public void happyReact() {
+        userReaction("happy", mainCtrl.getName());
+        String path = "/app/reactions";
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
 }
 

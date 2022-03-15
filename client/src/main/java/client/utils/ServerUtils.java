@@ -15,10 +15,7 @@
  */
 package client.utils;
 
-import commons.Game;
-import commons.Player;
-import commons.Question;
-import commons.Quote;
+import commons.*;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;

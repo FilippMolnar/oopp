@@ -2,22 +2,38 @@ package server.api;
 
 import commons.Game;
 import commons.Player;
+import commons.UserReaction;
+import org.apache.catalina.User;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 @RestController
 public class GameController {
 
     private Map<Integer, Game> games = new HashMap<>();
+    private final SimpMessageSendingOperations simpMessagingTemplate;
+    private final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
-    public GameController() {}
+    public GameController(SimpMessageSendingOperations simpMessagingTemplate) {
+        this.simpMessagingTemplate = simpMessagingTemplate;
+    }
 
     public void addNewGame(int gameID)
     {
@@ -74,4 +90,19 @@ public class GameController {
         Game cur = getGame(gameID);
         return cur;
     }
+
+    @MessageMapping("/reactions")
+    public void userReact(@Payload UserReaction ur) {
+        System.out.println("aaaaaa");
+        int gameID = ur.getGameID();
+        Game current = this.getGame(gameID);
+        var playerList = current.getPlayers();
+        for (Player player : playerList) {
+            String playerID = player.getSocketID();
+            LOGGER.info("Sending reaction "+ ur);
+            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/reactions", ur);
+            LOGGER.info("Sent reaction event "+ur+" to "+player.getName());
+        }
+    }
+
 }

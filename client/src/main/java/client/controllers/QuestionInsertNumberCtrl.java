@@ -22,11 +22,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion {
         super.setQuestion(question);
     }
 
-
-    private void clearFields() {
-        number.clear();
-    }
-
     private Integer getNumber() {
         var n = number.getText();
         return Integer.parseInt(n);

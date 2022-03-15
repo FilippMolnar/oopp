@@ -138,6 +138,11 @@ public class MainAppController {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
         }
+        // if this controller is of the question then set the question
+        else if (controller instanceof QuestionInsertNumberCtrl qController) {
+            qController.setQuestion(questionsInGame.get(questionIndex));
+            questionIndex++;
+        }
         if (controller instanceof ControllerIntializable controllerInit) {
             System.out.println("Calling initialize!!!");
             controllerInit.initializeController();

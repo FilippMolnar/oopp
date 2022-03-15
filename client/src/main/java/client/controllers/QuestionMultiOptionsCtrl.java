@@ -102,16 +102,16 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
         } else {
             a = question.getChoices().get(2);
         }
+        sendAnswer(a.id == question.getCorrect().id);
+    }
+
+    public void sendAnswer(boolean answer){
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
 
         System.out.println(question);
-        System.out.println(a.id == question.getCorrect().id);
-        hasSubmittedAnswer = true;
-        sendAnswerToServer(a.id == question.getCorrect().id);
-    }
-    private void sendAnswerToServer(boolean answer){
+        System.out.println(answer);
         server.sendThroughSocket("/app/submit_answer", answer);
     }
 
@@ -231,15 +231,11 @@ public class QuestionMultiOptionsCtrl implements ControllerIntializable, Initial
         Duration duration = Duration.millis(durationTime * 1000);
 
         EventHandler<ActionEvent> onFinished = t -> {
-                System.out.println("animation finished!");
-                numberTimer.cancel();
-                timerIntegerValue = 0;
-                timerValue.setFill(Paint.valueOf("red"));
-                timerValue.setText("0");
-            if(!hasSubmittedAnswer){
-                System.out.println("Submitting an answer!");
-                sendAnswerToServer(false); // incorrect Answer
-            }
+            System.out.println("animation finished!");
+            numberTimer.cancel();
+            timerIntegerValue = 0;
+            timerValue.setText("0");
+            sendAnswer(false);
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 

@@ -101,32 +101,21 @@ public class MainAppController {
      */
     public void addQuestionScenes(List<Integer> questionTypes, int mode) {
         LinkedScene current = this.currentScene;
-        for (int i = 0; i < questionTypes.size(); i++) {
+        for(int i = 0; i < questionTypes.size(); i++) {
             if (i == 10) {
                 current.addNext(new LinkedScene(this.leaderBoardScene));
                 current = current.getNext();
             }
-            if (questionTypes.get(i) < 2) {
-                current.addNext(new LinkedScene(this.qMultiScene));
-            } else {
-                current.addNext(new LinkedScene(this.qInsert));
-            }
+//            if(questionTypes.get(i) < 2) {
+//                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
+//            } else {
+//                current.addNext(new LinkedScene(this.qInsert, this.qInsertCtrl));
+//            }
+            current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
-                Arrays.asList(homeScreenLinked, homeScreenLinked.getNext(mode))));
-    }
-
-    public int getGameID() {
-        return this.gameID;
-    }
-
-    public void enterWaitingRoom(String name) {
-        System.out.println("Changing scene " + name);
-        this.name = name;
-        primaryStage.setScene(waitingRoomScene);
-        primaryStage.show();
-        primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(name)));
+                    Arrays.asList(homeScreenLinked, homeScreenLinked.getNext(mode))));
     }
 
     /*
@@ -134,10 +123,16 @@ public class MainAppController {
      */
     public void showNext() {
         this.currentScene = this.currentScene.getNext();
-        primaryStage.setScene(this.currentScene.getScene());
-        if(this.currentScene.getTitle() != null) {
-            primaryStage.setTitle(this.currentScene.getTitle());
 
+        primaryStage.setScene(this.currentScene.getScene());
+        if (this.currentScene.getTitle() != null) {
+            primaryStage.setTitle(this.currentScene.getTitle());
+        }
+        primaryStage.show();
+        Object controller = this.currentScene.getController();
+        if (controller instanceof ControllerIntializable controllerInit) {
+            System.out.println("Calling initialize!!!");
+            controllerInit.initializeController();
         }
     }
 
@@ -149,35 +144,34 @@ public class MainAppController {
     public void showNext(int i) {
         this.currentScene = this.currentScene.getNext(i);
         primaryStage.setScene(this.currentScene.getScene());
-        if(this.currentScene.getTitle() != null) {
+        if (this.currentScene.getTitle() != null) {
             primaryStage.setTitle(this.currentScene.getTitle());
         }
         primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(this.name)));
     }
 
-    public void showQuestion(Question question) {
-        if(question.getType() == QuestionType.Estimate){
-            showQuestionInsert(question);
-        }else{
-            showQuestionMulti(question);
-        }
-    }
-
-    public void showQuestionInsert(Question q) {
-        qInsertCtrl.setQuestion(q);
-        primaryStage.setTitle("Insert Number question");
-        primaryStage.setScene(qInsert);
-        primaryStage.show();
-    }
-
-    public void showQuestionMulti(Question q) {
-        qMultiCtrl.setQuestion(q);
-        primaryStage.setTitle("Multiple choice question");
-        primaryStage.setScene(qMultiScene);
-        primaryStage.show();
-        qMultiCtrl.resizeImages();
-        qMultiCtrl.startTimerAnimation();
-    }
+//    public void showQuestion(Question question) {
+//        if(question.getType() == QuestionType.Estimate){
+//            showQuestionInsert(question);
+//        }else{
+//            showQuestionMulti(question);
+//        }
+//    }
+//
+//    public void showQuestionInsert(Question q) {
+//        qInsertCtrl.setQuestion(q);
+//        primaryStage.setTitle("Insert Number question");
+//        primaryStage.setScene(qInsert);
+//        primaryStage.show();
+//    }
+//    public void showQuestionMulti(Question q) {
+//        qMultiCtrl.setQuestion(q);
+//        primaryStage.setTitle("Multiple choice question");
+//        primaryStage.setScene(qMultiScene);
+//        primaryStage.show();
+//        qMultiCtrl.resizeImages();
+//        qMultiCtrl.startTimerAnimation();
+//    }
 
     /*
      * Almost every scene has a button to return to the homescreen.

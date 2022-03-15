@@ -5,7 +5,6 @@ import com.google.inject.Inject;
 import commons.Activity;
 import commons.Joker;
 import commons.Player;
-import commons.Answer;
 import commons.Question;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -33,7 +32,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class QuestionMultiOptionsCtrl extends AbstractQuestion{
+public class QuestionMultiOptionsCtrl implements ControllerIntializable {
+    private final ServerUtils server;
+    private final MainAppController mainCtrl;
     @FXML
     GridPane parentGridPane;
     private Question question;
@@ -53,12 +54,12 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion{
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
-        super(server, mainCtrl);
+        this.mainCtrl = mainCtrl;
+        this.server = server;
     }
 
     public void setQuestion(Question question) {
-        super.setQuestion(question);
-
+        this.question = question;
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         optionA.setText(question.getChoices().get(0).getTitle());
         optionB.setText(question.getChoices().get(1).getTitle());
@@ -80,32 +81,52 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion{
     }
 
     public void pressedOption(ActionEvent actionEvent) {
-        System.out.println(question);
-        return;
-//        final Node source = (Node) actionEvent.getSource();
-//        String button_id = source.getId();
-//        Activity a;
-//        if(button_id.equals("optionA")){
-//            a = question.getChoices().get(0);
-//        } else if(button_id.equals("optionB")){
-//            a = question.getChoices().get(1);
-//        } else {
-//            a = question.getChoices().get(2);
-//        }
-//        sendAnswer(a.id == question.getCorrect().id, button_id);
+        final Node source = (Node) actionEvent.getSource();
+        String button_id = source.getId();
+        Activity a;
+        if(button_id.equals("optionA")){
+            a = question.getChoices().get(0);
+        } else if(button_id.equals("optionB")){
+            a = question.getChoices().get(1);
+        } else {
+            a = question.getChoices().get(2);
+        }
+        sendAnswer(a.id == question.getCorrect().id);
     }
 
-    public void sendAnswer(boolean isCorrect, String option){
+    public void sendAnswer(boolean answer){
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
 
         System.out.println(question);
-        System.out.println(isCorrect);
-        server.sendThroughSocket("/app/submit_answer", new Answer(isCorrect, option));
+        System.out.println(answer);
+        server.sendThroughSocket("/app/submit_answer", answer);
     }
 
-    public void triggerJoker(){
+    public void firstJoker(){
+        return;
+//        List<Joker> jokers = mainCtrl.getJokers().getJokers();
+//        if(jokers.get(0).isUsed()){
+//            System.out.println("used");
+//            return;
+//        }
+//        jokers.get(0).use();
+    }
+
+    public void secondJoker(){
+        return;
+//        List<Joker> jokers = mainCtrl.getJokers().getJokers();
+//        if(jokers.get(1).isUsed()){
+//            System.out.println("used");
+//            return;
+//        }
+//
+//        jokers.get(1).use();
+
+    }
+
+    public void thirdJoker(){
         List<Joker> jokers = mainCtrl.getJokers().getJokers();
         if(jokers.get(2).isUsed()){
             System.out.println("used");
@@ -194,7 +215,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion{
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            sendAnswer(false, "");
+            sendAnswer(false);
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
@@ -256,5 +277,10 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion{
         fade.setNode(pane);
         fade.play();
         parentGridPane.getChildren().add(pane);
+    }
+
+    @Override
+    public void initializeController() {
+        startTimerAnimation();
     }
 }

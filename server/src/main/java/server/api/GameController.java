@@ -18,6 +18,8 @@ public class GameController {
 
     private final Map<Integer, Game> games = new HashMap<>();
 
+    private final Map<String , Game> socketIDToGame = new HashMap<>(); // Maps each socketID to its corresponding game
+
     public GameController() {
     }
 
@@ -26,6 +28,8 @@ public class GameController {
     }
 
     public void addPlayerToGame(int gameID, Player player) {
+        socketIDToGame.put(player.getSocketID(),games.get(gameID));
+        player.setGameID(gameID);
         if (games.get(gameID) == null) {
             addNewGame(gameID);
         }
@@ -71,7 +75,7 @@ public class GameController {
         return cur;
     }
 
-    @GetMapping("api/game/getQuestions/{gameID}")
+    @GetMapping(path = "api/game/getQuestions/{gameID}")
     private List<Question> getGameQuestions(@PathVariable("gameID") int gameID) {
         Game currentGame = getGame(gameID);
         System.out.println("Sending the questions " + currentGame.getQuestions());

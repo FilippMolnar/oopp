@@ -121,13 +121,13 @@ public class WaitController {
     }
 
     public void addPlayerToGameID(String playerID, Player player) {
-        player.socketID = playerID;
+        player.setSocketID(playerID);
         gameController.addPlayerToGame(gameID, player);
     }
 
     @MessageMapping("/enterRoom")
     public void socketAddName(@Payload Player player, Principal principal) {
-        LOGGER.info("add player with name " + player.name + " to the waiting room with sockets. The player's id is " + principal.getName());
+        LOGGER.info("add player with name " + player.getName() + " to the waiting room with sockets. The player's id is " + principal.getName());
         addName(player);
         addPlayerToGameID(principal.getName(), player);
     }
@@ -148,7 +148,7 @@ public class WaitController {
     @MessageMapping("/disconnect")
     public void playerDisconnect(Player player) {
         if (lobbyPlayers.remove(player)) {
-            System.out.println("Player " + player.name + " disconnected!");
+            System.out.println("Player " + player.getName() + " disconnected!");
             simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
         }
     }

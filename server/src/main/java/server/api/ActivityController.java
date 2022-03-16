@@ -14,7 +14,7 @@ public class ActivityController {
 
     public ActivityController(ActivityRepository act)
     {
-        this.activities = act;
+        activities = act;
     }
 
     public static boolean addActivity(Activity act)
@@ -41,14 +41,12 @@ public class ActivityController {
     @GetMapping(path = "/data/fetch/{cons}")
     public static List<Activity> getAllByConsumption(@PathVariable("cons")int cons)
     {
-        List<Activity> ls = activities.getByConsumption(cons);
-        return ls;
+        return activities.getByConsumption(cons);
     }
 
     @GetMapping(path = "/data/diff/{cons}")
     public static List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
     {
-        List<Activity> ls = activities.getAllDiff(cons);
-        return ls;
+        return activities.getAllDiff(cons);
     }
 }

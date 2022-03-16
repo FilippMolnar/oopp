@@ -1,4 +1,4 @@
-package server;
+package server.database;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Activity;

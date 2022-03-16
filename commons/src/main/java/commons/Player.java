@@ -34,7 +34,6 @@ public class Player {
     public long id;
 
     public String name;
-
     public String socketID;
 
     @SuppressWarnings("unused")
@@ -50,7 +49,9 @@ public class Player {
         return this.name;
     }
 
-    public String getSocketID() {return this.socketID;}
+    public String getSocketID() {
+        return this.socketID;
+    }
 
     @Override
     public boolean equals(Object obj) {

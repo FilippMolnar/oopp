@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Arc?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane fx:id="parentGridPane" accessibleRole="TEXT" alignment="CENTER" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #625998; -fx-border-color: black;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.QuestionMultiOptionsCtrl">
+<GridPane fx:id="parentGridPane" accessibleRole="TEXT" alignment="CENTER" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #625998; -fx-border-color: black;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.questions.QuestionMultiOptionsCtrl">
     <columnConstraints>
         <ColumnConstraints percentWidth="33.0" />
         <ColumnConstraints minWidth="10.0" percentWidth="33.0" prefWidth="100.0" />
@@ -60,34 +52,41 @@
             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="51.199987792968756" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="55.20001220703125" minHeight="10.0" prefHeight="55.20001220703125" vgrow="SOMETIMES" />
         </rowConstraints>
-        <StackPane onMouseClicked="#thirdJoker" GridPane.columnIndex="8" GridPane.rowIndex="1">
+        <StackPane fx:id="joker3" onMouseClicked="#triggerJoker3" GridPane.columnIndex="8" GridPane.rowIndex="1">
             <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
             <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@/client/pictures/joker_elim_wrong.png" />
             </ImageView>
         </StackPane>
-        <StackPane onMouseClicked="#firstJoker" GridPane.columnIndex="6" GridPane.rowIndex="1">
+        <StackPane fx:id="joker1" onMouseClicked="#triggerJoker1" GridPane.columnIndex="6" GridPane.rowIndex="1">
             <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
             <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@/client/pictures/joker_double_points.png" />
             </ImageView>
         </StackPane>
-        <StackPane onMouseClicked="#secondJoker" GridPane.columnIndex="7" GridPane.rowIndex="1">
+        <StackPane fx:id="joker2" onMouseClicked="#triggerJoker2" GridPane.columnIndex="7" GridPane.rowIndex="1">
             <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
             <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@/client/pictures/joker_decrease_time.png" />
             </ImageView>
         </StackPane>
-        <StackPane prefHeight="97.0" prefWidth="102.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-            <Circle fill="#837aba" radius="29.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <Arc fill="#d6d3ee" length="270.0" radiusX="30.0" radiusY="30.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND" />
-            <Circle fill="#625998" radius="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
-                <font>
-                    <Font size="18.0" />
-                </font>
-            </Text>
-        </StackPane>
+        <Group GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <children>
+                <Rectangle arcWidth="5.0" fill="#625998" height="60.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="60.0" />
+                <Circle fill="#837aba" layoutX="30.0" layoutY="30.0" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                <Arc fx:id="timerArc" fill="#d6d3ee" layoutX="30.0" layoutY="30.0" length="270.0" radiusX="30.0" radiusY="30.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND" />
+                <Circle fill="#625998" layoutX="30.0" layoutY="30.0" radius="25.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                <HBox alignment="CENTER" layoutY="15.0" prefHeight="30.0" prefWidth="60.0">
+                    <children>
+                        <Text fx:id="timerValue" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textAlignment="CENTER" wrappingWidth="24.80005168914795" HBox.hgrow="ALWAYS">
+                            <font>
+                                <Font size="20.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </HBox>
+            </children>
+        </Group>
         <AnchorPane prefHeight="60.0" prefWidth="153.0" styleClass="question-button" GridPane.columnIndex="2" GridPane.rowIndex="1">
             <padding>
                 <Insets bottom="10.0" />
@@ -118,43 +117,42 @@
             <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0" prefHeight="107.8000244140625" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="20.0" prefHeight="46.999975585937534" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
-        <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedA" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="option A" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-        <StackPane GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-            <ImageView fitHeight="57.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@/33/watch.png" />
-            </ImageView>
-        </StackPane>
-        <StackPane GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-            <ImageView fitHeight="50.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@/33/watch.png" />
-            </ImageView>
-        </StackPane>
-        <StackPane GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-            <ImageView fitHeight="92.0" fitWidth="208.0" pickOnBounds="true" preserveRatio="true">
 
-                <!--         server/src/main/resources/33/traffic_light.png-->
+        <StackPane GridPane.columnIndex="2">
+            <ImageView fitHeight="176.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                <Image url="@/33/watch.png" />
+            </ImageView>
+        </StackPane>
+        <StackPane GridPane.columnIndex="3">
+            <ImageView fitHeight="146.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Image url="@/33/watch.png" />
+            </ImageView>
+        </StackPane>
+        <StackPane GridPane.columnIndex="4">
+            <ImageView fitHeight="169.0" fitWidth="381.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                 <Image url="@/33/Dishwasher.jpg" />
             </ImageView>
         </StackPane>
-        <Button fx:id="optionC" mnemonicParsing="false" onAction="#pressedC" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="option C" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
-        <Button fx:id="optionB" alignment="CENTER" mnemonicParsing="false" onAction="#pressedB" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="option B" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
-        <ImageView fitHeight="45.0" fitWidth="45.0" onMousePressed="#happyReact" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+        <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedOption" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="A" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+        <Button fx:id="optionB" alignment="CENTER" mnemonicParsing="false" onAction="#pressedOption" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="B" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
+        <Button fx:id="optionC" mnemonicParsing="false" onAction="#pressedOption" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="C" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+        <ImageView onMouseClicked="#happyReact" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets left="10.0" />
             </GridPane.margin>
-            <Image url="@../pictures/happy.png" />
+            <Image url="@/client/pictures/happy.png" />
         </ImageView>
-        <ImageView fitHeight="150.0" fitWidth="45.0" onMousePressed="#angryReact" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+        <ImageView onMouseClicked="#angryReact" fitHeight="150.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets left="10.0" />
             </GridPane.margin>
-            <Image url="@../pictures/angry.png" />
+            <Image url="@/client/pictures/angry.png" />
         </ImageView>
-        <ImageView fitHeight="150.0" fitWidth="45.0" onMousePressed="#angelReact" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+        <ImageView onMouseClicked="#angelReact" fitHeight="150.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
             <GridPane.margin>
                 <Insets left="10.0" />
             </GridPane.margin>
-            <Image url="@../pictures/angel.png" />
+            <Image url="@/client/pictures/angel.png" />
         </ImageView>
     </GridPane>
     <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />

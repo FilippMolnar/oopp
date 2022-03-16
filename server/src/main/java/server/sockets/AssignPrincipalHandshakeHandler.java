@@ -1,4 +1,4 @@
-package server;
+package server.sockets;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;

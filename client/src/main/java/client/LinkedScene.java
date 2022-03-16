@@ -1,25 +1,29 @@
 package client;
 
-import java.util.List;
-import java.util.ArrayList;
 import javafx.scene.Scene;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LinkedScene {
 
-    private Scene current;
-    private List<LinkedScene> next;
-    private String title;
+    private final Scene current;
+    private final List<LinkedScene> next;
+    private final String title;
+    private Object controller;
+
 
     public LinkedScene(Scene current) {
         this.current = current;
         this.title = null;
-        this.next = new ArrayList();
+        this.next = new ArrayList<>();
     }
 
-    public LinkedScene(Scene current, String title) {
+    public LinkedScene(Scene current, Object controller) {
         this.current = current;
-        this.title = title;
-        this.next = new ArrayList();
+        this.title = null;
+        this.next = new ArrayList<>();
+        this.controller = controller;
     }
 
     public LinkedScene(Scene current, List<LinkedScene> next) {
@@ -32,6 +36,10 @@ public class LinkedScene {
         this.title = title;
         this.current = current;
         this.next = next;
+    }
+
+    public Object getController() {
+        return controller;
     }
 
     public LinkedScene getNext() {

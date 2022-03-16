@@ -3,21 +3,21 @@ package client.controllers;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import org.apache.commons.lang3.tuple.Pair;
 import javafx.util.Duration;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -27,21 +27,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class QuestionMultiOptionsCtrl  implements Initializable {
+public class QuestionMultiOptionsCtrl implements Initializable {
     private final ServerUtils server;
     private final MainAppController mainCtrl;
+    @FXML
+    GridPane parentGridPane;
     private Question question;
-
     @FXML
     private Button optionA;
-
     @FXML
     private Button optionB;
-
     @FXML
     private Button optionC;
-
-
     @FXML
     private GridPane images;
 
@@ -72,9 +69,6 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
             System.out.println(actualPath);
         }
     }
-
-    @FXML
-    GridPane parentGridPane;
 
     public void pressedA() {
 
@@ -197,8 +191,9 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
 
     /**
      * Animates the reactions of users.
+     *
      * @param reaction - a String that can have one of the following values: "happy", "angry", "angel"
-     * @param name - the nickname of the user who reacted
+     * @param name     - the nickname of the user who reacted
      */
     public void userReaction(String reaction, String name) {
 
@@ -206,7 +201,7 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
         ImageView iv;
         Label label = new Label(name);
         Image img;
-        switch(reaction) {
+        switch (reaction) {
             case "happy":
                 img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
                 break;
@@ -222,28 +217,25 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
         iv = new ImageView(img);
         pane.getChildren().add(iv);
         pane.getChildren().add(label);
-        iv.setDisable(false);
-        label.setDisable(false);
-        label.setPadding(new Insets(-20,0,0,5));
+        iv.setDisable(true);
+        iv.setMouseTransparent(true);
+        label.setMouseTransparent(true);
+        label.setPadding(new Insets(-20, 0, 0, 5));
         TranslateTransition translate = new TranslateTransition();
-        translate.setByY(700);
-        translate.setDuration(Duration.millis(2800));
+        translate.setByY(20);
+        translate.setDuration(Duration.millis(1000));
         translate.setNode(pane);
-        translate.setOnFinished( t -> {
-            System.out.println("deleted");
-            pane.getChildren().remove(iv);
-            pane.getChildren().remove(label);
-                }
-        );
-        translate.play();
 
-        FadeTransition fade = new FadeTransition();
-        fade.setDuration(Duration.millis(2000));
-        //fade.setDelay(Duration.millis(1000));
-        fade.setFromValue(10);
-        fade.setToValue(0);
-        fade.setNode(pane);
-        fade.play();
+        translate.play();
+//
+//        FadeTransition fade = new FadeTransition();
+//        fade.setDuration(Duration.millis(1000));
+//        //fade.setDelay(Duration.millis(1000));
+//        fade.setFromValue(10);
+//        fade.setToValue(0);
+//        fade.setNode(pane);
+//        fade.play();
+
         parentGridPane.getChildren().add(pane);
 
     }
@@ -252,10 +244,12 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
         String path = "/app/reactions";
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
     }
+
     public void angelReact() {
         String path = "/app/reactions";
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
     }
+
     public void happyReact() {
         String path = "/app/reactions";
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));

@@ -2,6 +2,7 @@ package server.api;
 
 import commons.Game;
 import commons.Player;
+import commons.Question;
 import commons.UserReaction;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
@@ -21,51 +22,47 @@ import java.util.Map;
 @RestController
 public class GameController {
 
-    private Map<Integer, Game> games = new HashMap<>();
-    private final SimpMessageSendingOperations simpMessagingTemplate;
-    private final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
+    private final Map<Integer, Game> games = new HashMap<>();
+
+
+    private SimpMessageSendingOperations simpMessagingTemplate;
+    private Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
     public GameController(SimpMessageSendingOperations simpMessagingTemplate) {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
-    public void addNewGame(int gameID)
-    {
-        games.put(gameID,new Game(gameID));
+    public void addNewGame(int gameID) {
+        games.put(gameID, new Game(gameID));
     }
 
-    public void addPlayerToGame(int gameID, Player player)
-    {
-        if(games.get(gameID) == null)
-        {
+    public void addPlayerToGame(int gameID, Player player) {
+        if (games.get(gameID) == null) {
             addNewGame(gameID);
         }
         games.get(gameID).addPlayer(player);
     }
 
-    public void setScore(int gameID,Player player, int score)
-    {
-        games.get(gameID).setScore(player,score);
+    public void setScore(int gameID, Player player, int score) {
+        games.get(gameID).setScore(player, score);
     }
 
-    public void removePlayer(int gameID,Player player)
-    {
+    public void removePlayer(int gameID, Player player) {
         games.get(gameID).removePlayer(player);
     }
 
-    public Game getGame(int gameID)
-    {
+    public Game getGame(int gameID) {
         return games.get(gameID);
     }
 
     /**
      * Retrieve the leaderboard for the current game
+     *
      * @param gameID identifier for the current game
      * @return a list of pairs of score and player sorted in descending order by their score
      */
     @GetMapping(path = "api/leaderboard/{gameID}")
-    public List<Pair<Integer,Player>> getLeaderboard(@PathVariable("gameID") int gameID)
-    {
+    public List<Pair<Integer, Player>> getLeaderboard(@PathVariable("gameID") int gameID) {
         Game cur = getGame(gameID);
 
         return cur.getLeaderboard();
@@ -85,6 +82,12 @@ public class GameController {
         return cur;
     }
 
+    @GetMapping("api/game/getQuestions/{gameID}")
+    private List<Question> getGameQuestions(@PathVariable("gameID") int gameID) {
+        Game currentGame = getGame(gameID);
+        System.out.println("Sending the questions " + currentGame.getQuestions());
+        return currentGame.getQuestions();
+    }
     @MessageMapping("/reactions")
     public void userReact(@Payload UserReaction ur) {
         System.out.println("aaaaaa");
@@ -98,5 +101,4 @@ public class GameController {
             LOGGER.info("Sent reaction event "+ur+" to "+player.getName());
         }
     }
-
 }

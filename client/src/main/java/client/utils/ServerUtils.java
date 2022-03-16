@@ -15,7 +15,9 @@
  */
 package client.utils;
 
-import commons.*;
+import commons.Game;
+import commons.Player;
+import commons.Question;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -44,6 +46,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+
 public class ServerUtils {
 
     // use this variable to define the server address and port to connect to
@@ -149,13 +152,6 @@ public class ServerUtils {
                 });
     }
 
-    public Pair postGameScore(int gameID, Pair<Player, Integer> result) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/game/score")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(result, APPLICATION_JSON), Pair.class);
-    }
 
     public void postStartGame() {
         ClientBuilder.newClient(new ClientConfig())
@@ -178,32 +174,29 @@ public class ServerUtils {
                 .post(Entity.entity(new Player(name), APPLICATION_JSON), Player.class);
     }
 
-    public List<Quote> getQuotes() {
+    /**
+     * gets 20 question objects from the server
+     * This method should be used to store the questions on the client
+     * side
+     *
+     * @param gameID id of the game
+     * @return a list of 20 question retrieved from the server
+     */
+    public List<Question> getAllGameQuestions(int gameID) {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
+                .target(SERVER).path("api/game/getQuestions/" + gameID) //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<>() {
                 });
     }
 
-    public Quote addQuote(Quote quote) {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/quotes") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(quote, APPLICATION_JSON), Quote.class);
-    }
-
-    public static Question getQuestion(int gameID) {
-       var q = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/question/" + gameID)
+    public Pair postGameScore(int gameID, Pair<Player, Integer> result) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/game/score")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(Response.class);
-       Question ret = new Question();
-       ret = q.readEntity(Question.class);
-       return ret;
+                .post(Entity.entity(result, APPLICATION_JSON), Pair.class);
     }
 
     public static Map<Player,Integer> getScoreboard(int gameID)
@@ -225,4 +218,5 @@ public class ServerUtils {
                 .get(Response.class);
         return q.readEntity(Game.class);
     }
+
 }

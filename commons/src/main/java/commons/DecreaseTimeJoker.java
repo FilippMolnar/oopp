@@ -6,6 +6,10 @@ public class DecreaseTimeJoker extends Joker{
     }
 
     public void onClick(){
-        return;
+        if(isUsed()){
+            return;
+        }
+        System.out.println("DecreaseTimeJoker");
+        use();
     }
 }

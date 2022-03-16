@@ -10,7 +10,8 @@ import java.util.List;
 @RestController
 public class QuestionController {
 
-    public QuestionController(){}
+    private static ActivityController activityController;
+    public QuestionController(ActivityController activityController){this.activityController=activityController;}
     @GetMapping("/question")
     public Question getRandomQuestion() {
 //        int pick = new Random().nextInt(3);
@@ -29,7 +30,7 @@ public class QuestionController {
      */
     @GetMapping(path = {"/estimate"})
     public Question getTypeEstimate() {
-        Activity act = ActivityController.getRandom();
+        Activity act = activityController.getRandom();
         Question q = new Question();
         q.setChoices(new ArrayList<>());
         q.setType(QuestionType.Estimate);
@@ -47,7 +48,7 @@ public class QuestionController {
     public Question getTypeMostLeast() {
         List<Activity> choices = new ArrayList<>();
         while (choices.size() < 3) {
-            Activity act = ActivityController.getRandom();
+            Activity act = activityController.getRandom();
             if (choices.contains(act)) continue;
             choices.add(act);
         }
@@ -70,9 +71,9 @@ public class QuestionController {
      */
     @GetMapping(path = {"/equal"})
     public Question getTypeEqual() {
-        Activity act = ActivityController.getRandom();
-        List<Activity> same = ActivityController.getAllByConsumption(act.getConsumption());
-        List<Activity> diff = ActivityController.getAllDiffCons(act.getConsumption());
+        Activity act = activityController.getRandom();
+        List<Activity> same = activityController.getAllByConsumption(act.getConsumption());
+        List<Activity> diff = activityController.getAllDiffCons(act.getConsumption());
         List<Activity> choices = new ArrayList<>();
         Activity neither = new Activity("neither", -1, "location of cross");
 

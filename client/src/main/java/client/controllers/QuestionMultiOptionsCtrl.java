@@ -249,17 +249,14 @@ public class QuestionMultiOptionsCtrl  implements Initializable {
     }
 
     public void angryReact() {
-        userReaction("angry", mainCtrl.getName());
         String path = "/app/reactions";
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
     }
     public void angelReact() {
-        userReaction("angel", mainCtrl.getName());
         String path = "/app/reactions";
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
     }
     public void happyReact() {
-        userReaction("happy", mainCtrl.getName());
         String path = "/app/reactions";
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }

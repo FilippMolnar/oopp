@@ -45,7 +45,7 @@ public class Joker {
     }
 
     public void onClick(){
-        return;
+        System.out.println("joker");
     }
 
     @Override

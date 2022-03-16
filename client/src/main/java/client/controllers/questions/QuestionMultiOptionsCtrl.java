@@ -106,7 +106,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void initializeController() {
-        startTimerAnimation();
+        startTimerAnimation(10);
+
         resizeImages();
         hasSubmittedAnswer = false;
         System.out.println("Enabling scene");

@@ -152,4 +152,13 @@ public class WaitController {
             simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
         }
     }
+    @MessageMapping("/decrease_time")
+    public void decreaseTime(Player player) {
+        int gid = gameID-1;
+        System.out.println("decreased __________________________________");
+        Game currentGame = gameController.getGame(gid);
+        var playerList = currentGame.getPlayers();
+        if(playerList == null) return;
+        utils.sendToAllPlayers(playerList, "queue/decrease_time/gameID", gid);
+    }
 }

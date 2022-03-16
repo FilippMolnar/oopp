@@ -83,6 +83,10 @@ public class MainAppController {
         return this.name;
     }
 
+    public LinkedScene getCurrentScene() {
+        return currentScene;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

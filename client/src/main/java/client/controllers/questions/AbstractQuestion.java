@@ -4,6 +4,7 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Answer;
+import commons.Player;
 import commons.Question;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -115,8 +116,14 @@ public abstract class AbstractQuestion {
         numberTimer.cancel();
     }
 
-    public void startTimerAnimation() {
-        timerIntegerValue = 10;
+    public void cutAnimationInHalf(){
+        stopTimer();
+        startTimerAnimation(timerIntegerValue/2);
+
+    }
+
+    public void startTimerAnimation(int length) {
+        timerIntegerValue = length;
         timerArc.setLength(360);
         timerArc.setFill(Paint.valueOf("#d6d3ee"));
         timerValue.setFill(Paint.valueOf("#d6d3ee"));
@@ -142,7 +149,7 @@ public abstract class AbstractQuestion {
             }
         };
         numberTimer = new Timer();
-        int durationTime = 10;
+        int durationTime = length;
         timerValue.setText(Integer.toString(durationTime));
         numberTimer.scheduleAtFixedRate(timerTask, 1000, 1000);
 
@@ -159,9 +166,10 @@ public abstract class AbstractQuestion {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            if (!hasSubmittedAnswer)
+            if (!hasSubmittedAnswer){
+                disableOptions();
                 sendAnswer(new Answer(false, ""));
-            mainCtrl.showNext(); // show next scene when timer runs out
+            }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
@@ -170,6 +178,13 @@ public abstract class AbstractQuestion {
 
         timeline.play();
         animationTimer.start();
+    }
+    public void disableOptions(){
+        //TODO figure out how to disable options
+    }
+
+    public void showNext(){
+        mainCtrl.showNext(); // show next scene when timer runs out
     }
 
     /**
@@ -180,6 +195,8 @@ public abstract class AbstractQuestion {
     public void sendAnswer(Answer answer) {
         hasSubmittedAnswer = true;
         server.sendThroughSocket("/app/submit_answer", answer);
+        //temporary solution to imitate joker click
+        server.sendThroughSocket("/app/decrease_time", new Player(this.mainCtrl.getName()));
     }
 
     /**

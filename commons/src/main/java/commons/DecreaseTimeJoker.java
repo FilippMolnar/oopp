@@ -10,6 +10,8 @@ public class DecreaseTimeJoker extends Joker{
             return;
         }
         System.out.println("DecreaseTimeJoker");
+        //TODO send message to decrease_time, somehow import server utils
+//        this.serverUtils.sendThroughSocket("/app/decrease_time", new Player(appController.getName()));
         use();
     }
 }

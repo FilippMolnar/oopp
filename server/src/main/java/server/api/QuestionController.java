@@ -9,8 +9,10 @@ import java.util.List;
 
 @RestController
 public class QuestionController {
+
+    public QuestionController(){}
     @GetMapping("/question")
-    public static Question getRandomQuestion() {
+    public Question getRandomQuestion() {
 //        int pick = new Random().nextInt(3);
 //        if (pick == 0)
 //            return getTypeEstimate();
@@ -26,7 +28,7 @@ public class QuestionController {
      * @return question of type estimate    !!!    CHOICES ARE AN EMPTY LIST  !!!
      */
     @GetMapping(path = {"/estimate"})
-    public static Question getTypeEstimate() {
+    public Question getTypeEstimate() {
         Activity act = ActivityController.getRandom();
         Question q = new Question();
         q.setChoices(new ArrayList<>());
@@ -42,7 +44,7 @@ public class QuestionController {
      * @return question of type most/least  !!!     CORRECT ANSWER IS NOT SET   !!!
      */
     @GetMapping(path = {"/most"})
-    public static Question getTypeMostLeast() {
+    public Question getTypeMostLeast() {
         List<Activity> choices = new ArrayList<>();
         while (choices.size() < 3) {
             Activity act = ActivityController.getRandom();
@@ -67,7 +69,7 @@ public class QuestionController {
      * @return question of type equal  !!!    NEEDS OPTIMIZATION   !!!
      */
     @GetMapping(path = {"/equal"})
-    public static Question getTypeEqual() {
+    public Question getTypeEqual() {
         Activity act = ActivityController.getRandom();
         List<Activity> same = ActivityController.getAllByConsumption(act.getConsumption());
         List<Activity> diff = ActivityController.getAllDiffCons(act.getConsumption());

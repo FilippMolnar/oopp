@@ -45,13 +45,15 @@ public class WaitController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(WaitController.class);
     private final GameController gameController;
+    private final QuestionController questionController;
     private int gameID = 0;
 
 
-    WaitController(SimpMessageSendingOperations simpMessagingTemplate, GameController gameController) {
+    WaitController(SimpMessageSendingOperations simpMessagingTemplate, GameController gameController, QuestionController questionController) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.utils = new Utils(simpMessagingTemplate);
         this.gameController = gameController;
+        this.questionController = questionController;
     }
 
     public List<Player> getLobbyPlayers() {
@@ -79,11 +81,11 @@ public class WaitController {
         final int nrHighest = 13;
         List<Question> list = new ArrayList<>();
         for (int i = 0; i < nrEqual; i++)
-            list.add(QuestionController.getTypeEqual());
+            list.add(questionController.getTypeEqual());
         for (int i = 0; i < nrHighest; i++)
-            list.add(QuestionController.getTypeMostLeast());
+            list.add(questionController.getTypeMostLeast());
         for (int i = 0; i < nrEstimate; i++)
-            list.add(QuestionController.getTypeEstimate());
+            list.add(questionController.getTypeEstimate());
         Collections.shuffle(list);
         return list;
     }
@@ -91,7 +93,7 @@ public class WaitController {
     private List<Question> get20RandomMostLeastQuestions() {
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < 20; i++)
-            questions.add(QuestionController.getTypeMostLeast());
+            questions.add(questionController.getTypeMostLeast());
         return questions;
     }
 

@@ -1,25 +1,28 @@
-package client.controllers;
+package client.controllers.questions;
 
+import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.*;
+import commons.Answer;
+import commons.Question;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public abstract class AbstractQuestion {

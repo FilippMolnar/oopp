@@ -1,7 +1,6 @@
 package commons;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ElimWrongJoker extends Joker {
 

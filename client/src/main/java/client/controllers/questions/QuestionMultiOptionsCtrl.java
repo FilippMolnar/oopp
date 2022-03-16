@@ -1,5 +1,7 @@
-package client.controllers;
+package client.controllers.questions;
 
+import client.controllers.ControllerInitialize;
+import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
@@ -13,11 +15,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
-public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerIntializable {
+public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
     @FXML
     private Button optionA;
     @FXML

@@ -26,7 +26,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import server.Utils;
 
@@ -42,7 +41,6 @@ public class WaitController {
 
     private final SimpMessageSendingOperations simpMessagingTemplate;
     private final List<Player> lobbyPlayers = new ArrayList<>();
-    private final RestTemplate restTemplate;
     private final Utils utils;
 
     private final Logger LOGGER = LoggerFactory.getLogger(WaitController.class);
@@ -53,7 +51,6 @@ public class WaitController {
     WaitController(SimpMessageSendingOperations simpMessagingTemplate, GameController gameController) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.utils = new Utils(simpMessagingTemplate);
-        this.restTemplate = new RestTemplate();
         this.gameController = gameController;
     }
 

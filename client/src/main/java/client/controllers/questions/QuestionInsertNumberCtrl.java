@@ -1,5 +1,6 @@
-package client.controllers;
+package client.controllers.questions;
 
+import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Question;

@@ -1,4 +1,4 @@
-package server;
+package server.database;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commons.Activity;
@@ -16,7 +16,7 @@ import java.io.IOException;
 public class ImportData {
     @GetMapping(path = "/load")
     public static String ImportAllFiles() {
-        String location = "C:\\Users\\filip\\projekty\\oopp\\client\\src\\main\\resources\\33";
+        String location = "server/src/main/resources/33";
         File dir = new File(location);
         File[] listing = dir.listFiles();
 

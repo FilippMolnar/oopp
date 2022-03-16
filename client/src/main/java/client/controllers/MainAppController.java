@@ -1,6 +1,8 @@
 package client.controllers;
 
 import client.LinkedScene;
+import client.controllers.questions.QuestionInsertNumberCtrl;
+import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.JokersList;
@@ -143,7 +145,7 @@ public class MainAppController {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
         }
-        if (controller instanceof ControllerIntializable controllerInit) {
+        if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
         }

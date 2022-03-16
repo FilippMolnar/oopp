@@ -16,15 +16,13 @@
 package client;
 
 import client.controllers.HomeScreenCtrl;
-import client.controllers.MainAppController;
-import client.controllers.QuestionInsertNumberCtrl;
-import client.controllers.QuestionMultiOptionsCtrl;
-import client.controllers.WaitingRoomCtrl;
 import client.controllers.LeaderBoardCtrl;
+import client.controllers.MainAppController;
+import client.controllers.WaitingRoomCtrl;
+import client.controllers.questions.QuestionInsertNumberCtrl;
+import client.controllers.questions.QuestionMultiOptionsCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -50,23 +48,6 @@ public class Main extends Application {
     private URL getLocation(String... parts) {
         var path = Path.of("", parts).toString();
         return Main.class.getClassLoader().getResource(path);
-    }
-
-    /**
-     * Simple example that creates a scene without dependency injection.
-     * If you provide <code>QuoteOverviewCtrl</code> or <code>AddQuoteCtrl</code> in the <code>example.fxml</code> file then
-     * the code will not compile because the constructor of those classes relies on dependency injection from <code>Juice</code>
-     * We can delete this function because we can just use what they have done.
-     * @param primaryStage - stage received by JavaFX in the start method
-     * @throws IOException
-     */
-    private void loadSimpleExample(Stage primaryStage) throws IOException{
-        String[] path = {"client","scenes","clock.fxml"};
-        FXMLLoader loader = new FXMLLoader(getLocation(path));
-        Scene scene = new Scene(loader.load());
-        primaryStage.setTitle("FXML simple load.No Controller");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
     /**

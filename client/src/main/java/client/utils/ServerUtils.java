@@ -187,4 +187,18 @@ public class ServerUtils {
                 });
     }
 
+    /**
+     * This method is used by single players, who do not have a game ID
+     * and just need to get 20 questions at the start of the game.
+     * @return 20 random questions
+     */
+    public List<Question> getLeastMostQuestions() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/wait/getMostLeastQuestions") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {
+                });
+    }
+
 }

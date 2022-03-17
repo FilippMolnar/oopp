@@ -4,6 +4,7 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Answer;
+import commons.Player;
 import commons.Question;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -20,6 +21,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -190,6 +192,25 @@ public abstract class AbstractQuestion {
         userReaction("angel", "Bianca");
     }
 
+    public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
+        int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
+
+        int scoreToBeAdded = 0;
+        int maxSeconds = 20;
+        int maxPoints = 100;
+        if (answerCorrect) {
+            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+        }
+
+        Integer score = currentScore + scoreToBeAdded;
+        Pair<Player, Integer> result = Pair.of(player, score);
+        server.postGameScore(mainCtrl.getGameID(), result);
+    }
+
+    public void dummy() {
+        Player player = new Player(mainCtrl.getName());
+        calculateScore(player, true, 20);
+    }
 
 }
 

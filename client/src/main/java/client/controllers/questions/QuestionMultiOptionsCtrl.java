@@ -116,5 +116,15 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionC.setDisable(false);
     }
 
+    public Button getOptionA() {
+        return optionA;
+    }
 
+    public Button getOptionB() {
+        return optionB;
+    }
+
+    public Button getOptionC() {
+        return optionC;
+    }
 }

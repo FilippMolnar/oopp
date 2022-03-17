@@ -154,16 +154,13 @@ public class WaitController {
     }
     @MessageMapping("/decrease_time")
     public void decreaseTime(Player player) {
-        System.out.println(player);
         int gid = gameID-1;
-        System.out.println("decreased __________________________________");
         Game currentGame = gameController.getGame(gid);
         var playerList = currentGame.getPlayers();
         if(playerList == null) return;
         for (Player p : playerList) {
             String playerID = p.getSocketID();
             if(player.getName().equals(p.getName())) continue;
-            System.out.println(playerID + ": decreased time");
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/decrease_time/gameID", gid);
         }
     }

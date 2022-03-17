@@ -153,7 +153,10 @@ public class MainAppController {
             System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
         }
+    }
 
+    public Question getCurrentQuestion(){
+        return questionsInGame.get(questionIndex-1);
     }
 
     /*

@@ -97,6 +97,15 @@ public class GameController {
             LOGGER.info("Sent reaction event "+ur+" to "+player.getName());
         }
     }
+
+    /**
+     * When a user has chosen an option, they send their answer to the server. Once all players have answered, the server
+     * sends everyone the number of players who have chosen each option. This functionality should only apply for the two
+     * types of multiple choice questions.
+     * @param a - the answer
+     * When everyone has answered (or the time has run out), each client gets a List of 3 Integers where the 0 index corresponds
+     * to the number of players who have chosen A, 1 -> B and 2 -> C.
+     */
     @MessageMapping("/submit_answer")
     public void submitAnswer(@Payload Answer a) {
         int gameID = a.getGameID();

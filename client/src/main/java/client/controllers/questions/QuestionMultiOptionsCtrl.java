@@ -90,7 +90,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+        sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
     }
 
 

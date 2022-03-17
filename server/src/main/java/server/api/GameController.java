@@ -1,9 +1,6 @@
 package server.api;
 
-import commons.Game;
-import commons.Player;
-import commons.Question;
-import commons.UserReaction;
+import commons.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +87,6 @@ public class GameController {
     }
     @MessageMapping("/reactions")
     public void userReact(@Payload UserReaction ur) {
-        System.out.println("aaaaaa");
         int gameID = ur.getGameID();
         Game current = this.getGame(gameID);
         var playerList = current.getPlayers();
@@ -100,5 +96,11 @@ public class GameController {
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/reactions", ur);
             LOGGER.info("Sent reaction event "+ur+" to "+player.getName());
         }
+    }
+    @MessageMapping("/submit_answer")
+    public void submitAnswer(@Payload Answer a) {
+        int gameID = a.getGameID();
+        Game current = this.getGame(gameID);
+
     }
 }

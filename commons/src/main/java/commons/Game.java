@@ -31,6 +31,9 @@ public class Game {
 
     public Game(int gameID) {
         this.gameID = gameID;
+        optionsStatistics.put("optionA",0);
+        optionsStatistics.put("optionB",0);
+        optionsStatistics.put("optionC",0);
     }
 
     public int getRequested() {

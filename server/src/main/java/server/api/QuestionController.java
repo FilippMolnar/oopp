@@ -91,6 +91,15 @@ public class QuestionController {
         choices.add(act);
         choices.add(same.get(idx));
 
+        if(!choices.contains(neither))
+        {
+            int chance = (int)(Math.random()*100);
+            if(chance <= 33)
+            {
+                choices.add(neither);
+            }
+        }
+
         while (choices.size() < 4) {
             Activity choice = activityController.getRandom();
             if(same.contains(choice)||act.equals(choice)||choices.contains(choice))continue;

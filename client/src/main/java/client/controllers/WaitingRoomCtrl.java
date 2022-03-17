@@ -110,6 +110,7 @@ public class WaitingRoomCtrl implements Initializable {
             this.serverUtils.sendThroughSocket("/app/disconnect", new Player(appController.getName()));
         });
         this.serverUtils.subscribeForSocketMessages("/user/queue/decrease_time/gameID", Integer.class, gameID -> {
+            System.out.println("decreased");
             LinkedScene current = appController.getCurrentScene();
             if(current.getController() instanceof QuestionMultiOptionsCtrl qCtrl){
                 System.out.println("cutting animation");

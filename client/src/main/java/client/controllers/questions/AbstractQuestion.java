@@ -56,13 +56,13 @@ public abstract class AbstractQuestion {
     }
 
     public void triggerJoker1(){
-        mainCtrl.getJokers().getJokers().get(0).onClick();
+        mainCtrl.getJokers().getJokers().get(0).onClick(mainCtrl);
     }
     public void triggerJoker2(){
-        mainCtrl.getJokers().getJokers().get(1).onClick();
+        mainCtrl.getJokers().getJokers().get(1).onClick(mainCtrl);
     }
     public void triggerJoker3(){
-        mainCtrl.getJokers().getJokers().get(2).onClick();
+        mainCtrl.getJokers().getJokers().get(2).onClick(mainCtrl);
     }
 
     /**
@@ -195,8 +195,6 @@ public abstract class AbstractQuestion {
     public void sendAnswer(Answer answer) {
         hasSubmittedAnswer = true;
         server.sendThroughSocket("/app/submit_answer", answer);
-        //temporary solution to imitate joker click
-        server.sendThroughSocket("/app/decrease_time", new Player(this.mainCtrl.getName()));
     }
 
     /**

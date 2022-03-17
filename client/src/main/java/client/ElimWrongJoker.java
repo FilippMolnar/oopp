@@ -1,14 +1,19 @@
-package commons;
+package client;
+
+import client.controllers.MainAppController;
+import client.utils.ServerUtils;
+import commons.Activity;
+import commons.Question;
 
 import java.util.ArrayList;
 
 public class ElimWrongJoker extends Joker {
 
-    public ElimWrongJoker(String name, String imagePath) {
-        super(name, imagePath);
+    public ElimWrongJoker(String name, String imagePath, ServerUtils serverUtils) {
+        super(name, imagePath, serverUtils);
     }
 
-    public void onClick(Question question){
+    public void onClick(MainAppController mainCtrl, Question question){
         if(isUsed()){
             return;
         }

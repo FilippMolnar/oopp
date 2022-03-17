@@ -5,7 +5,7 @@ import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.JokersList;
+import client.JokersList;
 import commons.Player;
 import commons.Question;
 import javafx.scene.Parent;
@@ -69,7 +69,7 @@ public class MainAppController {
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
-        jokers = new JokersList();
+        jokers = new JokersList(serverUtils);
 
         primaryStage.setScene(homeScene);
         primaryStage.show();

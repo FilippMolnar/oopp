@@ -7,11 +7,6 @@ config {
             additionalSourceDirs
             additionalClassDirs
         }
-        jacocoTestReport {
-            reports {
-                xml {
-                    enabled false
-                }
 
     }
 }

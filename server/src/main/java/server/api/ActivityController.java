@@ -24,13 +24,13 @@ public class ActivityController {
         return true;
     }
 
-    public static List<Activity> getAllActivities()
+    public List<Activity> getAllActivities()
     {
         return activities.findAll();
     }
 
     @GetMapping(path = "/data/rand")
-    public static Activity getRandom()
+    public Activity getRandom()
     {
         long size = activities.count();
         int idx = (int)(Math.random()*size);
@@ -39,13 +39,13 @@ public class ActivityController {
     }
 
     @GetMapping(path = "/data/fetch/{cons}")
-    public static List<Activity> getAllByConsumption(@PathVariable("cons")int cons)
+    public List<Activity> getAllByConsumption(@PathVariable("cons")int cons)
     {
         return activities.getByConsumption(cons);
     }
 
     @GetMapping(path = "/data/diff/{cons}")
-    public static List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
+    public List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
     {
         return activities.getAllDiff(cons);
     }

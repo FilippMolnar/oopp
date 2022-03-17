@@ -3,6 +3,8 @@ package commons;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * TO BE TESTED
@@ -19,8 +21,10 @@ public class Game {
     private int qnum = 0; // Keeps track on which question we are throughout the game
     private int pnum = 0; // Keeps track of what the next player`s id should be
     private int pInGame = 0; // Keeps track of how many players are in current game
+    private List<Integer> optionsStatistics = Stream.of(0, 0, 0).collect(Collectors.toList());;
 
     public Game() {
+        optionsStatistics = Stream.of(0, 0, 0).collect(Collectors.toList());
     }
 
     public Game(int gameID) {
@@ -40,13 +44,38 @@ public class Game {
      *
      * @return true if all players have requested a new question, false otherwise
      */
-    public boolean newRequest() {
+    public boolean newRequest(String option) {
         this.requested++;
+        switch (option) {
+            case "optionA" -> {
+                int before = optionsStatistics.get(0);
+                System.out.println("OptionA");
+                optionsStatistics.set(0, before + 1);
+            }
+            case "optionB" -> {
+                int before = optionsStatistics.get(1);
+                System.out.println("OptionB");
+                optionsStatistics.set(1, before + 1);
+            }
+            case "optionC" -> {
+                int before = optionsStatistics.get(2);
+                System.out.println("OptionC");
+                optionsStatistics.set(2, before + 1);
+            }
+        }
         if (this.requested == pInGame) {
             this.requested = 0;
             return true;
         }
         return false;
+    }
+
+    public void resetOptions() {
+        optionsStatistics = Stream.of(0, 0, 0).toList();
+    }
+
+    public List<Integer> getOptionsStatistics() {
+        return optionsStatistics;
     }
 
     public void IncrementQNum() {

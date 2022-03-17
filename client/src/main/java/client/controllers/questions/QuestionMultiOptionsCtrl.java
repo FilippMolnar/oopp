@@ -205,6 +205,10 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             userReaction(userReaction.getReaction(), userReaction.getUsername());
         });
 
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, answers -> {
+            System.out.println("Received answer!!" + answers);
+        });
+
         startTimerAnimation();
         resizeImages();
         hasSubmittedAnswer = false;

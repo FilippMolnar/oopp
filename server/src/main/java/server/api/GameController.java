@@ -101,6 +101,16 @@ public class GameController {
     public void submitAnswer(@Payload Answer a) {
         int gameID = a.getGameID();
         Game current = this.getGame(gameID);
-
+        LOGGER.info("Receiving answer!! with option " + a.getOption());
+        if(current.newRequest(a.getOption())){
+            List<Integer> options = current.getOptionsStatistics();
+            var playerList = current.getPlayers();
+            System.out.println("options:" + options);
+            for (Player player : playerList) {
+                String playerID = player.getSocketID();
+                simpMessagingTemplate.convertAndSendToUser(playerID, "queue/statistics", options);
+            }
+            current.resetOptions();
+        }
     }
 }

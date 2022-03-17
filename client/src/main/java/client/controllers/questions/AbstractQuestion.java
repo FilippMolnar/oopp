@@ -163,7 +163,7 @@ public abstract class AbstractQuestion {
             timerValue.setText("0");
             if (!hasSubmittedAnswer)
                 sendAnswer(new Answer(false, "", mainCtrl.getGameID()));
-            mainCtrl.showNext(); // show next scene when timer runs out
+
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 

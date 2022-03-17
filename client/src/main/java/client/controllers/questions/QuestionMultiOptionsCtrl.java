@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import commons.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -25,6 +26,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
     @FXML
@@ -36,6 +39,14 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @FXML
     private GridPane images;
     private boolean hasSubmittedAnswer = false;
+
+    @FXML
+    private Label countA;
+
+    @FXML
+    private Label countB;
+    @FXML
+    private Label countC;
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -160,20 +171,20 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     public void angryReact() {
         String path = "/app/reactions";
-        userReaction("angry",mainCtrl.getName());
+        userReaction("angry", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
     }
 
     public void angelReact() {
         String path = "/app/reactions";
-        userReaction("angel",mainCtrl.getName());
+        userReaction("angel", mainCtrl.getName());
 
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
     }
 
     public void happyReact() {
         String path = "/app/reactions";
-        userReaction("happy",mainCtrl.getName());
+        userReaction("happy", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
 
@@ -200,6 +211,10 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void initializeController() {
+        countA.setVisible(false);
+        countB.setVisible(false);
+        countC.setVisible(false);
+
         server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
             System.out.println("received reaction!");
             userReaction(userReaction.getReaction(), userReaction.getUsername());
@@ -207,6 +222,31 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
         server.subscribeForSocketMessages("/user/queue/statistics", List.class, answers -> {
             System.out.println("Received answer!!" + answers);
+            countA.setVisible(true);
+            countA.setText("" + answers.get(0));
+
+            countB.setVisible(true);
+            countB.setText("" + answers.get(1));
+
+            countC.setVisible(true);
+            countC.setText("" + answers.get(2));
+
+            TimerTask delay = new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+
+                        System.out.println("Calling mainctrl show Next");
+                        mainCtrl.showNext();
+                    });
+
+                }
+            };
+            stopTimer();
+            Timer myTimer = new Timer();
+            myTimer.schedule(delay, 4000);
+
+
         });
 
         startTimerAnimation();

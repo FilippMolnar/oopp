@@ -3,11 +3,13 @@ package server.api;
 import commons.Game;
 import commons.Player;
 import commons.Question;
+import commons.Score;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import server.database.ScoreRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +17,13 @@ import java.util.Map;
 
 @RestController
 public class GameController {
+    
+    private ScoreRepository scoreRepository;
 
     private final Map<Integer, Game> games = new HashMap<>();
 
-    public GameController() {
+    public GameController(ScoreRepository scoreRepository) {
+        this.scoreRepository = scoreRepository;
     }
 
     public void addNewGame(int gameID) {
@@ -76,5 +81,11 @@ public class GameController {
         Game currentGame = getGame(gameID);
         System.out.println("Sending the questions " + currentGame.getQuestions());
         return currentGame.getQuestions();
+    }
+
+    @GetMapping("api/game/getSingleLeaderboard")
+    private List<Score> getSingleLeaderboard() {
+        List<Score> leaderboard = scoreRepository.getLeaderboard();
+        return leaderboard;
     }
 }

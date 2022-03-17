@@ -35,6 +35,7 @@ public class MainAppController {
     private QuestionMultiOptionsCtrl qMultiCtrl;
     private Scene qMultiScene;
     private BetweenQuestionCtrl betweenCtrl;
+    private LeaderBoardCtrl leaderBoardCtrl;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
     private Score score;
@@ -60,6 +61,7 @@ public class MainAppController {
         this.homeScene = new Scene(home.getValue());
         this.leaderBoardScene = new Scene(leaderBoard.getValue());
         this.betweenScene = new Scene(between.getValue());
+        this.leaderBoardCtrl = leaderBoard.getKey();
 
 
         LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene);
@@ -133,7 +135,7 @@ public class MainAppController {
         LinkedScene current = this.currentScene;
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
-            if (i == 10 && mode == 1) {
+            if (i == 10 && mode == 0) {
                 current.addNext(new LinkedScene(this.leaderBoardScene));
                 current = current.getNext();
             }
@@ -152,7 +154,9 @@ public class MainAppController {
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
-                    Arrays.asList(homeScreenLinked, homeScreenLinked.getNext(mode))));
+                    leaderBoardCtrl));
+        current.getNext().addNext(homeScreenLinked);
+        current.getNext().addNext(homeScreenLinked.getNext(mode));
     }
 
     /*
@@ -171,17 +175,22 @@ public class MainAppController {
         if (controller instanceof QuestionMultiOptionsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
+            qController.setQuestionNumber(questionIndex);
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+        }
+        if(questionIndex == questionsInGame.size()) {
+            System.out.println("ADD SCORE");
+            serverUtils.addScore(score);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
         }
-
     }
 
     /*
@@ -202,11 +211,19 @@ public class MainAppController {
         if (controller instanceof QuestionMultiOptionsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            if(questionIndex == questionsInGame.size()) {
+                System.out.println(serverUtils.addScore(score));
+            }
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            if(questionIndex == questionsInGame.size()) {
+                System.out.println(serverUtils.addScore(score));
+            }
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");

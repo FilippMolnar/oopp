@@ -23,7 +23,7 @@
     </rowConstraints>
     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2147483647"
           GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
-        <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Question 8/20">
+        <Text fx:id="questionNumber" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Question 8/20">
             <font>
                 <Font size="18.0"/>
             </font>

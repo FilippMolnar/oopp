@@ -39,6 +39,8 @@ public abstract class AbstractQuestion {
     private Text timerValue;
     @FXML
     protected Text score;
+    @FXML
+    protected Text questionNumber;
 
     // TO-DO change it according to game mode
     protected boolean isMultiPlayer = false;
@@ -61,6 +63,10 @@ public abstract class AbstractQuestion {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public void setQuestionNumber(int num) {
+        this.questionNumber.setText(num + "/20");
     }
 
     public void triggerJoker1(){
@@ -223,15 +229,15 @@ public abstract class AbstractQuestion {
    // }
 
     // for single player
-    public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
-        System.out.println(secondsToAnswer);
+    public int calculateScore(boolean answerCorrect, double secondsLeft) {
         int currentScore = mainCtrl.getScore();
 
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
         int maxPoints = 100;
+        double secondsToAnswer = (double) maxSeconds - secondsLeft;
         if (answerCorrect) {
-            scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+            scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
         System.out.println(scoreToBeAdded);
         Integer score = currentScore + scoreToBeAdded;

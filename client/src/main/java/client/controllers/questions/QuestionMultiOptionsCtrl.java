@@ -6,15 +6,21 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Answer;
+import javafx.application.Platform;
 import commons.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,7 +40,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     @FXML
     private Label countA;
-
     @FXML
     private Label countB;
     @FXML
@@ -121,6 +126,37 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
+        countA.setVisible(false);
+        countB.setVisible(false);
+        countC.setVisible(false);
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, answers -> {
+            System.out.println("Received answer!!" + answers);
+            countA.setVisible(true);
+            countA.setText("" + answers.get(0));
+
+            countB.setVisible(true);
+            countB.setText("" + answers.get(1));
+
+            countC.setVisible(true);
+            countC.setText("" + answers.get(2));
+
+            TimerTask delay = new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+
+                        System.out.println("Calling mainctrl show Next");
+                        mainCtrl.showNext();
+                    });
+
+                }
+            };
+            stopTimer();
+            Timer myTimer = new Timer();
+            myTimer.schedule(delay, 4000);
+
+
+        });
     }
 
 

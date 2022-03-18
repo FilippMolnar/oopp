@@ -96,6 +96,10 @@ public class MainAppController {
         System.out.println(gameID);
     }
 
+    public int getGameID() {
+        return this.gameID;
+    }
+
     /**
      * This method takes a list of actual question  and inserts
      * them into the LinkedScene navigation.

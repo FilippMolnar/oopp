@@ -1,10 +1,17 @@
 package server.api;
 
-import commons.Game;
-import commons.Player;
-import commons.Question;
+import commons.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +23,12 @@ public class GameController {
 
     private final Map<Integer, Game> games = new HashMap<>();
 
-    private final Map<String , Game> socketIDToGame = new HashMap<>(); // Maps each socketID to its corresponding game
 
-    public GameController() {
+    private SimpMessageSendingOperations simpMessagingTemplate;
+    private Logger LOGGER = LoggerFactory.getLogger(GameController.class);
+
+    public GameController(SimpMessageSendingOperations simpMessagingTemplate) {
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     public void addNewGame(int gameID) {
@@ -26,8 +36,6 @@ public class GameController {
     }
 
     public void addPlayerToGame(int gameID, Player player) {
-        socketIDToGame.put(player.getSocketID(),games.get(gameID));
-        player.setGameID(gameID);
         if (games.get(gameID) == null) {
             addNewGame(gameID);
         }
@@ -78,5 +86,42 @@ public class GameController {
         Game currentGame = getGame(gameID);
         System.out.println("Sending the questions " + currentGame.getQuestions());
         return currentGame.getQuestions();
+    }
+    @MessageMapping("/reactions")
+    public void userReact(@Payload UserReaction ur) {
+        int gameID = ur.getGameID();
+        Game current = this.getGame(gameID);
+        var playerList = current.getPlayers();
+        for (Player player : playerList) {
+            String playerID = player.getSocketID();
+            LOGGER.info("Sending reaction "+ ur);
+            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/reactions", ur);
+            LOGGER.info("Sent reaction event "+ur+" to "+player.getName());
+        }
+    }
+
+    /**
+     * When a user has chosen an option, they send their answer to the server. Once all players have answered, the server
+     * sends everyone the number of players who have chosen each option. This functionality should only apply for the two
+     * types of multiple choice questions.
+     * @param a - the answer
+     * When everyone has answered (or the time has run out), each client gets a List of 3 Integers where the 0 index corresponds
+     * to the number of players who have chosen A, 1 -> B and 2 -> C.
+     */
+    @MessageMapping("/submit_answer")
+    public void submitAnswer(@Payload Answer a) {
+        int gameID = a.getGameID();
+        Game current = this.getGame(gameID);
+        LOGGER.info("Receiving answer!! with option " + a.getOption());
+        if(current.newRequest(a.getOption())){
+            List<Integer> options = current.getOptionsStatistics();
+            var playerList = current.getPlayers();
+            System.out.println("options:" + options);
+            for (Player player : playerList) {
+                String playerID = player.getSocketID();
+                simpMessagingTemplate.convertAndSendToUser(playerID, "queue/statistics", options);
+            }
+            current.resetOptions();
+        }
     }
 }

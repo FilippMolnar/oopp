@@ -79,7 +79,7 @@ public class GameController {
         return cur;
     }
 
-    @GetMapping("api/game/getQuestions/{gameID}")
+    @GetMapping(path = "api/game/getQuestions/{gameID}")
     private List<Question> getGameQuestions(@PathVariable("gameID") int gameID) {
         Game currentGame = getGame(gameID);
         System.out.println("Sending the questions " + currentGame.getQuestions());

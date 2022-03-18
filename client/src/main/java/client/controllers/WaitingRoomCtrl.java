@@ -92,7 +92,7 @@ public class WaitingRoomCtrl implements Initializable {
             movePlayers(player);
         });
         this.serverUtils.subscribeForSocketMessages("/topic/disconnect", Player.class, player -> {
-            System.out.println("Player " + player.name + " disconnected");
+            System.out.println("Player " + player.getName() + " disconnected");
             playerList.remove(player);
             updateUI();
         });

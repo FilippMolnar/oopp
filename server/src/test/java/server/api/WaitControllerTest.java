@@ -36,7 +36,7 @@ public class WaitControllerTest {
     @BeforeEach
     public void setup() {
         mockSimpMessagingTemplate = new MockSimpMessagingTemplate();
-        sut = new WaitController(mockSimpMessagingTemplate, null);
+        sut = new WaitController(mockSimpMessagingTemplate, null, null);
         lobby = new ArrayList<>();
     }
 

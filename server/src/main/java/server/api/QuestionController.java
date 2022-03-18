@@ -9,8 +9,11 @@ import java.util.List;
 
 @RestController
 public class QuestionController {
+
+    private static ActivityController activityController;
+    public QuestionController(ActivityController activityController){this.activityController=activityController;}
     @GetMapping("/question")
-    public static Question getRandomQuestion() {
+    public Question getRandomQuestion() {
 //        int pick = new Random().nextInt(3);
 //        if (pick == 0)
 //            return getTypeEstimate();
@@ -26,8 +29,8 @@ public class QuestionController {
      * @return question of type estimate    !!!    CHOICES ARE AN EMPTY LIST  !!!
      */
     @GetMapping(path = {"/estimate"})
-    public static Question getTypeEstimate() {
-        Activity act = ActivityController.getRandom();
+    public Question getTypeEstimate() {
+        Activity act = activityController.getRandom();
         Question q = new Question();
         q.setChoices(new ArrayList<>());
         q.setType(QuestionType.Estimate);
@@ -42,10 +45,10 @@ public class QuestionController {
      * @return question of type most/least  !!!     CORRECT ANSWER IS NOT SET   !!!
      */
     @GetMapping(path = {"/most"})
-    public static Question getTypeMostLeast() {
+    public Question getTypeMostLeast() {
         List<Activity> choices = new ArrayList<>();
         while (choices.size() < 3) {
-            Activity act = ActivityController.getRandom();
+            Activity act = activityController.getRandom();
             if (choices.contains(act)) continue;
             choices.add(act);
         }
@@ -67,10 +70,10 @@ public class QuestionController {
      * @return question of type equal  !!!    NEEDS OPTIMIZATION   !!!
      */
     @GetMapping(path = {"/equal"})
-    public static Question getTypeEqual() {
-        Activity act = ActivityController.getRandom();
-        List<Activity> same = ActivityController.getAllByConsumption(act.getConsumption());
-        List<Activity> diff = ActivityController.getAllDiffCons(act.getConsumption());
+    public Question getTypeEqual() {
+        Activity act = activityController.getRandom();
+        List<Activity> same = activityController.getAllByConsumption(act.getConsumption());
+        List<Activity> diff = activityController.getAllDiffCons(act.getConsumption());
         List<Activity> choices = new ArrayList<>();
         Activity neither = new Activity("neither", -1, "location of cross");
 

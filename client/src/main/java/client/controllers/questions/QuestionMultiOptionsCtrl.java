@@ -10,6 +10,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -19,17 +20,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
+public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize, Initializable {
     @FXML
     private Button optionA;
     @FXML
@@ -38,11 +38,12 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private Button optionC;
     @FXML
     private GridPane images;
-    private boolean hasSubmittedAnswer = false;
+
+    @FXML
+    private Text questionNumberText;
 
     @FXML
     private Label countA;
-
     @FXML
     private Label countB;
     @FXML
@@ -70,8 +71,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
                 view.setFitWidth(1);
                 view.setFitHeight(1);
                 view.setImage(newImage);
-
-                System.out.println(path.getFileName() + " " + actualPath);
             } catch (NullPointerException e) {
                 System.out.println("Having an issue with the image " + path.getFileName() +
                         " it can't be found on the client");
@@ -209,54 +208,80 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     }
 
 
-    @Override
-    public void initializeController() {
+    private void displayAnswers(List<Integer> answerList) {
+        System.out.println("Received answer!!" + answerList);
+        countA.setVisible(true);
+        countA.setText("" + answerList.get(0));
+
+        countB.setVisible(true);
+        countB.setText("" + answerList.get(1));
+
+        countC.setVisible(true);
+        countC.setText("" + answerList.get(2));
+        informationLabel.setVisible(true);
+        informationLabel.setText("Stats received!");
+
+        stopTimer();
+
+        TimerTask delay = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(mainCtrl::showNext);
+            }
+        };
+        Timer myTimer = new Timer();
+        myTimer.schedule(delay, 3000); // wait for 4 seconds
+    }
+
+    /**
+     * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.
+     */
+    private void resetUI() {
+        informationLabel.setVisible(false);
         countA.setVisible(false);
         countB.setVisible(false);
         countC.setVisible(false);
-
-        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
-            System.out.println("received reaction!");
-            userReaction(userReaction.getReaction(), userReaction.getUsername());
-        });
-
-        server.subscribeForSocketMessages("/user/queue/statistics", List.class, answers -> {
-            System.out.println("Received answer!!" + answers);
-            countA.setVisible(true);
-            countA.setText("" + answers.get(0));
-
-            countB.setVisible(true);
-            countB.setText("" + answers.get(1));
-
-            countC.setVisible(true);
-            countC.setText("" + answers.get(2));
-
-            TimerTask delay = new TimerTask() {
-                @Override
-                public void run() {
-                    Platform.runLater(() -> {
-
-                        System.out.println("Calling mainctrl show Next");
-                        mainCtrl.showNext();
-                    });
-
-                }
-            };
-            stopTimer();
-            Timer myTimer = new Timer();
-            myTimer.schedule(delay, 4000);
-
-
-        });
-
-        startTimerAnimation();
         resizeImages();
-        hasSubmittedAnswer = false;
         System.out.println("Enabling scene");
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
     }
 
+    /**
+     * Since there is only one instance of the controller.
+     * The controller won't reset it's state when a new scene loads.
+     * Thus, we need to reset everything by ourselves.
+     */
+    private void resetLogic() {
+        hasSubmittedAnswer = false; // this is false at the beginning of the game
+    }
 
+    /**
+     * function called when each question is rendered
+     */
+    @Override
+    public void initializeController() {
+        questionNumberText.setText("Question " + (mainCtrl.getQuestionIndex() + 1) + "/20");
+        startTimerAnimation();
+        System.out.println("Initializing Qmulti!");
+        resetUI();
+        resetLogic();
+    }
+
+    /**
+     * Called only once by javafx. I register the socket messages here because if I would do this for
+     * each question we would get duplicate function registrations for the same event.
+     *
+     * @param location
+     * @param resources
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("received reaction!");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
+    }
 }

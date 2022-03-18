@@ -34,18 +34,21 @@ public abstract class AbstractQuestion {
     @FXML
     GridPane parentGridPane;
     @FXML
-    private Arc timerArc;
+    protected Arc timerArc;
     @FXML
-    private Text timerValue;
+    protected Text timerValue;
+
+    @FXML
+    protected Label informationLabel;
+
     private int timerIntegerValue;
 
-    private boolean hasSubmittedAnswer = false;
-    private final boolean afterFXMLLOAD = false;
+    protected boolean hasSubmittedAnswer = false;
 
-    private AnimationTimer animationTimer;
     private Timeline timeline;
     TimerTask timerTask;
     Timer numberTimer;
+
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -76,20 +79,8 @@ public abstract class AbstractQuestion {
         Pane pane = new Pane();
         ImageView iv;
         Label label = new Label(name);
-        Image img;
-        switch (reaction) {
-            case "happy":
-                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
-                break;
-            case "angry":
-                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
-                break;
-            case "angel":
-                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
-                break;
-            default:
-                return;
-        }
+        String imagePath = "/client/pictures/" + reaction;
+        Image img = new Image(getClass().getResource(imagePath).toString());
 
         iv = new ImageView(img);
         pane.getChildren().add(iv);
@@ -112,24 +103,21 @@ public abstract class AbstractQuestion {
 
     public void stopTimer(){
         timeline.stop();
-        animationTimer.stop();
         timerTask.cancel();
         numberTimer.cancel();
     }
 
     public void startTimerAnimation() {
-        timerIntegerValue = 10;
+        int durationTime = 10;
+        timerValue.setText(Integer.toString(durationTime));
+        timerIntegerValue = durationTime;
         timerArc.setLength(360);
         timerArc.setFill(Paint.valueOf("#d6d3ee"));
         timerValue.setFill(Paint.valueOf("#d6d3ee"));
         //create a timeline for moving the circle
         timeline = new Timeline();
         //You can add a specific action when each frame is started.
-        animationTimer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-            }
-        };
+
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -144,8 +132,6 @@ public abstract class AbstractQuestion {
             }
         };
         numberTimer = new Timer();
-        int durationTime = 10;
-        timerValue.setText(Integer.toString(durationTime));
         numberTimer.scheduleAtFixedRate(timerTask, 1000, 1000);
 
         //create a keyValue with factory: scaling the circle 2times
@@ -161,18 +147,18 @@ public abstract class AbstractQuestion {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            if (!hasSubmittedAnswer)
+            if (!hasSubmittedAnswer) {
+                System.out.println("submitting answer through the timer!");
                 sendAnswer(new Answer(false, "", mainCtrl.getGameID()));
-
+            }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
         //add the keyframe to the timeline
         timeline.getKeyFrames().add(keyFrame);
-
         timeline.play();
-        animationTimer.start();
     }
+
 
     /**
      * send answer to the server
@@ -180,9 +166,13 @@ public abstract class AbstractQuestion {
      * @param answer true/false depending if the selected answer was good
      */
     public void sendAnswer(Answer answer) {
+        informationLabel.setVisible(true);
+        informationLabel.setText("Answer submitted!");
         hasSubmittedAnswer = true;
+        stopTimer();
         server.sendThroughSocket("/app/submit_answer", answer);
     }
+
 
     /**
      * Wrapper function used to showcase the userReaction method with the help of a button. Will be deleted once we

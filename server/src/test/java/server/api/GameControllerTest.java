@@ -1,7 +1,6 @@
 package server.api;
 
-import commons.Game;
-import commons.Player;
+import commons.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +38,7 @@ class GameControllerTest {
 
     @Test
     void setScore() {
+        gameController.addPlayerToGame(1,p1);
         gameController.setScore(1,p1,50);
         Game game = gameController.getGame(1);
         assertTrue(game.getScore(p1)==50);
@@ -85,5 +85,16 @@ class GameControllerTest {
     @Test
     void getGameMapping() {
         assertNotNull(gameController.getGameMapping(1));
+    }
+
+    @Test
+    void testGetGameQuestions()
+    {
+        Question q = new Question(new Activity(),new ArrayList<>(), QuestionType.Estimate);
+        Game game = gameController.getGame(1);
+        List<Question> ls = new ArrayList<>();
+        ls.add(q);
+        game.setQuestions(ls);
+        assertEquals(ls,gameController.getGameQuestions(1));
     }
 }

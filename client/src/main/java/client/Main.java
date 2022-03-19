@@ -21,6 +21,7 @@ import client.controllers.MainAppController;
 import client.controllers.WaitingRoomCtrl;
 import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
+import client.controllers.questions.QuestionSameAsCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -65,8 +66,10 @@ public class Main extends Application {
                 "client", "scenes", "QuestionMultiOptions.fxml");
         var qInsert = FXML.load(QuestionInsertNumberCtrl.class,
                 "client", "scenes", "QuestionInsertNumber.fxml");
+        var sameAs = FXML.load(QuestionSameAsCtrl.class,
+                "client", "scenes", "QuestionSameAs.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
-        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert);
+        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert, sameAs);
     }
     @Override
     public void start(Stage primaryStage) throws IOException{

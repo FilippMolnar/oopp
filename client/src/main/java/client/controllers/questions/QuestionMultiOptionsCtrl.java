@@ -262,7 +262,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      */
     @Override
     public void initializeController() {
-        questionNumberText.setText("Question " + (mainCtrl.getQuestionIndex() + 1) + "/20");
+        questionNumberText.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation();
         System.out.println("Initializing Qmulti!");
         resetUI();

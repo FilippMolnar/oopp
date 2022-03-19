@@ -5,7 +5,6 @@ import commons.Question;
 import commons.QuestionType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import server.database.ActivityRepository;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

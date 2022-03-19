@@ -37,7 +37,7 @@ class GameTest {
 
     @Test
     void newRequest() {
-        game.newRequest();
+        game.newRequest("option");
         assertEquals(game.getRequested(),1);
     }
 

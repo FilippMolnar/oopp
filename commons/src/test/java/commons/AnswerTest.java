@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AnswerTest {
 
-    Answer answer = new Answer(false,"option");
-    Answer ans = new Answer(true,"option2");
+    Answer answer = new Answer(false,"option",1);
+    Answer ans = new Answer(true,"option2",1);
     @Test
     void isCorrect() {
         assertFalse(answer.isCorrect());
@@ -27,6 +27,6 @@ class AnswerTest {
 
     @Test
     void testEquals() {
-        assertTrue(answer.equals(new Answer(false,"option")));
+        assertTrue(answer.equals(new Answer(false,"option",1)));
     }
 }

@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import commons.Answer;
 import commons.Player;
 import commons.Question;
+import commons.UserReaction;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -108,6 +109,25 @@ public abstract class AbstractQuestion {
         fade.setNode(pane);
         fade.play();
         parentGridPane.getChildren().add(pane);
+    }
+
+    public void angryReact() {
+        String path = "/app/reactions";
+        userReaction("angry",mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+    }
+
+    public void angelReact() {
+        String path = "/app/reactions";
+        userReaction("angel",mainCtrl.getName());
+
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+    }
+
+    public void happyReact() {
+        String path = "/app/reactions";
+        userReaction("happy",mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
 
     public void stopTimer(){

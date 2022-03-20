@@ -4,6 +4,7 @@ import commons.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,8 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameControllerTest {
-    GameController gameController = new GameController();
+    private SimpMessageSendingOperations simpMessagingTemplate;
+    GameController gameController = new GameController(simpMessagingTemplate);
     Player p1 = new Player("First");
     Player p2 = new Player("Second");
     @BeforeEach

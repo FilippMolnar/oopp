@@ -27,8 +27,6 @@ public class GameController {
     private SimpMessageSendingOperations simpMessagingTemplate;
     private Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
-    public GameController(){}
-
     public GameController(SimpMessageSendingOperations simpMessagingTemplate) {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }

@@ -151,10 +151,6 @@ public class Game {
         return scores;
     }
 
-    public void setScoreboard(List<Integer> scoreboard) {
-        this.scoreboard = scoreboard;
-    }
-
     public void setScore(Player player, int score) {
         int id = playerToID.get(player);
         scoreboard.set(id, score);

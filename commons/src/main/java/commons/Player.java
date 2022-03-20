@@ -44,6 +44,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
+        this.gameID = 0;
     }
 
     public long getGameID() {return this.id;}

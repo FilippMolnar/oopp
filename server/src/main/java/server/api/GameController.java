@@ -27,6 +27,8 @@ public class GameController {
     private SimpMessageSendingOperations simpMessagingTemplate;
     private Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
+    public GameController(){}
+
     public GameController(SimpMessageSendingOperations simpMessagingTemplate) {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
@@ -82,7 +84,7 @@ public class GameController {
     }
 
     @GetMapping(path = "/game/getQuestions/{gameID}")
-    private List<Question> getGameQuestions(@PathVariable("gameID") int gameID) {
+    public List<Question> getGameQuestions(@PathVariable("gameID") int gameID) {
         Game currentGame = getGame(gameID);
         System.out.println("Sending the questions " + currentGame.getQuestions());
         return currentGame.getQuestions();

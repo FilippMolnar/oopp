@@ -154,6 +154,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     public void initializeController() {
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
         for(var bar:charts)bar.setVisible(false);
+        List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
+        for(var image:imageViews)image.setVisible(true);
 
         startTimerAnimation();
         resizeImages();

@@ -100,7 +100,8 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         Text t = new Text();
         t.setFill(Paint.valueOf("#cbbc50"));
         t.setLayoutY(29.0);
-        GridPane.setMargin(t, new Insets(0, 0, 0, 25));
+        int offset = 25 - ((int)(Math.log(row) / Math.log(10)))*4;
+        GridPane.setMargin(t, new Insets(0, 0, 0, offset));
         t.setStrokeType(StrokeType.OUTSIDE);
         t.setStrokeWidth(0.0);
         t.setText(row+"");

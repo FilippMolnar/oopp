@@ -7,23 +7,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping(path = "/api")
 public class GameController {
 
     private final Map<Integer, Game> games = new HashMap<>();
 
 
-    private SimpMessageSendingOperations simpMessagingTemplate;
-    private Logger LOGGER = LoggerFactory.getLogger(GameController.class);
+    private final SimpMessageSendingOperations simpMessagingTemplate;
+    private final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
     public GameController(SimpMessageSendingOperations simpMessagingTemplate) {
         this.simpMessagingTemplate = simpMessagingTemplate;
@@ -58,14 +56,14 @@ public class GameController {
      * @param gameID identifier for the current game
      * @return a list of pairs of score and player sorted in descending order by their score
      */
-    @GetMapping(path = "api/leaderboard/{gameID}")
+    @GetMapping(path = "/game/leaderboard/{gameID}")
     public List<Pair<Integer, Player>> getLeaderboard(@PathVariable("gameID") int gameID) {
         Game cur = getGame(gameID);
 
         return cur.getLeaderboard();
     }
 
-    @PostMapping(path = "api/game/score/{gameID}")
+    @PostMapping(path = "/game/score/{gameID}")
     public void setScore(@PathVariable("gameID") int gameID, Pair<Player, Integer> pair) {
         Game cur = getGame(gameID);
         Player player = pair.getLeft();
@@ -73,16 +71,14 @@ public class GameController {
         cur.setScore(player, score);
     }
 
-    @GetMapping(path = "api/game/getGame/{gameID}")
+    @GetMapping(path = "/game/getGame/{gameID}")
     public Game getGameMapping(@PathVariable("gameID") int gameID) {
-        Game cur = getGame(gameID);
-        return cur;
+        return getGame(gameID);
     }
 
-    @GetMapping(path = "api/game/getQuestions/{gameID}")
+    @GetMapping(path = "/game/getQuestions/{gameID}")
     private List<Question> getGameQuestions(@PathVariable("gameID") int gameID) {
         Game currentGame = getGame(gameID);
-        System.out.println("Sending the questions " + currentGame.getQuestions());
         return currentGame.getQuestions();
     }
     @MessageMapping("/reactions")
@@ -110,11 +106,11 @@ public class GameController {
     public void submitAnswer(@Payload Answer a) {
         int gameID = a.getGameID();
         Game current = this.getGame(gameID);
-        LOGGER.info("Receiving answer!! with option " + a.getOption());
+        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID);
         if(current.newRequest(a.getOption())){
             List<Integer> options = current.getOptionsStatistics();
             var playerList = current.getPlayers();
-            System.out.println("options:" + options);
+            LOGGER.info("Sending results: " + options + " to game ID " + gameID);
             for (Player player : playerList) {
                 String playerID = player.getSocketID();
                 simpMessagingTemplate.convertAndSendToUser(playerID, "queue/statistics", options);

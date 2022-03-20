@@ -18,6 +18,7 @@ package client;
 import client.controllers.*;
 import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
+import client.controllers.questions.QuestionSameAsCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -66,8 +67,10 @@ public class Main extends Application {
                 "client", "scenes", "QuestionInsertNumber.fxml");
         var qTransition = FXML.load(TransitionSceneCtrl.class,
                 "client", "scenes", "transition_between_questions.fxml");
+        var sameAs = FXML.load(QuestionSameAsCtrl.class,
+                "client", "scenes", "QuestionSameAs.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
-        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert, qTransition);
+        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert, sameAs, qTransition);
     }
 
     @Override

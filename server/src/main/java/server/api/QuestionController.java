@@ -1,17 +1,25 @@
 package server.api;
 
-import commons.*;
+import commons.Activity;
+import commons.Question;
+import commons.QuestionType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/api")
 public class QuestionController {
 
     private static ActivityController activityController;
-    public QuestionController(ActivityController activityController){this.activityController=activityController;}
+
+    public QuestionController(ActivityController activityController) {
+        QuestionController.activityController = activityController;
+    }
+
     @GetMapping("/question")
     public Question getRandomQuestion() {
 //        int pick = new Random().nextInt(3);
@@ -20,7 +28,7 @@ public class QuestionController {
 //        else if (pick == 1)
 //            return getTypeEqual();
 //        else
-            return getTypeMostLeast();
+        return getTypeMostLeast();
     }
 
     /**
@@ -67,18 +75,16 @@ public class QuestionController {
     /**
      * Fetches data and constructs a question of type equal
      *
-     * @return question of type equal  !!!    NEEDS OPTIMIZATION   !!!
+     * @return question of type equal  !!!    OPTIMIZED VERSION   !!!
      */
     @GetMapping(path = {"/equal"})
     public Question getTypeEqual() {
         Activity act = activityController.getRandom();
         List<Activity> same = activityController.getAllByConsumption(act.getConsumption());
-        List<Activity> diff = activityController.getAllDiffCons(act.getConsumption());
         List<Activity> choices = new ArrayList<>();
         Activity neither = new Activity("neither", -1, "location of cross");
 
         if (same.size() == 1) same.add(neither);
-        else diff.add(neither);
 
         int idx = (int) (Math.random() * same.size());
         if (same.get(idx).equals(act)) {
@@ -91,10 +97,17 @@ public class QuestionController {
         choices.add(act);
         choices.add(same.get(idx));
 
+        if (!choices.contains(neither)) {
+            int chance = (int) (Math.random() * 100);
+            if (chance <= 33) {
+                choices.add(neither);
+            }
+        }
+
         while (choices.size() < 4) {
-            idx = (int) (Math.random() * diff.size());
-            if (choices.contains(diff.get(idx))) continue;
-            choices.add(diff.get(idx));
+            Activity choice = activityController.getRandom();
+            if (same.contains(choice) || act.equals(choice) || choices.contains(choice)) continue;
+            choices.add(choice);
         }
         q.setType(QuestionType.EqualEnergy);
         q.setChoices(choices);

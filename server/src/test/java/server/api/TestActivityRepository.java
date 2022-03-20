@@ -15,19 +15,18 @@
  */
 package server.api;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
+import commons.Activity;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
-
-import commons.Activity;
 import server.database.ActivityRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 public class TestActivityRepository implements ActivityRepository {
 
@@ -135,7 +134,7 @@ public class TestActivityRepository implements ActivityRepository {
     @Override
     public <S extends Activity> S save(S entity) {
         call("save");
-        entity.id = (long) activities.size();
+        entity.id = activities.size();
         activities.add(entity);
         return entity;
     }
@@ -218,12 +217,12 @@ public class TestActivityRepository implements ActivityRepository {
     }
 
     @Override
-    public List<Activity> getByConsumption(int cons) {
+    public List<Activity> getByConsumption(int cons, int range) {
         return null;
     }
 
     @Override
-    public List<Activity> getAllDiff(int cons) {
+    public List<Activity> getAllDiff(int cons, int range) {
         return null;
     }
 }

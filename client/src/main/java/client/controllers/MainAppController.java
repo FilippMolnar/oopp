@@ -132,6 +132,8 @@ public class MainAppController {
      * @param mode      either 0 or 1. 0 indicates single player mode, 1 multiplayer.
      **/
     public void addQuestionScenes(List<Question> questions, int mode) {
+        // make sure the previous game is removed from the next scenes
+        homeScreenLinked.reset();
         LinkedScene current = this.currentScene;
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
@@ -155,7 +157,6 @@ public class MainAppController {
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
                     leaderBoardCtrl));
-        current.getNext().addNext(homeScreenLinked);
         current.getNext().addNext(homeScreenLinked.getNext(mode));
     }
 
@@ -176,16 +177,20 @@ public class MainAppController {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            if(questionIndex == questionsInGame.size()) {
+                System.out.println("ADD SCORE");
+                serverUtils.addScore(score);
+            }
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
-        }
-        if(questionIndex == questionsInGame.size()) {
-            System.out.println("ADD SCORE");
-            serverUtils.addScore(score);
+            if(questionIndex == questionsInGame.size()) {
+                System.out.println("ADD SCORE");
+                serverUtils.addScore(score);
+            }
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");
@@ -229,12 +234,12 @@ public class MainAppController {
             System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
         }
-       // this.currentScene = this.currentScene.getNext(i);
-       // primaryStage.setScene(this.currentScene.getScene());
-       // if (this.currentScene.getTitle() != null) {
-       //     primaryStage.setTitle(this.currentScene.getTitle());
-       // }
-       // primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(this.name)));
+        // this.currentScene = this.currentScene.getNext(i);
+        // primaryStage.setScene(this.currentScene.getScene());
+        // if (this.currentScene.getTitle() != null) {
+        //     primaryStage.setTitle(this.currentScene.getTitle());
+        // }
+        // primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(this.name)));
     }
 
     //    public void showQuestion(Question question) {

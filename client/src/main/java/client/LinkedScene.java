@@ -8,7 +8,7 @@ import java.util.List;
 public class LinkedScene {
 
     private final Scene current;
-    private final List<LinkedScene> next;
+    private List<LinkedScene> next;
     private final String title;
     private Object controller;
 
@@ -48,6 +48,17 @@ public class LinkedScene {
 
     public LinkedScene getNext(int i) {
         return this.next.get(i);
+    }
+
+    public void reset() {
+        // reset single player
+        if(next.size() > 1) {
+            this.next.remove(1);
+        }
+        // reset multiplayer
+        if(next.size() > 0) {
+            this.next.get(0).reset();
+        }
     }
 
     public void addNext(LinkedScene next) {

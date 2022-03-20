@@ -6,6 +6,8 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Answer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import commons.Question;
 import javafx.event.ActionEvent;
@@ -19,16 +21,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 
+import com.google.inject.Inject;
 import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
-
+import javafx.util.Duration;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import javafx.animation.*;
 
 public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
     @FXML
@@ -86,29 +91,29 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         }
     }
 
-    public void showChart(int firstOp,int secondOp,int thirdOp,int correct)
+    public void showChart(List<Integer> ans,int correct)
     {
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
+
+        double all = ans.get(0)+ans.get(1)+ans.get(2);
+
         for(int i=0;i<3;i++)
         {
             imageViews.get(i).setVisible(false);
+            double h = 200.0*ans.get(i)/all;
             var bar = (Rectangle)charts.get(i);
             bar.setVisible(true);
             if(i==correct)
                 bar.setFill(Paint.valueOf("green"));
             else bar.setFill(Paint.valueOf("red"));
+            bar.setHeight(0);
+            KeyValue heightValue = new KeyValue(bar.heightProperty(),bar.getHeight()+h);
+            KeyFrame frame = new KeyFrame(Duration.millis(500),heightValue);
+            Timeline timeline = new Timeline(frame);
+            timeline.play();
         }
-        double all = firstOp+secondOp+thirdOp;
-        double h1 = 200.0*firstOp/all;
-        double h2 = 200.0*secondOp/all;
-        double h3 = 200.0*thirdOp/all;
-        var bar1 = (Rectangle)charts.get(0);
-        bar1.setHeight(h1);
-        var bar2 = (Rectangle)charts.get(1);
-        bar2.setHeight(h2);
-        var bar3 = (Rectangle)charts.get(2);
-        bar3.setHeight(h3);
+
     }
 
     /**
@@ -170,7 +175,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         server.subscribeForSocketMessages("/user/queue/statistics", List.class, answers -> {
             System.out.println("Received answer!!" + answers);
 
-            showChart((int)answers.get(0),(int)answers.get(1),(int)answers.get(2),correct);
+            showChart(answers,correct);
 
             countA.setVisible(true);
             countA.setText("" + answers.get(0));

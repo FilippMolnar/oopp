@@ -83,7 +83,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     /**
      * function called when user submits an answer
      * we mark that answer as final for now.
-     *
      * @param actionEvent event used to get the button
      */
     public void pressedOption(ActionEvent actionEvent) {

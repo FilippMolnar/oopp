@@ -4,7 +4,6 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Answer;
-import commons.Player;
 import commons.Question;
 import javafx.animation.*;
 import javafx.application.Platform;

@@ -13,43 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package client;
+package client.jokers;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
-
-import client.controllers.MainAppController;
+import client.utils.ServerUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import client.utils.ServerUtils;
 
-public class Joker {
-    public String name;
-    public String imagePath;
-    private boolean used;
-    protected ServerUtils serverUtils;
-    @SuppressWarnings("unused")
-    private Joker() {
-        // for object mapper
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
+
+
+public class JokersList {
+    private List<Joker> jokers;
+
+    public JokersList(ServerUtils serverUtils) {
+        this.jokers = new ArrayList<>();
+        //TODO randomly generate jokers, insert them to fxml
+        jokers.add(new DoublePointsJoker("double points", "@client/pictures/joker_double_points.png", serverUtils));
+        jokers.add(new DecreaseTimeJoker("decrease time", "@client/pictures/joker_decrease_time.png", serverUtils));
+        jokers.add(new ElimWrongJoker("eliminate wrong answer", "@client/pictures/joker_elim_wrong.png", serverUtils));
     }
 
-    public Joker(String name, String imagePath, ServerUtils serverUtils) {
-        this.name = name;
-        this.imagePath = imagePath;
-        this.used = false;
-        this.serverUtils = serverUtils;
-    }
-
-    public boolean isUsed(){
-        return this.used;
-    }
-
-    public void use(){
-        this.used = true;
-    }
-
-    public void onClick(MainAppController mainCtrl){
-        System.out.println("joker");
+    public List<Joker> getJokers() {
+        return jokers;
     }
 
     @Override

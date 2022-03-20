@@ -1,4 +1,4 @@
-package client;
+package client.jokers;
 
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;

@@ -17,8 +17,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 
 
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,6 +40,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @FXML
     private GridPane images;
     private boolean hasSubmittedAnswer = false;
+    private int correct;
 
     @FXML
     private Label countA;
@@ -57,6 +61,10 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionB.setText(question.getChoices().get(1).getTitle());
         optionC.setText(question.getChoices().get(2).getTitle());
 
+        if(question.getChoices().get(0).equals(question.getCorrect()))correct = 0;
+        else if(question.getChoices().get(1).equals(question.getCorrect()))correct = 1;
+        else correct = 2;
+
         for (int i = 0; i < imageViews.size(); i++) {
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
@@ -76,6 +84,31 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
             }
         }
+    }
+
+    public void showChart(int firstOp,int secondOp,int thirdOp,int correct)
+    {
+        List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
+        List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
+        for(int i=0;i<3;i++)
+        {
+            imageViews.get(i).setVisible(false);
+            var bar = (Rectangle)charts.get(i);
+            bar.setVisible(true);
+            if(i==correct)
+                bar.setFill(Paint.valueOf("green"));
+            else bar.setFill(Paint.valueOf("red"));
+        }
+        double all = firstOp+secondOp+thirdOp;
+        double h1 = 200.0*firstOp/all;
+        double h2 = 200.0*secondOp/all;
+        double h3 = 200.0*thirdOp/all;
+        var bar1 = (Rectangle)charts.get(0);
+        bar1.setHeight(h1);
+        var bar2 = (Rectangle)charts.get(1);
+        bar2.setHeight(h2);
+        var bar3 = (Rectangle)charts.get(2);
+        bar3.setHeight(h3);
     }
 
     /**
@@ -119,6 +152,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void initializeController() {
+        List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
+        for(var bar:charts)bar.setVisible(false);
+
         startTimerAnimation();
         resizeImages();
         hasSubmittedAnswer = false;
@@ -131,6 +167,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         countC.setVisible(false);
         server.subscribeForSocketMessages("/user/queue/statistics", List.class, answers -> {
             System.out.println("Received answer!!" + answers);
+
+            showChart((int)answers.get(0),(int)answers.get(1),(int)answers.get(2),correct);
+
             countA.setVisible(true);
             countA.setText("" + answers.get(0));
 

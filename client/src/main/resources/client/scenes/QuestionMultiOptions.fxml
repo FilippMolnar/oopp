@@ -133,16 +133,19 @@
             <ImageView fitHeight="176.0" fitWidth="312.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                 <Image url="@/33/watch.png" />
             </ImageView>
+         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="80.0" StackPane.alignment="BOTTOM_CENTER" />
         </StackPane>
         <StackPane GridPane.columnIndex="3">
             <ImageView fitHeight="146.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                 <Image url="@/33/watch.png" />
             </ImageView>
+         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="80.0" StackPane.alignment="BOTTOM_CENTER" />
         </StackPane>
         <StackPane GridPane.columnIndex="4">
             <ImageView fitHeight="169.0" fitWidth="381.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                 <Image url="@/33/Dishwasher.jpg" />
             </ImageView>
+         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="80.0" StackPane.alignment="BOTTOM_CENTER" />
         </StackPane>
         <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedOption" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="A" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
         <Button fx:id="optionB" alignment="CENTER" mnemonicParsing="false" onAction="#pressedOption" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="B" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" />

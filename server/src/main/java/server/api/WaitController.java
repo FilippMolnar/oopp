@@ -69,7 +69,8 @@ public class WaitController {
     public void addName(@RequestBody Player player) {
         lobbyPlayers.add(player);
         simpMessagingTemplate.convertAndSend("/topic/waitingRoom", player);
-        LOGGER.info("Players in waiting room are\n" + lobbyPlayers);
+        List<String> playerNames = lobbyPlayers.stream().map(Player::getName).toList();
+        LOGGER.info("Players in waiting room are:" + playerNames);
     }
 
     private List<Question> getRandomQuestionTypes() {
@@ -108,7 +109,6 @@ public class WaitController {
 
         Game currentGame = gameController.getGame(gameID);
         lobbyPlayers.clear();
-        //var playerList = IDToPlayers.get(gameID);
         var playerList = currentGame.getPlayers();
         if (playerList == null) {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
@@ -116,7 +116,6 @@ public class WaitController {
         }
         var questionList = get20RandomMostLeastQuestions();
         currentGame.setQuestions(questionList);
-
         utils.sendToAllPlayers(playerList, "queue/startGame/gameID", gameID);
 
         gameID++;
@@ -129,7 +128,8 @@ public class WaitController {
 
     @MessageMapping("/enterRoom")
     public void socketAddName(@Payload Player player, Principal principal) {
-        LOGGER.info("add player with name " + player.getName() + " to the waiting room with sockets. The player's id is " + principal.getName());
+        LOGGER.info("add player with name " + player.getName() + " to the waiting room(gameID = "
+                + gameID + " with sockets. The player's id is " + principal.getName());
         addName(player);
         addPlayerToGameID(principal.getName(), player);
     }
@@ -150,7 +150,7 @@ public class WaitController {
     @MessageMapping("/disconnect")
     public void playerDisconnect(Player player) {
         if (lobbyPlayers.remove(player)) {
-            System.out.println("Player " + player.getName() + " disconnected!");
+            LOGGER.info("Player " + player.getName() + " disconnected!");
             simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
         }
     }

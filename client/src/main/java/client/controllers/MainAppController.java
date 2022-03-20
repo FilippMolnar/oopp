@@ -23,6 +23,9 @@ public class MainAppController {
     private Stage primaryStage;
     private Scene homeScene;
     private Scene leaderBoardScene;
+    private Scene qMultiScene;
+    private Scene qInsert;
+    private Scene questionTransitionScene;
     private Scene sameAsScene;
 
     private LinkedScene currentScene;
@@ -31,9 +34,8 @@ public class MainAppController {
     private String name;
 
     private QuestionInsertNumberCtrl qInsertCtrl;
-    private Scene qInsert;
     private QuestionMultiOptionsCtrl qMultiCtrl;
-    private Scene qMultiScene;
+    private TransitionSceneCtrl qTransitionCtrl;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
 
@@ -51,12 +53,17 @@ public class MainAppController {
                            Pair<LeaderBoardCtrl, Parent> leaderBoard,
                            Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
                            Pair<QuestionInsertNumberCtrl, Parent> qInsert,
-                           Pair<QuestionSameAsCtrl, Parent> sameAs){
+                           Pair<QuestionSameAsCtrl, Parent> sameAs,
+                           Pair<TransitionSceneCtrl, Parent> qTransition) {
 
         this.name = "";
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         this.homeScene = new Scene(home.getValue());
         this.leaderBoardScene = new Scene(leaderBoard.getValue());
+
+        this.questionTransitionScene = new Scene(qTransition.getValue());
+        this.qTransitionCtrl = qTransition.getKey();
+
         this.sameAsScene = new Scene(sameAs.getValue());
 
         LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene);
@@ -105,6 +112,10 @@ public class MainAppController {
         return this.gameID;
     }
 
+    public int getQuestionIndex() {
+        return questionIndex;
+    }
+
     /**
      * This method takes a list of actual question  and inserts
      * them into the LinkedScene navigation.
@@ -118,6 +129,10 @@ public class MainAppController {
         for (int i = 0; i < questions.size(); i++) {
             if (i == 10) {
                 current.addNext(new LinkedScene(this.leaderBoardScene));
+                current = current.getNext();
+            } else {
+                // add the transition before a normal question
+                current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
                 current = current.getNext();
             }
 //            if(questionTypes.get(i) < 2) {
@@ -155,7 +170,6 @@ public class MainAppController {
             questionIndex++;
         }
         if (controller instanceof ControllerInitialize controllerInit) {
-            System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
         }
 

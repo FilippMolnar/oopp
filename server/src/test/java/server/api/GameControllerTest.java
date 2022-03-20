@@ -12,7 +12,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameControllerTest {
-    GameController gameController = new GameController();
+    GameController gameController = new GameController(null);
     Player p1 = new Player("First");
     Player p2 = new Player("Second");
     @BeforeEach

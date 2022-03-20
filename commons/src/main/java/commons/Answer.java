@@ -10,6 +10,7 @@ public class Answer {
     public Answer(boolean isCorrect, String option, int gameID) {
         this.isCorrect = isCorrect;
         this.option = option;
+        this.gameID = gameID;
     }
 
     public boolean isCorrect() {

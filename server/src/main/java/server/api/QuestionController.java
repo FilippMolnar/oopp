@@ -1,6 +1,8 @@
 package server.api;
 
-import commons.*;
+import commons.Activity;
+import commons.Question;
+import commons.QuestionType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +15,11 @@ import java.util.List;
 public class QuestionController {
 
     private static ActivityController activityController;
-    public QuestionController(ActivityController activityController){this.activityController=activityController;}
+
+    public QuestionController(ActivityController activityController) {
+        QuestionController.activityController = activityController;
+    }
+
     @GetMapping("/question")
     public Question getRandomQuestion() {
 //        int pick = new Random().nextInt(3);
@@ -22,7 +28,7 @@ public class QuestionController {
 //        else if (pick == 1)
 //            return getTypeEqual();
 //        else
-            return getTypeMostLeast();
+        return getTypeMostLeast();
     }
 
     /**
@@ -91,18 +97,16 @@ public class QuestionController {
         choices.add(act);
         choices.add(same.get(idx));
 
-        if(!choices.contains(neither))
-        {
-            int chance = (int)(Math.random()*100);
-            if(chance <= 33)
-            {
+        if (!choices.contains(neither)) {
+            int chance = (int) (Math.random() * 100);
+            if (chance <= 33) {
                 choices.add(neither);
             }
         }
 
         while (choices.size() < 4) {
             Activity choice = activityController.getRandom();
-            if(same.contains(choice)||act.equals(choice)||choices.contains(choice))continue;
+            if (same.contains(choice) || act.equals(choice) || choices.contains(choice)) continue;
             choices.add(choice);
         }
         q.setType(QuestionType.EqualEnergy);

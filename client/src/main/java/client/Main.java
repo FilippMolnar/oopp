@@ -15,10 +15,7 @@
  */
 package client;
 
-import client.controllers.HomeScreenCtrl;
-import client.controllers.LeaderBoardCtrl;
-import client.controllers.MainAppController;
-import client.controllers.WaitingRoomCtrl;
+import client.controllers.*;
 import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.controllers.questions.QuestionSameAsCtrl;
@@ -43,6 +40,7 @@ public class Main extends Application {
 
     /**
      * return the URL to the .fxml file
+     *
      * @param parts path to the .fxml file
      * @return the location of the path
      */
@@ -53,9 +51,10 @@ public class Main extends Application {
 
     /**
      * This way of loading the stages makes sure the <code>Juice</code> injects the right dependencies to the controllers
+     *
      * @param primaryStage
      */
-    private void loadUsingTemplateDependencyInjection(Stage primaryStage){
+    private void loadUsingTemplateDependencyInjection(Stage primaryStage) {
         var waitingRoom = FXML.load(WaitingRoomCtrl.class,
                 "client", "scenes", "waiting_room.fxml");
         var home = FXML.load(HomeScreenCtrl.class,
@@ -66,13 +65,16 @@ public class Main extends Application {
                 "client", "scenes", "QuestionMultiOptions.fxml");
         var qInsert = FXML.load(QuestionInsertNumberCtrl.class,
                 "client", "scenes", "QuestionInsertNumber.fxml");
+        var qTransition = FXML.load(TransitionSceneCtrl.class,
+                "client", "scenes", "transition_between_questions.fxml");
         var sameAs = FXML.load(QuestionSameAsCtrl.class,
                 "client", "scenes", "QuestionSameAs.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
-        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert, sameAs);
+        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert, sameAs, qTransition);
     }
+
     @Override
-    public void start(Stage primaryStage) throws IOException{
+    public void start(Stage primaryStage) throws IOException {
         loadUsingTemplateDependencyInjection(primaryStage);
     }
 }

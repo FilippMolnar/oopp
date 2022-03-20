@@ -20,10 +20,8 @@ public class GameController {
     private final Map<Integer, Game> games = new HashMap<>();
 
 
-    private final SimpMessageSendingOperations simpMessagingTemplate;
-    private final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
-
-    public GameController(){}
+    private SimpMessageSendingOperations simpMessagingTemplate;
+    private Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
     public GameController(SimpMessageSendingOperations simpMessagingTemplate) {
         this.simpMessagingTemplate = simpMessagingTemplate;

@@ -3,12 +3,14 @@ package server.api;
 import commons.Activity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.database.ActivityRepository;
 
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/api")
 public class ActivityController {
     private static ActivityRepository activities;
 
@@ -41,12 +43,12 @@ public class ActivityController {
     @GetMapping(path = "/data/fetch/{cons}")
     public List<Activity> getAllByConsumption(@PathVariable("cons")int cons)
     {
-        return activities.getByConsumption(cons);
+        return activities.getByConsumption(cons,100);
     }
 
     @GetMapping(path = "/data/diff/{cons}")
     public List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
     {
-        return activities.getAllDiff(cons);
+        return activities.getAllDiff(cons,100);
     }
 }

@@ -218,12 +218,12 @@ public class TestActivityRepository implements ActivityRepository {
     }
 
     @Override
-    public List<Activity> getByConsumption(int cons) {
+    public List<Activity> getByConsumption(int cons,int range) {
         return null;
     }
 
     @Override
-    public List<Activity> getAllDiff(int cons) {
+    public List<Activity> getAllDiff(int cons,int range) {
         return null;
     }
 }

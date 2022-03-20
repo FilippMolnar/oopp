@@ -2,6 +2,7 @@ package server.api;
 
 import commons.*;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping(path = "/api")
 public class GameController {
 
     private final Map<Integer, Game> games = new HashMap<>();
@@ -58,14 +60,14 @@ public class GameController {
      * @param gameID identifier for the current game
      * @return a list of pairs of score and player sorted in descending order by their score
      */
-    @GetMapping(path = "api/leaderboard/{gameID}")
+    @GetMapping(path = "/game/leaderboard/{gameID}")
     public List<Pair<Integer, Player>> getLeaderboard(@PathVariable("gameID") int gameID) {
         Game cur = getGame(gameID);
 
         return cur.getLeaderboard();
     }
 
-    @PostMapping(path = "api/game/score/{gameID}")
+    @PostMapping(path = "/game/score/{gameID}")
     public void setScore(@PathVariable("gameID") int gameID, Pair<Player, Integer> pair) {
         Game cur = getGame(gameID);
         Player player = pair.getLeft();
@@ -73,13 +75,13 @@ public class GameController {
         cur.setScore(player, score);
     }
 
-    @GetMapping(path = "api/game/getGame/{gameID}")
+    @GetMapping(path = "/game/getGame/{gameID}")
     public Game getGameMapping(@PathVariable("gameID") int gameID) {
         Game cur = getGame(gameID);
         return cur;
     }
 
-    @GetMapping(path = "api/game/getQuestions/{gameID}")
+    @GetMapping(path = "/game/getQuestions/{gameID}")
     private List<Question> getGameQuestions(@PathVariable("gameID") int gameID) {
         Game currentGame = getGame(gameID);
         System.out.println("Sending the questions " + currentGame.getQuestions());

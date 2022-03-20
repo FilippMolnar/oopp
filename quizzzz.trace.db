@@ -189,3 +189,6 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:E:/OneDrive/
 	at org.h2.mvstore.FileStore.open(FileStore.java:172)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:381)
 	... 62 more
+2022-03-17 00:31:34 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "ACTIVITY[*]"; expected "ALTER, ANALYZE"; SQL statement:
+ACTIVITY [42001-200]

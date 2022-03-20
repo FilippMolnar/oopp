@@ -40,7 +40,7 @@ public class LeaderBoardCtrl implements ControllerInitialize{
 
     public void rematch() {
         List<Question> questions = serverUtils.getLeastMostQuestions();
-        this.appController.showNext();
+        //this.appController.showNext();
         appController.addQuestionScenes(questions, 1);
         this.appController.initializeScore();
         this.appController.showNext(1);

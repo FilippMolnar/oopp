@@ -111,6 +111,7 @@ public class MainAppController {
     }
 
     public void initializeScore() {
+        System.out.println("INITIALIZING SCORE");
         this.score = new Score(this.name, 0); 
     }
 
@@ -133,7 +134,7 @@ public class MainAppController {
      **/
     public void addQuestionScenes(List<Question> questions, int mode) {
         // make sure the previous game is removed from the next scenes
-        homeScreenLinked.reset();
+        homeScreenLinked.reset(1);
         LinkedScene current = this.currentScene;
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
@@ -157,7 +158,7 @@ public class MainAppController {
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
                     leaderBoardCtrl));
-        current.getNext().addNext(homeScreenLinked.getNext(mode));
+        current.getNext().addNext(homeScreenLinked.getNext());
     }
 
     /*
@@ -177,24 +178,20 @@ public class MainAppController {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
-            if(questionIndex == questionsInGame.size()) {
-                System.out.println("ADD SCORE");
-                serverUtils.addScore(score);
-            }
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
-            if(questionIndex == questionsInGame.size()) {
-                System.out.println("ADD SCORE");
-                serverUtils.addScore(score);
-            }
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
+            if(questionIndex == questionsInGame.size()) {
+                System.out.println(serverUtils.addScore(score));
+                questionIndex = 0;
+            }
         }
     }
 
@@ -217,22 +214,20 @@ public class MainAppController {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
-            if(questionIndex == questionsInGame.size()) {
-                System.out.println(serverUtils.addScore(score));
-            }
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
-            if(questionIndex == questionsInGame.size()) {
-                System.out.println(serverUtils.addScore(score));
-            }
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
+            if(questionIndex == questionsInGame.size()) {
+                System.out.println(serverUtils.addScore(score));
+                questionIndex = -1;
+            }
         }
         // this.currentScene = this.currentScene.getNext(i);
         // primaryStage.setScene(this.currentScene.getScene());

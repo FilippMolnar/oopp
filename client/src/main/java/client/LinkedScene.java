@@ -50,14 +50,9 @@ public class LinkedScene {
         return this.next.get(i);
     }
 
-    public void reset() {
-        // reset single player
-        if(next.size() > 1) {
-            this.next.remove(1);
-        }
-        // reset multiplayer
-        if(next.size() > 0) {
-            this.next.get(0).reset();
+    public void reset(int i) {
+        if(next.size() > i) {
+            next.remove(i); 
         }
     }
 

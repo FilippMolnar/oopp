@@ -6,11 +6,13 @@ import com.google.inject.Inject;
 import commons.Answer;
 import commons.Player;
 import commons.Question;
+import commons.UserReaction;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,14 +25,17 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public abstract class AbstractQuestion {
+public abstract class AbstractQuestion implements Initializable {
     protected final ServerUtils server;
     protected final MainAppController mainCtrl;
     protected Question question;
+
     @FXML
     GridPane parentGridPane;
     @FXML
@@ -64,6 +69,12 @@ public abstract class AbstractQuestion {
     }
     public void triggerJoker3(){
         mainCtrl.getJokers().getJokers().get(2).onClick();
+    }
+
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
     }
 
     /**
@@ -108,6 +119,25 @@ public abstract class AbstractQuestion {
         fade.setNode(pane);
         fade.play();
         parentGridPane.getChildren().add(pane);
+    }
+
+    public void angryReact() {
+        String path = "/app/reactions";
+        userReaction("angry",mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+    }
+
+    public void angelReact() {
+        String path = "/app/reactions";
+        userReaction("angel",mainCtrl.getName());
+
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+    }
+
+    public void happyReact() {
+        String path = "/app/reactions";
+        userReaction("happy",mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
 
     public void stopTimer(){
@@ -184,14 +214,6 @@ public abstract class AbstractQuestion {
         server.sendThroughSocket("/app/submit_answer", answer);
     }
 
-    /**
-     * Wrapper function used to showcase the userReaction method with the help of a button. Will be deleted once we
-     * complete the reaction functionality.
-     */
-    public void userReaction() {
-        userReaction("angel", "Bianca");
-    }
-
     public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
         int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
 
@@ -205,11 +227,6 @@ public abstract class AbstractQuestion {
         Integer score = currentScore + scoreToBeAdded;
         Pair<Player, Integer> result = Pair.of(player, score);
         server.postGameScore(mainCtrl.getGameID(), result);
-    }
-
-    public void dummy() {
-        Player player = new Player(mainCtrl.getName());
-        calculateScore(player, true, 20);
     }
 
 }

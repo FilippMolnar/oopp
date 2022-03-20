@@ -6,10 +6,11 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Answer;
+import commons.Question;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import commons.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -23,17 +24,12 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-
-import com.google.inject.Inject;
-import java.awt.*;
-import java.util.Timer;
-import java.util.TimerTask;
-import javafx.util.Duration;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import javafx.animation.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
     @FXML
@@ -66,8 +62,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionB.setText(question.getChoices().get(1).getTitle());
         optionC.setText(question.getChoices().get(2).getTitle());
 
-        if(question.getChoices().get(0).equals(question.getCorrect()))correct = 0;
-        else if(question.getChoices().get(1).equals(question.getCorrect()))correct = 1;
+        if (question.getChoices().get(0).equals(question.getCorrect())) correct = 0;
+        else if (question.getChoices().get(1).equals(question.getCorrect())) correct = 1;
         else correct = 2;
 
         for (int i = 0; i < imageViews.size(); i++) {
@@ -91,25 +87,24 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         }
     }
 
-    public void showChart(List<Integer> ans,int correct)
-    {
+    public void showChart(List<Integer> ans, int correct) {
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
 
-        double all = ans.get(0)+ans.get(1)+ans.get(2);
+        double all = ans.get(0) + ans.get(1) + ans.get(2);
 
-        for(int i=0;i<3;i++)
-        {
+        for (int i = 0; i < 3; i++) {
             imageViews.get(i).setVisible(false);
-            double h = 200.0*ans.get(i)/all;
-            var bar = (Rectangle)charts.get(i);
+            double h = 170 * ans.get(i) / all;
+            var bar = (Rectangle) charts.get(i);
             bar.setVisible(true);
-            if(i==correct)
+            bar.setOpacity(1);
+            if (i == correct)
                 bar.setFill(Paint.valueOf("green"));
             else bar.setFill(Paint.valueOf("red"));
             bar.setHeight(0);
-            KeyValue heightValue = new KeyValue(bar.heightProperty(),bar.getHeight()+h);
-            KeyFrame frame = new KeyFrame(Duration.millis(500),heightValue);
+            KeyValue heightValue = new KeyValue(bar.heightProperty(), bar.getHeight() + h);
+            KeyFrame frame = new KeyFrame(Duration.millis(500), heightValue);
             Timeline timeline = new Timeline(frame);
             timeline.play();
         }
@@ -119,6 +114,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     /**
      * function called when user submits an answer
      * we mark that answer as final for now.
+     *
      * @param actionEvent event used to get the button
      */
     public void pressedOption(ActionEvent actionEvent) {
@@ -158,9 +154,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @Override
     public void initializeController() {
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
-        for(var bar:charts)bar.setVisible(false);
+        for (var bar : charts) bar.setVisible(false);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
-        for(var image:imageViews)image.setVisible(true);
+        for (var image : imageViews) image.setVisible(true);
 
         startTimerAnimation();
         resizeImages();
@@ -175,7 +171,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         server.subscribeForSocketMessages("/user/queue/statistics", List.class, answers -> {
             System.out.println("Received answer!!" + answers);
 
-            showChart(answers,correct);
+            showChart(answers, correct);
 
             countA.setVisible(true);
             countA.setText("" + answers.get(0));

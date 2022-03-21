@@ -32,7 +32,7 @@ Week 8
 
 Last meeting
 
-Basic functionality single and multiplayer 
+Basic functionality single and multiplayer
 
 Most testing
 
@@ -42,9 +42,9 @@ Final deadline
 
 Extra's/bugs
 
-Week 10 
+Week 10
 
-presentation
+Presentation
 
 14.54 Demo
 

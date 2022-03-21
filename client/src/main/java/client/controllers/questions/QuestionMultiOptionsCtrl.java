@@ -4,32 +4,30 @@ import client.controllers.ControllerInitialize;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.Answer;
-import commons.Question;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import commons.*;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
     @FXML
@@ -42,6 +40,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private GridPane images;
     private boolean hasSubmittedAnswer = false;
     private int correct;
+
+    @FXML
+    private Text questionNumberText;
 
     @FXML
     private Label countA;
@@ -76,8 +77,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
                 view.setFitWidth(1);
                 view.setFitHeight(1);
                 view.setImage(newImage);
-
-                System.out.println(path.getFileName() + " " + actualPath);
+                view.setVisible(true);
             } catch (NullPointerException e) {
                 System.out.println("Having an issue with the image " + path.getFileName() +
                         " it can't be found on the client");
@@ -95,13 +95,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
         for (int i = 0; i < 3; i++) {
             imageViews.get(i).setVisible(false);
-            double h = 170 * ans.get(i) / all;
+            double h = 150 * ans.get(i) / all;
             var bar = (Rectangle) charts.get(i);
             bar.setVisible(true);
             bar.setOpacity(1);
             if (i == correct)
-                bar.setFill(Paint.valueOf("green"));
-            else bar.setFill(Paint.valueOf("red"));
+                bar.setFill(Paint.valueOf("#95BF74"));
+            else bar.setFill(Paint.valueOf("#C56659"));
             bar.setHeight(0);
             KeyValue heightValue = new KeyValue(bar.heightProperty(), bar.getHeight() + h);
             KeyFrame frame = new KeyFrame(Duration.millis(500), heightValue);
@@ -151,53 +151,176 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         }
     }
 
-    @Override
-    public void initializeController() {
-        List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
-        for (var bar : charts) bar.setVisible(false);
-        List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
-        for (var image : imageViews) image.setVisible(true);
+    public void userReaction(String reaction, String name) {
 
-        startTimerAnimation();
+        Pane pane = new Pane();
+        ImageView iv;
+        Label label = new Label(name);
+        Image img;
+        switch (reaction) {
+            case "happy":
+                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
+                break;
+            case "angry":
+                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
+                break;
+            case "angel":
+                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
+                break;
+            default:
+                return;
+        }
+        iv = new ImageView(img);
+        pane.getChildren().add(iv);
+        pane.getChildren().add(label);
+        iv.setMouseTransparent(false);
+        label.setMouseTransparent(false);
+        label.setPadding(new Insets(-20, 0, 0, 5));
+        TranslateTransition translate = new TranslateTransition();
+        translate.setByY(700);
+        translate.setDuration(Duration.millis(2800));
+        translate.setNode(pane);
+        translate.setOnFinished(t -> {
+                    System.out.println("deleted");
+                    pane.getChildren().remove(iv);
+                    pane.getChildren().remove(label);
+                }
+        );
+        translate.play();
+
+        FadeTransition fade = new FadeTransition();
+        fade.setDuration(Duration.millis(2000));
+        //fade.setDelay(Duration.millis(1000));
+        fade.setFromValue(10);
+        fade.setToValue(0);
+        fade.setNode(pane);
+        fade.play();
+        parentGridPane.getChildren().add(pane);
+
+    }
+
+    public void angryReact() {
+        String path = "/app/reactions";
+        userReaction("angry", mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+    }
+
+    public void angelReact() {
+        String path = "/app/reactions";
+        userReaction("angel", mainCtrl.getName());
+
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+    }
+
+    public void happyReact() {
+        String path = "/app/reactions";
+        userReaction("happy", mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
+    }
+
+    public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
+        int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
+
+        int scoreToBeAdded = 0;
+        int maxSeconds = 20;
+        int maxPoints = 100;
+        if (answerCorrect) {
+            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+        }
+
+        Integer score = currentScore + scoreToBeAdded;
+        Pair<Player, Integer> result = Pair.of(player, score);
+        server.postGameScore(mainCtrl.getGameID(), result);
+    }
+
+    public void dummy() {
+        Player player = new Player(mainCtrl.getName());
+        calculateScore(player, true, 20);
+    }
+
+
+    private void displayAnswers(List<Integer> answerList) {
+        System.out.println("Received answer!!" + answerList);
+        showChart(answerList, correct);
+        List<Label> labels = List.of(countA, countB, countC);
+        List<Button> options = List.of(optionA,optionB,optionC);
+        Button correctOption = options.get(correct);
+        correctOption.setOpacity(1);
+        correctOption.setStyle("-fx-font-weight: bold;");
+        for (int i = 0; i < labels.size(); i++) {
+            if (answerList.get(i) > 0) {
+                Label label = labels.get(i);
+                label.setVisible(true);
+                label.setText("" + answerList.get(i));
+            }
+
+        }
+        informationLabel.setVisible(true);
+        informationLabel.setText("Stats received!");
+
+        stopTimer();
+
+        TimerTask delay = new TimerTask() {
+            @Override
+            public void run() {
+                correctOption.setStyle("-fx-font-weight: normal;");
+                correctOption.setTextFill(Paint.valueOf("#d6d3ee"));
+                Platform.runLater(mainCtrl::showNext);
+            }
+        };
+        Timer myTimer = new Timer();
+        myTimer.schedule(delay, 3000); // wait for 4 seconds
+    }
+
+    /**
+     * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.
+     */
+    private void resetUI() {
+        informationLabel.setVisible(false);
+        countA.setVisible(false);
+        countB.setVisible(false);
+        countC.setVisible(false);
         resizeImages();
-        hasSubmittedAnswer = false;
         System.out.println("Enabling scene");
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
-        countA.setVisible(false);
-        countB.setVisible(false);
-        countC.setVisible(false);
-        server.subscribeForSocketMessages("/user/queue/statistics", List.class, answers -> {
-            System.out.println("Received answer!!" + answers);
-
-            showChart(answers, correct);
-
-            countA.setVisible(true);
-            countA.setText("" + answers.get(0));
-
-            countB.setVisible(true);
-            countB.setText("" + answers.get(1));
-
-            countC.setVisible(true);
-            countC.setText("" + answers.get(2));
-
-            TimerTask delay = new TimerTask() {
-                @Override
-                public void run() {
-                    Platform.runLater(() -> {
-                        System.out.println("Calling mainctrl show Next");
-                        mainCtrl.showNext();
-                    });
-                }
-            };
-            stopTimer();
-            Timer myTimer = new Timer();
-            myTimer.schedule(delay, 4000);
-
-
-        });
     }
 
+    /**
+     * Since there is only one instance of the controller.
+     * The controller won't reset it's state when a new scene loads.
+     * Thus, we need to reset everything by ourselves.
+     */
+    private void resetLogic() {
+        hasSubmittedAnswer = false; // this is false at the beginning of the game
+    }
 
+    /**
+     * function called when each question is rendered
+     */
+    @Override
+    public void initializeController() {
+        resetUI();
+        resetLogic();
+        questionNumberText.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        startTimerAnimation();
+        System.out.println("Initializing Qmulti!");
+    }
+
+    /**
+     * Called only once by javafx. I register the socket messages here because if I would do this for
+     * each question we would get duplicate function registrations for the same event.
+     *
+     * @param location
+     * @param resources
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("received reaction!");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
+    }
 }

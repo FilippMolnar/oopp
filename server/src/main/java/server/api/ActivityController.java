@@ -43,12 +43,12 @@ public class ActivityController {
     @GetMapping(path = "/data/fetch/{cons}")
     public List<Activity> getAllByConsumption(@PathVariable("cons")int cons)
     {
-        return activities.getByConsumption(cons,100);
+        return activities.getByConsumption(cons, 100);
     }
 
     @GetMapping(path = "/data/diff/{cons}")
     public List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
     {
-        return activities.getAllDiff(cons,100);
+        return activities.getAllDiff(cons, 100);
     }
 }

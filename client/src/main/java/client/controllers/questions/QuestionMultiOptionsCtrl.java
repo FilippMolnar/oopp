@@ -186,11 +186,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
                 @Override
                 public void run() {
                     Platform.runLater(() -> {
-
                         System.out.println("Calling mainctrl show Next");
                         mainCtrl.showNext();
                     });
-
                 }
             };
             stopTimer();

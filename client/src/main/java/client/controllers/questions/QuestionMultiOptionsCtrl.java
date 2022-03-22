@@ -30,6 +30,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private Button optionC;
     @FXML
     private GridPane images;
+
     private boolean hasSubmittedAnswer = false;
 
     @Inject
@@ -38,6 +39,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     }
 
     public void setQuestion(Question question) {
+        System.out.println("question");
+        System.out.println(question);
         super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         optionA.setText(question.getChoices().get(0).getTitle());
@@ -84,7 +87,15 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+
+        if(isMultiPlayer) { 
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+        } else {
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            System.out.println("Stopping timer");
+            stopTimer();
+            mainCtrl.showNext();
+        }
     }
 
 
@@ -106,6 +117,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void initializeController() {
+        this.score.setText("SCORE " + mainCtrl.getScore());
         startTimerAnimation();
         resizeImages();
         hasSubmittedAnswer = false;

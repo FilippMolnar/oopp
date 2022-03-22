@@ -18,6 +18,7 @@ package client.utils;
 import commons.Game;
 import commons.Player;
 import commons.Question;
+import commons.Score;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -217,6 +218,36 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .get(Response.class);
         return q.readEntity(Game.class);
+
+    /**
+     * This method is used by single players, who do not have a game ID
+     * and just need to get 20 questions at the start of the game.
+     * @return 20 random questions
+     */
+    public List<Question> getLeastMostQuestions() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/wait/getMostLeastQuestions") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {
+                });
+    }
+
+    public List<Score> getSingleLeaderboard() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/score") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Score>>() {
+                });
+    }
+
+    public Score addScore(Score score) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/score") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(score, APPLICATION_JSON), Score.class);
     }
 
 }

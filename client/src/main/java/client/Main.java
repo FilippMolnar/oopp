@@ -19,6 +19,7 @@ import client.controllers.HomeScreenCtrl;
 import client.controllers.LeaderBoardCtrl;
 import client.controllers.MainAppController;
 import client.controllers.WaitingRoomCtrl;
+import client.controllers.BetweenQuestionCtrl;
 import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
 import com.google.inject.Injector;
@@ -65,8 +66,10 @@ public class Main extends Application {
                 "client", "scenes", "QuestionMultiOptions.fxml");
         var qInsert = FXML.load(QuestionInsertNumberCtrl.class,
                 "client", "scenes", "QuestionInsertNumber.fxml");
+        var between = FXML.load(BetweenQuestionCtrl.class,
+                "client", "scenes", "transition_between_questions.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
-        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert);
+        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert, between);
     }
     @Override
     public void start(Stage primaryStage) throws IOException{

@@ -90,7 +90,8 @@ public class WaitController {
         return list;
     }
 
-    private List<Question> get20RandomMostLeastQuestions() {
+    @GetMapping("/getMostLeastQuestions")
+    public static List<Question> get20RandomMostLeastQuestions() {
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < 20; i++)
             questions.add(questionController.getTypeMostLeast());

@@ -37,6 +37,13 @@ public abstract class AbstractQuestion {
     private Arc timerArc;
     @FXML
     private Text timerValue;
+    @FXML
+    protected Text score;
+    @FXML
+    protected Text questionNumber;
+
+    // TO-DO change it according to game mode
+    protected boolean isMultiPlayer = false;
     private int timerIntegerValue;
 
     private boolean hasSubmittedAnswer = false;
@@ -46,6 +53,8 @@ public abstract class AbstractQuestion {
     private Timeline timeline;
     TimerTask timerTask;
     Timer numberTimer;
+
+
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
         this.mainCtrl = mainCtrl;
@@ -54,6 +63,10 @@ public abstract class AbstractQuestion {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public void setQuestionNumber(int num) {
+        this.questionNumber.setText(num + "/20");
     }
 
     public void triggerJoker1(){
@@ -167,6 +180,7 @@ public abstract class AbstractQuestion {
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
+
         //add the keyframe to the timeline
         timeline.getKeyFrames().add(keyFrame);
 
@@ -184,6 +198,10 @@ public abstract class AbstractQuestion {
         server.sendThroughSocket("/app/submit_answer", answer);
     }
 
+    public void checkAnswer(Answer answer) {
+        mainCtrl.setScore(calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText())));
+    }
+
     /**
      * Wrapper function used to showcase the userReaction method with the help of a button. Will be deleted once we
      * complete the reaction functionality.
@@ -192,26 +210,20 @@ public abstract class AbstractQuestion {
         userReaction("angel", "Bianca");
     }
 
-    public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
-        int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
+    // for single player
+    public int calculateScore(boolean answerCorrect, double secondsLeft) {
+        int currentScore = mainCtrl.getScore();
 
         int scoreToBeAdded = 0;
-        int maxSeconds = 20;
+        double maxSeconds = 10;
         int maxPoints = 100;
+        double secondsToAnswer = (double) maxSeconds - secondsLeft;
         if (answerCorrect) {
-            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+            scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
-
+        System.out.println(scoreToBeAdded);
         Integer score = currentScore + scoreToBeAdded;
-        Pair<Player, Integer> result = Pair.of(player, score);
-        server.postGameScore(mainCtrl.getGameID(), result);
-    }
-
-    public void dummy() {
-        Player player = new Player(mainCtrl.getName());
-        calculateScore(player, true, 20);
+        return score;
     }
 
 }
-
-

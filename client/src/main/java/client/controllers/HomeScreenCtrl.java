@@ -1,13 +1,11 @@
 package client.controllers;
 
 import client.utils.ServerUtils;
-import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import javax.inject.Inject;
-import java.util.List;
 
 public class HomeScreenCtrl {
 

@@ -219,6 +219,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
 
     private void displayAnswers(List<Integer> answerList) {
+        optionA.setDisable(true);
+        optionB.setDisable(true);
+        optionC.setDisable(true);
         System.out.println("Received answer!!" + answerList);
         countA.setVisible(true);
         countA.setText("" + answerList.get(0));

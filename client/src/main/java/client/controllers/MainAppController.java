@@ -27,6 +27,8 @@ public class MainAppController {
     private Scene qInsert;
     private Scene questionTransitionScene;
     private Scene sameAsScene;
+    private Scene homeSingleplayerScene;
+    private Scene homeMultiplayerScene;
 
     private LinkedScene currentScene;
     private LinkedScene homeScreenLinked;
@@ -50,6 +52,8 @@ public class MainAppController {
 
     public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Parent> waitingRoomPair,
                            Pair<HomeScreenCtrl, Parent> home,
+                           Pair<HomeScreenSingleplayerCtrl, Parent> homeSingleplayer,
+                           Pair<HomeScreenMultiplayerCtrl, Parent> homeMultiplayer,
                            Pair<LeaderBoardCtrl, Parent> leaderBoard,
                            Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
                            Pair<QuestionInsertNumberCtrl, Parent> qInsert,
@@ -59,6 +63,8 @@ public class MainAppController {
         this.name = "";
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         this.homeScene = new Scene(home.getValue());
+        this.homeSingleplayerScene = new Scene(homeSingleplayer.getValue());
+        this.homeMultiplayerScene = new Scene(homeMultiplayer.getValue());
         this.leaderBoardScene = new Scene(leaderBoard.getValue());
 
         this.questionTransitionScene = new Scene(qTransition.getValue());
@@ -69,10 +75,15 @@ public class MainAppController {
         LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene);
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
         LinkedScene sameAsLinked = new LinkedScene(this.sameAsScene);
+        LinkedScene singleplayerLinked = new LinkedScene(this.homeSingleplayerScene, homeSingleplayer.getKey());
+        LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
+
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
         this.currentScene = new LinkedScene(this.homeScene,
-                Arrays.asList(sameAsLinked, waitingRoomLinked));
+                Arrays.asList(singleplayerLinked, multiplayerLinked));
         this.homeScreenLinked = this.currentScene;
+
+        multiplayerLinked.addNext(waitingRoomLinked);
 
         this.primaryStage = primaryStage;
 

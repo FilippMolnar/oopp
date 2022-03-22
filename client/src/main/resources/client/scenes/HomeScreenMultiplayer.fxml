@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #625998;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.HomeScreenCtrl">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #625998;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.HomeScreenMultiplayerCtrl">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" maxWidth="978.7266235351562" minWidth="951.0413208007812" percentWidth="30.0" prefWidth="952.3596801757812" />
         <ColumnConstraints hgrow="ALWAYS" maxWidth="978.7266235351562" minWidth="951.0413208007812" percentWidth="40.0" prefWidth="952.3596801757812" />
@@ -100,7 +100,7 @@
         </GridPane.margin>
     </Text>
     <ScrollPane maxHeight="1.7976931348623157E308" prefHeight="150.0" prefWidth="410.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-    <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="151.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Start game" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+    <Button mnemonicParsing="false" onAction="#enterRoom" prefHeight="54.0" prefWidth="151.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Start game" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
         <font>
             <Font size="15.0" />
         </font>

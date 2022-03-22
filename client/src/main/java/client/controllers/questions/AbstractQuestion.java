@@ -21,7 +21,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -53,7 +52,7 @@ public abstract class AbstractQuestion {
     private Timeline timeline;
     TimerTask timerTask;
     Timer numberTimer;
-    
+
 
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
@@ -250,5 +249,3 @@ public abstract class AbstractQuestion {
     }
 
 }
-
-

@@ -6,7 +6,6 @@ import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.JokersList;
-import commons.Player;
 import commons.Question;
 import commons.Score;
 import javafx.scene.Parent;
@@ -14,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainAppController {
@@ -99,7 +97,7 @@ public class MainAppController {
     }
 
     public int getScore() {
-        return this.score.getScore(); 
+        return this.score.getScore();
     }
 
     public void setScore(int score) {
@@ -107,12 +105,12 @@ public class MainAppController {
     }
 
     public void addScore(int toAdd) {
-        this.score.addScore(toAdd); 
+        this.score.addScore(toAdd);
     }
 
     public void initializeScore() {
         System.out.println("INITIALIZING SCORE");
-        this.score = new Score(this.name, 0); 
+        this.score = new Score(this.name, 0);
     }
 
     public JokersList getJokers() {

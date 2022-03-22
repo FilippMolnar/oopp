@@ -50,5 +50,4 @@ public class TransitionSceneCtrl extends AbstractQuestion implements ControllerI
         timeline.play();
     }
 
-
 }

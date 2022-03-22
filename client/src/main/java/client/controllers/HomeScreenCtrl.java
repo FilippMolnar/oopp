@@ -55,8 +55,9 @@ public class HomeScreenCtrl {
         }
 
         this.appController.setName(finalName);
-        // Show single player. 0 would be single player.
-        this.appController.showNext(1);
+        this.appController.initializeScore(); // Show single player. 0 would be single player.
+        this.appController.showNext();
+        this.appController.setGameMode(true);
         //this.serverUtils.postName(finalName);
         this.serverUtils.sendThroughSocket("/app/enterRoom", new Player(finalName));
     }
@@ -77,6 +78,7 @@ public class HomeScreenCtrl {
         this.appController.initializeScore();
         System.out.println("Entering single player...");
         this.appController.showNext(1);
+        this.appController.setGameMode(false);
         //this.serverUtils.postName(finalName);
     }
 }

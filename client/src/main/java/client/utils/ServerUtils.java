@@ -218,6 +218,7 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .get(Response.class);
         return q.readEntity(Game.class);
+    }
 
     /**
      * This method is used by single players, who do not have a game ID

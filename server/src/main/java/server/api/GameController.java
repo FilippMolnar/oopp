@@ -1,9 +1,6 @@
 package server.api;
 
-import commons.Game;
-import commons.Player;
-import commons.Question;
-import commons.Score;
+import commons.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -41,7 +41,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     private boolean hasSubmittedAnswer = false;
     @FXML
-    private Text questionNumberText;
+    private Text questionNumber;
 
     @FXML
     private Label countA;
@@ -130,9 +130,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         }
     }
 
-    @Override
-    public void initializeController() {
-        startTimerAnimation();
     public void userReaction(String reaction, String name) {
 
         Pane pane = new Pane();
@@ -267,7 +264,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      * Thus, we need to reset everything by ourselves.
      */
     private void resetLogic() {
-        hasSubmittedAnswer = false; // this is false at the beginning of the game
+        this.hasSubmittedAnswer = false; // this is false at the beginning of the game
     }
 
     /**
@@ -276,7 +273,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @Override
     public void initializeController() {
         this.score.setText("SCORE " + mainCtrl.getScore());
-        questionNumberText.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation();
         System.out.println("Initializing Qmulti!");
         resetUI();

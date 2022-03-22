@@ -4,7 +4,6 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Answer;
-import commons.Player;
 import commons.Question;
 import commons.UserReaction;
 import javafx.animation.*;
@@ -23,7 +22,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -48,8 +46,7 @@ public abstract class AbstractQuestion implements Initializable {
     protected Text questionNumber;
 
     // TO-DO change it according to game mode
-    protected boolean isMultiPlayer = false;
-    protected Text timerValue;
+    protected boolean isMultiPlayer;
 
     @FXML
     protected Label informationLabel;
@@ -67,6 +64,10 @@ public abstract class AbstractQuestion implements Initializable {
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
+    }
+
+    public void setGameMode(boolean isMultiPlayer) {
+        this.isMultiPlayer = isMultiPlayer;
     }
 
     public void setQuestion(Question question) {
@@ -190,6 +191,7 @@ public abstract class AbstractQuestion implements Initializable {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
+            System.out.println(hasSubmittedAnswer);
             if (!hasSubmittedAnswer) {
                 System.out.println("submitting answer through the timer!");
                 sendAnswer(new Answer(false, "", mainCtrl.getGameID()));

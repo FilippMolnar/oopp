@@ -21,8 +21,7 @@ public class MainAppController {
     private Scene waitingRoomScene;
     private Stage primaryStage;
     private Scene homeScene;
-    private Scene leaderBoardScene;
-    private Scene qMultiScene;
+    private Scene leaderBoardScene; private Scene qMultiScene;
     private Scene qInsert;
     private Scene questionTransitionScene;
     private Scene sameAsScene;
@@ -31,10 +30,10 @@ public class MainAppController {
     private LinkedScene homeScreenLinked;
 
     private String name;
+    protected boolean isMultiPlayer;
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private QuestionMultiOptionsCtrl qMultiCtrl;
-    private Scene qMultiScene;
     private LeaderBoardCtrl leaderBoardCtrl;
     private TransitionSceneCtrl qTransitionCtrl;
 
@@ -62,10 +61,8 @@ public class MainAppController {
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         this.homeScene = new Scene(home.getValue());
         this.leaderBoardScene = new Scene(leaderBoard.getValue());
-        this.betweenScene = new Scene(between.getValue());
-        this.leaderBoardCtrl = leaderBoard.getKey();
-
         this.questionTransitionScene = new Scene(qTransition.getValue());
+        this.leaderBoardCtrl = leaderBoard.getKey();
         this.qTransitionCtrl = qTransition.getKey();
 
         this.sameAsScene = new Scene(sameAs.getValue());
@@ -81,7 +78,7 @@ public class MainAppController {
         this.primaryStage = primaryStage;
 
         this.qInsertCtrl = qInsert.getKey();
-        this.betweenCtrl = between.getKey();
+        this.qTransitionCtrl = qTransition.getKey();
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
@@ -93,7 +90,7 @@ public class MainAppController {
         this.homeScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.qMultiScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
-        this.betweenScene.getStylesheets().add("client/scenes/waiting_room.css");
+        this.questionTransitionScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
@@ -139,6 +136,10 @@ public class MainAppController {
         return questionIndex;
     }
 
+    public void setGameMode(boolean isMultiPlayer) {
+        this.isMultiPlayer = isMultiPlayer;
+    }
+
     /**
      * This method takes a list of actual question  and inserts
      * them into the LinkedScene navigation.
@@ -158,7 +159,11 @@ public class MainAppController {
             } else {
                 // add the transition before a normal question
                 current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
-                current = current.getNext();
+                if(i == 0 && mode == 1) {
+                    current = current.getNext(1);
+                } else {
+                    current = current.getNext();
+                }
             }
             //            if(questionTypes.get(i) < 2) {
             //                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
@@ -166,12 +171,7 @@ public class MainAppController {
             //                current.addNext(new LinkedScene(this.qInsert, this.qInsertCtrl));
             //            }
             current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
-            if(i == 0 && mode == 1) {
-                current = current.getNext(mode);
-            } else {
-                current = current.getNext();
-            }
-            current.addNext(new LinkedScene(this.betweenScene, this.betweenCtrl));
+            current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
@@ -196,12 +196,14 @@ public class MainAppController {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();
@@ -231,12 +233,14 @@ public class MainAppController {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");

@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/api/data")
 public class ImportData {
     @GetMapping(path = "/load")
     public static String ImportAllFiles() {

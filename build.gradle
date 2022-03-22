@@ -36,6 +36,12 @@ subprojects {
 			csv.required = false
 			html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
 			}
+
+		afterEvaluate {
+			classDirectories.setFrom(files(classDirectories.files.collect {
+				fileTree(dir: it, exclude: "client/src/main/resources/**")
+			}))
+		}
 	}
 	
 	dependencies {

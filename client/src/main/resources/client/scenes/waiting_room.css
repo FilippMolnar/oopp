@@ -34,6 +34,9 @@
 * {
     -fx-text-fill: #D6D3EE;
 }
+.info{
+    -fx-text-fill: #29ff6d;
+}
 .non-clickable {
     -fx-background-color: #837ABA;
     -fx-background-radius: 50px;

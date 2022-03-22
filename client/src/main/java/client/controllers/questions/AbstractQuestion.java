@@ -6,11 +6,13 @@ import com.google.inject.Inject;
 import commons.Answer;
 import commons.Player;
 import commons.Question;
+import commons.UserReaction;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,18 +25,21 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public abstract class AbstractQuestion {
+public abstract class AbstractQuestion implements Initializable {
     protected final ServerUtils server;
     protected final MainAppController mainCtrl;
     protected Question question;
+
     @FXML
     GridPane parentGridPane;
     @FXML
-    private Arc timerArc;
+    protected Arc timerArc;
     @FXML
     private Text timerValue;
     @FXML
@@ -44,12 +49,15 @@ public abstract class AbstractQuestion {
 
     // TO-DO change it according to game mode
     protected boolean isMultiPlayer = false;
+    protected Text timerValue;
+
+    @FXML
+    protected Label informationLabel;
+
     private int timerIntegerValue;
 
-    private boolean hasSubmittedAnswer = false;
-    private final boolean afterFXMLLOAD = false;
+    protected boolean hasSubmittedAnswer = false;
 
-    private AnimationTimer animationTimer;
     private Timeline timeline;
     TimerTask timerTask;
     Timer numberTimer;
@@ -79,6 +87,12 @@ public abstract class AbstractQuestion {
         mainCtrl.getJokers().getJokers().get(2).onClick();
     }
 
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+    }
+
     /**
      * Animates the reactions of users.
      *
@@ -89,20 +103,8 @@ public abstract class AbstractQuestion {
         Pane pane = new Pane();
         ImageView iv;
         Label label = new Label(name);
-        Image img;
-        switch (reaction) {
-            case "happy":
-                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
-                break;
-            case "angry":
-                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
-                break;
-            case "angel":
-                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
-                break;
-            default:
-                return;
-        }
+        String imagePath = "/client/pictures/" + reaction;
+        Image img = new Image(getClass().getResource(imagePath).toString());
 
         iv = new ImageView(img);
         pane.getChildren().add(iv);
@@ -123,26 +125,42 @@ public abstract class AbstractQuestion {
         parentGridPane.getChildren().add(pane);
     }
 
+    public void angryReact() {
+        String path = "/app/reactions";
+        userReaction("angry",mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+    }
+
+    public void angelReact() {
+        String path = "/app/reactions";
+        userReaction("angel",mainCtrl.getName());
+
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+    }
+
+    public void happyReact() {
+        String path = "/app/reactions";
+        userReaction("happy",mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
+    }
+
     public void stopTimer(){
         timeline.stop();
-        animationTimer.stop();
         timerTask.cancel();
         numberTimer.cancel();
     }
 
     public void startTimerAnimation() {
-        timerIntegerValue = 10;
+        int durationTime = 10;
+        timerValue.setText(Integer.toString(durationTime));
+        timerIntegerValue = durationTime;
         timerArc.setLength(360);
         timerArc.setFill(Paint.valueOf("#d6d3ee"));
         timerValue.setFill(Paint.valueOf("#d6d3ee"));
         //create a timeline for moving the circle
         timeline = new Timeline();
         //You can add a specific action when each frame is started.
-        animationTimer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-            }
-        };
+
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -157,8 +175,6 @@ public abstract class AbstractQuestion {
             }
         };
         numberTimer = new Timer();
-        int durationTime = 10;
-        timerValue.setText(Integer.toString(durationTime));
         numberTimer.scheduleAtFixedRate(timerTask, 1000, 1000);
 
         //create a keyValue with factory: scaling the circle 2times
@@ -174,19 +190,19 @@ public abstract class AbstractQuestion {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            if (!hasSubmittedAnswer)
-                sendAnswer(new Answer(false, ""));
-            mainCtrl.showNext(); // show next scene when timer runs out
+            if (!hasSubmittedAnswer) {
+                System.out.println("submitting answer through the timer!");
+                sendAnswer(new Answer(false, "", mainCtrl.getGameID()));
+            }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
 
         //add the keyframe to the timeline
         timeline.getKeyFrames().add(keyFrame);
-
         timeline.play();
-        animationTimer.start();
     }
+
 
     /**
      * send answer to the server
@@ -194,7 +210,10 @@ public abstract class AbstractQuestion {
      * @param answer true/false depending if the selected answer was good
      */
     public void sendAnswer(Answer answer) {
+        informationLabel.setVisible(true);
+        informationLabel.setText("Answer submitted!");
         hasSubmittedAnswer = true;
+        stopTimer();
         server.sendThroughSocket("/app/submit_answer", answer);
     }
 

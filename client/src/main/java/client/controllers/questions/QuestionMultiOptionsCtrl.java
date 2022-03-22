@@ -4,24 +4,32 @@ import client.controllers.ControllerInitialize;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.Answer;
-import commons.Question;
+import commons.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
-public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
+public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize, Initializable {
     @FXML
     private Button optionA;
     @FXML
@@ -32,6 +40,15 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private GridPane images;
 
     private boolean hasSubmittedAnswer = false;
+    @FXML
+    private Text questionNumberText;
+
+    @FXML
+    private Label countA;
+    @FXML
+    private Label countB;
+    @FXML
+    private Label countC;
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -57,8 +74,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
                 view.setFitWidth(1);
                 view.setFitHeight(1);
                 view.setImage(newImage);
-
-                System.out.println(path.getFileName() + " " + actualPath);
             } catch (NullPointerException e) {
                 System.out.println("Having an issue with the image " + path.getFileName() +
                         " it can't be found on the client");
@@ -88,7 +103,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionB.setDisable(true);
         optionC.setDisable(true);
 
-        if(isMultiPlayer) { 
+        if(isMultiPlayer) {
             sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
         } else {
             checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
@@ -117,15 +132,170 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void initializeController() {
-        this.score.setText("SCORE " + mainCtrl.getScore());
         startTimerAnimation();
+    public void userReaction(String reaction, String name) {
+
+        Pane pane = new Pane();
+        ImageView iv;
+        Label label = new Label(name);
+        Image img;
+        switch (reaction) {
+            case "happy":
+                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
+                break;
+            case "angry":
+                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
+                break;
+            case "angel":
+                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
+                break;
+            default:
+                return;
+        }
+        iv = new ImageView(img);
+        pane.getChildren().add(iv);
+        pane.getChildren().add(label);
+        iv.setMouseTransparent(false);
+        label.setMouseTransparent(false);
+        label.setPadding(new Insets(-20, 0, 0, 5));
+        TranslateTransition translate = new TranslateTransition();
+        translate.setByY(700);
+        translate.setDuration(Duration.millis(2800));
+        translate.setNode(pane);
+        translate.setOnFinished(t -> {
+                    System.out.println("deleted");
+                    pane.getChildren().remove(iv);
+                    pane.getChildren().remove(label);
+                }
+        );
+        translate.play();
+
+        FadeTransition fade = new FadeTransition();
+        fade.setDuration(Duration.millis(2000));
+        //fade.setDelay(Duration.millis(1000));
+        fade.setFromValue(10);
+        fade.setToValue(0);
+        fade.setNode(pane);
+        fade.play();
+        parentGridPane.getChildren().add(pane);
+
+    }
+
+    public void angryReact() {
+        String path = "/app/reactions";
+        userReaction("angry", mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+    }
+
+    public void angelReact() {
+        String path = "/app/reactions";
+        userReaction("angel", mainCtrl.getName());
+
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+    }
+
+    public void happyReact() {
+        String path = "/app/reactions";
+        userReaction("happy", mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
+    }
+
+    public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
+        int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
+
+        int scoreToBeAdded = 0;
+        int maxSeconds = 20;
+        int maxPoints = 100;
+        if (answerCorrect) {
+            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+        }
+
+        Integer score = currentScore + scoreToBeAdded;
+        Pair<Player, Integer> result = Pair.of(player, score);
+        server.postGameScore(mainCtrl.getGameID(), result);
+    }
+
+    public void dummy() {
+        Player player = new Player(mainCtrl.getName());
+        calculateScore(player, true, 20);
+    }
+
+
+    private void displayAnswers(List<Integer> answerList) {
+        System.out.println("Received answer!!" + answerList);
+        countA.setVisible(true);
+        countA.setText("" + answerList.get(0));
+
+        countB.setVisible(true);
+        countB.setText("" + answerList.get(1));
+
+        countC.setVisible(true);
+        countC.setText("" + answerList.get(2));
+        informationLabel.setVisible(true);
+        informationLabel.setText("Stats received!");
+
+        stopTimer();
+
+        TimerTask delay = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(mainCtrl::showNext);
+            }
+        };
+        Timer myTimer = new Timer();
+        myTimer.schedule(delay, 3000); // wait for 4 seconds
+    }
+
+    /**
+     * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.
+     */
+    private void resetUI() {
+        informationLabel.setVisible(false);
+        countA.setVisible(false);
+        countB.setVisible(false);
+        countC.setVisible(false);
         resizeImages();
-        hasSubmittedAnswer = false;
         System.out.println("Enabling scene");
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
     }
 
+    /**
+     * Since there is only one instance of the controller.
+     * The controller won't reset it's state when a new scene loads.
+     * Thus, we need to reset everything by ourselves.
+     */
+    private void resetLogic() {
+        hasSubmittedAnswer = false; // this is false at the beginning of the game
+    }
 
+    /**
+     * function called when each question is rendered
+     */
+    @Override
+    public void initializeController() {
+        this.score.setText("SCORE " + mainCtrl.getScore());
+        questionNumberText.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        startTimerAnimation();
+        System.out.println("Initializing Qmulti!");
+        resetUI();
+        resetLogic();
+    }
+
+    /**
+     * Called only once by javafx. I register the socket messages here because if I would do this for
+     * each question we would get duplicate function registrations for the same event.
+     *
+     * @param location
+     * @param resources
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("received reaction!");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
+    }
 }

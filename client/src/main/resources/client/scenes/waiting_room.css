@@ -43,4 +43,5 @@
     -fx-background-radius: 50px;
     -fx-min-width: 80px;
     -fx-border-radius: 50px;
+    -fx-padding: 15px;
 }

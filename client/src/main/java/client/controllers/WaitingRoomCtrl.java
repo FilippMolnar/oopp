@@ -100,7 +100,7 @@ public class WaitingRoomCtrl implements Initializable {
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, gameID -> {
             appController.setGameID(gameID);
             List<Question> questions = serverUtils.getAllGameQuestions(gameID);
-            appController.addQuestionScenes(questions, 1);
+            appController.addQuestionScenes(questions, 0);
             appController.showNext();
 
             // disconnect from waiting room

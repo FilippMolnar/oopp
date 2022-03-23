@@ -89,7 +89,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+        //sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
     }
 
 

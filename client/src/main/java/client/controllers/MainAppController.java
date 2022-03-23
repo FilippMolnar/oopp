@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.List;
+import java.util.Map;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
@@ -31,11 +32,13 @@ public class MainAppController {
 
     private String name;
     protected boolean isMultiPlayer;
+    private int totalScore;
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private QuestionMultiOptionsCtrl qMultiCtrl;
     private LeaderBoardCtrl leaderBoardCtrl;
     private TransitionSceneCtrl qTransitionCtrl;
+    private LeaderBoardCtrl leaderBoardCtrl;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
     private Score score;
@@ -58,12 +61,14 @@ public class MainAppController {
                            Pair<TransitionSceneCtrl, Parent> qTransition) {
 
         this.name = "";
+        totalScore = 0;
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         this.homeScene = new Scene(home.getValue());
         this.leaderBoardScene = new Scene(leaderBoard.getValue());
         this.questionTransitionScene = new Scene(qTransition.getValue());
         this.leaderBoardCtrl = leaderBoard.getKey();
         this.qTransitionCtrl = qTransition.getKey();
+        this.leaderBoardCtrl = leaderBoard.getKey();
 
         this.sameAsScene = new Scene(sameAs.getValue());
 
@@ -205,6 +210,10 @@ public class MainAppController {
             qController.setQuestionNumber(questionIndex);
             qController.setGameMode(isMultiPlayer);
         }
+        else if (controller instanceof LeaderBoardCtrl) {
+            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+            leaderBoardCtrl.after10Questions();
+        }
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();
             if(questionIndex == questionsInGame.size()) {
@@ -291,6 +300,18 @@ public class MainAppController {
         primaryStage.setScene(homeScene);
         primaryStage.show();
         this.currentScene = this.homeScreenLinked;
+    }
+
+    public void updateScore(int amount) {
+        this.totalScore += amount;
+    }
+
+    public int getTotalScore() {
+        return this.totalScore;
+    }
+
+    public Map<Integer, List<String>> getLeaderboard() {
+        return serverUtils.getLeaderboard(gameID);
     }
 
 }

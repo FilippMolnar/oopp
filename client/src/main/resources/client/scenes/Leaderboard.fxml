@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #625998#625998;" stylesheets="@waiting_room.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17" fx:controller="client.controllers.LeaderBoardCtrl">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #625998#625998;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LeaderBoardCtrl">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" percentWidth="20.0" prefWidth="83.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="10.0" percentWidth="60.0" prefWidth="317.0" />
@@ -26,13 +26,81 @@
       <RowConstraints maxHeight="144.9860076904297" minHeight="10.0" prefHeight="46.71183776855469" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <ScrollPane maxHeight="480.0" maxWidth="360.0" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #625998;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+      <ScrollPane maxHeight="480.0" maxWidth="360.0" prefHeight="600.0" prefWidth="360.0" style="-fx-background-color: #625998;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <content>
             <GridPane fx:id="spots" vgap="50" maxHeight="1.7976931348623157E308" maxWidth="360.0" prefHeight="488.0" prefWidth="344.0" style="-fx-background-color: #625998#625998; -fx-border-style: none;">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <AnchorPane maxHeight="50.0" maxWidth="500.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="29.0" layoutY="25.0" radius="16.0" stroke="#cbbc50" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#cbbc50" layoutX="25.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" />
+                        <Label fx:id="rank1_score" layoutX="276.0" layoutY="17.0" text="7800" />
+                        <Label fx:id="rank1_name" layoutX="57.0" layoutY="17.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="30.0" layoutY="24.0" radius="16.0" stroke="#5e5c69" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#5e5c69" layoutX="26.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" />
+                        <Label fx:id="rank2_score" layoutX="274.0" layoutY="17.0" text="6346" />
+                        <Label fx:id="rank2_name" layoutX="54.0" layoutY="17.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="30.0" layoutY="25.0" radius="16.0" stroke="#cb5708" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#cb5708" layoutX="25.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3" />
+                        <Label fx:id="rank3_score" layoutX="278.0" layoutY="16.0" text="5670" />
+                        <Label fx:id="rank3_name" layoutX="54.0" layoutY="17.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="29.0" layoutY="25.0" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#d6d3ee" layoutX="24.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" />
+                        <Label fx:id="rank4_score" layoutX="278.0" layoutY="16.0" text="4997" />
+                        <Label fx:id="rank4_name" layoutX="57.0" layoutY="17.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="29.0" layoutY="25.0" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#d6d3ee" layoutX="24.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" />
+                        <Label fx:id="rank5_score" layoutX="278.0" layoutY="16.0" text="4997" />
+                        <Label fx:id="rank5_name" layoutX="57.0" layoutY="17.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="29.0" layoutY="25.0" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#d6d3ee" layoutX="24.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" />
+                        <Label fx:id="rank6_score" layoutX="278.0" layoutY="16.0" text="4997" />
+                        <Label fx:id="rank6_name" layoutX="57.0" layoutY="17.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="50.0" prefWidth="458.0" styleClass="non-clickable" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                     <children>
+                        <Circle fill="#1f93ff00" layoutX="29.0" layoutY="25.0" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" />
+                        <Text fill="#d6d3ee" layoutX="24.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7" />
+                        <Label fx:id="rank7_score" layoutX="278.0" layoutY="16.0" text="4997" />
+                        <Label fx:id="rank7_name" layoutX="57.0" layoutY="17.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+               </children>
             </GridPane>
          </content>
       </ScrollPane>
@@ -66,7 +134,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#rematch" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Rematch" GridPane.halignment="RIGHT">
+            <Button fx:id="rematchButton" mnemonicParsing="false" onAction="#rematch" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Rematch" GridPane.halignment="RIGHT">
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>
@@ -74,7 +142,7 @@
                   <Insets right="20.0" />
                </GridPane.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>

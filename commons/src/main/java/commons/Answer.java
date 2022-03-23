@@ -6,17 +6,14 @@ public class Answer {
     private boolean isCorrect;
     private String option;
     private int gameID;
+    private int score;
+    private String name;
     public Answer() { }
-
-    public Answer(boolean isCorrect, String option) {
-        this.isCorrect = isCorrect;
-        this.option = option;
-    }
-
-    public Answer(boolean isCorrect, String option, int gameID) {
+    public Answer(boolean isCorrect, String option, int gameID, int score, String username) {
         this.isCorrect = isCorrect;
         this.option = option;
         this.gameID = gameID;
+        this.name = username;
     }
 
     public boolean isCorrect() {
@@ -32,6 +29,8 @@ public class Answer {
         return "Answer{" +
                 "isCorrect=" + isCorrect +
                 ", option='" + option + '\'' +
+                ", score=" + score +
+                ", username=" + name +
                 '}';
     }
 
@@ -45,5 +44,33 @@ public class Answer {
 
     public int getGameID() {
         return gameID;
+    }
+
+    public void setCorrect(boolean correct) {
+        isCorrect = correct;
+    }
+
+    public void setOption(String option) {
+        this.option = option;
+    }
+
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getUsername() {
+        return name;
+    }
+
+    public void setUsername(String username) {
+        this.name = username;
     }
 }

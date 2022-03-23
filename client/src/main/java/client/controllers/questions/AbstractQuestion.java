@@ -55,6 +55,9 @@ public abstract class AbstractQuestion implements Initializable {
 
     protected boolean hasSubmittedAnswer = false;
 
+    @FXML
+    protected Text scoreText;
+
     private Timeline timeline;
     TimerTask timerTask;
     Timer numberTimer;
@@ -194,7 +197,7 @@ public abstract class AbstractQuestion implements Initializable {
             System.out.println(hasSubmittedAnswer);
             if (!hasSubmittedAnswer) {
                 System.out.println("submitting answer through the timer!");
-                sendAnswer(new Answer(false, "", mainCtrl.getGameID()));
+                sendAnswer(new Answer(false, "", mainCtrl.getGameID(), 0, mainCtrl.getName()));
             }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
@@ -223,17 +226,7 @@ public abstract class AbstractQuestion implements Initializable {
         mainCtrl.setScore(calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText())));
     }
 
-    /**
-     * Wrapper function used to showcase the userReaction method with the help of a button. Will be deleted once we
-     * complete the reaction functionality.
-     */
-    public void userReaction() {
-        userReaction("angel", "Bianca");
-    }
-
-    // for single player
-    public int calculateScore(boolean answerCorrect, double secondsLeft) {
-        int currentScore = mainCtrl.getScore();
+    public int calculateScore(boolean answerCorrect, int secondsToAnswer) {
 
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
@@ -242,9 +235,10 @@ public abstract class AbstractQuestion implements Initializable {
         if (answerCorrect) {
             scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
-        System.out.println(scoreToBeAdded);
-        Integer score = currentScore + scoreToBeAdded;
-        return score;
+        return scoreToBeAdded;
     }
 
+    public int getTimerIntegerValue() {
+        return timerIntegerValue;
+    }
 }

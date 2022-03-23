@@ -102,9 +102,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-
         if(isMultiPlayer) {
-            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+        int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
+        mainCtrl.updateScore(score);
+        this.scoreText.setText("Score: "+mainCtrl.getTotalScore());
+        Answer answer = new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName());
+        System.out.println(answer);
+        sendAnswer(answer);
         } else {
             checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
             System.out.println("Stopping timer");
@@ -196,26 +200,18 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         userReaction("happy", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
-
-    public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
-        int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
+    public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
 
         int scoreToBeAdded = 0;
-        int maxSeconds = 20;
+        double maxSeconds = 10;
         int maxPoints = 100;
         if (answerCorrect) {
-            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+            scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
+        return scoreToBeAdded;
 
-        Integer score = currentScore + scoreToBeAdded;
-        Pair<Player, Integer> result = Pair.of(player, score);
-        server.postGameScore(mainCtrl.getGameID(), result);
     }
 
-    public void dummy() {
-        Player player = new Player(mainCtrl.getName());
-        calculateScore(player, true, 20);
-    }
 
 
     private void displayAnswers(List<Integer> answerList) {

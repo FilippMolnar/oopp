@@ -1,6 +1,10 @@
 package client.controllers;
 
 import client.utils.ServerUtils;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+
 import javax.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -28,11 +32,81 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     private final MainAppController appController;
     private final ServerUtils serverUtils;
 
+    @FXML
+    private Label rank1_name;
+    @FXML
+    private Label rank1_score;
+    @FXML
+    private Label rank2_name;
+    @FXML
+    private Label rank2_score;
+    @FXML
+    private Label rank3_name;
+    @FXML
+    private Label rank3_score;
+    @FXML
+    private Label rank4_name;
+    @FXML
+    private Label rank4_score;
+    @FXML
+    private Label rank5_name;
+    @FXML
+    private Label rank5_score;
+    @FXML
+    private Label rank6_name;
+    @FXML
+    private Label rank6_score;
+    @FXML
+    private Label rank7_name;
+    @FXML
+    private Label rank7_score;
+
+    @FXML
+    private Button rematchButton;
+
+    @FXML
+    private Button homeButton;
+
+    private List<Label> names;
+    private List<Label> scores;
+    private Map<Integer, List<String>> leaderboard;
+
     @Inject
     LeaderBoardCtrl(MainAppController appController, ServerUtils serverUtils) {
         this.appController = appController;
         this.serverUtils = serverUtils;
     }
+    public void initialize() {
+    }
+    public void hideBackAndRematch() {
+        homeButton.setVisible(false);
+        rematchButton.setVisible(false);
+    }
+
+    public void after10Questions() {
+        fillWithValues();
+        hideBackAndRematch();
+    }
+
+    public void fillWithValues() {
+        int i = 0;
+        this.leaderboard = appController.getLeaderboard();
+        Integer[] sortedScores = (Integer[]) leaderboard.keySet().toArray();
+        Arrays.sort(sortedScores, Collections.reverseOrder());
+            for (Integer score : leaderboard.keySet()) {
+                for (String name : leaderboard.get(score)) {
+                    if (i < 7) {
+                        names.get(i).setText(name);
+                        scores.get(i).setText(score + "");
+                        i++;
+                    }
+                    else {
+                        break;
+                    }
+                }
+            }
+    }
+
 
     public void goBack(){
         this.appController.showHomeScreen();

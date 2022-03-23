@@ -41,7 +41,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private boolean hasSubmittedAnswer = false;
     private int correct;
 
-    private boolean hasSubmittedAnswer = false;
     @FXML
     private Text questionNumber;
 
@@ -317,7 +316,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     public void initializeController() {
         resetUI();
         resetLogic();
-        questionNumberText.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation();
         System.out.println("Initializing Qmulti!");
     }

@@ -1,7 +1,6 @@
 package client.controllers;
 
 import client.utils.ServerUtils;
-import com.sun.tools.javac.Main;
 import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

@@ -37,4 +37,8 @@ public class HomeScreenSingleplayerCtrl {
         this.appController.showNext(0);
         this.serverUtils.postName(finalName);
     }
+
+    public void backToHomeScreen() {
+        appController.showHomeScreen();
+    }
 }

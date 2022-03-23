@@ -1,6 +1,7 @@
 package client.controllers;
 
 import client.utils.ServerUtils;
+import com.sun.tools.javac.Main;
 import commons.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -58,5 +59,9 @@ public class HomeScreenMultiplayerCtrl {
         //this.serverUtils.postName(finalName);
         this.appController.setName(finalName);
         this.serverUtils.sendThroughSocket("/app/enterRoom", new Player(finalName));
+    }
+
+    public void backToHomeScreen() {
+        appController.showHomeScreen();
     }
 }

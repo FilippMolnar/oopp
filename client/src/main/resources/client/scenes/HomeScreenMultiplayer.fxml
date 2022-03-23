@@ -105,6 +105,18 @@
             <Font size="15.0" />
         </font>
     </Button>
+   <Button style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: transparent;" minWidth="56.0" mnemonicParsing="false" onAction="#backToHomeScreen" prefHeight="15.0" prefWidth="56.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+      <graphic>
+         <ImageView fitHeight="53.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../pictures/exit_button.png" />
+            </image>
+         </ImageView>
+      </graphic>
+      <padding>
+         <Insets right="20.0" top="20.0" />
+      </padding>
+   </Button>
 
 
 </GridPane>

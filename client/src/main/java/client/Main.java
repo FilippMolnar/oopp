@@ -15,14 +15,10 @@
  */
 package client;
 
-import client.controllers.HomeScreenCtrl;
-import client.controllers.LeaderBoardCtrl;
-import client.controllers.MainAppController;
-import client.controllers.WaitingRoomCtrl;
+import client.controllers.*;
 import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.controllers.questions.QuestionSameAsCtrl;
-import client.controllers.TransitionSceneCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;

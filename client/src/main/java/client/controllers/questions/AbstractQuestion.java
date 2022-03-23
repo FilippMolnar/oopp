@@ -5,11 +5,13 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Answer;
 import commons.Question;
+import commons.UserReaction;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -21,37 +23,59 @@ import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
-public abstract class AbstractQuestion {
+public abstract class AbstractQuestion implements Initializable {
     protected final ServerUtils server;
     protected final MainAppController mainCtrl;
     protected Question question;
+
     @FXML
     GridPane parentGridPane;
     @FXML
-    private Arc timerArc;
+    protected Arc timerArc;
     @FXML
     private Text timerValue;
+    @FXML
+    protected Text score;
+    @FXML
+    protected Text questionNumber;
+
+    // TO-DO change it according to game mode
+    protected boolean isMultiPlayer;
+
+    @FXML
+    protected Label informationLabel;
+
     private int timerIntegerValue;
 
-    private boolean hasSubmittedAnswer = false;
-    private final boolean afterFXMLLOAD = false;
+    protected boolean hasSubmittedAnswer = false;
 
-    private AnimationTimer animationTimer;
     private Timeline timeline;
     TimerTask timerTask;
     Timer numberTimer;
+
+
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
 
+    public void setGameMode(boolean isMultiPlayer) {
+        this.isMultiPlayer = isMultiPlayer;
+    }
+
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public void setQuestionNumber(int num) {
+        this.questionNumber.setText(num + "/20");
     }
 
     public void triggerJoker1(){
@@ -64,6 +88,12 @@ public abstract class AbstractQuestion {
         mainCtrl.getJokers().getJokers().get(2).onClick(mainCtrl);
     }
 
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+    }
+
     /**
      * Animates the reactions of users.
      *
@@ -74,20 +104,8 @@ public abstract class AbstractQuestion {
         Pane pane = new Pane();
         ImageView iv;
         Label label = new Label(name);
-        Image img;
-        switch (reaction) {
-            case "happy":
-                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
-                break;
-            case "angry":
-                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
-                break;
-            case "angel":
-                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
-                break;
-            default:
-                return;
-        }
+        String imagePath = "/client/pictures/" + reaction;
+        Image img = new Image(getClass().getResource(imagePath).toString());
 
         iv = new ImageView(img);
         pane.getChildren().add(iv);
@@ -108,9 +126,27 @@ public abstract class AbstractQuestion {
         parentGridPane.getChildren().add(pane);
     }
 
+    public void angryReact() {
+        String path = "/app/reactions";
+        userReaction("angry",mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+    }
+
+    public void angelReact() {
+        String path = "/app/reactions";
+        userReaction("angel",mainCtrl.getName());
+
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+    }
+
+    public void happyReact() {
+        String path = "/app/reactions";
+        userReaction("happy",mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
+    }
+
     public void stopTimer(){
         timeline.stop();
-        animationTimer.stop();
         timerTask.cancel();
         numberTimer.cancel();
     }
@@ -129,11 +165,7 @@ public abstract class AbstractQuestion {
         //create a timeline for moving the circle
         timeline = new Timeline();
         //You can add a specific action when each frame is started.
-        animationTimer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-            }
-        };
+
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -172,11 +204,10 @@ public abstract class AbstractQuestion {
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
+
         //add the keyframe to the timeline
         timeline.getKeyFrames().add(keyFrame);
-
         timeline.play();
-        animationTimer.start();
     }
     public void disableOptions(){
         //TODO figure out how to disable options
@@ -186,14 +217,22 @@ public abstract class AbstractQuestion {
         mainCtrl.showNext(); // show next scene when timer runs out
     }
 
+
     /**
      * send answer to the server
      *
      * @param answer true/false depending if the selected answer was good
      */
     public void sendAnswer(Answer answer) {
+        informationLabel.setVisible(true);
+        informationLabel.setText("Answer submitted!");
         hasSubmittedAnswer = true;
+        stopTimer();
         server.sendThroughSocket("/app/submit_answer", answer);
+    }
+
+    public void checkAnswer(Answer answer) {
+        mainCtrl.setScore(calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText())));
     }
 
     /**
@@ -204,7 +243,20 @@ public abstract class AbstractQuestion {
         userReaction("angel", "Bianca");
     }
 
+    // for single player
+    public int calculateScore(boolean answerCorrect, double secondsLeft) {
+        int currentScore = mainCtrl.getScore();
+
+        int scoreToBeAdded = 0;
+        double maxSeconds = 10;
+        int maxPoints = 100;
+        double secondsToAnswer = (double) maxSeconds - secondsLeft;
+        if (answerCorrect) {
+            scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
+        }
+        System.out.println(scoreToBeAdded);
+        Integer score = currentScore + scoreToBeAdded;
+        return score;
+    }
 
 }
-
-

@@ -3,17 +3,18 @@ package client.controllers;
 import client.LinkedScene;
 import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
+import client.controllers.questions.QuestionSameAsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import client.jokers.JokersList;
 import commons.Player;
 import commons.Question;
+import commons.Score;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainAppController {
@@ -21,19 +22,24 @@ public class MainAppController {
     private Scene waitingRoomScene;
     private Stage primaryStage;
     private Scene homeScene;
-    private Scene leaderBoardScene;
+    private Scene leaderBoardScene; private Scene qMultiScene;
+    private Scene qInsert;
+    private Scene questionTransitionScene;
+    private Scene sameAsScene;
 
     private LinkedScene currentScene;
     private LinkedScene homeScreenLinked;
 
     private String name;
+    protected boolean isMultiPlayer;
 
     private QuestionInsertNumberCtrl qInsertCtrl;
-    private Scene qInsert;
     private QuestionMultiOptionsCtrl qMultiCtrl;
-    private Scene qMultiScene;
+    private LeaderBoardCtrl leaderBoardCtrl;
+    private TransitionSceneCtrl qTransitionCtrl;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
+    private Score score;
 
     private List<Question> questionsInGame;
     private int questionIndex = 0;
@@ -48,24 +54,32 @@ public class MainAppController {
                            Pair<HomeScreenCtrl, Parent> home,
                            Pair<LeaderBoardCtrl, Parent> leaderBoard,
                            Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
-                           Pair<QuestionInsertNumberCtrl, Parent> qInsert){
+                           Pair<QuestionInsertNumberCtrl, Parent> qInsert,
+                           Pair<QuestionSameAsCtrl, Parent> sameAs,
+                           Pair<TransitionSceneCtrl, Parent> qTransition) {
 
         this.name = "";
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
         this.homeScene = new Scene(home.getValue());
         this.leaderBoardScene = new Scene(leaderBoard.getValue());
+        this.questionTransitionScene = new Scene(qTransition.getValue());
+        this.leaderBoardCtrl = leaderBoard.getKey();
+        this.qTransitionCtrl = qTransition.getKey();
 
+        this.sameAsScene = new Scene(sameAs.getValue());
 
         LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene);
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
+        LinkedScene sameAsLinked = new LinkedScene(this.sameAsScene);
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
-        this.currentScene = new LinkedScene(this.homeScene,
-                Arrays.asList(leaderBoardLinked, waitingRoomLinked));
+        this.currentScene = new LinkedScene(this.homeScene);
+        currentScene.addNext(waitingRoomLinked);
         this.homeScreenLinked = this.currentScene;
 
         this.primaryStage = primaryStage;
 
         this.qInsertCtrl = qInsert.getKey();
+        this.qTransitionCtrl = qTransition.getKey();
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
@@ -77,6 +91,8 @@ public class MainAppController {
         this.homeScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.qMultiScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
+        this.questionTransitionScene.getStylesheets().add("client/scenes/waiting_room.css");
+        this.sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
     public String getName() {
@@ -91,6 +107,23 @@ public class MainAppController {
         this.name = name;
     }
 
+    public int getScore() {
+        return this.score.getScore();
+    }
+
+    public void setScore(int score) {
+        this.score.setScore(score);
+    }
+
+    public void addScore(int toAdd) {
+        this.score.addScore(toAdd);
+    }
+
+    public void initializeScore() {
+        System.out.println("INITIALIZING SCORE");
+        this.score = new Score(this.name, 0);
+    }
+
     public JokersList getJokers() {
         return this.jokers;
     }
@@ -98,6 +131,18 @@ public class MainAppController {
     public void setGameID(int gameID) {
         this.gameID = gameID;
         System.out.println(gameID);
+    }
+
+    public int getGameID() {
+        return this.gameID;
+    }
+
+    public int getQuestionIndex() {
+        return questionIndex;
+    }
+
+    public void setGameMode(boolean isMultiPlayer) {
+        this.isMultiPlayer = isMultiPlayer;
     }
 
     /**
@@ -108,23 +153,35 @@ public class MainAppController {
      * @param mode      either 0 or 1. 0 indicates single player mode, 1 multiplayer.
      **/
     public void addQuestionScenes(List<Question> questions, int mode) {
+        // make sure the previous game is removed from the next scenes
+        homeScreenLinked.reset(1);
         LinkedScene current = this.currentScene;
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
-            if (i == 10) {
+            if (i == 10 && mode == 0) {
                 current.addNext(new LinkedScene(this.leaderBoardScene));
                 current = current.getNext();
+            } else {
+                // add the transition before a normal question
+                current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
+                if(i == 0 && mode == 1) {
+                    current = current.getNext(1);
+                } else {
+                    current = current.getNext();
+                }
             }
-//            if(questionTypes.get(i) < 2) {
-//                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
-//            } else {
-//                current.addNext(new LinkedScene(this.qInsert, this.qInsertCtrl));
-//            }
+            //            if(questionTypes.get(i) < 2) {
+            //                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
+            //            } else {
+            //                current.addNext(new LinkedScene(this.qInsert, this.qInsertCtrl));
+            //            }
             current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
+            current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
-                Arrays.asList(homeScreenLinked, homeScreenLinked.getNext(mode))));
+                    leaderBoardCtrl));
+        current.getNext().addNext(homeScreenLinked.getNext());
     }
 
     /*
@@ -143,15 +200,22 @@ public class MainAppController {
         if (controller instanceof QuestionMultiOptionsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
-            System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
+            if(questionIndex == questionsInGame.size()) {
+                System.out.println(serverUtils.addScore(score));
+                questionIndex = 0;
+            }
         }
     }
 
@@ -166,35 +230,65 @@ public class MainAppController {
      */
     public void showNext(int i) {
         this.currentScene = this.currentScene.getNext(i);
+
         primaryStage.setScene(this.currentScene.getScene());
         if (this.currentScene.getTitle() != null) {
             primaryStage.setTitle(this.currentScene.getTitle());
         }
-        primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(this.name)));
+        primaryStage.show();
+        Object controller = this.currentScene.getController();
+        // if this controller is of the question then set the question
+        if (controller instanceof QuestionMultiOptionsCtrl qController) {
+            qController.setQuestion(questionsInGame.get(questionIndex));
+            questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
+        }
+        // if this controller is of the question then set the question
+        else if (controller instanceof QuestionInsertNumberCtrl qController) {
+            qController.setQuestion(questionsInGame.get(questionIndex));
+            questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
+        }
+        if (controller instanceof ControllerInitialize controllerInit) {
+            System.out.println("Calling initialize!!!");
+            controllerInit.initializeController();
+            if(questionIndex == questionsInGame.size()) {
+                System.out.println(serverUtils.addScore(score));
+                questionIndex = -1;
+            }
+        }
+        // this.currentScene = this.currentScene.getNext(i);
+        // primaryStage.setScene(this.currentScene.getScene());
+        // if (this.currentScene.getTitle() != null) {
+        //     primaryStage.setTitle(this.currentScene.getTitle());
+        // }
+        // primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(this.name)));
     }
 
-//    public void showQuestion(Question question) {
-//        if(question.getType() == QuestionType.Estimate){
-//            showQuestionInsert(question);
-//        }else{
-//            showQuestionMulti(question);
-//        }
-//    }
-//
-//    public void showQuestionInsert(Question q) {
-//        qInsertCtrl.setQuestion(q);
-//        primaryStage.setTitle("Insert Number question");
-//        primaryStage.setScene(qInsert);
-//        primaryStage.show();
-//    }
-//    public void showQuestionMulti(Question q) {
-//        qMultiCtrl.setQuestion(q);
-//        primaryStage.setTitle("Multiple choice question");
-//        primaryStage.setScene(qMultiScene);
-//        primaryStage.show();
-//        qMultiCtrl.resizeImages();
-//        qMultiCtrl.startTimerAnimation();
-//    }
+    //    public void showQuestion(Question question) {
+    //        if(question.getType() == QuestionType.Estimate){
+    //            showQuestionInsert(question);
+    //        }else{
+    //            showQuestionMulti(question);
+    //        }
+    //    }
+    //
+    //    public void showQuestionInsert(Question q) {
+    //        qInsertCtrl.setQuestion(q);
+    //        primaryStage.setTitle("Insert Number question");
+    //        primaryStage.setScene(qInsert);
+    //        primaryStage.show();
+    //    }
+    //    public void showQuestionMulti(Question q) {
+    //        qMultiCtrl.setQuestion(q);
+    //        primaryStage.setTitle("Multiple choice question");
+    //        primaryStage.setScene(qMultiScene);
+    //        primaryStage.show();
+    //        qMultiCtrl.resizeImages();
+    //        qMultiCtrl.startTimerAnimation();
+    //    }
 
     /*
      * Almost every scene has a button to return to the homescreen.

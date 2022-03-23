@@ -1,23 +1,34 @@
 package server.api;
 
-import commons.*;
+import commons.Activity;
+import commons.Question;
+import commons.QuestionType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/api")
 public class QuestionController {
+
+    private static ActivityController activityController;
+
+    public QuestionController(ActivityController activityController) {
+        QuestionController.activityController = activityController;
+    }
+
     @GetMapping("/question")
-    public static Question getRandomQuestion() {
+    public Question getRandomQuestion() {
 //        int pick = new Random().nextInt(3);
 //        if (pick == 0)
 //            return getTypeEstimate();
 //        else if (pick == 1)
 //            return getTypeEqual();
 //        else
-            return getTypeMostLeast();
+        return getTypeMostLeast();
     }
 
     /**
@@ -26,8 +37,8 @@ public class QuestionController {
      * @return question of type estimate    !!!    CHOICES ARE AN EMPTY LIST  !!!
      */
     @GetMapping(path = {"/estimate"})
-    public static Question getTypeEstimate() {
-        Activity act = ActivityController.getRandom();
+    public Question getTypeEstimate() {
+        Activity act = activityController.getRandom();
         Question q = new Question();
         q.setChoices(new ArrayList<>());
         q.setType(QuestionType.Estimate);
@@ -42,10 +53,10 @@ public class QuestionController {
      * @return question of type most/least  !!!     CORRECT ANSWER IS NOT SET   !!!
      */
     @GetMapping(path = {"/most"})
-    public static Question getTypeMostLeast() {
+    public Question getTypeMostLeast() {
         List<Activity> choices = new ArrayList<>();
         while (choices.size() < 3) {
-            Activity act = ActivityController.getRandom();
+            Activity act = activityController.getRandom();
             if (choices.contains(act)) continue;
             choices.add(act);
         }
@@ -64,18 +75,16 @@ public class QuestionController {
     /**
      * Fetches data and constructs a question of type equal
      *
-     * @return question of type equal  !!!    NEEDS OPTIMIZATION   !!!
+     * @return question of type equal  !!!    OPTIMIZED VERSION   !!!
      */
     @GetMapping(path = {"/equal"})
-    public static Question getTypeEqual() {
-        Activity act = ActivityController.getRandom();
-        List<Activity> same = ActivityController.getAllByConsumption(act.getConsumption());
-        List<Activity> diff = ActivityController.getAllDiffCons(act.getConsumption());
+    public Question getTypeEqual() {
+        Activity act = activityController.getRandom();
+        List<Activity> same = activityController.getAllByConsumption(act.getConsumption());
         List<Activity> choices = new ArrayList<>();
         Activity neither = new Activity("neither", -1, "location of cross");
 
         if (same.size() == 1) same.add(neither);
-        else diff.add(neither);
 
         int idx = (int) (Math.random() * same.size());
         if (same.get(idx).equals(act)) {
@@ -88,10 +97,17 @@ public class QuestionController {
         choices.add(act);
         choices.add(same.get(idx));
 
+        if (!choices.contains(neither)) {
+            int chance = (int) (Math.random() * 100);
+            if (chance <= 33) {
+                choices.add(neither);
+            }
+        }
+
         while (choices.size() < 4) {
-            idx = (int) (Math.random() * diff.size());
-            if (choices.contains(diff.get(idx))) continue;
-            choices.add(diff.get(idx));
+            Activity choice = activityController.getRandom();
+            if (same.contains(choice) || act.equals(choice) || choices.contains(choice)) continue;
+            choices.add(choice);
         }
         q.setType(QuestionType.EqualEnergy);
         q.setChoices(choices);

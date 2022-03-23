@@ -33,8 +33,9 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
-    public String name;
-    public String socketID;
+    private String name;
+    private String socketID;
+    private int gameID;
 
     @SuppressWarnings("unused")
     private Player() {
@@ -43,6 +44,13 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
+        this.gameID = 0;
+    }
+
+    public long getGameID() {return this.id;}
+
+    public void setGameID(int id){
+        this.id=id;
     }
 
     public String getName() {
@@ -52,6 +60,8 @@ public class Player {
     public String getSocketID() {
         return this.socketID;
     }
+
+    public void setSocketID(String socketID) {this.socketID=socketID;}
 
     @Override
     public boolean equals(Object obj) {

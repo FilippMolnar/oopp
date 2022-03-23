@@ -5,9 +5,18 @@ import java.util.Objects;
 public class Answer {
     private boolean isCorrect;
     private String option;
+    private int gameID;
+    public Answer() { }
+
     public Answer(boolean isCorrect, String option) {
         this.isCorrect = isCorrect;
         this.option = option;
+    }
+
+    public Answer(boolean isCorrect, String option, int gameID) {
+        this.isCorrect = isCorrect;
+        this.option = option;
+        this.gameID = gameID;
     }
 
     public boolean isCorrect() {
@@ -34,4 +43,7 @@ public class Answer {
         return isCorrect == answer.isCorrect && Objects.equals(option, answer.option);
     }
 
+    public int getGameID() {
+        return gameID;
+    }
 }

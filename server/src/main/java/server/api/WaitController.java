@@ -45,13 +45,15 @@ public class WaitController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(WaitController.class);
     private final GameController gameController;
+    private final QuestionController questionController;
     private int gameID = 0;
 
 
-    WaitController(SimpMessageSendingOperations simpMessagingTemplate, GameController gameController) {
+    WaitController(SimpMessageSendingOperations simpMessagingTemplate, GameController gameController, QuestionController questionController) {
         this.simpMessagingTemplate = simpMessagingTemplate;
         this.utils = new Utils(simpMessagingTemplate);
         this.gameController = gameController;
+        this.questionController = questionController;
     }
 
     public List<Player> getLobbyPlayers() {
@@ -67,7 +69,8 @@ public class WaitController {
     public void addName(@RequestBody Player player) {
         lobbyPlayers.add(player);
         simpMessagingTemplate.convertAndSend("/topic/waitingRoom", player);
-        LOGGER.info("Players in waiting room are\n" + lobbyPlayers);
+        List<String> playerNames = lobbyPlayers.stream().map(Player::getName).toList();
+        LOGGER.info("Players in waiting room are:" + playerNames);
     }
 
     private List<Question> getRandomQuestionTypes() {
@@ -79,19 +82,20 @@ public class WaitController {
         final int nrHighest = 13;
         List<Question> list = new ArrayList<>();
         for (int i = 0; i < nrEqual; i++)
-            list.add(QuestionController.getTypeEqual());
+            list.add(questionController.getTypeEqual());
         for (int i = 0; i < nrHighest; i++)
-            list.add(QuestionController.getTypeMostLeast());
+            list.add(questionController.getTypeMostLeast());
         for (int i = 0; i < nrEstimate; i++)
-            list.add(QuestionController.getTypeEstimate());
+            list.add(questionController.getTypeEstimate());
         Collections.shuffle(list);
         return list;
     }
 
-    private List<Question> get20RandomMostLeastQuestions() {
+    @GetMapping("/getMostLeastQuestions")
+    public List<Question> get20RandomMostLeastQuestions() {
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < 20; i++)
-            questions.add(QuestionController.getTypeMostLeast());
+            questions.add(questionController.getTypeMostLeast());
         return questions;
     }
 
@@ -106,7 +110,6 @@ public class WaitController {
 
         Game currentGame = gameController.getGame(gameID);
         lobbyPlayers.clear();
-        //var playerList = IDToPlayers.get(gameID);
         var playerList = currentGame.getPlayers();
         if (playerList == null) {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
@@ -114,20 +117,20 @@ public class WaitController {
         }
         var questionList = get20RandomMostLeastQuestions();
         currentGame.setQuestions(questionList);
-
         utils.sendToAllPlayers(playerList, "queue/startGame/gameID", gameID);
 
         gameID++;
     }
 
     public void addPlayerToGameID(String playerID, Player player) {
-        player.socketID = playerID;
+        player.setSocketID(playerID);
         gameController.addPlayerToGame(gameID, player);
     }
 
     @MessageMapping("/enterRoom")
     public void socketAddName(@Payload Player player, Principal principal) {
-        LOGGER.info("add player with name " + player.name + " to the waiting room with sockets. The player's id is " + principal.getName());
+        LOGGER.info("add player with name " + player.getName() + " to the waiting room(gameID = "
+                + gameID + " with sockets. The player's id is " + principal.getName());
         addName(player);
         addPlayerToGameID(principal.getName(), player);
     }
@@ -148,7 +151,7 @@ public class WaitController {
     @MessageMapping("/disconnect")
     public void playerDisconnect(Player player) {
         if (lobbyPlayers.remove(player)) {
-            System.out.println("Player " + player.name + " disconnected!");
+            LOGGER.info("Player " + player.getName() + " disconnected!");
             simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
         }
     }

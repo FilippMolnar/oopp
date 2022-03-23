@@ -15,12 +15,16 @@
  */
 package client.utils;
 
+import commons.Game;
 import commons.Player;
 import commons.Question;
+import commons.Score;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import javafx.application.Platform;
+import org.apache.commons.lang3.tuple.Pair;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
@@ -38,6 +42,7 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -185,6 +190,65 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<>() {
                 });
+    }
+
+    public Pair postGameScore(int gameID, Pair<Player, Integer> result) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/game/score")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(result, APPLICATION_JSON), Pair.class);
+    }
+
+    public static Map<Player,Integer> getScoreboard(int gameID)
+    {
+        var q = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/leaderboard/" + gameID)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(Response.class);
+        Map<Player,Integer> scoreboard = q.readEntity(Map.class);
+        return scoreboard;
+    }
+
+    public Game getGameMapping(int gameID) {
+        var q = ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/game/getGame/" + gameID)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(Response.class);
+        return q.readEntity(Game.class);
+    }
+
+    /**
+     * This method is used by single players, who do not have a game ID
+     * and just need to get 20 questions at the start of the game.
+     * @return 20 random questions
+     */
+    public List<Question> getLeastMostQuestions() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/wait/getMostLeastQuestions") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {
+                });
+    }
+
+    public List<Score> getSingleLeaderboard() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/score") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<List<Score>>() {
+                });
+    }
+
+    public Score addScore(Score score) {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/score") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(score, APPLICATION_JSON), Score.class);
     }
 
 }

@@ -19,12 +19,19 @@ public class Game {
     private int qnum = 0; // Keeps track on which question we are throughout the game
     private int pnum = 0; // Keeps track of what the next player`s id should be
     private int pInGame = 0; // Keeps track of how many players are in current game
+    private Map<String, Integer> optionsStatistics = new TreeMap<>();
 
     public Game() {
+        optionsStatistics.put("optionA",0);
+        optionsStatistics.put("optionB",0);
+        optionsStatistics.put("optionC",0);
     }
 
     public Game(int gameID) {
         this.gameID = gameID;
+        optionsStatistics.put("optionA",0);
+        optionsStatistics.put("optionB",0);
+        optionsStatistics.put("optionC",0);
     }
 
     public int getRequested() {
@@ -40,13 +47,28 @@ public class Game {
      *
      * @return true if all players have requested a new question, false otherwise
      */
-    public boolean newRequest() {
+    public boolean newRequest(String option) {
         this.requested++;
+        if (option.length() > 0) {
+            int before = optionsStatistics.getOrDefault(option, 0);
+            optionsStatistics.put(option, before + 1);
+        }
+
         if (this.requested == pInGame) {
             this.requested = 0;
             return true;
         }
         return false;
+    }
+
+    public void resetOptions() {
+        optionsStatistics.put("optionA",0);
+        optionsStatistics.put("optionB",0);
+        optionsStatistics.put("optionC",0);
+    }
+
+    public List<Integer> getOptionsStatistics() {
+        return optionsStatistics.values().stream().toList();
     }
 
     public void IncrementQNum() {
@@ -127,10 +149,6 @@ public class Game {
             }
         });
         return scores;
-    }
-
-    public void setScoreboard(List<Integer> scoreboard) {
-        this.scoreboard = scoreboard;
     }
 
     public void setScore(Player player, int score) {

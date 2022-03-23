@@ -2,6 +2,12 @@ package server.api;
 
 import commons.*;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import server.database.ScoreRepository;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -17,13 +23,16 @@ import java.util.Map;
 @RequestMapping(path = "/api")
 public class GameController {
 
+    private ScoreRepository scoreRepository;
+
     private final Map<Integer, Game> games = new HashMap<>();
 
 
     private SimpMessageSendingOperations simpMessagingTemplate;
     private Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
-    public GameController(SimpMessageSendingOperations simpMessagingTemplate) {
+    public GameController(ScoreRepository scoreRepository, SimpMessageSendingOperations simpMessagingTemplate) {
+        this.scoreRepository = scoreRepository;
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
@@ -81,6 +90,13 @@ public class GameController {
         Game currentGame = getGame(gameID);
         return currentGame.getQuestions();
     }
+
+    @GetMapping("api/game/getSingleLeaderboard")
+    private List<Score> getSingleLeaderboard() {
+        List<Score> leaderboard = scoreRepository.getLeaderboard();
+        return leaderboard;
+    }
+
     @MessageMapping("/reactions")
     public void userReact(@Payload UserReaction ur) {
         int gameID = ur.getGameID();

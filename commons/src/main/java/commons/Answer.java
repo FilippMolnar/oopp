@@ -7,6 +7,12 @@ public class Answer {
     private String option;
     private int gameID;
     public Answer() { }
+
+    public Answer(boolean isCorrect, String option) {
+        this.isCorrect = isCorrect;
+        this.option = option;
+    }
+
     public Answer(boolean isCorrect, String option, int gameID) {
         this.isCorrect = isCorrect;
         this.option = option;

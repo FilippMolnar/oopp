@@ -2,6 +2,7 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import commons.Player;
+import commons.Question;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -53,10 +54,11 @@ public class HomeScreenCtrl {
             }
         }
 
-        // Show single player. 0 would be single player.
-        this.appController.showNext(1);
-        //this.serverUtils.postName(finalName);
         this.appController.setName(finalName);
+        this.appController.initializeScore(); // Show single player. 0 would be single player.
+        this.appController.showNext();
+        this.appController.setGameMode(true);
+        //this.serverUtils.postName(finalName);
         this.serverUtils.sendThroughSocket("/app/enterRoom", new Player(finalName));
     }
 
@@ -70,7 +72,13 @@ public class HomeScreenCtrl {
         }
 
         // Show single player. 1 would be multiplayer.
-        this.appController.showNext(0);
-        this.serverUtils.postName(finalName);
+        List<Question> questions = serverUtils.getLeastMostQuestions();
+        appController.addQuestionScenes(questions, 1);
+        this.appController.setName(finalName);
+        this.appController.initializeScore();
+        System.out.println("Entering single player...");
+        this.appController.showNext(1);
+        this.appController.setGameMode(false);
+        //this.serverUtils.postName(finalName);
     }
 }

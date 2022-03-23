@@ -39,8 +39,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @FXML
     private GridPane images;
 
+    private boolean hasSubmittedAnswer = false;
     @FXML
-    private Text questionNumberText;
+    private Text questionNumber;
 
     @FXML
     private Label countA;
@@ -55,6 +56,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     }
 
     public void setQuestion(Question question) {
+        System.out.println("question");
+        System.out.println(question);
         super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         optionA.setText(question.getChoices().get(0).getTitle());
@@ -99,7 +102,15 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+
+        if(isMultiPlayer) {
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+        } else {
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            System.out.println("Stopping timer");
+            stopTimer();
+            mainCtrl.showNext();
+        }
     }
 
 
@@ -208,6 +219,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
 
     private void displayAnswers(List<Integer> answerList) {
+        optionA.setDisable(true);
+        optionB.setDisable(true);
+        optionC.setDisable(true);
         System.out.println("Received answer!!" + answerList);
         countA.setVisible(true);
         countA.setText("" + answerList.get(0));
@@ -253,7 +267,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      * Thus, we need to reset everything by ourselves.
      */
     private void resetLogic() {
-        hasSubmittedAnswer = false; // this is false at the beginning of the game
+        this.hasSubmittedAnswer = false; // this is false at the beginning of the game
     }
 
     /**
@@ -261,7 +275,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      */
     @Override
     public void initializeController() {
-        questionNumberText.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        this.score.setText("SCORE " + mainCtrl.getScore());
+        questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation();
         System.out.println("Initializing Qmulti!");
         resetUI();

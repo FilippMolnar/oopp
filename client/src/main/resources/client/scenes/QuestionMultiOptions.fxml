@@ -77,8 +77,8 @@
         </StackPane>
         <StackPane fx:id="joker2" onMouseClicked="#triggerJoker2" GridPane.columnIndex="7" GridPane.rowIndex="1">
             <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@/client/pictures/joker_decrease_time.png" />
+            <ImageView fitHeight="45.0" fitWidth="45.0" onMousePressed="#handsAnimation" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../pictures/right_hand.png" />
             </ImageView>
         </StackPane>
         <Group GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">

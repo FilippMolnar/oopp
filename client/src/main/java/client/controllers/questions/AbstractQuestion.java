@@ -257,7 +257,7 @@ public abstract class AbstractQuestion implements Initializable {
             int column = (int) Math.floor(parentGridPane.getRowCount()*Math.random());
             parentGridPane.add(iv, row, column);
 
-            /* delete after 7 seconds */
+            /* delete after 7 seconds or after scene change */
             Timer timer = new Timer();
             TimerTask timerTask = new TimerTask() {
                 @Override
@@ -270,6 +270,58 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
-}
+    public void handsAnimation(){
+        int duration = timerIntegerValue * 1000;
+
+        /* create hands */
+        String pathLeft = "/client/pictures/left_hand.png";
+        String pathRight = "/client/pictures/right_hand.png";
+        Image imgLeft = new Image(getClass().getResource(pathLeft).toString());
+        Image imgRight = new Image(getClass().getResource(pathRight).toString());
+        ImageView ivLeft = new ImageView(imgLeft);
+        ImageView ivRight = new ImageView(imgRight);
+        ivRight.setPreserveRatio(true);
+        ivLeft.setPreserveRatio(true);
+        ivLeft.setFitWidth(700);
+        ivRight.setFitWidth(700);
+
+        /* add transition LEFT */
+        TranslateTransition translateLeft = new TranslateTransition();
+        translateLeft.setFromX(200);
+        translateLeft.setByX(-400);
+        translateLeft.setDuration(Duration.millis(7000));
+        translateLeft.setNode(ivLeft);
+        translateLeft.play();
+
+        /* add transition Right */
+        TranslateTransition translateRight = new TranslateTransition();
+        translateRight.setFromX(-400);
+        translateRight.setByX(200);
+        translateRight.setDuration(Duration.millis(7000));
+        translateRight.setNode(ivRight);
+        translateRight.play();
+
+        /* add in place */
+        parentGridPane.add(ivLeft, parentGridPane.getColumnCount() - 1, 1);
+        parentGridPane.add(ivRight, 0, 1);
+
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater( () -> {
+                    ivLeft.setDisable(true);
+                    ivRight.setDisable(true);
+                    parentGridPane.getChildren().remove(ivLeft);
+                    parentGridPane.getChildren().remove(ivRight);
+                });
+            }
+        };
+        timer.schedule(timerTask, Math.min(7000, duration));
+    }
+
+    }
+
+
 
 

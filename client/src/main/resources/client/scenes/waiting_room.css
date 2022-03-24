@@ -20,6 +20,7 @@
     -fx-background-radius: 50px;
     -fx-min-width: 80px;
     -fx-border-radius: 50px;
+    -fx-text-fill: #D6D3EE;
 }
 .question-button:hover{
     -fx-background-color: #4B427D;
@@ -35,11 +36,12 @@
     -fx-text-fill: #D6D3EE;
 }
 .info{
-    -fx-text-fill: #29ff6d;
+    -fx-text-fill: #D6D3EE;
 }
 .non-clickable {
     -fx-background-color: #837ABA;
     -fx-background-radius: 50px;
     -fx-min-width: 80px;
     -fx-border-radius: 50px;
+    -fx-padding: 15px;
 }

@@ -4,7 +4,6 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Answer;
-import commons.Player;
 import commons.Question;
 import commons.UserReaction;
 import javafx.animation.*;
@@ -24,7 +23,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -42,7 +40,14 @@ public abstract class AbstractQuestion implements Initializable {
     @FXML
     protected Arc timerArc;
     @FXML
-    protected Text timerValue;
+    private Text timerValue;
+    @FXML
+    protected Text score;
+    @FXML
+    protected Text questionNumber;
+
+    // TO-DO change it according to game mode
+    protected boolean isMultiPlayer;
 
     @FXML
     protected Label informationLabel;
@@ -58,14 +63,23 @@ public abstract class AbstractQuestion implements Initializable {
     TimerTask timerTask;
     Timer numberTimer;
 
+
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
 
+    public void setGameMode(boolean isMultiPlayer) {
+        this.isMultiPlayer = isMultiPlayer;
+    }
+
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public void setQuestionNumber(int num) {
+        this.questionNumber.setText(num + "/20");
     }
 
     public void triggerJoker1(){
@@ -142,6 +156,7 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void startTimerAnimation() {
+        score.setText(mainCtrl.getScore()+""); 
         int durationTime = 10;
         timerValue.setText(Integer.toString(durationTime));
         timerIntegerValue = durationTime;
@@ -151,7 +166,6 @@ public abstract class AbstractQuestion implements Initializable {
         //create a timeline for moving the circle
         timeline = new Timeline();
         //You can add a specific action when each frame is started.
-
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -181,12 +195,14 @@ public abstract class AbstractQuestion implements Initializable {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
+            System.out.println(hasSubmittedAnswer);
             if (!hasSubmittedAnswer) {
                 System.out.println("submitting answer through the timer!");
                 sendAnswer(new Answer(false, "", mainCtrl.getGameID()));
             }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
+
 
         //add the keyframe to the timeline
         timeline.getKeyFrames().add(keyFrame);
@@ -207,19 +223,34 @@ public abstract class AbstractQuestion implements Initializable {
         server.sendThroughSocket("/app/submit_answer", answer);
     }
 
-    public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
-        int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
+    public void checkAnswer(Answer answer) {
+        int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
+        mainCtrl.setScore(newScore);
+        score.setText(newScore+""); 
+    }
+
+    /**
+     * Wrapper function used to showcase the userReaction method with the help of a button. Will be deleted once we
+     * complete the reaction functionality.
+     */
+    public void userReaction() {
+        userReaction("angel", "Bianca");
+    }
+
+    // for single player
+    public int calculateScore(boolean answerCorrect, double secondsLeft) {
+        int currentScore = mainCtrl.getScore();
 
         int scoreToBeAdded = 0;
-        int maxSeconds = 20;
+        double maxSeconds = 10;
         int maxPoints = 100;
+        double secondsToAnswer = (double) maxSeconds - secondsLeft;
         if (answerCorrect) {
-            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+            scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
-
+        System.out.println(scoreToBeAdded);
         Integer score = currentScore + scoreToBeAdded;
-        Pair<Player, Integer> result = Pair.of(player, score);
-        server.postGameScore(mainCtrl.getGameID(), result);
+        return score;
     }
 
     public void splashAnimation() {

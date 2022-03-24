@@ -8,7 +8,7 @@ import java.util.List;
 public class LinkedScene {
 
     private final Scene current;
-    private final List<LinkedScene> next;
+    private List<LinkedScene> next;
     private final String title;
     private Object controller;
 
@@ -26,7 +26,7 @@ public class LinkedScene {
         this.controller = controller;
     }
 
-    public LinkedScene(Scene current, List<LinkedScene> next) {
+    public LinkedScene(Scene current, ArrayList<LinkedScene> next) {
         this.title = null;
         this.current = current;
         this.next = next;
@@ -48,6 +48,12 @@ public class LinkedScene {
 
     public LinkedScene getNext(int i) {
         return this.next.get(i);
+    }
+
+    public void reset(int i) {
+        if(next.size() > i) {
+            next.get(i).next = new ArrayList(); 
+        }
     }
 
     public void addNext(LinkedScene next) {

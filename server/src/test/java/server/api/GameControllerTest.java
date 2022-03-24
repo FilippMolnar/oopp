@@ -12,9 +12,10 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameControllerTest {
-    GameController gameController = new GameController(null);
+    GameController gameController = new GameController(null, null);
     Player p1 = new Player("First");
     Player p2 = new Player("Second");
+
     @BeforeEach
     void setup() {
         gameController.addNewGame(1);

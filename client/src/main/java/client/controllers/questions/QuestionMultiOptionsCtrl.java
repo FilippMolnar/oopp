@@ -334,7 +334,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         resetUI();
         resetLogic();
         super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
-        startTimerAnimation();
+        startTimerAnimation(10);
         System.out.println("Initializing Qmulti!");
     }
 

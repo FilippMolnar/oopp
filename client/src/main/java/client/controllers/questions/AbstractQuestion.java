@@ -40,8 +40,7 @@ public abstract class AbstractQuestion implements Initializable {
     protected Arc timerArc;
     @FXML
     private Text timerValue;
-    @FXML
-    protected Text score;
+
     @FXML
     protected Text questionNumber;
 
@@ -226,7 +225,7 @@ public abstract class AbstractQuestion implements Initializable {
         mainCtrl.setScore(calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText())));
     }
 
-    public int calculateScore(boolean answerCorrect, int secondsToAnswer) {
+    public int calculateScore(boolean answerCorrect, double secondsLeft) {
 
         int scoreToBeAdded = 0;
         double maxSeconds = 10;

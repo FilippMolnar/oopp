@@ -38,7 +38,6 @@ public class MainAppController {
     private QuestionMultiOptionsCtrl qMultiCtrl;
     private LeaderBoardCtrl leaderBoardCtrl;
     private TransitionSceneCtrl qTransitionCtrl;
-    private LeaderBoardCtrl leaderBoardCtrl;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
     private Score score;
@@ -108,7 +107,7 @@ public class MainAppController {
     }
 
     public int getScore() {
-        return this.score.getScore();
+        return this.totalScore;
     }
 
     public void setScore(int score) {
@@ -159,7 +158,7 @@ public class MainAppController {
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
             if (i == 10 && mode == 0) {
-                current.addNext(new LinkedScene(this.leaderBoardScene));
+                current.addNext(new LinkedScene(this.leaderBoardScene, this.leaderBoardCtrl));
                 current = current.getNext();
             } else {
                 // add the transition before a normal question
@@ -250,6 +249,10 @@ public class MainAppController {
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
             qController.setGameMode(isMultiPlayer);
+        }
+        else if (controller instanceof LeaderBoardCtrl) {
+            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+            leaderBoardCtrl.after10Questions();
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");

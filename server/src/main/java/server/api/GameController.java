@@ -15,9 +15,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -121,14 +119,7 @@ public class GameController {
         LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username "+a.getUsername());
         LOGGER.info(a.toString());
         current.updateScore(a.getUsername(), a.getScore());
-        int i = 0;
-        if(current.newRequest(a.getOption())){
-            for (Integer score : current.getLeaderboard().keySet()) {
-                for (String name : current.getLeaderboard().get(score)) {
-                    i++;
-                    System.out.println(i+") "+name+" - "+score+" points");
-                }
-            }
+        if (current.newRequest(a.getOption())) {
             List<Integer> options = current.getOptionsStatistics();
             var playerList = current.getPlayers();
             LOGGER.info("Sending results: " + options + " to game ID " + gameID);
@@ -138,5 +129,6 @@ public class GameController {
             }
             current.resetOptions();
         }
+        }
     }
-}
+

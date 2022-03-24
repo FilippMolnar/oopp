@@ -1,6 +1,7 @@
 package client.controllers;
 
 import client.utils.ServerUtils;
+import commons.Game;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +20,12 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import javafx.scene.layout.RowConstraints;
+
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
 import commons.Score;
 import commons.Question;
 import javafx.geometry.Insets;
@@ -76,8 +82,6 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         this.appController = appController;
         this.serverUtils = serverUtils;
     }
-    public void initialize() {
-    }
     public void hideBackAndRematch() {
         homeButton.setVisible(false);
         rematchButton.setVisible(false);
@@ -90,7 +94,9 @@ public class LeaderBoardCtrl implements ControllerInitialize{
 
     public void fillWithValues() {
         int i = 0;
-        this.leaderboard = appController.getLeaderboard();
+        System.out.println("Filling with values!");
+        this.leaderboard = serverUtils.getLeaderboard(appController.getGameID());
+        //Game.printLeaderboardToScreen(this.leaderboard);
         Integer[] sortedScores = (Integer[]) leaderboard.keySet().toArray();
         Arrays.sort(sortedScores, Collections.reverseOrder());
             for (Integer score : leaderboard.keySet()) {
@@ -119,8 +125,10 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         this.appController.initializeScore();
         this.appController.showNext(1);
     }
-
+    @Override
     public void initializeController() {
+        fillWithValues();
+        hideBackAndRematch();
         System.out.println("LEADERBOARD:");
         List<Score> allScores = serverUtils.getSingleLeaderboard();
         System.out.println(allScores);

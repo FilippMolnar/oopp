@@ -224,4 +224,19 @@ public class Game {
     public Question getQuestion() {
         return questions.get(this.qnum);
     }
+
+    /**
+     * For testing the leaderboard
+     */
+    public static void printLeaderboardToScreen(Map<Integer, List<String>> leaderboard) {
+        Set<Integer> keySet = leaderboard.keySet();
+        Integer[] scores = keySet.stream().toArray(Integer[]::new);
+        Arrays.sort(scores, Collections.reverseOrder());
+        int i = 0;
+        for(Integer score : scores) {
+            for (String name : leaderboard.get(score)) {
+                System.out.println((i+1)+") "+name+" - "+score);
+            }
+        }
+    }
 }

@@ -14,6 +14,7 @@ public class Answer {
         this.option = option;
         this.gameID = gameID;
         this.name = username;
+        this.score = score;
     }
 
     public boolean isCorrect() {

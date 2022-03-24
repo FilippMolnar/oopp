@@ -102,15 +102,17 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        if(isMultiPlayer) {
         int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
         mainCtrl.updateScore(score);
-        this.scoreText.setText("Score: "+mainCtrl.getTotalScore());
+        this.scoreText.setText("SCORE "+mainCtrl.getTotalScore());
         Answer answer = new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName());
-        System.out.println(answer);
-        sendAnswer(answer);
-        } else {
-            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+        if(isMultiPlayer) {
+            System.out.println(answer);
+            sendAnswer(answer);
+            stopTimer();
+        }
+        else {
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
             System.out.println("Stopping timer");
             stopTimer();
             mainCtrl.showNext();
@@ -230,7 +232,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
 
-        stopTimer();
+        //stopTimer();
 
         TimerTask delay = new TimerTask() {
             @Override
@@ -271,7 +273,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      */
     @Override
     public void initializeController() {
-        this.score.setText("SCORE " + mainCtrl.getScore());
+        this.scoreText.setText("SCORE " + mainCtrl.getScore());
         questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation();
         System.out.println("Initializing Qmulti!");

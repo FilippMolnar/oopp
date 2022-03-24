@@ -13,6 +13,7 @@ public class Activity implements Comparable {
 
     private String title;
     private String imagePath;
+    private String source;
 
     // Consumption is in WH
     private int consumption;
@@ -20,10 +21,11 @@ public class Activity implements Comparable {
     public Activity() {
     }
 
-    public Activity(String title, int consumption, String imgPath) {
+    public Activity(String title, int consumption, String imgPath, String source) {
         this.imagePath = imgPath;
         this.title = title;
         this.consumption = consumption;
+        this.source = source;
     }
 
     public String getTitle() {
@@ -37,6 +39,8 @@ public class Activity implements Comparable {
     public int getConsumption() {
         return this.consumption;
     }
+
+    public String getSource() { return this. source; }
 
     /*
      * Compares the consumption of two activities.
@@ -62,7 +66,8 @@ public class Activity implements Comparable {
         Activity that = (Activity) o;
         return this.title.equals(that.title)
                 && this.consumption == that.consumption
-                && this.imagePath == that.imagePath;
+                && this.imagePath.equals(that.imagePath)
+                && this.source.equals(that.source);
     }
 
     @Override

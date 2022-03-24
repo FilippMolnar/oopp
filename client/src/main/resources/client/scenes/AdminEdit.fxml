@@ -77,10 +77,10 @@
                <Insets right="20.0" />
             </GridPane.margin>
          </Text>
-         <TextField maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-         <TextField maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-         <TextField maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-         <TextField maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+         <TextField fx:id="activityTitleField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+         <TextField fx:id="activitySourceField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+         <TextField fx:id="activityConsumptionField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+         <TextField fx:id="activityImageField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
          <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Image" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <font>
                <Font size="18.0" />

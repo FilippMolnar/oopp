@@ -52,9 +52,10 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ServerUtils {
 
     // use this variable to define the server address and port to connect to
-    private static final String SERVER = "http://localhost:8080";
-    private static final String WEBSOCKET_SERVER = "ws://localhost:8080/websocket";
-    private final StompSession session = connect(WEBSOCKET_SERVER);
+    private String SERVER;
+    private String WEBSOCKET_SERVER ;
+    private StompSession session;
+    private List<List<Object>> subscribeParameters = new ArrayList<>();
 
     public void getQuotesTheHardWay() throws IOException {
         var url = new URL(SERVER + "api/quotes");
@@ -65,6 +66,16 @@ public class ServerUtils {
             System.out.println(line);
         }
     }
+     public void initializeServer(String server) {
+        // 172.435q3...
+        SERVER = "http://"+server+":8080";
+        WEBSOCKET_SERVER = "ws://"+server+":8080/websocket";
+        session = connect(WEBSOCKET_SERVER);
+        for (List l : subscribeParameters) {
+            System.out.println("");
+            subscribeForSocketMessages((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
+        }
+     }
 
     /**
      * Connects the websockets to a url specifed in <code>WebSocketConfig</code> class on the server side
@@ -99,6 +110,10 @@ public class ServerUtils {
      * @param consumer  the callback to execute when a message is received
      */
     public <T> void subscribeForSocketMessages(String dest, Class<T> classType, Consumer<T> consumer) {
+        if (session == null) {
+            subscribeParameters.add(List.of(dest, classType, consumer));
+            return;
+        }
         System.out.println("Registered to listen on the track " + dest);
         session.subscribe(dest, new StompFrameHandler() {
             @Override
@@ -201,7 +216,7 @@ public class ServerUtils {
                 .post(Entity.entity(result, APPLICATION_JSON), Pair.class);
     }
 
-    public static Map<Player,Integer> getScoreboard(int gameID)
+    public  Map<Player,Integer> getScoreboard(int gameID)
     {
         var q = ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/leaderboard/" + gameID)

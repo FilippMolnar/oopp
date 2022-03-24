@@ -20,6 +20,9 @@ public class HomeScreenMultiplayerCtrl {
     @FXML
     private Label labelErrors;
 
+    @FXML
+    private TextField serverField;
+
     @Inject
     HomeScreenMultiplayerCtrl(ServerUtils serverUtils, MainAppController appController){
         this.appController = appController;
@@ -27,6 +30,14 @@ public class HomeScreenMultiplayerCtrl {
     }
 
     public void enterRoom(){
+        String server = serverField.getText();
+        try {
+            serverUtils.initializeServer(server);
+        }
+        catch (Exception e) {
+            System.out.println("Invalid server!");
+            return;
+        }
         appController.initializeScore();
         appController.setGameMode(true);
         String name = nameString.getText();

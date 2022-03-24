@@ -36,6 +36,19 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private Button optionB;
     @FXML
     private Button optionC;
+
+    public Button getOptionA() {
+        return optionA;
+    }
+
+    public Button getOptionB() {
+        return optionB;
+    }
+
+    public Button getOptionC() {
+        return optionC;
+    }
+
     @FXML
     private GridPane images;
 
@@ -277,7 +290,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     public void initializeController() {
         this.score.setText("SCORE " + mainCtrl.getScore());
         questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
-        startTimerAnimation();
+        startTimerAnimation(10);
         System.out.println("Initializing Qmulti!");
         resetUI();
         resetLogic();

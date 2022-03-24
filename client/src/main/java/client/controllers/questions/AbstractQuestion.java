@@ -262,8 +262,10 @@ public abstract class AbstractQuestion implements Initializable {
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
-                    iv.setDisable(true);
-                    parentGridPane.getChildren().remove(iv);
+                    Platform.runLater( () -> {
+                        iv.setDisable(true);
+                        parentGridPane.getChildren().remove(iv);
+                    });
                 }
             };
             timer.schedule(timerTask, Math.min(7000, duration));

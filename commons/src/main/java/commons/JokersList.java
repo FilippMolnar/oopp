@@ -32,7 +32,8 @@ public class JokersList {
         //TODO randomly generate jokers, insert them to fxml
         jokers.add(new DoublePointsJoker("double points", "@client/pictures/joker_double_points.png"));
         jokers.add(new DecreaseTimeJoker("decrease time", "@client/pictures/joker_decrease_time.png"));
-        jokers.add(new ElimWrongJoker("eliminate wrong answer", "@client/pictures/joker_elim_wrong.png"));
+        //jokers.add(new ElimWrongJoker("eliminate wrong answer", "@client/pictures/joker_elim_wrong.png"));
+        jokers.add(new CoverScreenJoker("cover screen", "@client/pictures/splash1.png"));
     }
 
     public List<Joker> getJokers() {

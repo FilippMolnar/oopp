@@ -35,15 +35,18 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     }
 
     public void goBack(){
+        this.appController.initializeScore();
         this.appController.showHomeScreen();
     }
 
     public void rematch() {
         List<Question> questions = serverUtils.getLeastMostQuestions();
-        //this.appController.showNext();
+
+        // go to home screen and then to single player
+        this.appController.showNext();
         appController.addQuestionScenes(questions, 1);
         this.appController.initializeScore();
-        this.appController.showNext(1);
+        this.appController.showNext();
     }
 
     public void initializeController() {

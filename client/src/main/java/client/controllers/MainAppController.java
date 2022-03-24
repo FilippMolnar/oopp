@@ -81,8 +81,10 @@ public class MainAppController {
         LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
 
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
-        this.currentScene = new LinkedScene(this.homeScene,
-                Arrays.asList(singleplayerLinked, multiplayerLinked));
+        this.currentScene = new LinkedScene(this.homeScene);
+                //Arrays.asList(singleplayerLinked, multiplayerLinked));
+        this.currentScene.addNext(multiplayerLinked);
+        this.currentScene.addNext(singleplayerLinked);
         this.homeScreenLinked = this.currentScene;
 
         multiplayerLinked.addNext(waitingRoomLinked);
@@ -171,11 +173,11 @@ public class MainAppController {
             } else {
                 // add the transition before a normal question
                 current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
-                if(i == 0 && mode == 1) {
-                    current = current.getNext(1);
-                } else {
+               // if(i == 0 && mode == 1) {
+               //     current = current.getNext(1);
+               // } else {
                     current = current.getNext();
-                }
+                //}
             }
             //            if(questionTypes.get(i) < 2) {
             //                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
@@ -183,12 +185,12 @@ public class MainAppController {
             //                current.addNext(new LinkedScene(this.qInsert, this.qInsertCtrl));
             //            }
             current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
-            current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
+            //current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
                     leaderBoardCtrl));
-        current.getNext().addNext(homeScreenLinked.getNext());
+        current.getNext().addNext(homeScreenLinked.getNext(mode));
     }
 
     /*

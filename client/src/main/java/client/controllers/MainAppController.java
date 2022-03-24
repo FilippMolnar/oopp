@@ -7,7 +7,6 @@ import client.controllers.questions.QuestionSameAsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import client.jokers.JokersList;
-import commons.Player;
 import commons.Question;
 import commons.Score;
 import javafx.scene.Parent;

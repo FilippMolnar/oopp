@@ -3,7 +3,6 @@ package client.controllers.questions;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
 import commons.Answer;
 import commons.Question;
 import commons.UserReaction;

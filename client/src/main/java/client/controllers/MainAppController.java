@@ -254,42 +254,12 @@ public class MainAppController {
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
-            if(questionIndex == questionsInGame.size()) {
+            if (questionIndex == questionsInGame.size()) {
                 System.out.println(serverUtils.addScore(score));
                 questionIndex = -1;
             }
         }
-        // this.currentScene = this.currentScene.getNext(i);
-        // primaryStage.setScene(this.currentScene.getScene());
-        // if (this.currentScene.getTitle() != null) {
-        //     primaryStage.setTitle(this.currentScene.getTitle());
-        // }
-        // primaryStage.setOnCloseRequest(event -> this.serverUtils.sendThroughSocket("/app/disconnect", new Player(this.name)));
     }
-
-    //    public void showQuestion(Question question) {
-    //        if(question.getType() == QuestionType.Estimate){
-    //            showQuestionInsert(question);
-    //        }else{
-    //            showQuestionMulti(question);
-    //        }
-    //    }
-    //
-    //    public void showQuestionInsert(Question q) {
-    //        qInsertCtrl.setQuestion(q);
-    //        primaryStage.setTitle("Insert Number question");
-    //        primaryStage.setScene(qInsert);
-    //        primaryStage.show();
-    //    }
-    //    public void showQuestionMulti(Question q) {
-    //        qMultiCtrl.setQuestion(q);
-    //        primaryStage.setTitle("Multiple choice question");
-    //        primaryStage.setScene(qMultiScene);
-    //        primaryStage.show();
-    //        qMultiCtrl.resizeImages();
-    //        qMultiCtrl.startTimerAnimation();
-    //    }
-
     /*
      * Almost every scene has a button to return to the homescreen.
      * That button activates this function. Which switches from the

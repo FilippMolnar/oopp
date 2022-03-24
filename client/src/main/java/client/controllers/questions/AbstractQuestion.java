@@ -3,6 +3,7 @@ package client.controllers.questions;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Activity;
 import commons.Answer;
 import commons.Question;
 import commons.UserReaction;
@@ -24,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -72,6 +74,7 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void setQuestion(Question question) {
         this.question = question;
+        hasSubmittedAnswer = false;
     }
 
     public void setQuestionNumber(int num) {
@@ -172,7 +175,10 @@ public abstract class AbstractQuestion implements Initializable {
                 Platform.runLater(() -> {
                     timerIntegerValue--;
                     System.out.println(timerIntegerValue);
-                    timerValue.setText(Integer.toString(timerIntegerValue));
+                    if(timerIntegerValue < 0)
+                        timerValue.setText(Integer.toString(0));
+                    else
+                        timerValue.setText(Integer.toString(timerIntegerValue));
                     if (timerIntegerValue <= 3) {
                         timerArc.setFill(Paint.valueOf("red")); // set the color to red when the timer runs out
                     }
@@ -197,8 +203,10 @@ public abstract class AbstractQuestion implements Initializable {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
+            System.out.println(hasSubmittedAnswer);
             if (!hasSubmittedAnswer){
                 disableOptions();
+                System.out.println("time out");
                 sendAnswer(new Answer(false, ""));
             }
         };
@@ -210,7 +218,11 @@ public abstract class AbstractQuestion implements Initializable {
         timeline.play();
     }
     public void disableOptions(){
-        //TODO figure out how to disable options
+        if(mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl){
+            qCtrl.getOptionA().setDisable(true);
+            qCtrl.getOptionB().setDisable(true);
+            qCtrl.getOptionC().setDisable(true);
+        }
     }
 
     public void showNext(){

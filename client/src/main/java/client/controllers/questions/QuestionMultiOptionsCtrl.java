@@ -52,7 +52,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @FXML
     private GridPane images;
 
-    private boolean hasSubmittedAnswer = false;
     @FXML
     private Text questionNumber;
 

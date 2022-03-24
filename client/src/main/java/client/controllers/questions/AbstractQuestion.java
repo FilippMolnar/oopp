@@ -162,7 +162,6 @@ public abstract class AbstractQuestion implements Initializable {
         //create a timeline for moving the circle
         timeline = new Timeline();
         //You can add a specific action when each frame is started.
-
         timerTask = new TimerTask() {
             @Override
             public void run() {

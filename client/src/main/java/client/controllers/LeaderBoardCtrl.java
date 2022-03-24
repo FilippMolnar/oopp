@@ -42,7 +42,6 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     public void rematch() {
         List<Question> questions = serverUtils.getLeastMostQuestions();
 
-        // go to home screen and then to single player
         this.appController.showNext();
         appController.addQuestionScenes(questions, 1);
         this.appController.initializeScore();
@@ -63,7 +62,6 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         }
     }
 
-    /* A sad attempt at adding leaderboard spots manually...*/
     private void createLeaderboardSpot(Score score, int row) {
         RowConstraints newRow  = new RowConstraints();
         newRow.setPrefHeight(30.0);

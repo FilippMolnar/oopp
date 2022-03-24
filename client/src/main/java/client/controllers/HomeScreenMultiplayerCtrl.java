@@ -27,6 +27,8 @@ public class HomeScreenMultiplayerCtrl {
     }
 
     public void enterRoom(){
+        appController.initializeScore();
+        appController.setGameMode(true);
         String name = nameString.getText();
         System.out.println(name);
         String finalName = name.substring(0,Math.min(name.length(),16));

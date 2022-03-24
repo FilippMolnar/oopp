@@ -152,6 +152,7 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void startTimerAnimation() {
+        score.setText(mainCtrl.getScore()+""); 
         int durationTime = 10;
         timerValue.setText(Integer.toString(durationTime));
         timerIntegerValue = durationTime;
@@ -161,7 +162,6 @@ public abstract class AbstractQuestion implements Initializable {
         //create a timeline for moving the circle
         timeline = new Timeline();
         //You can add a specific action when each frame is started.
-
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -220,7 +220,9 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void checkAnswer(Answer answer) {
-        mainCtrl.setScore(calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText())));
+        int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
+        mainCtrl.setScore(newScore);
+        score.setText(newScore+""); 
     }
 
     /**

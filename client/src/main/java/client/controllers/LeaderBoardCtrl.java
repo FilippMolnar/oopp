@@ -35,15 +35,17 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     }
 
     public void goBack(){
+        this.appController.initializeScore();
         this.appController.showHomeScreen();
     }
 
     public void rematch() {
         List<Question> questions = serverUtils.getLeastMostQuestions();
-        //this.appController.showNext();
+
+        this.appController.showNext();
         appController.addQuestionScenes(questions, 1);
         this.appController.initializeScore();
-        this.appController.showNext(1);
+        this.appController.showNext();
     }
 
     public void initializeController() {
@@ -60,7 +62,6 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         }
     }
 
-    /* A sad attempt at adding leaderboard spots manually...*/
     private void createLeaderboardSpot(Score score, int row) {
         RowConstraints newRow  = new RowConstraints();
         newRow.setPrefHeight(30.0);

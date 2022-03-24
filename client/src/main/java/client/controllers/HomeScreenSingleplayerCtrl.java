@@ -4,6 +4,8 @@ import client.utils.ServerUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import commons.Question;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -33,9 +35,13 @@ public class HomeScreenSingleplayerCtrl {
             labelErrors.setText("Your name was too long, we limited the number of characters");
         }
 
-        // Show single player. 1 would be multiplayer.
-        this.appController.showNext(0);
-        this.serverUtils.postName(finalName);
+        ArrayList<Question> questions = serverUtils.getLeastMostQuestions();
+        appController.addQuestionScenes(questions, 1);
+        this.appController.setName(finalName);
+        this.appController.initializeScore();
+        // Show single player. 0 would be multiplayer.
+        this.appController.showNext();
+        this.appController.setGameMode(false);
     }
 
     public void backToHomeScreen() {

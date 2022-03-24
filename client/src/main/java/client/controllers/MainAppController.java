@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainAppController {
@@ -80,9 +79,9 @@ public class MainAppController {
         LinkedScene singleplayerLinked = new LinkedScene(this.homeSingleplayerScene, homeSingleplayer.getKey());
         LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
 
-        // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
-        this.currentScene = new LinkedScene(this.homeScene,
-                Arrays.asList(singleplayerLinked, multiplayerLinked));
+        this.currentScene = new LinkedScene(this.homeScene);
+        this.currentScene.addNext(multiplayerLinked);
+        this.currentScene.addNext(singleplayerLinked);
         this.homeScreenLinked = this.currentScene;
 
         multiplayerLinked.addNext(waitingRoomLinked);
@@ -131,7 +130,6 @@ public class MainAppController {
     }
 
     public void initializeScore() {
-        System.out.println("INITIALIZING SCORE");
         this.score = new Score(this.name, 0);
     }
 
@@ -141,7 +139,6 @@ public class MainAppController {
 
     public void setGameID(int gameID) {
         this.gameID = gameID;
-        System.out.println(gameID);
     }
 
     public int getGameID() {
@@ -175,24 +172,14 @@ public class MainAppController {
             } else {
                 // add the transition before a normal question
                 current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
-                if(i == 0 && mode == 1) {
-                    current = current.getNext(1);
-                } else {
-                    current = current.getNext();
-                }
+                current = current.getNext();
             }
-            //            if(questionTypes.get(i) < 2) {
-            //                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
-            //            } else {
-            //                current.addNext(new LinkedScene(this.qInsert, this.qInsertCtrl));
-            //            }
             current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
-            current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
                     leaderBoardCtrl));
-        current.getNext().addNext(homeScreenLinked.getNext());
+        current.getNext().addNext(homeScreenLinked.getNext(mode));
     }
 
     /*
@@ -224,7 +211,7 @@ public class MainAppController {
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();
             if(questionIndex == questionsInGame.size()) {
-                System.out.println(serverUtils.addScore(score));
+                serverUtils.addScore(score);
                 questionIndex = 0;
             }
         }
@@ -263,14 +250,14 @@ public class MainAppController {
             qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
-            System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
-            if (questionIndex == questionsInGame.size()) {
-                System.out.println(serverUtils.addScore(score));
+            if(questionIndex == questionsInGame.size()) {
+                serverUtils.addScore(score);
                 questionIndex = -1;
             }
         }
     }
+
     /*
      * Almost every scene has a button to return to the homescreen.
      * That button activates this function. Which switches from the

@@ -26,11 +26,11 @@ public class HomeScreenCtrl {
 
     public void enterSinglePlayer() {
         System.out.println("entering singleplayer screen");
-        appController.showNext();
+        appController.showNext(1);
     }
 
     public void enterMultiPlayer() {
         System.out.println("entering multiplayer screen");
-        appController.showNext(1);
+        appController.showNext(0);
     }
 }

@@ -173,7 +173,6 @@ public abstract class AbstractQuestion implements Initializable {
             public void run() {
                 Platform.runLater(() -> {
                     timerIntegerValue--;
-                    System.out.println(timerIntegerValue);
                     if(timerIntegerValue < 0)
                         timerValue.setText(Integer.toString(0));
                     else
@@ -201,7 +200,6 @@ public abstract class AbstractQuestion implements Initializable {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            System.out.println(hasSubmittedAnswer);
             if (!hasSubmittedAnswer){
                 disableOptions();
                 System.out.println("time out");
@@ -222,11 +220,6 @@ public abstract class AbstractQuestion implements Initializable {
             qCtrl.getOptionC().setDisable(true);
         }
     }
-
-    public void showNext(){
-        mainCtrl.showNext(); // show next scene when timer runs out
-    }
-
 
     /**
      * send answer to the server
@@ -262,13 +255,12 @@ public abstract class AbstractQuestion implements Initializable {
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
         int maxPoints = 100;
-        double secondsToAnswer = (double) maxSeconds - secondsLeft;
+        double secondsToAnswer = maxSeconds - secondsLeft;
         if (answerCorrect) {
             scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
         System.out.println(scoreToBeAdded);
-        Integer score = currentScore + scoreToBeAdded;
-        return score;
+        return currentScore + scoreToBeAdded;
     }
 
 }

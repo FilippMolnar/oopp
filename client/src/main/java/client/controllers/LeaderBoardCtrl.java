@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javax.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
@@ -63,16 +64,43 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     private Label rank7_name;
     @FXML
     private Label rank7_score;
+    @FXML
+    private Label rank8_name;
+    @FXML
+    private Label rank8_score;
 
     @FXML
     private Button rematchButton;
-
     @FXML
     private Button homeButton;
+
+    @FXML
+    private GridPane rank1_pane;
+    @FXML
+    private GridPane rank2_pane;
+    @FXML
+    private GridPane rank3_pane;
+    @FXML
+    private GridPane rank4_pane;
+    @FXML
+    private GridPane rank5_pane;
+    @FXML
+    private GridPane rank6_pane;
+    @FXML
+    private GridPane rank7_pane;
+    @FXML
+    private GridPane rank8_pane;
+
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private GridPane parentGridPane;
+
 
     private List<Label> names;
     private List<Label> scores;
     private Map<Integer, List<String>> leaderboard;
+    private List<GridPane> panes;
 
     @Inject
     LeaderBoardCtrl(MainAppController appController, ServerUtils serverUtils) {
@@ -93,27 +121,20 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         int i = 0;
         System.out.println("Filling with values!");
         this.leaderboard = serverUtils.getLeaderboard(appController.getGameID());
-        /*//Game.printLeaderboardToScreen(this.leaderboard);
-        Integer[] sortedScores = (Integer[]) leaderboard.keySet().toArray(new Integer[0]);*/
-        Object[] keySet = leaderboard.keySet().toArray(new Object[0]);
+        Game.printLeaderboardToScreen(this.leaderboard);
+        Integer[] sortedScores = leaderboard.keySet().toArray(new Integer[0]);
         List<Integer> keysInt = new ArrayList<>();
-        for (Object o : keySet) {
-            System.out.println(o.getClass());
-            if (o instanceof String) {
-                String s = (String) o;
-                if (leaderboard.get(s).size() > 0) {
-                    keysInt.add(Integer.parseInt(s));
-                }
-            }
-            else {
-                keysInt.add((Integer) o);
+        for (Integer integer : sortedScores) {
+            if (leaderboard.get(integer).size() > 0) {
+                keysInt.add(integer);
             }
         }
-        Integer[] sortedScores = keysInt.toArray(new Integer[0]);
+        sortedScores = keysInt.toArray(new Integer[0]);
+        Arrays.sort(sortedScores, Collections.reverseOrder());
         Arrays.sort(sortedScores, Collections.reverseOrder());
             for (Integer score : sortedScores) {
                 for (String name : leaderboard.get(score)) {
-                    if (i < 7) {
+                    if (i < 8) {
                         names.get(i).setText(name);
                         scores.get(i).setText(score + "");
                         i++;
@@ -123,6 +144,15 @@ public class LeaderBoardCtrl implements ControllerInitialize{
                     }
                 }
             }
+        if (i < 8) {
+            parentGridPane.setMinWidth(scrollPane.getWidth());
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            while (i < 8) {
+                panes.get(i).setVisible(false);
+                i++;
+            }
+        }
     }
 
 
@@ -139,19 +169,11 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     }
     @Override
     public void initializeController() {
-        fillWithValues();
-        hideBackAndRematch();
-        System.out.println("LEADERBOARD:");
-        List<Score> allScores = serverUtils.getSingleLeaderboard();
-        System.out.println(allScores);
-        List<Node> children = spots.getChildren();
-        for(Node spot : spots.getChildren()) {
-            spot.setVisible(false);
-        }
-        for(int i = 0; i < allScores.size(); i++) {
-            System.out.println(allScores.get(i));
-            createLeaderboardSpot(allScores.get(i), i+1);
-        }
+        names = List.of(rank1_name, rank2_name, rank3_name, rank4_name, rank5_name, rank6_name, rank7_name, rank8_name);
+        scores = List.of(rank1_score, rank2_score, rank3_score, rank4_score, rank5_score, rank6_score, rank7_score, rank8_score);
+        panes = List.of(rank1_pane, rank2_pane, rank3_pane, rank4_pane, rank5_pane, rank6_pane, rank7_pane, rank8_pane);
+        multiPlayerInitializer();
+
     }
 
     /* A sad attempt at adding leaderboard spots manually...*/
@@ -216,5 +238,25 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         a.getChildren().add(t2);
         a.getChildren().add(l);
         spots.add(a, 0, row, 2, 1);
+    }
+
+    public void singlePlayerInitializer() {
+
+        List<Score> allScores = serverUtils.getSingleLeaderboard();
+        System.out.println(allScores);
+        List<Node> children = spots.getChildren();
+        for(Node spot : spots.getChildren()) {
+            spot.setVisible(false);
+        }
+        for(int i = 0; i < allScores.size(); i++) {
+            System.out.println(allScores.get(i));
+            createLeaderboardSpot(allScores.get(i), i+1);
+        }
+    }
+
+    public void multiPlayerInitializer() {
+        fillWithValues();
+        hideBackAndRematch();
+        System.out.println("LEADERBOARD:");
     }
 }

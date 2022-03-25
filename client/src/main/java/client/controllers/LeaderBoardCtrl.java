@@ -96,10 +96,25 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         int i = 0;
         System.out.println("Filling with values!");
         this.leaderboard = serverUtils.getLeaderboard(appController.getGameID());
-        //Game.printLeaderboardToScreen(this.leaderboard);
-        Integer[] sortedScores = (Integer[]) leaderboard.keySet().toArray();
+        /*//Game.printLeaderboardToScreen(this.leaderboard);
+        Integer[] sortedScores = (Integer[]) leaderboard.keySet().toArray(new Integer[0]);*/
+        Object[] keySet = leaderboard.keySet().toArray(new Object[0]);
+        List<Integer> keysInt = new ArrayList<>();
+        for (Object o : keySet) {
+            System.out.println(o.getClass());
+            if (o instanceof String) {
+                String s = (String) o;
+                if (leaderboard.get(s).size() > 0) {
+                    keysInt.add(Integer.parseInt(s));
+                }
+            }
+            else {
+                keysInt.add((Integer) o);
+            }
+        }
+        Integer[] sortedScores = keysInt.toArray(new Integer[0]);
         Arrays.sort(sortedScores, Collections.reverseOrder());
-            for (Integer score : leaderboard.keySet()) {
+            for (Integer score : sortedScores) {
                 for (String name : leaderboard.get(score)) {
                     if (i < 7) {
                         names.get(i).setText(name);
@@ -138,7 +153,7 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         }
         for(int i = 0; i < allScores.size(); i++) {
             System.out.println(allScores.get(i));
-            createLeaderboardSpot(allScores.get(i), i+1); 
+            createLeaderboardSpot(allScores.get(i), i+1);
         }
     }
 
@@ -148,7 +163,7 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         newRow.setPrefHeight(30.0);
         spots.getRowConstraints().add(newRow);
 
-        GridPane a = new GridPane(); 
+        GridPane a = new GridPane();
         a.setPrefWidth(458.0);
         a.setMaxWidth(500.0);
         a.getStyleClass().add("non-clickable");
@@ -164,7 +179,7 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         String color;
         switch(row) {
             case 1:
-               color = "cbbc50"; 
+               color = "cbbc50";
                break;
             case 2:
                color = "5e5c69";

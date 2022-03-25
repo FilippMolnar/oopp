@@ -1,6 +1,7 @@
 package client.jokers;
 
 import client.controllers.MainAppController;
+import client.controllers.questions.AbstractQuestion;
 import client.utils.ServerUtils;
 import commons.Player;
 
@@ -17,5 +18,9 @@ public class DecreaseTimeJoker extends Joker{
         serverUtils.sendThroughSocket("/app/decrease_time", new Player(mainCtrl.getName()));
 
         use();
+    }
+
+    public static void decraseTime(AbstractQuestion qCtrl){
+        qCtrl.cutAnimationInHalf();
     }
 }

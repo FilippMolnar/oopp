@@ -1,8 +1,12 @@
 package client.controllers;
 
 import client.LinkedScene;
+import client.controllers.questions.AbstractQuestion;
 import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
+import client.jokers.CoverHandsJoker;
+import client.jokers.CoverInkJoker;
+import client.jokers.DecreaseTimeJoker;
 import client.utils.ServerUtils;
 import commons.Player;
 import commons.Question;
@@ -112,14 +116,25 @@ public class WaitingRoomCtrl implements Initializable {
         this.serverUtils.subscribeForSocketMessages("/user/queue/decrease_time/gameID", Integer.class, gameID -> {
             System.out.println("decreased");
             LinkedScene current = appController.getCurrentScene();
-            if(current.getController() instanceof QuestionMultiOptionsCtrl qCtrl){
-                System.out.println("cutting animation");
-                qCtrl.cutAnimationInHalf();
-            } else if(current.getController() instanceof QuestionInsertNumberCtrl qCtrl){
-                qCtrl.cutAnimationInHalf();
+            if(current.getController() instanceof AbstractQuestion qCtrl){
+                DecreaseTimeJoker.decraseTime(qCtrl);
+            }
+        });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/cover_ink/gameID", Integer.class, gameID -> {
+            System.out.println("cover_ink");
+            LinkedScene current = appController.getCurrentScene();
+            if(current.getController() instanceof AbstractQuestion qCtrl){
+                CoverInkJoker.splashAnimation(qCtrl);
             }
         });
 
+        this.serverUtils.subscribeForSocketMessages("/user/queue/cover_hands/gameID", Integer.class, gameID -> {
+            System.out.println("cover_hands");
+            LinkedScene current = appController.getCurrentScene();
+            if(current.getController() instanceof AbstractQuestion qCtrl){
+                CoverHandsJoker.handsAnimation(qCtrl);
+            }
+        });
 
     }
 

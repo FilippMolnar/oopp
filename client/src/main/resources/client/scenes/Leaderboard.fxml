@@ -27,9 +27,9 @@
       <RowConstraints maxHeight="144.9860076904297" minHeight="10.0" prefHeight="46.71183776855469" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <ScrollPane maxHeight="480.0" maxWidth="360.0" prefHeight="600.0" prefWidth="360.0" style="-fx-background-color: #625998;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+      <ScrollPane maxHeight="480.0" maxWidth="360.0" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #625998;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <content>
-            <GridPane fx:id="spots" vgap="50" maxHeight="1.7976931348623157E308" maxWidth="360.0" prefHeight="488.0" prefWidth="344.0" style="-fx-background-color: #625998#625998; -fx-border-style: none;">
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="360.0" prefHeight="488.0" prefWidth="344.0" style="-fx-background-color: #625998#625998; -fx-border-style: none;">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

@@ -211,7 +211,7 @@ public class MainAppController {
         }
         else if (controller instanceof LeaderBoardCtrl) {
             System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-            leaderBoardCtrl.after10Questions();
+            //leaderBoardCtrl.after10Questions();
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();

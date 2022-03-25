@@ -21,10 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import javafx.scene.layout.RowConstraints;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import commons.Score;
 import commons.Question;

@@ -229,8 +229,18 @@ public class Game {
      * For testing the leaderboard
      */
     public static void printLeaderboardToScreen(Map<Integer, List<String>> leaderboard) {
-        Set<Integer> keySet = leaderboard.keySet();
-        Integer[] scores = keySet.stream().toArray(Integer[]::new);
+        Object[] keySet = leaderboard.keySet().toArray(new Object[0]);
+        List<Integer> keysInt = new ArrayList<>();
+        for (Object o : keySet) {
+            System.out.println(o.getClass());
+            if (o instanceof String) {
+                keysInt.add(Integer.parseInt((String) o));
+            }
+            else {
+                keysInt.add((Integer) o);
+            }
+        }
+        Integer[] scores = keysInt.toArray(new Integer[0]);
         Arrays.sort(scores, Collections.reverseOrder());
         int i = 0;
         for(Integer score : scores) {

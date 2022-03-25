@@ -73,7 +73,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
             Path path = Paths.get(choice.getImagePath());
-            String groupID = path.getParent().getName(4).toString();
+            String groupID = path.getParent().getName(0).toString();
             try {
                 var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
                 var newImage = new Image(actualPath);
@@ -289,6 +289,12 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.
      */
     private void resetUI() {
+        List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
+        for(int  i=0;i<3;i++)
+        {
+            var bar = (Rectangle)charts.get(i);
+            bar.setVisible(false);
+        }
         informationLabel.setVisible(false);
         countA.setVisible(false);
         countB.setVisible(false);

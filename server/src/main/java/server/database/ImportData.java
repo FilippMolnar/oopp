@@ -20,11 +20,12 @@ public class ImportData {
 
         for(int j=0;j<=78;j++) {
 
+            String groupID = "";
             String location = loc;
-            if(j<10)location+="0";
-            location+=j;
+            if(j<10)groupID+="0";
+            groupID+=j;
             //System.out.println(location);
-            File dir = new File("server/"+location);
+            File dir = new File("server/"+location+groupID);
             File[] listing = dir.listFiles();
 
             //the corresponding image id in list
@@ -46,7 +47,7 @@ public class ImportData {
                         image = listing[i + 1];
                         id = -2;
                     }
-                    Activity act = new Activity(temp.title, temp.consumption_in_wh, location + "/" + image.getName());
+                    Activity act = new Activity(temp.title, temp.consumption_in_wh,  groupID + "/" + image.getName());
 
                     // Add activity to database
                     ActivityController.addActivity(act);

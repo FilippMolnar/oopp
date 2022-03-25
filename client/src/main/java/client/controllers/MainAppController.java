@@ -6,7 +6,7 @@ import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.controllers.questions.QuestionSameAsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.JokersList;
+import client.jokers.JokersList;
 import commons.Question;
 import commons.Score;
 import javafx.scene.Parent;
@@ -79,10 +79,14 @@ public class MainAppController {
         LinkedScene singleplayerLinked = new LinkedScene(this.homeSingleplayerScene, homeSingleplayer.getKey());
         LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
 
+        // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
         this.currentScene = new LinkedScene(this.homeScene);
         this.currentScene.addNext(multiplayerLinked);
         this.currentScene.addNext(singleplayerLinked);
         this.homeScreenLinked = this.currentScene;
+
+        multiplayerLinked.addNext(waitingRoomLinked);
+
 
         multiplayerLinked.addNext(waitingRoomLinked);
 
@@ -93,7 +97,7 @@ public class MainAppController {
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
-        jokers = new JokersList();
+        jokers = new JokersList(serverUtils);
 
         primaryStage.setScene(homeScene);
         primaryStage.show();
@@ -107,6 +111,10 @@ public class MainAppController {
 
     public String getName() {
         return this.name;
+    }
+
+    public LinkedScene getCurrentScene() {
+        return currentScene;
     }
 
     public void setName(String name) {
@@ -135,6 +143,7 @@ public class MainAppController {
 
     public void setGameID(int gameID) {
         this.gameID = gameID;
+        System.out.println(gameID);
     }
 
     public int getGameID() {
@@ -211,6 +220,10 @@ public class MainAppController {
                 questionIndex = 0;
             }
         }
+    }
+
+    public Question getCurrentQuestion(){
+        return questionsInGame.get(questionIndex-1);
     }
 
     /*

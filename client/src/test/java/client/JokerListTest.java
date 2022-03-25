@@ -1,4 +1,4 @@
-/*
+package client;/*
  * Copyright 2021 Delft University of Technology
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,34 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package commons;
+
+import client.jokers.Joker;
+import client.jokers.JokerList;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import client.utils.ServerUtils;
 
-import org.junit.jupiter.api.Test;
-
-public class JokerTest {
+public class JokerListTest {
 
     @Test
-    public void checkConstructor() {
-        var p = new Joker("f", "l");
-        assertEquals("f", p.name);
-        assertEquals("l", p.imagePath);
+    public void testGetJokers() {
+        ServerUtils serverUtils = new ServerUtils();
+        var jokerList = new JokerList(serverUtils);
+        assertEquals(jokerList.getJokers().size() == 3);
     }
 
     @Test
     public void equalsHashCode() {
-        var a = new Joker("a", "b");
-        var b = new Joker("a", "b");
+        var a = new Joker("a", "b",null);
+        var b = new Joker("a", "b",null);
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
     }
 
     @Test
     public void notEqualsHashCode() {
-        var a = new Joker("a", "b");
-        var b = new Joker("a", "c");
+        var a = new Joker("a", "b",null);
+        var b = new Joker("a", "c",null);
         assertNotEquals(a, b);
         assertNotEquals(a.hashCode(), b.hashCode());
     }

@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package commons;
+package client.jokers;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
-
+import client.utils.ServerUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -24,16 +23,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
+
+
 public class JokersList {
     private List<Joker> jokers;
 
-    public JokersList() {
+    public JokersList(ServerUtils serverUtils) {
         this.jokers = new ArrayList<>();
         //TODO randomly generate jokers, insert them to fxml
-        jokers.add(new DoublePointsJoker("double points", "@client/pictures/joker_double_points.png"));
-        jokers.add(new DecreaseTimeJoker("decrease time", "@client/pictures/joker_decrease_time.png"));
-        //jokers.add(new ElimWrongJoker("eliminate wrong answer", "@client/pictures/joker_elim_wrong.png"));
-        jokers.add(new CoverScreenJoker("cover screen", "@client/pictures/splash1.png"));
+        jokers.add(new DoublePointsJoker("double points", "@client/pictures/joker_double_points.png", serverUtils));
+        jokers.add(new DecreaseTimeJoker("decrease time", "@client/pictures/joker_decrease_time.png", serverUtils));
+        jokers.add(new ElimWrongJoker("eliminate wrong answer", "@client/pictures/joker_elim_wrong.png", serverUtils));
     }
 
     public List<Joker> getJokers() {

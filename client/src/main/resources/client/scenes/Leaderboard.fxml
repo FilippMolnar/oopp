@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -243,7 +244,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="rematchButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Rematch" GridPane.halignment="RIGHT">
+            <Button fx:id="rematchButton" mnemonicParsing="false" onAction="#rematch" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Rematch" GridPane.halignment="RIGHT">
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>
@@ -251,7 +252,7 @@
                   <Insets right="20.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="homeButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>
@@ -259,6 +260,7 @@
                   <Insets left="20.0" />
                </GridPane.margin>
             </Button>
+            <Line fx:id="loadingLine" endX="260.5" startX="-100.0" stroke="#d6d3ee" strokeLineCap="ROUND" strokeWidth="5.0" visible="false" />
          </children>
       </GridPane>
    </children>

@@ -79,6 +79,7 @@ public class HomeScreenCtrl {
         System.out.println("Entering single player...");
         this.appController.showNext(1);
         this.appController.setGameMode(false);
+        this.appController.initializeScore();
         //this.serverUtils.postName(finalName);
     }
 }

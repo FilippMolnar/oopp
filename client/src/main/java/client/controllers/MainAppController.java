@@ -178,8 +178,7 @@ public class MainAppController {
             current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
             current = current.getNext();
         }
-        current.addNext(new LinkedScene(this.leaderBoardScene,
-                    leaderBoardCtrl));
+        current.addNext(new LinkedScene(this.leaderBoardScene, leaderBoardCtrl));
         current.getNext().addNext(homeScreenLinked.getNext());
     }
 
@@ -210,8 +209,12 @@ public class MainAppController {
             qController.setGameMode(isMultiPlayer);
         }
         else if (controller instanceof LeaderBoardCtrl) {
-            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-            //leaderBoardCtrl.after10Questions();
+            if (questionIndex == 10) {
+                leaderBoardCtrl.after10Questions();
+            }
+            else {
+                leaderBoardCtrl.after20Questions();
+            }
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();
@@ -251,8 +254,12 @@ public class MainAppController {
             qController.setGameMode(isMultiPlayer);
         }
         else if (controller instanceof LeaderBoardCtrl) {
-            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-            leaderBoardCtrl.after10Questions();
+            if (questionIndex == 10) {
+                leaderBoardCtrl.after10Questions();
+            }
+            else {
+                leaderBoardCtrl.after20Questions();
+            }
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("Calling initialize!!!");
@@ -317,4 +324,11 @@ public class MainAppController {
         return serverUtils.getLeaderboard(gameID);
     }
 
+    public void setQuestionIndex(int questionIndex) {
+        this.questionIndex = questionIndex;
+    }
+
+    public boolean isMultiPlayer() {
+        return this.isMultiPlayer;
+    }
 }

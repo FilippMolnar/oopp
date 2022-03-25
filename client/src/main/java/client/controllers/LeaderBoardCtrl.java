@@ -2,6 +2,12 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import commons.Game;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,6 +16,7 @@ import javax.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
@@ -27,6 +34,7 @@ import java.util.*;
 import commons.Score;
 import commons.Question;
 import javafx.geometry.Insets;
+import javafx.util.Duration;
 
 public class LeaderBoardCtrl implements ControllerInitialize{
 
@@ -96,6 +104,10 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     @FXML
     private GridPane parentGridPane;
 
+    @FXML
+    private Line loadingLine;
+
+    private boolean isMultiPlayer;
 
     private List<Label> names;
     private List<Label> scores;
@@ -111,10 +123,38 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         homeButton.setVisible(false);
         rematchButton.setVisible(false);
     }
+    public void showBackAndRematch() {
+        homeButton.setVisible(true);
+        rematchButton.setVisible(true);
+    }
 
     public void after10Questions() {
-        fillWithValues();
+        loadingAnimation();
         hideBackAndRematch();
+    }
+    public void after20Questions() {
+        loadingLine.setVisible(false);
+        fillWithValues();
+        showBackAndRematch();
+    }
+
+    public void loadingAnimation() {
+        loadingLine.setVisible(true);
+        System.out.println("Initializing transition scene ctrl!");
+        double animationDuration = 1.7;
+        loadingLine.setEndX(-40); // for animation hardcoded
+        Timeline timeline = new Timeline();
+        KeyValue lineLength = new KeyValue(loadingLine.endXProperty(), 128); // some hardcoded value for animation
+        EventHandler<ActionEvent> onFinished = t -> {
+            Platform.runLater(() -> {
+                System.out.println("Calling next from question transition!");
+                appController.showNext();
+            }); // show next scene after animation
+        };
+        KeyFrame keyFrame1 = new KeyFrame(Duration.millis(animationDuration * 1000),
+                onFinished, lineLength);
+        timeline.getKeyFrames().add(keyFrame1);
+        timeline.play();
     }
 
     public void fillWithValues() {
@@ -172,7 +212,12 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         names = List.of(rank1_name, rank2_name, rank3_name, rank4_name, rank5_name, rank6_name, rank7_name, rank8_name);
         scores = List.of(rank1_score, rank2_score, rank3_score, rank4_score, rank5_score, rank6_score, rank7_score, rank8_score);
         panes = List.of(rank1_pane, rank2_pane, rank3_pane, rank4_pane, rank5_pane, rank6_pane, rank7_pane, rank8_pane);
-        multiPlayerInitializer();
+        if (appController.isMultiPlayer()) {
+            multiPlayerInitializer();
+        }
+        else {
+            singlePlayerInitializer();
+        }
 
     }
 
@@ -243,20 +288,29 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     public void singlePlayerInitializer() {
 
         List<Score> allScores = serverUtils.getSingleLeaderboard();
-        System.out.println(allScores);
-        List<Node> children = spots.getChildren();
-        for(Node spot : spots.getChildren()) {
-            spot.setVisible(false);
+        int i;
+        for (i = 0; i < 8; i++) {
+            if (i < allScores.size()) {
+                names.get(i).setText(allScores.get(i).getName());
+                scores.get(i).setText(allScores.get(i).getScore()+"");
+            }
+            else {
+                panes.get(i).setVisible(false);
+            }
         }
-        for(int i = 0; i < allScores.size(); i++) {
-            System.out.println(allScores.get(i));
-            createLeaderboardSpot(allScores.get(i), i+1);
+        if (i < allScores.size()) {
+            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         }
     }
 
     public void multiPlayerInitializer() {
         fillWithValues();
-        hideBackAndRematch();
-        System.out.println("LEADERBOARD:");
+        if (appController.getQuestionIndex() == 10) {
+            after10Questions();
+        }
+        else {
+            after20Questions();
+        }
     }
 }

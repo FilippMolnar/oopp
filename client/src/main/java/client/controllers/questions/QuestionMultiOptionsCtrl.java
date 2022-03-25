@@ -36,6 +36,19 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private Button optionB;
     @FXML
     private Button optionC;
+
+    public Button getOptionA() {
+        return optionA;
+    }
+
+    public Button getOptionB() {
+        return optionB;
+    }
+
+    public Button getOptionC() {
+        return optionC;
+    }
+
     @FXML
     private GridPane images;
     //private boolean hasSubmittedAnswer = false;
@@ -235,7 +248,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         int maxSeconds = 20;
         int maxPoints = 100;
         if (answerCorrect) {
-            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+            scoreToBeAdded = Math.round(maxPoints * (1 - (secondsToAnswer / maxSeconds / 2)));
         }
 
         Integer score = currentScore + scoreToBeAdded;
@@ -313,10 +326,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      */
     @Override
     public void initializeController() {
+        this.score.setText("SCORE " + mainCtrl.getScore());
+        questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        startTimerAnimation(10);
+        System.out.println("Initializing Qmulti!");
         resetUI();
         resetLogic();
         super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
-        startTimerAnimation();
         System.out.println("Initializing Qmulti!");
     }
 

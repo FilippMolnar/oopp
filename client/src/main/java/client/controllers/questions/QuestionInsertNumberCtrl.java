@@ -1,5 +1,6 @@
 package client.controllers.questions;
 
+import client.controllers.ControllerInitialize;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
@@ -7,7 +8,7 @@ import commons.Question;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class QuestionInsertNumberCtrl extends AbstractQuestion {
+public class QuestionInsertNumberCtrl extends AbstractQuestion implements ControllerInitialize {
     private Question question;
 
     @FXML
@@ -26,5 +27,10 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion {
     private Integer getNumber() {
         var n = number.getText();
         return Integer.parseInt(n);
+    }
+    @Override
+    public void initializeController() {
+        startTimerAnimation(10);
+        System.out.println("Enabling scene");
     }
 }

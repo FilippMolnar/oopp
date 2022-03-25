@@ -25,13 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JokerListTest {
 
     @Test
-    public void testGetJokers() {
-        ServerUtils serverUtils = new ServerUtils();
-        var jokerList = new JokersList(serverUtils);
-        assertEquals(jokerList.getJokers().size(),3);
-    }
-
-    @Test
     public void equalsHashCode() {
         var a = new Joker("a", "b",null);
         var b = new Joker("a", "b",null);

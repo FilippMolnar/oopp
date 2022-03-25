@@ -15,20 +15,20 @@ package client;/*
  */
 
 import client.jokers.Joker;
-import client.jokers.JokerList;
+import client.jokers.JokersList;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import client.utils.ServerUtils;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JokerListTest {
 
     @Test
     public void testGetJokers() {
         ServerUtils serverUtils = new ServerUtils();
-        var jokerList = new JokerList(serverUtils);
-        assertEquals(jokerList.getJokers().size() == 3);
+        var jokerList = new JokersList(serverUtils);
+        assertEquals(jokerList.getJokers().size(),3);
     }
 
     @Test

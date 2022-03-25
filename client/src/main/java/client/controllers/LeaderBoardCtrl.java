@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 
 import javax.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+//import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;

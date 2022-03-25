@@ -90,9 +90,7 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
-            userReaction(userReaction.getReaction(), userReaction.getUsername());
-        });
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> userReaction(userReaction.getReaction(), userReaction.getUsername()));
     }
 
     /**
@@ -160,7 +158,6 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void startTimerAnimation(int length) {
         timerIntegerValue = length;
-        int durationTime = length;
         timerArc.setLength(360);
         timerArc.setFill(Paint.valueOf("#d6d3ee"));
         timerValue.setFill(Paint.valueOf("#d6d3ee"));
@@ -173,10 +170,12 @@ public abstract class AbstractQuestion implements Initializable {
             public void run() {
                 Platform.runLater(() -> {
                     timerIntegerValue--;
-                    if(timerIntegerValue < 0)
+                    System.out.println(timerIntegerValue);
+                    if(timerIntegerValue < 0){
                         timerValue.setText(Integer.toString(0));
-                    else
+                    } else{
                         timerValue.setText(Integer.toString(timerIntegerValue));
+                    }
                     if (timerIntegerValue <= 3) {
                         timerArc.setFill(Paint.valueOf("red")); // set the color to red when the timer runs out
                     }
@@ -184,7 +183,7 @@ public abstract class AbstractQuestion implements Initializable {
             }
         };
         numberTimer = new Timer();
-        timerValue.setText(Integer.toString(durationTime));
+        timerValue.setText(Integer.toString(length));
         numberTimer.scheduleAtFixedRate(timerTask, 1000, 1000);
 
         //create a keyValue with factory: scaling the circle 2times
@@ -193,7 +192,7 @@ public abstract class AbstractQuestion implements Initializable {
 
         //create a keyFrame, the keyValue is reached at time 2s
         System.out.println(timerValue.getText());
-        Duration duration = Duration.millis(durationTime * 1000);
+        Duration duration = Duration.millis(length * 1000);
 
         EventHandler<ActionEvent> onFinished = t -> {
             System.out.println("animation finished!");

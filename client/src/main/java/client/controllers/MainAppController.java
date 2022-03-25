@@ -79,10 +79,14 @@ public class MainAppController {
         LinkedScene singleplayerLinked = new LinkedScene(this.homeSingleplayerScene, homeSingleplayer.getKey());
         LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
 
+        // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
         this.currentScene = new LinkedScene(this.homeScene);
         this.currentScene.addNext(multiplayerLinked);
         this.currentScene.addNext(singleplayerLinked);
         this.homeScreenLinked = this.currentScene;
+
+        multiplayerLinked.addNext(waitingRoomLinked);
+
 
         multiplayerLinked.addNext(waitingRoomLinked);
 
@@ -139,6 +143,7 @@ public class MainAppController {
 
     public void setGameID(int gameID) {
         this.gameID = gameID;
+        System.out.println(gameID);
     }
 
     public int getGameID() {

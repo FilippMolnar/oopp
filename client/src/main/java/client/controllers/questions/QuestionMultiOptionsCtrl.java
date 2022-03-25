@@ -248,7 +248,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         int maxSeconds = 20;
         int maxPoints = 100;
         if (answerCorrect) {
-            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+            scoreToBeAdded = Math.round(maxPoints * (1 - (secondsToAnswer / maxSeconds / 2)));
         }
 
         Integer score = currentScore + scoreToBeAdded;
@@ -333,7 +333,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         resetUI();
         resetLogic();
         super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
-        startTimerAnimation(10);
         System.out.println("Initializing Qmulti!");
     }
 

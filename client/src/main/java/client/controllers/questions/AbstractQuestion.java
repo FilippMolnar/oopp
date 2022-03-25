@@ -90,9 +90,7 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
-            userReaction(userReaction.getReaction(), userReaction.getUsername());
-        });
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> userReaction(userReaction.getReaction(), userReaction.getUsername()));
     }
 
     /**
@@ -166,16 +164,18 @@ public abstract class AbstractQuestion implements Initializable {
         //create a timeline for moving the circle
         timeline = new Timeline();
         //You can add a specific action when each frame is started.
+
         timerTask = new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
                     timerIntegerValue--;
                     System.out.println(timerIntegerValue);
-                    if(timerIntegerValue < 0)
+                    if(timerIntegerValue < 0){
                         timerValue.setText(Integer.toString(0));
-                    else
+                    } else{
                         timerValue.setText(Integer.toString(timerIntegerValue));
+                    }
                     if (timerIntegerValue <= 3) {
                         timerArc.setFill(Paint.valueOf("red")); // set the color to red when the timer runs out
                     }
@@ -183,8 +183,7 @@ public abstract class AbstractQuestion implements Initializable {
             }
         };
         numberTimer = new Timer();
-        int durationTime = length;
-        timerValue.setText(Integer.toString(durationTime));
+        timerValue.setText(Integer.toString(length));
         numberTimer.scheduleAtFixedRate(timerTask, 1000, 1000);
 
         //create a keyValue with factory: scaling the circle 2times
@@ -193,14 +192,13 @@ public abstract class AbstractQuestion implements Initializable {
 
         //create a keyFrame, the keyValue is reached at time 2s
         System.out.println(timerValue.getText());
-        Duration duration = Duration.millis(durationTime * 1000);
+        Duration duration = Duration.millis(length * 1000);
 
         EventHandler<ActionEvent> onFinished = t -> {
             System.out.println("animation finished!");
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            System.out.println(hasSubmittedAnswer);
             if (!hasSubmittedAnswer){
                 disableOptions();
                 System.out.println("time out");
@@ -222,11 +220,6 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
-    public void showNext(){
-        mainCtrl.showNext(); // show next scene when timer runs out
-    }
-
-
     /**
      * send answer to the server
      *
@@ -243,7 +236,7 @@ public abstract class AbstractQuestion implements Initializable {
     public void checkAnswer(Answer answer) {
         int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
         mainCtrl.setScore(newScore);
-        score.setText(newScore+""); 
+        score.setText(newScore+"");
     }
 
     /**
@@ -261,13 +254,12 @@ public abstract class AbstractQuestion implements Initializable {
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
         int maxPoints = 100;
-        double secondsToAnswer = (double) maxSeconds - secondsLeft;
+        double secondsToAnswer = maxSeconds - secondsLeft;
         if (answerCorrect) {
             scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
         System.out.println(scoreToBeAdded);
-        Integer score = currentScore + scoreToBeAdded;
-        return score;
+        return currentScore + scoreToBeAdded;
     }
 
 }

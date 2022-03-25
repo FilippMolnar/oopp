@@ -15,10 +15,8 @@ package client;/*
  */
 
 import client.jokers.Joker;
-import client.jokers.JokersList;
 import org.junit.jupiter.api.Test;
 
-import client.utils.ServerUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -80,9 +80,13 @@ public class MainAppController {
         LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
 
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
-        this.currentScene = new LinkedScene(this.homeScene,
-                Arrays.asList(singleplayerLinked, multiplayerLinked));
+        this.currentScene = new LinkedScene(this.homeScene);
+        this.currentScene.addNext(multiplayerLinked);
+        this.currentScene.addNext(singleplayerLinked);
         this.homeScreenLinked = this.currentScene;
+
+        multiplayerLinked.addNext(waitingRoomLinked);
+
 
         multiplayerLinked.addNext(waitingRoomLinked);
 
@@ -93,7 +97,7 @@ public class MainAppController {
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
-        jokers = new JokersList();
+        jokers = new JokersList(serverUtils);
 
         primaryStage.setScene(homeScene);
         primaryStage.show();

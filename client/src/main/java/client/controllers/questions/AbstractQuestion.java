@@ -160,6 +160,7 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void startTimerAnimation(int length) {
         timerIntegerValue = length;
+        int durationTime = length;
         timerArc.setLength(360);
         timerArc.setFill(Paint.valueOf("#d6d3ee"));
         timerValue.setFill(Paint.valueOf("#d6d3ee"));

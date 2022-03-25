@@ -26,7 +26,7 @@ public class LinkedScene {
         this.controller = controller;
     }
 
-    public LinkedScene(Scene current, List<LinkedScene> next) {
+    public LinkedScene(Scene current, ArrayList<LinkedScene> next) {
         this.title = null;
         this.current = current;
         this.next = next;
@@ -52,7 +52,7 @@ public class LinkedScene {
 
     public void reset(int i) {
         if(next.size() > i) {
-            next.remove(i); 
+            next.get(i).next = new ArrayList(); 
         }
     }
 

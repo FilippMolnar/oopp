@@ -184,7 +184,6 @@ public abstract class AbstractQuestion implements Initializable {
             }
         };
         numberTimer = new Timer();
-        int durationTime = length;
         timerValue.setText(Integer.toString(durationTime));
         numberTimer.scheduleAtFixedRate(timerTask, 1000, 1000);
 
@@ -242,7 +241,9 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void checkAnswer(Answer answer) {
-        mainCtrl.setScore(calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText())));
+        int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
+        mainCtrl.setScore(newScore);
+        score.setText(newScore+"");
     }
 
     /**

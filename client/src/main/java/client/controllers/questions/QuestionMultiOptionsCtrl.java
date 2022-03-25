@@ -51,7 +51,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     @FXML
     private GridPane images;
-    private boolean hasSubmittedAnswer = false;
+    //private boolean hasSubmittedAnswer = false;
     private int correct;
 
     @FXML
@@ -279,7 +279,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
                 label.setVisible(true);
                 label.setText("" + answerList.get(i));
             }
-
         }
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");

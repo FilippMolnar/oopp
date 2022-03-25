@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainAppController {
@@ -94,7 +93,7 @@ public class MainAppController {
         this.qInsert = new Scene(qInsert.getValue());
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = new Scene(qMulti.getValue());
-        jokers = new JokersList(serverUtils);
+        jokers = new JokersList();
 
         primaryStage.setScene(homeScene);
         primaryStage.show();
@@ -131,7 +130,6 @@ public class MainAppController {
     }
 
     public void initializeScore() {
-        System.out.println("INITIALIZING SCORE");
         this.score = new Score(this.name, 0);
     }
 
@@ -175,24 +173,14 @@ public class MainAppController {
             } else {
                 // add the transition before a normal question
                 current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
-                if(i == 0 && mode == 1) {
-                    current = current.getNext(1);
-                } else {
-                    current = current.getNext();
-                }
+                current = current.getNext();
             }
-            //            if(questionTypes.get(i) < 2) {
-            //                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
-            //            } else {
-            //                current.addNext(new LinkedScene(this.qInsert, this.qInsertCtrl));
-            //            }
             current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
-            current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
                     leaderBoardCtrl));
-        current.getNext().addNext(homeScreenLinked.getNext());
+        current.getNext().addNext(homeScreenLinked.getNext(mode));
     }
 
     /*
@@ -224,7 +212,7 @@ public class MainAppController {
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();
             if(questionIndex == questionsInGame.size()) {
-                System.out.println(serverUtils.addScore(score));
+                serverUtils.addScore(score);
                 questionIndex = 0;
             }
         }
@@ -263,14 +251,14 @@ public class MainAppController {
             qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
-            System.out.println("Calling initialize!!!");
             controllerInit.initializeController();
-            if (questionIndex == questionsInGame.size()) {
-                System.out.println(serverUtils.addScore(score));
+            if(questionIndex == questionsInGame.size()) {
+                serverUtils.addScore(score);
                 questionIndex = -1;
             }
         }
     }
+
     /*
      * Almost every scene has a button to return to the homescreen.
      * That button activates this function. Which switches from the

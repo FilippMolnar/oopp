@@ -192,3 +192,6 @@ Caused by: java.lang.IllegalStateException: The file is locked: nio:E:/OneDrive/
 2022-03-17 00:31:34 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "ACTIVITY[*]"; expected "ALTER, ANALYZE"; SQL statement:
 ACTIVITY [42001-200]
+2022-03-25 00:31:27 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "ACTIVITY[*]"; expected "ALTER, ANALYZE"; SQL statement:
+ACTIVITY [42001-200]

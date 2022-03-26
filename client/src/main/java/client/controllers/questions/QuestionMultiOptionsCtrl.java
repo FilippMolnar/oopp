@@ -153,7 +153,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
             System.out.println("Stopping timer");
             stopTimer();
-            mainCtrl.showNext();
+            displayAnswers(new ArrayList());
         }
     }
 
@@ -267,18 +267,22 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionB.setDisable(true);
         optionC.setDisable(true);
         System.out.println("Received answer!!" + answerList);
-        showChart(answerList, correct);
+        if(isMultiPlayer) {
+            showChart(answerList, correct);
+        }
         List<Label> labels = List.of(countA, countB, countC);
         List<Button> options = List.of(optionA,optionB,optionC);
         Button correctOption = options.get(correct);
         correctOption.setOpacity(1);
         correctOption.setStyle("-fx-font-weight: bold;");
+        if(isMultiPlayer) {
         for (int i = 0; i < labels.size(); i++) {
             if (answerList.get(i) > 0) {
                 Label label = labels.get(i);
                 label.setVisible(true);
                 label.setText("" + answerList.get(i));
             }
+        }
         }
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");

@@ -15,14 +15,10 @@
  */
 package client;
 
-import client.controllers.HomeScreenCtrl;
-import client.controllers.LeaderBoardCtrl;
-import client.controllers.MainAppController;
-import client.controllers.WaitingRoomCtrl;
+import client.controllers.*;
 import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.controllers.questions.QuestionSameAsCtrl;
-import client.controllers.TransitionSceneCtrl;
 import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -63,6 +59,10 @@ public class Main extends Application {
                 "client", "scenes", "waiting_room.fxml");
         var home = FXML.load(HomeScreenCtrl.class,
                 "client", "scenes", "HomeScreen.fxml");
+        var homeSingleplayer = FXML.load(HomeScreenSingleplayerCtrl.class,
+                "client", "scenes", "HomeScreenSingleplayer.fxml");
+        var homeMultiplayer = FXML.load(HomeScreenMultiplayerCtrl.class,
+                "client", "scenes", "HomeScreenMultiplayer.fxml");
         var leaderBoard = FXML.load(LeaderBoardCtrl.class,
                 "client", "scenes", "Leaderboard.fxml");
         var qMulti = FXML.load(QuestionMultiOptionsCtrl.class,
@@ -74,7 +74,7 @@ public class Main extends Application {
         var sameAs = FXML.load(QuestionSameAsCtrl.class,
                 "client", "scenes", "QuestionSameAs.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
-        appcontroller.initialize(primaryStage, waitingRoom, home, leaderBoard, qMulti, qInsert, sameAs, qTransition);
+        appcontroller.initialize(primaryStage, waitingRoom, home, homeSingleplayer, homeMultiplayer, leaderBoard, qMulti, qInsert, sameAs, qTransition);
     }
 
     @Override

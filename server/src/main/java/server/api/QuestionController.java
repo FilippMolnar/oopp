@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -64,7 +65,7 @@ public class QuestionController {
         for(Activity a : choices){
             highest = highest.getConsumption() > a.getConsumption() ? highest : a;
         }
-
+        Collections.shuffle(choices);
         Question q = new Question();
         q.setCorrect(highest);
         q.setType(QuestionType.HighestEnergy);
@@ -109,6 +110,7 @@ public class QuestionController {
             if (same.contains(choice) || act.equals(choice) || choices.contains(choice)) continue;
             choices.add(choice);
         }
+        Collections.shuffle(choices);
         q.setType(QuestionType.EqualEnergy);
         q.setChoices(choices);
         return q;

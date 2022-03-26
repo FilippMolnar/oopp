@@ -39,6 +39,7 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
@@ -222,7 +223,7 @@ public class ServerUtils {
      * and just need to get 20 questions at the start of the game.
      * @return 20 random questions
      */
-    public List<Question> getLeastMostQuestions() {
+    public ArrayList<Question> getLeastMostQuestions() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/wait/getMostLeastQuestions") //
                 .request(APPLICATION_JSON) //

@@ -72,6 +72,7 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void setQuestion(Question question) {
         this.question = question;
+        hasSubmittedAnswer = false;
     }
 
     public void setQuestionNumber(int num) {
@@ -79,19 +80,17 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void triggerJoker1(){
-        mainCtrl.getJokers().getJokers().get(0).onClick();
+        mainCtrl.getJokers().getJokers().get(0).onClick(mainCtrl);
     }
     public void triggerJoker2(){
-        mainCtrl.getJokers().getJokers().get(1).onClick();
+        mainCtrl.getJokers().getJokers().get(1).onClick(mainCtrl);
     }
     public void triggerJoker3(){
-        mainCtrl.getJokers().getJokers().get(2).onClick();
+        mainCtrl.getJokers().getJokers().get(2).onClick(mainCtrl);
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
-            userReaction(userReaction.getReaction(), userReaction.getUsername());
-        });
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> userReaction(userReaction.getReaction(), userReaction.getUsername()));
     }
 
     /**
@@ -151,10 +150,14 @@ public abstract class AbstractQuestion implements Initializable {
         numberTimer.cancel();
     }
 
-    public void startTimerAnimation() {
-        int durationTime = 10;
-        timerValue.setText(Integer.toString(durationTime));
-        timerIntegerValue = durationTime;
+    public void cutAnimationInHalf(){
+        stopTimer();
+        startTimerAnimation(timerIntegerValue/2);
+
+    }
+
+    public void startTimerAnimation(int length) {
+        timerIntegerValue = length;
         timerArc.setLength(360);
         timerArc.setFill(Paint.valueOf("#d6d3ee"));
         timerValue.setFill(Paint.valueOf("#d6d3ee"));
@@ -168,7 +171,11 @@ public abstract class AbstractQuestion implements Initializable {
                 Platform.runLater(() -> {
                     timerIntegerValue--;
                     System.out.println(timerIntegerValue);
-                    timerValue.setText(Integer.toString(timerIntegerValue));
+                    if(timerIntegerValue < 0){
+                        timerValue.setText(Integer.toString(0));
+                    } else{
+                        timerValue.setText(Integer.toString(timerIntegerValue));
+                    }
                     if (timerIntegerValue <= 3) {
                         timerArc.setFill(Paint.valueOf("red")); // set the color to red when the timer runs out
                     }
@@ -176,6 +183,7 @@ public abstract class AbstractQuestion implements Initializable {
             }
         };
         numberTimer = new Timer();
+        timerValue.setText(Integer.toString(length));
         numberTimer.scheduleAtFixedRate(timerTask, 1000, 1000);
 
         //create a keyValue with factory: scaling the circle 2times
@@ -184,17 +192,17 @@ public abstract class AbstractQuestion implements Initializable {
 
         //create a keyFrame, the keyValue is reached at time 2s
         System.out.println(timerValue.getText());
-        Duration duration = Duration.millis(durationTime * 1000);
+        Duration duration = Duration.millis(length * 1000);
 
         EventHandler<ActionEvent> onFinished = t -> {
             System.out.println("animation finished!");
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            System.out.println(hasSubmittedAnswer);
-            if (!hasSubmittedAnswer) {
-                System.out.println("submitting answer through the timer!");
-                sendAnswer(new Answer(false, "", mainCtrl.getGameID()));
+            if (!hasSubmittedAnswer){
+                disableOptions();
+                System.out.println("time out");
+                sendAnswer(new Answer(false, ""));
             }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
@@ -204,7 +212,13 @@ public abstract class AbstractQuestion implements Initializable {
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
-
+    public void disableOptions(){
+        if(mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl){
+            qCtrl.getOptionA().setDisable(true);
+            qCtrl.getOptionB().setDisable(true);
+            qCtrl.getOptionC().setDisable(true);
+        }
+    }
 
     /**
      * send answer to the server
@@ -220,7 +234,9 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void checkAnswer(Answer answer) {
-        mainCtrl.setScore(calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText())));
+        int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
+        mainCtrl.setScore(newScore);
+        score.setText(newScore+"");
     }
 
     /**
@@ -238,13 +254,12 @@ public abstract class AbstractQuestion implements Initializable {
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
         int maxPoints = 100;
-        double secondsToAnswer = (double) maxSeconds - secondsLeft;
+        double secondsToAnswer = maxSeconds - secondsLeft;
         if (answerCorrect) {
             scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
         System.out.println(scoreToBeAdded);
-        Integer score = currentScore + scoreToBeAdded;
-        return score;
+        return currentScore + scoreToBeAdded;
     }
 
 }

@@ -9,6 +9,8 @@ import com.google.inject.Inject;
 import client.jokers.JokersList;
 import commons.Question;
 import commons.Score;
+import commons.QuestionType;
+import commons.Activity;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -36,6 +38,7 @@ public class MainAppController {
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private QuestionMultiOptionsCtrl qMultiCtrl;
+    private QuestionSameAsCtrl sameAsCtrl;
     private LeaderBoardCtrl leaderBoardCtrl;
     private TransitionSceneCtrl qTransitionCtrl;
 
@@ -52,14 +55,14 @@ public class MainAppController {
     }
 
     public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Parent> waitingRoomPair,
-                           Pair<HomeScreenCtrl, Parent> home,
-                           Pair<HomeScreenSingleplayerCtrl, Parent> homeSingleplayer,
-                           Pair<HomeScreenMultiplayerCtrl, Parent> homeMultiplayer,
-                           Pair<LeaderBoardCtrl, Parent> leaderBoard,
-                           Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
-                           Pair<QuestionInsertNumberCtrl, Parent> qInsert,
-                           Pair<QuestionSameAsCtrl, Parent> sameAs,
-                           Pair<TransitionSceneCtrl, Parent> qTransition) {
+            Pair<HomeScreenCtrl, Parent> home,
+            Pair<HomeScreenSingleplayerCtrl, Parent> homeSingleplayer,
+            Pair<HomeScreenMultiplayerCtrl, Parent> homeMultiplayer,
+            Pair<LeaderBoardCtrl, Parent> leaderBoard,
+            Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
+            Pair<QuestionInsertNumberCtrl, Parent> qInsert,
+            Pair<QuestionSameAsCtrl, Parent> sameAs,
+            Pair<TransitionSceneCtrl, Parent> qTransition) {
 
         this.name = "";
         this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
@@ -72,6 +75,7 @@ public class MainAppController {
         this.qTransitionCtrl = qTransition.getKey();
 
         this.sameAsScene = new Scene(sameAs.getValue());
+        this.sameAsCtrl = sameAs.getKey();
 
         LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene);
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
@@ -154,6 +158,10 @@ public class MainAppController {
         return questionIndex;
     }
 
+    public Activity getCorrect() {
+        return questionsInGame.get(questionIndex-1).getCorrect();
+    }
+
     public void setGameMode(boolean isMultiPlayer) {
         this.isMultiPlayer = isMultiPlayer;
     }
@@ -174,12 +182,19 @@ public class MainAppController {
             if (i == 10 && mode == 0) {
                 current.addNext(new LinkedScene(this.leaderBoardScene));
                 current = current.getNext();
-            } else {
-                // add the transition before a normal question
-                current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
-                current = current.getNext();
             }
-            current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
+            // add the transition before a normal question
+            current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
+            current = current.getNext();
+            Question currentQuestion = questions.get(i);
+            if (currentQuestion.getType() == QuestionType.HighestEnergy) {
+                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
+            }
+            else if (currentQuestion.getType() == QuestionType.Estimate) {
+                current.addNext(new LinkedScene(this.qInsert, this.qInsertCtrl));
+            } else {
+                current.addNext(new LinkedScene(this.sameAsScene, this.sameAsCtrl));
+            }
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
@@ -208,6 +223,12 @@ public class MainAppController {
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
+            qController.setQuestion(questionsInGame.get(questionIndex));
+            questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
+        }
+        else if (controller instanceof QuestionSameAsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
@@ -249,6 +270,12 @@ public class MainAppController {
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
+            qController.setQuestion(questionsInGame.get(questionIndex));
+            questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
+        }
+        else if (controller instanceof QuestionSameAsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);

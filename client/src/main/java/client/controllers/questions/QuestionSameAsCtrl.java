@@ -9,6 +9,8 @@ import commons.Answer;
 import commons.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.animation.*;
+import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -16,10 +18,39 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import client.controllers.ControllerInitialize;
+import client.controllers.MainAppController;
+import client.utils.ServerUtils;
+import com.google.inject.Inject;
+import commons.*;
+import javafx.animation.*;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerInitialize {
@@ -30,10 +61,17 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     @FXML
     private Button optionC;
     @FXML
+    private Label countA;
+    @FXML
+    private Label countB;
+    @FXML
+    private Label countC;
+    @FXML
     private GridPane images;
     @FXML
     private Text activity;
 
+    //private int correct;
     private boolean hasSubmittedAnswer = false;
 
     @Inject
@@ -67,6 +105,9 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
                 System.out.println(Arrays.toString(e.getStackTrace()));
             }
         }
+        if (question.getChoices().get(0).equals(question.getCorrect())) correct = 0;
+        else if (question.getChoices().get(1).equals(question.getCorrect())) correct = 1;
+        else correct = 2;
     }
 
     /**
@@ -89,7 +130,15 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+     
+        if(isMultiPlayer) {
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+        } else {
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            stopTimer();
+            System.out.println("Stopping timer");
+            displayAnswers(new ArrayList());
+        }
     }
 
 
@@ -99,18 +148,49 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
      * After that I set the image to fit the <code>StackPane</code> without losing aspect ratio.
      */
     public void resizeImages() {
-        List<Node> imageViews = images.lookupAll(".image-view").stream().limit(4).toList();
+        List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         for (Node imageView : imageViews) {
             var view = (ImageView) imageView;
-            StackPane pane = (StackPane) view.getParent();
-            view.setPreserveRatio(true);
-            view.setFitHeight(pane.getHeight() - 5);
-            view.setFitWidth(pane.getWidth() - 5);
+            //GridPane pane = (GridPane) view.getParent();
+            if(view.getParent() instanceof GridPane pane){
+                if(pane.getId() != null && pane.getId().equals("answerImage")) {
+                    view.setPreserveRatio(true);
+                    view.setFitHeight(pane.getHeight() - 5);
+                    view.setFitWidth(pane.getWidth() - 5);
+                }
+            }
+            else if(view.getParent() instanceof StackPane pane) {
+                view.setPreserveRatio(true);
+                view.setFitHeight(pane.getHeight() - 5);
+                view.setFitWidth(pane.getWidth() - 5);
+            }
         }
+    }
+
+    private void resetUI() {
+        informationLabel.setVisible(false);
+        countA.setVisible(false);
+        countB.setVisible(false);
+        countC.setVisible(false);
+        resizeImages();
+        System.out.println("Enabling scene");
+        optionA.setDisable(false);
+        optionB.setDisable(false);
+        optionC.setDisable(false);
+    }
+
+    /**
+     * Since there is only one instance of the controller.
+     * The controller won't reset it's state when a new scene loads.
+     * Thus, we need to reset everything by ourselves.
+     */
+    private void resetLogic() {
+        this.hasSubmittedAnswer = false; // this is false at the beginning of the game
     }
 
     @Override
     public void initializeController() {
+        score.setText(mainCtrl.getScore()+"");
         startTimerAnimation(10);
         resizeImages();
         hasSubmittedAnswer = false;
@@ -118,5 +198,16 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
+        resetUI();
+        resetLogic();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("received reaction!");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
     }
 }

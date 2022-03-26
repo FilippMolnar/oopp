@@ -73,13 +73,14 @@ public class WaitController {
         LOGGER.info("Players in waiting room are:" + playerNames);
     }
 
-    private List<Question> getRandomQuestionTypes() {
+    @GetMapping("/getRandomQuestions")
+    public List<Question> getRandomQuestionTypes() {
         // 0 -> equal energy
         // 1 -> highest energy
         // 2 -> estimate answer
-        final int nrEqual = 4;
+        final int nrEqual = 9;
         final int nrEstimate = 3;
-        final int nrHighest = 13;
+        final int nrHighest = 8;
         List<Question> list = new ArrayList<>();
         for (int i = 0; i < nrEqual; i++)
             list.add(questionController.getTypeEqual());
@@ -115,7 +116,9 @@ public class WaitController {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
-        var questionList = get20RandomMostLeastQuestions();
+        //var questionList = get20RandomMostLeastQuestions();
+        var questionList = getRandomQuestionTypes();
+        System.out.println("AMOUNT OF QUESTIONS = " + questionList.size());
         currentGame.setQuestions(questionList);
         utils.sendToAllPlayers(playerList, "queue/startGame/gameID", gameID);
 

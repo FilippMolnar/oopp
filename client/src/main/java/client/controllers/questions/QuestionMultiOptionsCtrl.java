@@ -30,12 +30,6 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
-    @FXML
-    private Button optionA;
-    @FXML
-    private Button optionB;
-    @FXML
-    private Button optionC;
 
     public Button getOptionA() {
         return optionA;
@@ -49,20 +43,11 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         return optionC;
     }
 
-    @FXML
-    private GridPane images;
     //private boolean hasSubmittedAnswer = false;
-    private int correct;
+    //private int correct;
 
     @FXML
     private Text questionNumber;
-
-    @FXML
-    private Label countA;
-    @FXML
-    private Label countB;
-    @FXML
-    private Label countC;
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -100,30 +85,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
             }
         }
-    }
-
-    public void showChart(List<Integer> ans, int correct) {
-        List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
-        List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
-
-        double all = ans.get(0) + ans.get(1) + ans.get(2);
-
-        for (int i = 0; i < 3; i++) {
-            imageViews.get(i).setVisible(false);
-            double h = 150 * ans.get(i) / all;
-            var bar = (Rectangle) charts.get(i);
-            bar.setVisible(true);
-            bar.setOpacity(1);
-            if (i == correct)
-                bar.setFill(Paint.valueOf("#95BF74"));
-            else bar.setFill(Paint.valueOf("#C56659"));
-            bar.setHeight(0);
-            KeyValue heightValue = new KeyValue(bar.heightProperty(), bar.getHeight() + h);
-            KeyFrame frame = new KeyFrame(Duration.millis(500), heightValue);
-            Timeline timeline = new Timeline(frame);
-            timeline.play();
-        }
-
     }
 
     /**
@@ -174,72 +135,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         }
     }
 
-    public void userReaction(String reaction, String name) {
-
-        Pane pane = new Pane();
-        ImageView iv;
-        Label label = new Label(name);
-        Image img;
-        switch (reaction) {
-            case "happy":
-                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
-                break;
-            case "angry":
-                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
-                break;
-            case "angel":
-                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
-                break;
-            default:
-                return;
-        }
-        iv = new ImageView(img);
-        pane.getChildren().add(iv);
-        pane.getChildren().add(label);
-        iv.setMouseTransparent(false);
-        label.setMouseTransparent(false);
-        label.setPadding(new Insets(-20, 0, 0, 5));
-        TranslateTransition translate = new TranslateTransition();
-        translate.setByY(700);
-        translate.setDuration(Duration.millis(2800));
-        translate.setNode(pane);
-        translate.setOnFinished(t -> {
-                    System.out.println("deleted");
-                    pane.getChildren().remove(iv);
-                    pane.getChildren().remove(label);
-                }
-        );
-        translate.play();
-
-        FadeTransition fade = new FadeTransition();
-        fade.setDuration(Duration.millis(2000));
-        //fade.setDelay(Duration.millis(1000));
-        fade.setFromValue(10);
-        fade.setToValue(0);
-        fade.setNode(pane);
-        fade.play();
-        parentGridPane.getChildren().add(pane);
-
-    }
-
-    public void angryReact() {
-        String path = "/app/reactions";
-        userReaction("angry", mainCtrl.getName());
-        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
-    }
-
-    public void angelReact() {
-        String path = "/app/reactions";
-        userReaction("angel", mainCtrl.getName());
-
-        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
-    }
-
-    public void happyReact() {
-        String path = "/app/reactions";
-        userReaction("happy", mainCtrl.getName());
-        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
-    }
 
     public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
         int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
@@ -259,46 +154,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     public void dummy() {
         Player player = new Player(mainCtrl.getName());
         calculateScore(player, true, 20);
-    }
-
-
-    private void displayAnswers(List<Integer> answerList) {
-        optionA.setDisable(true);
-        optionB.setDisable(true);
-        optionC.setDisable(true);
-        System.out.println("Received answer!!" + answerList);
-        if(isMultiPlayer) {
-            showChart(answerList, correct);
-        }
-        List<Label> labels = List.of(countA, countB, countC);
-        List<Button> options = List.of(optionA,optionB,optionC);
-        Button correctOption = options.get(correct);
-        correctOption.setOpacity(1);
-        correctOption.setStyle("-fx-font-weight: bold;");
-        if(isMultiPlayer) {
-        for (int i = 0; i < labels.size(); i++) {
-            if (answerList.get(i) > 0) {
-                Label label = labels.get(i);
-                label.setVisible(true);
-                label.setText("" + answerList.get(i));
-            }
-        }
-        }
-        informationLabel.setVisible(true);
-        informationLabel.setText("Stats received!");
-
-        stopTimer();
-
-        TimerTask delay = new TimerTask() {
-            @Override
-            public void run() {
-                correctOption.setStyle("-fx-font-weight: normal;");
-                correctOption.setTextFill(Paint.valueOf("#d6d3ee"));
-                Platform.runLater(mainCtrl::showNext);
-            }
-        };
-        Timer myTimer = new Timer();
-        myTimer.schedule(delay, 3000); // wait for 4 seconds
     }
 
     /**
@@ -353,6 +208,5 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             System.out.println("received reaction!");
             userReaction(userReaction.getReaction(), userReaction.getUsername());
         });
-        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
     }
 }

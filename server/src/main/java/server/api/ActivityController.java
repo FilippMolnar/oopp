@@ -25,6 +25,17 @@ public class ActivityController {
         return true;
     }
 
+    @PostMapping(path = "/activities")
+    public ResponseEntity<Activity> addAct(@RequestBody Activity activity) {
+        if (activity == null || activity.getTitle() == null
+                || activity.getTitle().isEmpty() || activity.getConsumption() == 0 || activity.getImagePath() == null
+                || activity.getImagePath().isEmpty() || activity.getSource() == null || activity.getSource().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Activity added = activities.save(activity);
+        return ResponseEntity.ok(added);
+    }
+
     @GetMapping(path = "/activities")
     public Iterable<Activity> getAllActivities()
     {

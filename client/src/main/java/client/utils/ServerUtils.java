@@ -249,7 +249,6 @@ public class ServerUtils {
                 .post(Entity.entity(score, APPLICATION_JSON), Score.class);
     }
 
-
     public List<Activity> getAllActivities() {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/activities")
@@ -261,6 +260,17 @@ public class ServerUtils {
     public Activity deleteActivity(Activity activity) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/activities/delete")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
+    }
+
+    // Method to add activity that is called from AdminEditCtrl and works with addActivity in ActivityController
+    // TODO: make addActivity in ActivityController work with this OR
+    //  make a method in ActivityController that adds an activity with this
+    public Activity addAct(Activity activity) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/activities")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);

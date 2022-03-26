@@ -70,25 +70,31 @@ public class AdminOverviewCtrl implements Initializable {
         return activityTable.getSelectionModel().getSelectedItem();
     }
 
+    // Method to go to homescreen
+    // Linked to exitButton
     public void exit() {
         appController.showHomeScreen();
     }
 
     // Method to go to edit screen to add an activity
     // Linked to addButton
+    // TODO: navigation so it goes to edit screen
     public void toAddActivity() {
-
+        // Go to edit screen
+        // All fields will be empty
     }
 
     // Method to go to edit screen to edit an activity
     // Linked to editButton
+    // TODO: navigation so it goes to edit screen and calls showEditActivity(selectedActivity)
     public void toEditActivity() {
         Activity selectedActivity = retrieveActivity();
         if (selectedActivity == null) {
             error.setVisible(true);
         }
         else {
-            // Go to edit screen (MainAppController) (bring the activity)
+            // Go to edit screen (MainAppController) (and bring the activity to show in the fields)
+            // Call showEditActivity(selectedActivity)
         }
     }
 

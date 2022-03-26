@@ -29,11 +29,17 @@ public class AdminEditCtrl {
         this.serverUtils = serverUtils;
     }
 
+    // Method to add activity
     public void addActivity() {
         String title = activityTitleField.getText();
         String source = activitySourceField.getText();
         int consumption = parseInt(activityConsumptionField.getText());
         String image = activityImageField.getText();
         Activity a = new Activity(title, consumption, image, source);
+    }
+
+    // Method to edit activity
+    public void editActivity() {
+
     }
 }

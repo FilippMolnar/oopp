@@ -1,12 +1,11 @@
 package server.api;
 
 import commons.Activity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import server.database.ActivityRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -26,7 +25,8 @@ public class ActivityController {
         return true;
     }
 
-    public List<Activity> getAllActivities()
+    @GetMapping(path = "/activities")
+    public Iterable<Activity> getAllActivities()
     {
         return activities.findAll();
     }
@@ -50,5 +50,23 @@ public class ActivityController {
     public List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
     {
         return activities.getAllDiff(cons, 100);
+    }
+
+    @PostMapping("/activities/del")
+    @Transactional
+    public ResponseEntity<Activity> deleteActivity(@RequestBody Activity activity) {
+        List<Activity> list = activities.findAll();
+        Activity candidate = null;
+        //        Activity candidate = activities.findById(activity.id);
+        for (Activity a : list) {
+            if (a.equals(activity)) {
+                candidate = a;
+            }
+        }
+        if (candidate == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        activities.deleteById(activity.id);
+        return ResponseEntity.ok(candidate);
     }
 }

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -32,20 +33,21 @@
         </GridPane.margin>
         <Image url="@../pictures/quizzz.PNG" />
     </ImageView>
-    <ImageView fitHeight="50.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-        <image>
-            <Image url="@../pictures/exit_button.png" />
-        </image>
-        <GridPane.margin>
-            <Insets right="30.0" />
-        </GridPane.margin>
-    </ImageView>
-    <TableView fx:id="activityTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+   <Button fx:id="exitButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#exit" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+      <graphic>
+          <ImageView fitHeight="50.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                  <Image url="@../pictures/exit_button.png" />
+              </image>
+          </ImageView>
+      </graphic>
+   </Button>
+    <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columns>
-            <TableColumn prefWidth="200.0" text="Title" />
-            <TableColumn minWidth="0.0" prefWidth="140.0" text="Source" />
-            <TableColumn prefWidth="140.0" text="Consumption (in Wh)" />
-            <TableColumn prefWidth="140.0" text="Image" />
+            <TableColumn fx:id="titleColumn" prefWidth="200.0" text="Title" />
+            <TableColumn fx:id="sourceColumn" minWidth="0.0" prefWidth="140.0" text="Source" />
+            <TableColumn fx:id="consumptionColumn" prefWidth="140.0" text="Consumption (in Wh)" />
+            <TableColumn fx:id="imageColumn" prefWidth="140.0" text="Image" />
         </columns>
     </TableView>
     <GridPane GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
@@ -58,18 +60,23 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       <children>
-         <Button mnemonicParsing="false" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Add a new activity" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <Button fx:id="addButton" mnemonicParsing="false" onAction="#toAddActivity" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Add a new activity" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <font>
                <Font size="16.0" />
             </font></Button>
-         <Button mnemonicParsing="false" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Edit an activity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <Button fx:id="editButton" mnemonicParsing="false" onAction="#toEditActivity" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Edit an activity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <font>
                <Font size="16.0" />
             </font></Button>
-         <Button mnemonicParsing="false" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Delete an activity" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#deleteActivity" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Delete an activity" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <font>
                <Font size="16.0" />
             </font></Button>
+         <Label fx:id="error" prefHeight="47.0" prefWidth="229.0" text="Please select an activity first" textFill="WHITE" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Label>
       </children>
     </GridPane>
 

@@ -1,0 +1,6 @@
+2022-03-17 16:02:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT SCORE0_.ID AS ID1_4_, SCORE0_.NAME AS NAME2_4_, SCORE0_.SCORE AS SCORE3_4_ FROM SCORE SCORE0_ ORDER BY SCORE0_.SCORE DESCENDING[*]"; SQL statement:
+select score0_.id as id1_4_, score0_.name as name2_4_, score0_.score as score3_4_ from score score0_ order by score0_.score DESCENDING [42000-200]
+2022-03-17 16:04:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT SCORE0_.ID AS ID1_4_, SCORE0_.NAME AS NAME2_4_, SCORE0_.SCORE AS SCORE3_4_ FROM SCORE SCORE0_ ORDER BY SCORE0_.SCORE DESCENDING[*]"; SQL statement:
+select score0_.id as id1_4_, score0_.name as name2_4_, score0_.score as score3_4_ from score score0_ order by score0_.score DESCENDING [42000-200]

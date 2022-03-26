@@ -52,12 +52,12 @@ public class MainAppController {
     }
 
     public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Parent> waitingRoomPair,
-                           Pair<HomeScreenCtrl, Parent> home,
-                           Pair<LeaderBoardCtrl, Parent> leaderBoard,
-                           Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
-                           Pair<QuestionInsertNumberCtrl, Parent> qInsert,
-                           Pair<QuestionSameAsCtrl, Parent> sameAs,
-                           Pair<TransitionSceneCtrl, Parent> qTransition) {
+            Pair<HomeScreenCtrl, Parent> home,
+            Pair<LeaderBoardCtrl, Parent> leaderBoard,
+            Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
+            Pair<QuestionInsertNumberCtrl, Parent> qInsert,
+            Pair<QuestionSameAsCtrl, Parent> sameAs,
+            Pair<TransitionSceneCtrl, Parent> qTransition) {
 
         this.name = "";
         totalScore = 0;
@@ -160,14 +160,13 @@ public class MainAppController {
             if (i == 10 && mode == 0) {
                 current.addNext(new LinkedScene(this.leaderBoardScene, this.leaderBoardCtrl));
                 current = current.getNext();
+            } 
+            // add the transition before a normal question
+            current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
+            if(i == 0 && mode == 1) {
+                current = current.getNext(1);
             } else {
-                // add the transition before a normal question
-                current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
-                if(i == 0 && mode == 1) {
-                    current = current.getNext(1);
-                } else {
-                    current = current.getNext();
-                }
+                current = current.getNext();
             }
             //            if(questionTypes.get(i) < 2) {
             //                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));

@@ -9,7 +9,6 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Question;
 import commons.Score;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -18,15 +17,11 @@ import java.util.List;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
-    private Scene waitingRoomScene;
     private Stage primaryStage;
     private Scene homeScene;
     private Scene leaderBoardScene; private Scene qMultiScene;
-    private Scene qInsert;
+    private Scene qInsertScene;
     private Scene questionTransitionScene;
-    private Scene sameAsScene;
-    private Scene homeSingleplayerScene;
-    private Scene homeMultiplayerScene;
 
     private LinkedScene currentScene;
     private LinkedScene homeScreenLinked;
@@ -51,33 +46,38 @@ public class MainAppController {
         this.serverUtils = serverUtils;
     }
 
-    public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Parent> waitingRoomPair,
-                           Pair<HomeScreenCtrl, Parent> home,
-                           Pair<HomeScreenSingleplayerCtrl, Parent> homeSingleplayer,
-                           Pair<HomeScreenMultiplayerCtrl, Parent> homeMultiplayer,
-                           Pair<LeaderBoardCtrl, Parent> leaderBoard,
-                           Pair<QuestionMultiOptionsCtrl, Parent> qMulti,
-                           Pair<QuestionInsertNumberCtrl, Parent> qInsert,
-                           Pair<QuestionSameAsCtrl, Parent> sameAs,
-                           Pair<TransitionSceneCtrl, Parent> qTransition) {
+    public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Scene> waitingRoomPair,
+                           Pair<HomeScreenCtrl, Scene> home,
+                           Pair<HomeScreenSingleplayerCtrl, Scene> homeSingleplayer,
+                           Pair<HomeScreenMultiplayerCtrl, Scene> homeMultiplayer,
+                           Pair<LeaderBoardCtrl, Scene> leaderBoard,
+                           Pair<QuestionMultiOptionsCtrl, Scene> qMulti,
+                           Pair<QuestionInsertNumberCtrl, Scene> qInsert,
+                           Pair<QuestionSameAsCtrl, Scene> sameAs,
+                           Pair<TransitionSceneCtrl, Scene> qTransition) {
 
         this.name = "";
-        this.waitingRoomScene = new Scene(waitingRoomPair.getValue());
-        this.homeScene = new Scene(home.getValue());
-        this.homeSingleplayerScene = new Scene(homeSingleplayer.getValue());
-        this.homeMultiplayerScene = new Scene(homeMultiplayer.getValue());
-        this.leaderBoardScene = new Scene(leaderBoard.getValue());
-        this.questionTransitionScene = new Scene(qTransition.getValue());
+        Scene waitingRoomScene = waitingRoomPair.getValue();
+        this.homeScene = home.getValue();
+        Scene homeSingleplayerScene = homeSingleplayer.getValue();
+        Scene homeMultiplayerScene = homeMultiplayer.getValue();
+        this.leaderBoardScene = leaderBoard.getValue();
+        this.questionTransitionScene = qTransition.getValue();
         this.leaderBoardCtrl = leaderBoard.getKey();
         this.qTransitionCtrl = qTransition.getKey();
 
-        this.sameAsScene = new Scene(sameAs.getValue());
+        this.qInsertCtrl = qInsert.getKey();
+        this.qTransitionCtrl = qTransition.getKey();
+        this.qInsertScene = qInsert.getValue();
+        this.qMultiCtrl = qMulti.getKey();
+        this.qMultiScene = qMulti.getValue();
+        Scene sameAsScene = sameAs.getValue();
 
-        LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene);
+        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene);
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
-        LinkedScene sameAsLinked = new LinkedScene(this.sameAsScene);
-        LinkedScene singleplayerLinked = new LinkedScene(this.homeSingleplayerScene, homeSingleplayer.getKey());
-        LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
+        LinkedScene sameAsLinked = new LinkedScene(sameAsScene);
+        LinkedScene singleplayerLinked = new LinkedScene(homeSingleplayerScene, homeSingleplayer.getKey());
+        LinkedScene multiplayerLinked = new LinkedScene(homeMultiplayerScene, homeMultiplayer.getKey());
 
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
         this.currentScene = new LinkedScene(this.homeScene);
@@ -92,11 +92,7 @@ public class MainAppController {
 
         this.primaryStage = primaryStage;
 
-        this.qInsertCtrl = qInsert.getKey();
-        this.qTransitionCtrl = qTransition.getKey();
-        this.qInsert = new Scene(qInsert.getValue());
-        this.qMultiCtrl = qMulti.getKey();
-        this.qMultiScene = new Scene(qMulti.getValue());
+
         jokers = new JokersList(serverUtils);
 
         primaryStage.setScene(homeScene);
@@ -104,10 +100,10 @@ public class MainAppController {
 
         this.homeScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.qMultiScene.getStylesheets().add("client/scenes/waiting_room.css");
-        this.homeMultiplayerScene.getStylesheets().add("client/scenes/waiting_room.css");
-        this.waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
+        homeMultiplayerScene.getStylesheets().add("client/scenes/waiting_room.css");
+        waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.questionTransitionScene.getStylesheets().add("client/scenes/waiting_room.css");
-        this.sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
+        sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
     public String getName() {

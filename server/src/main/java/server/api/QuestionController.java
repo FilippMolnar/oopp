@@ -55,12 +55,8 @@ public class QuestionController {
      */
     @GetMapping(path = {"/most"})
     public Question getTypeMostLeast() {
-        List<Activity> choices = new ArrayList<>();
-        while (choices.size() < 3) {
-            Activity act = activityController.getRandom();
-            if (choices.contains(act)) continue;
-            choices.add(act);
-        }
+        List<Activity> choices = activityController.getThreeRandom();
+
         Activity highest = choices.get(0);
         for(Activity a : choices){
             highest = highest.getConsumption() > a.getConsumption() ? highest : a;

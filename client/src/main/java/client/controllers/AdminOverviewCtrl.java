@@ -1,23 +1,18 @@
 package client.controllers;
 
 import client.utils.ServerUtils;
-import com.google.errorprone.annotations.FormatMethod;
 import commons.Activity;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.util.Callback;
 
 import javax.inject.Inject;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminOverviewCtrl implements Initializable {

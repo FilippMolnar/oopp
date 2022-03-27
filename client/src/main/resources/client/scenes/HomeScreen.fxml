@@ -46,7 +46,7 @@
                <Insets bottom="70.0" />
             </GridPane.margin>
          </ImageView>
-         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="59.0" prefWidth="206.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Admin interface" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#showAdminOverview" prefHeight="59.0" prefWidth="206.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Admin interface" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
             <font>
                <Font size="16.0" />
             </font>

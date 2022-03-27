@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
     /**
-     * Finds all activities which have a specific consumption
+     * Finds all activities which have a consumption ranging from cons-range to cons+range
      *
      * @param cons the consumption which we seek
      * @return a list of activities which has a specific consumption
@@ -18,7 +18,7 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
     List<Activity> getByConsumption(int cons, int range);
 
     /**
-     * Should make it Fetch only part of database, not everything <b>OPTIMIZATION NEEDED</b>
+     * Fetches all activities having consumption different from the range cons-range to cons+range
      *
      * @param cons
      * @return

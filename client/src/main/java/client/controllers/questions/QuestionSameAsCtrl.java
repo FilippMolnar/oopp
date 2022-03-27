@@ -53,8 +53,9 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
             Path path = Paths.get(choice.getImagePath());
+            String groupID = path.getParent().getName(0).toString();
             try {
-                var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
+                var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
                 var newImage = new Image(actualPath);
                 view.setFitWidth(1);
                 view.setFitHeight(1);

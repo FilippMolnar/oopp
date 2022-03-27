@@ -33,4 +33,10 @@ public class HomeScreenCtrl {
         System.out.println("entering multiplayer screen");
         appController.showNext(0);
     }
+
+    public void showAdminOverview()
+    {
+        System.out.println("entering admin screen");
+        appController.showAdmin();
+    }
 }

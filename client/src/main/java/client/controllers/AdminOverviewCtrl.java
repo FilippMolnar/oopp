@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
 import javax.inject.Inject;
@@ -23,6 +24,7 @@ public class AdminOverviewCtrl implements Initializable {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
+    private final AdminEditCtrl editCtrl;
 
     @FXML
     private TableView<Activity> activityTable;
@@ -50,6 +52,7 @@ public class AdminOverviewCtrl implements Initializable {
     AdminOverviewCtrl(ServerUtils serverUtils, MainAppController appController){
         this.appController = appController;
         this.serverUtils = serverUtils;
+        this.editCtrl = new AdminEditCtrl(serverUtils,appController);
     }
 
 //    List<Activity> activities = serverUtils.getAllActivities();
@@ -81,7 +84,9 @@ public class AdminOverviewCtrl implements Initializable {
     // TODO: navigation so it goes to edit screen
     public void toAddActivity() {
         // Go to edit screen
+        appController.showAdminEdit();
         // All fields will be empty
+
     }
 
     // Method to go to edit screen to edit an activity
@@ -93,6 +98,8 @@ public class AdminOverviewCtrl implements Initializable {
             error.setVisible(true);
         }
         else {
+            appController.showAdminEdit();
+            editCtrl.showEditActivity(selectedActivity);
             // Go to edit screen (MainAppController) (and bring the activity to show in the fields)
             // Call showEditActivity(selectedActivity)
         }

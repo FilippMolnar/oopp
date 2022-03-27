@@ -5,6 +5,7 @@ import commons.Activity;
 import javafx.fxml.FXML;
 
 import javax.inject.Inject;
+import javafx.scene.control.TextField;
 import java.awt.*;
 
 import static java.lang.Integer.parseInt;
@@ -62,6 +63,16 @@ public class AdminEditCtrl {
     // TODO: remove the original activity from both repo and table
     public void submitEditActivity() {
         // First, remove original activity (from both repo and table)
+        /**
+         * This is removing the old activity
+         */
+        String title = activityTitleField.getText();
+        int consumption = Integer.valueOf(activityConsumptionField.getText());
+        String imagePath = activityImageField.getText();
+        String source=activitySourceField.getText();
+        Activity act = new Activity(title,consumption,imagePath,source);
+
+        serverUtils.deleteActivity(act);
 
         // Let user make new activity with new fields
         addActivity();

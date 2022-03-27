@@ -51,10 +51,10 @@ public class ActivityController {
         return activities.findAll().get(idx);
     }
 
-    @GetMapping(path = "/data/fetch/{cons}")
-    public List<Activity> getAllByConsumption(@PathVariable("cons")int cons)
+    @GetMapping(path = "/data/fetch/{cons}/{range}")
+    public List<Activity> getAllByConsumption(@PathVariable("cons")int cons,@PathVariable("range")int range)
     {
-        return activities.getByConsumption(cons, 100);
+        return activities.getByConsumption(cons, range);
     }
 
     @GetMapping(path = "/data/diff/{cons}")
@@ -63,7 +63,7 @@ public class ActivityController {
         return activities.getAllDiff(cons, 100);
     }
 
-    @PostMapping("/activities/del")
+    @PostMapping("/activities/delete")
     @Transactional
     public ResponseEntity<Activity> deleteActivity(@RequestBody Activity activity) {
         List<Activity> list = activities.findAll();

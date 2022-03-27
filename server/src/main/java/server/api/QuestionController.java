@@ -81,7 +81,7 @@ public class QuestionController {
     @GetMapping(path = {"/equal"})
     public Question getTypeEqual() {
         Activity act = activityController.getRandom();
-        List<Activity> same = activityController.getAllByConsumption(act.getConsumption());
+        List<Activity> same = activityController.getAllByConsumption(act.getConsumption(),100);
         List<Activity> choices = new ArrayList<>();
         Activity neither = new Activity("neither", -1, "location of cross", "");
 

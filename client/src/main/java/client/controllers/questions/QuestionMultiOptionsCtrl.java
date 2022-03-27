@@ -149,7 +149,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionC.setDisable(true);
 
         if(isMultiPlayer) {
-            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
         } else {
             checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
             System.out.println("Stopping timer");
@@ -270,10 +270,11 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         System.out.println("Received answer!!" + answerList);
         showChart(answerList, correct);
         List<Label> labels = List.of(countA, countB, countC);
-        List<Button> options = List.of(optionA,optionB,optionC);
+        List<Button> options = List.of(optionA, optionB, optionC);
         Button correctOption = options.get(correct);
-        correctOption.setOpacity(1);
-        correctOption.setStyle("-fx-font-weight: bold;");
+        correctOption.setDisable(false);
+        correctOption.setMouseTransparent(true);
+        correctOption.setStyle("-fx-border-color: white; -fx-border-width: 2.4; -fx-font-weight: bold;");
         for (int i = 0; i < labels.size(); i++) {
             if (answerList.get(i) > 0) {
                 Label label = labels.get(i);
@@ -289,8 +290,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         TimerTask delay = new TimerTask() {
             @Override
             public void run() {
-                correctOption.setStyle("-fx-font-weight: normal;");
-                correctOption.setTextFill(Paint.valueOf("#d6d3ee"));
+                correctOption.setDisable(true);
+                correctOption.setMouseTransparent(false);
+                correctOption.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
                 Platform.runLater(mainCtrl::showNext);
             }
         };

@@ -4,9 +4,9 @@ import client.LinkedScene;
 import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.controllers.questions.QuestionSameAsCtrl;
+import client.jokers.JokersList;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import client.jokers.JokersList;
 import commons.Question;
 import commons.Score;
 import javafx.scene.Parent;
@@ -104,6 +104,7 @@ public class MainAppController {
 
         this.homeScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.qMultiScene.getStylesheets().add("client/scenes/waiting_room.css");
+        this.homeMultiplayerScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.questionTransitionScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");

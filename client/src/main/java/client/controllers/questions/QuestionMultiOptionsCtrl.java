@@ -53,6 +53,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private GridPane images;
     //private boolean hasSubmittedAnswer = false;
     private int correct;
+    private Button selectedButton;
 
     @FXML
     private Text questionNumber;
@@ -138,10 +139,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         String button_id = source.getId();
         Activity a;
         if (button_id.equals("optionA")) {
+            selectedButton = optionA;
             a = question.getChoices().get(0);
         } else if (button_id.equals("optionB")) {
+            selectedButton = optionB;
             a = question.getChoices().get(1);
         } else {
+            selectedButton = optionC;
             a = question.getChoices().get(2);
         }
         optionA.setDisable(true);
@@ -275,6 +279,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         correctOption.setDisable(false);
         correctOption.setMouseTransparent(true);
         correctOption.setStyle("-fx-border-color: white; -fx-border-width: 2.4; -fx-font-weight: bold;");
+
+        selectedButton.setDisable(false);
+        selectedButton.setMouseTransparent(true);
         for (int i = 0; i < labels.size(); i++) {
             if (answerList.get(i) > 0) {
                 Label label = labels.get(i);
@@ -293,6 +300,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
                 correctOption.setDisable(true);
                 correctOption.setMouseTransparent(false);
                 correctOption.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
+
+                selectedButton.setDisable(true);
+                selectedButton.setMouseTransparent(false);
                 Platform.runLater(mainCtrl::showNext);
             }
         };
@@ -305,6 +315,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      */
     private void resetUI() {
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
+        selectedButton = null;
         for(int  i=0;i<3;i++)
         {
             var bar = (Rectangle)charts.get(i);

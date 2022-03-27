@@ -2,8 +2,6 @@ package client.controllers;
 
 import client.LinkedScene;
 import client.controllers.questions.AbstractQuestion;
-import client.controllers.questions.QuestionInsertNumberCtrl;
-import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.jokers.CoverHandsJoker;
 import client.jokers.CoverInkJoker;
 import client.jokers.DecreaseTimeJoker;

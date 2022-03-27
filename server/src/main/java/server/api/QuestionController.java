@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -21,14 +22,26 @@ public class QuestionController {
         QuestionController.activityController = activityController;
     }
 
+    @GetMapping("/generate_20")
+    public List<Question> get20RandomQuestions() {
+        List<Question> questions = new ArrayList<>();
+        for (int i = 0; i < 9; i++)
+            questions.add(getTypeMostLeast());
+        for (int i = 0; i < 6; i++)
+            questions.add(getTypeEstimate());
+        for (int i = 0; i < 5; i++)
+            questions.add(getTypeEqual());
+        Collections.shuffle(questions);
+        return questions;
+    }
+
     @GetMapping("/question")
     public Question getRandomQuestion() {
-//        int pick = new Random().nextInt(3);
-//        if (pick == 0)
-//            return getTypeEstimate();
-//        else if (pick == 1)
-//            return getTypeEqual();
-//        else
+        int pick = new Random().nextInt(3);
+        if (pick == 0)
+            return getTypeEstimate();
+        else if (pick == 1)
+            return getTypeEqual();
         return getTypeMostLeast();
     }
 

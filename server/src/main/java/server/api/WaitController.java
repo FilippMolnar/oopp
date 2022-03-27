@@ -159,7 +159,7 @@ public class WaitController {
     }
     @MessageMapping("/decrease_time")
     public void decreaseTime(Player player) {
-        int gid = gameID-1;
+        int gid = (int) player.getGameID();
         Game currentGame = gameController.getGame(gid);
         var playerList = currentGame.getPlayers();
         sendToAllOtherUsers(playerList,"queue/decrease_time/gameID", gid, player);
@@ -168,7 +168,7 @@ public class WaitController {
 
     @MessageMapping("/cover_hands")
     public void coverHands(Player player) {
-        int gid = gameID-1;
+        int gid = (int) player.getGameID();
         Game currentGame = gameController.getGame(gid);
         var playerList = currentGame.getPlayers();
         sendToAllOtherUsers(playerList,"queue/cover_hands/gameID", gid, player);
@@ -177,7 +177,7 @@ public class WaitController {
 
     @MessageMapping("/cover_ink")
     public void coverInk(Player player) {
-        int gid = gameID-1;
+        int gid = (int) player.getGameID();
         Game currentGame = gameController.getGame(gid);
         var playerList = currentGame.getPlayers();
         sendToAllOtherUsers(playerList,"queue/cover_ink/gameID", gid, player);

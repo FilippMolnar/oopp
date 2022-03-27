@@ -22,7 +22,9 @@ public class CoverHandsJoker extends Joker{
         if(isUsed()){
             return;
         }
-        serverUtils.sendThroughSocket("/app/cover_hands", new Player(mainCtrl.getName()));
+        Player p = new Player(mainCtrl.getName());
+        p.setGameID(mainCtrl.getGameID());
+        serverUtils.sendThroughSocket("/app/cover_hands", p);
 
         System.out.println("Cover Screen with Hands Joker");
         use();

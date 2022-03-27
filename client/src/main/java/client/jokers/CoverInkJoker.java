@@ -23,7 +23,9 @@ public class CoverInkJoker extends Joker{
         if(isUsed()){
             return;
         }
-        serverUtils.sendThroughSocket("/app/cover_ink", new Player(mainCtrl.getName()));
+        Player p = new Player(mainCtrl.getName());
+        p.setGameID(mainCtrl.getGameID());
+        serverUtils.sendThroughSocket("/app/cover_ink", p);
 
         System.out.println("Cover Screen with Ink Joker");
         use();

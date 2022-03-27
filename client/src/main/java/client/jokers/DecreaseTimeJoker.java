@@ -15,7 +15,9 @@ public class DecreaseTimeJoker extends Joker{
             return;
         }
         System.out.println("DecreaseTimeJoker");
-        serverUtils.sendThroughSocket("/app/decrease_time", new Player(mainCtrl.getName()));
+        Player p = new Player(mainCtrl.getName());
+        p.setGameID(mainCtrl.getGameID());
+        serverUtils.sendThroughSocket("/app/decrease_time", p);
 
         use();
     }

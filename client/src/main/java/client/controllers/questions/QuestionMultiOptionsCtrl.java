@@ -279,9 +279,10 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         correctOption.setDisable(false);
         correctOption.setMouseTransparent(true);
         correctOption.setStyle("-fx-border-color: white; -fx-border-width: 2.4; -fx-font-weight: bold;");
-
-        selectedButton.setDisable(false);
-        selectedButton.setMouseTransparent(true);
+        if (selectedButton != null) {
+            selectedButton.setDisable(false);
+            selectedButton.setMouseTransparent(true);
+        }
         for (int i = 0; i < labels.size(); i++) {
             if (answerList.get(i) > 0) {
                 Label label = labels.get(i);

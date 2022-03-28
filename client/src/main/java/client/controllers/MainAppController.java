@@ -13,6 +13,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -81,6 +85,7 @@ public class MainAppController {
         LinkedScene sameAsLinked = new LinkedScene(sameAsScene);
         LinkedScene singleplayerLinked = new LinkedScene(homeSingleplayerScene, homeSingleplayer.getKey());
         LinkedScene multiplayerLinked = new LinkedScene(homeMultiplayerScene, homeMultiplayer.getKey());
+        LinkedScene qInsertLinked = new LinkedScene(qInsertScene, qInsertCtrl);
 
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
         this.currentScene = new LinkedScene(this.homeScene);
@@ -90,11 +95,7 @@ public class MainAppController {
 
         multiplayerLinked.addNext(waitingRoomLinked);
 
-
-        multiplayerLinked.addNext(waitingRoomLinked);
-
         this.primaryStage = primaryStage;
-
 
         jokers = new JokersList(serverUtils);
 
@@ -107,6 +108,17 @@ public class MainAppController {
         waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.questionTransitionScene.getStylesheets().add("client/scenes/waiting_room.css");
         sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
+    }
+
+    public void openBrowser()
+    {
+        Desktop desktop = Desktop.getDesktop();
+        try{
+            URI url = new URI("https://www.google.com");
+            desktop.browse(url);
+        }catch(URISyntaxException | IOException e){
+            e.printStackTrace();
+        }
     }
 
     public String getName() {

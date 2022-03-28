@@ -6,22 +6,16 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.*;
 import javafx.animation.*;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.net.URL;
@@ -222,7 +216,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
             System.out.println("received reaction!");
             userReaction(userReaction.getReaction(), userReaction.getUsername());
-            server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
         });
         server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
     }

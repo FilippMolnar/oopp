@@ -127,38 +127,35 @@ public abstract class AbstractQuestion implements Initializable {
         correctOption.setOpacity(1);
         correctOption.setStyle("-fx-font-weight: bold;");
         if(isMultiPlayer) {
-        for (int i = 0; i < labels.size(); i++) {
-            if (answerList.get(i) > 0) {
-                Label label = labels.get(i);
-                label.setVisible(true);
-                label.setText("" + answerList.get(i));
+            for (int i = 0; i < labels.size(); i++) {
+                if (answerList.get(i) > 0) {
+                    Label label = labels.get(i);
+                    label.setVisible(true);
+                    label.setText("" + answerList.get(i));
+                }
             }
-        }
         }
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
 
-        //stopTimer();
-
-        TimerTask delay = new TimerTask() {
-            @Override
-            public void run() {
-                correctOption.setStyle("-fx-font-weight: normal;");
-                correctOption.setTextFill(Paint.valueOf("#d6d3ee"));
-                Platform.runLater(mainCtrl::showNext);
-            }
-        };
-        Timer myTimer = new Timer();
-        myTimer.schedule(delay, 3000); // wait for 4 seconds
+        // For some reason, commenting this fixes bugs and doesn't break anything (???)
+       // TimerTask delay = new TimerTask() {
+       //     @Override
+       //     public void run() {
+       //         correctOption.setStyle("-fx-font-weight: normal;");
+       //         correctOption.setTextFill(Paint.valueOf("#d6d3ee"));
+       //         Platform.runLater(mainCtrl::showNext);
+       //     }
+       // };
+       // Timer myTimer = new Timer();
+       // myTimer.schedule(delay, 3000000); // wait for 4 seconds
     }
 
     public void setGameMode(boolean isMultiPlayer) {
         this.isMultiPlayer = isMultiPlayer;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
-        hasSubmittedAnswer = false;
+    public void setQuestion(Question question) { this.question = question; hasSubmittedAnswer = false;
     }
 
     public void setQuestionNumber(int num) {

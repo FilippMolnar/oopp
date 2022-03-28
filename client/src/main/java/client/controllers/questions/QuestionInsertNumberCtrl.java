@@ -10,7 +10,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import java.util.List;
+import javafx.application.Platform;
+import java.util.*;
+import commons.Answer;
+import commons.UserReaction;
+import java.net.URL;
 
 public class QuestionInsertNumberCtrl extends AbstractQuestion implements ControllerInitialize {
     private Question question;
@@ -37,9 +41,16 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         super.setQuestion(question);
     }
 
-    @Override
-    public void displayAnswers(List<Integer> answerList) {
-        System.out.println("DISPLAY ANSWERS");
+    public void displayAnswer(List<Integer> answer) {
+        TimerTask delay = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(mainCtrl::showNext);
+            }
+        };
+        Timer myTimer = new Timer();
+        myTimer.schedule(delay, 3000); // wait for 4 seconds
+        System.out.println(mainCtrl.getCorrect());
     }
 
     private Integer getNumber() {
@@ -52,15 +63,14 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     }
 
     public void submitAnswer() {
-        int answer = (int) slider.getValue();
-        slider.setDisable(true);
+        stopTimer();
+        int answer = (int) slider.getValue(); slider.setDisable(true);
         submitButton.setDisable(true);
         int newScore = calculateScore(answer, Double.parseDouble(timerValue.getText()));
         System.out.println("NEW SCORE: " + newScore);
         mainCtrl.setScore(newScore);
         if(isMultiPlayer) {
-            stopTimer();
-            // send answer to server
+            sendAnswer(new Answer(true, answer+"", mainCtrl.getGameID()));
         } else {
             score.setText(newScore+"");
             stopTimer();
@@ -85,6 +95,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void initializeController() {
+        this.hasSubmittedAnswer = false;
         score.setText(mainCtrl.getScore()+"");
         slider.setDisable(false);
         submitButton.setDisable(false);
@@ -92,6 +103,15 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         slider.setMin(Math.random()*correct);
         slider.setMax((Math.random()+1)*correct);
         startTimerAnimation(10);
-        System.out.println("Enabling scene");
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("received reaction!");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswer);
     }
 }

@@ -13,6 +13,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +111,17 @@ public class MainAppController {
         waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.questionTransitionScene.getStylesheets().add("client/scenes/waiting_room.css");
         sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
+    }
+
+    public void openBrowser()
+    {
+        Desktop desktop = Desktop.getDesktop();
+        try{
+            URI url = new URI("https://www.google.com");
+            desktop.browse(url);
+        }catch(URISyntaxException | IOException e){
+            e.printStackTrace();
+        }
     }
 
     public String getName() {

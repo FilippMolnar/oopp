@@ -238,8 +238,8 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void checkAnswer(Answer answer) {
         int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
-        mainCtrl.setScore(newScore);
-        score.setText(newScore+"");
+        mainCtrl.updateScore(newScore);
+        scoreText.setText(newScore+"");
     }
 
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
@@ -251,12 +251,7 @@ public abstract class AbstractQuestion implements Initializable {
         if (answerCorrect) {
             scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
-<<<<<<< client/src/main/java/client/controllers/questions/AbstractQuestion.java
         return scoreToBeAdded;
-=======
-        System.out.println(scoreToBeAdded);
-        return currentScore + scoreToBeAdded;
->>>>>>> client/src/main/java/client/controllers/questions/AbstractQuestion.java
     }
 
     public int getTimerIntegerValue() {

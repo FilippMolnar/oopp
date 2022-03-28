@@ -157,7 +157,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         this.scoreText.setText("SCORE "+mainCtrl.getTotalScore());
         Answer answer = new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName());
         if(isMultiPlayer) {
-            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
         } else {
             checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
             System.out.println("Stopping timer");

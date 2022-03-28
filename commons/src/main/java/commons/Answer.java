@@ -16,6 +16,13 @@ public class Answer {
         this.name = username;
         this.score = score;
     }
+    public Answer(boolean isCorrect, String option) {
+        this.isCorrect = isCorrect;
+        this.option = option;
+        this.gameID = -1;
+        this.score = 0;
+        this.name = "";
+    }
 
     public boolean isCorrect() {
         return isCorrect;

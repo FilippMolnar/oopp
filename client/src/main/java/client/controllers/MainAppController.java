@@ -177,11 +177,7 @@ public class MainAppController {
             } 
             // add the transition before a normal question
             current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
-            if(i == 0 && mode == 1) {
-                current = current.getNext(1);
-            } else {
-                current = current.getNext();
-            }
+            current = current.getNext();
             current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
             current = current.getNext();
         }
@@ -215,14 +211,6 @@ public class MainAppController {
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
             qController.setGameMode(isMultiPlayer);
-        }
-        else if (controller instanceof LeaderBoardCtrl) {
-            if (questionIndex == 10) {
-                leaderBoardCtrl.after10Questions();
-            }
-            else {
-                leaderBoardCtrl.after20Questions();
-            }
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();
@@ -264,14 +252,6 @@ public class MainAppController {
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
             qController.setGameMode(isMultiPlayer);
-        }
-        else if (controller instanceof LeaderBoardCtrl) {
-            if (questionIndex == 10) {
-                leaderBoardCtrl.after10Questions();
-            }
-            else {
-                leaderBoardCtrl.after20Questions();
-            }
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();

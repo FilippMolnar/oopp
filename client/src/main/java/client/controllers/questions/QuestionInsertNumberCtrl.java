@@ -39,7 +39,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void displayAnswers(List<Integer> answerList) {
-        System.out.println("DISPLAY ANSWERS"); 
+        System.out.println("DISPLAY ANSWERS");
     }
 
     private Integer getNumber() {
@@ -53,12 +53,13 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
     public void submitAnswer() {
         int answer = (int) slider.getValue();
-        slider.setDisable(true);         
-        submitButton.setDisable(true);         
-        int newScore = calculateScore(answer, Double.parseDouble(timerValue.getText())); 
+        slider.setDisable(true);
+        submitButton.setDisable(true);
+        int newScore = calculateScore(answer, Double.parseDouble(timerValue.getText()));
         System.out.println("NEW SCORE: " + newScore);
         mainCtrl.setScore(newScore);
         if(isMultiPlayer) {
+            stopTimer();
             // send answer to server
         } else {
             score.setText(newScore+"");
@@ -72,9 +73,9 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
-        System.out.println(Math.abs(1 - (double)answer / 
+        System.out.println(Math.abs(1 - (double)answer /
                 (double)mainCtrl.getCorrect().getConsumption()) + "");
-        int maxPoints = (int)(150.0 * Math.abs(1 - (double)answer / 
+        int maxPoints = (int)(150.0 * Math.abs(1 - (double)answer /
                 (double)mainCtrl.getCorrect().getConsumption()));
         double secondsToAnswer = maxSeconds - secondsLeft;
         scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));

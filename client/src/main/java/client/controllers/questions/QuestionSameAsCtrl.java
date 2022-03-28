@@ -130,11 +130,11 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-     
+
         if(isMultiPlayer) {
-            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
         } else {
-            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
             stopTimer();
             System.out.println("Stopping timer");
             displayAnswers(new ArrayList());

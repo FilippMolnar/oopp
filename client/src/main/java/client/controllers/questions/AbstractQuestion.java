@@ -110,6 +110,9 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void displayAnswers(List<Integer> answerList) {
+        if(!(mainCtrl.getCurrentScene().getController().getClass() == getClass())) {
+            return;
+        }
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
@@ -134,7 +137,7 @@ public abstract class AbstractQuestion implements Initializable {
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
 
-        stopTimer();
+        //stopTimer();
 
         TimerTask delay = new TimerTask() {
             @Override
@@ -333,9 +336,9 @@ public abstract class AbstractQuestion implements Initializable {
                 disableOptions();
                 System.out.println("time out");
                 if(isMultiPlayer) {
-                    sendAnswer(new Answer(false, ""));
+                    sendAnswer(new Answer(false, "", mainCtrl.getGameID()));
                 } else {
-                    displayAnswers(new ArrayList()); 
+                    displayAnswers(new ArrayList());
                 }
             }
         };

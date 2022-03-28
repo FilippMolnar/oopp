@@ -109,11 +109,11 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionC.setDisable(true);
 
         if(isMultiPlayer) {
-            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
         } else {
-            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
-            System.out.println("Stopping timer");
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
             stopTimer();
+            System.out.println("Stopping timer");
             displayAnswers(new ArrayList());
         }
     }
@@ -208,5 +208,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             System.out.println("received reaction!");
             userReaction(userReaction.getReaction(), userReaction.getUsername());
         });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
     }
 }

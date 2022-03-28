@@ -38,12 +38,7 @@ class PlayerTest {
     void equalsTest()
     {
         Player check = new Player("player");
-        player.setGameID(5);
-        player.setSocketID("ID7");
-        check.setSocketID("ID7");
-        assertFalse(player.equals(check));
-        check.setGameID(5);
-        assertTrue(player.equals(check));
+        assertEquals(player, check);
     }
 
 }

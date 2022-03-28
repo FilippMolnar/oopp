@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1024.0" style="-fx-background-color: #625998;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.HomeScreenSingleplayerCtrl">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" maxWidth="978.7266235351562" minWidth="951.0413208007812" percentWidth="30.0" prefWidth="952.3596801757812" />
@@ -31,7 +24,7 @@
         <GridPane.margin>
             <Insets left="-10.0" />
         </GridPane.margin>
-        <Image url="@../pictures/quizzz.PNG" />
+        <Image url="@/client/pictures/quizzz.PNG"/>
     </ImageView>
     <GridPane alignment="CENTER" prefHeight="218.0" prefWidth="600.0" vgap="40.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <TextField fx:id="nameString" maxWidth="-Infinity" prefHeight="54.0" prefWidth="297.0" snapToPixel="false" style="-fx-background-color: #837ABA; -fx-background-radius: 50; -fx-text-fill: white;" text="Nickname" GridPane.rowIndex="2">
@@ -48,7 +41,7 @@
         </TextField>
 
         <ImageView fitHeight="59.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-            <Image url="@../pictures/faq.png" />
+            <Image url="@/client/pictures/faq.png"/>
         </ImageView>
         <Label alignment="CENTER" text="Please enter your name" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
             <font>
@@ -99,7 +92,7 @@
         <graphic>
             <ImageView fitHeight="53.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@../pictures/exit_button.png" />
+                    <Image url="@/client/pictures/exit_button.png"/>
                 </image>
             </ImageView>
         </graphic>

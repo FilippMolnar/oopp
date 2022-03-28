@@ -40,10 +40,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -53,9 +54,9 @@ public class ServerUtils {
 
     // use this variable to define the server address and port to connect to
     private String SERVER;
-    private String WEBSOCKET_SERVER ;
+    private final List<List<Object>> subscribeParameters = new ArrayList<>();
     private StompSession session;
-    private List<List<Object>> subscribeParameters = new ArrayList<>();
+    private String WEBSOCKET_SERVER;
 
     public void getQuotesTheHardWay() throws IOException {
         var url = new URL(SERVER + "api/quotes");
@@ -66,19 +67,25 @@ public class ServerUtils {
             System.out.println(line);
         }
     }
-     public void initializeServer(String server) {
+
+    public void initializeServer(String server, CountDownLatch countDownLatch) {
         // 172.435q3...
-        SERVER = "http://"+server+":8080";
-        WEBSOCKET_SERVER = "ws://"+server+":8080/websocket";
-        session = connect(WEBSOCKET_SERVER);
-        for (List l : subscribeParameters) {
-            System.out.println("");
-            subscribeForSocketMessages((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
-        }
-     }
+        SERVER = "http://" + server + ":8080";
+        WEBSOCKET_SERVER = "ws://" + server + ":8080/websocket";
+        new Thread(() -> {
+            System.out.println("Trying to connect on another thread");
+            session = connect(WEBSOCKET_SERVER);
+            for (List<Object> l : subscribeParameters) {
+                System.out.println();
+                subscribeForSocketMessages((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
+            }
+            countDownLatch.countDown(); // let the UI thread know that this thread is done
+        }).start();
+    }
 
     /**
      * Connects the websockets to a url specifed in <code>WebSocketConfig</code> class on the server side
+     *
      * @param url url to connect to
      * @return a new StompSession
      */
@@ -149,6 +156,7 @@ public class ServerUtils {
      * already in the waiting room. <br\>
      * It is used by the <code>WaitingRoomCtrl</code> class to initialize the
      * UI based on the list it receives.
+     *
      * @return List of players that are currently in the waiting room
      */
     public List<Player> getAllNamesInWaitingRoom() {
@@ -216,14 +224,13 @@ public class ServerUtils {
                 .post(Entity.entity(result, APPLICATION_JSON), Pair.class);
     }
 
-    public  Map<Player,Integer> getScoreboard(int gameID)
-    {
+    public Map<Player, Integer> getScoreboard(int gameID) {
         var q = ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/leaderboard/" + gameID)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(Response.class);
-        Map<Player,Integer> scoreboard = q.readEntity(Map.class);
+        Map<Player, Integer> scoreboard = q.readEntity(Map.class);
         return scoreboard;
     }
 
@@ -239,6 +246,7 @@ public class ServerUtils {
     /**
      * This method is used by single players, who do not have a game ID
      * and just need to get 20 questions at the start of the game.
+     *
      * @return 20 random questions
      */
     public ArrayList<Question> getLeastMostQuestions() {

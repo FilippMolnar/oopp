@@ -1,18 +1,30 @@
 package client.controllers;
 
+import client.IPScanner;
 import client.utils.ServerUtils;
 import commons.Player;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import javax.inject.Inject;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 
-public class HomeScreenMultiplayerCtrl {
+public class HomeScreenMultiplayerCtrl implements Initializable {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
+
+    private final CountDownLatch startSignal = new CountDownLatch(1);
 
     @FXML
     private TextField nameString;
@@ -22,29 +34,24 @@ public class HomeScreenMultiplayerCtrl {
 
     @FXML
     private TextField serverField;
+    @FXML
+    private ComboBox<String> serversDropdown;
+
 
     @Inject
-    HomeScreenMultiplayerCtrl(ServerUtils serverUtils, MainAppController appController){
+    HomeScreenMultiplayerCtrl(ServerUtils serverUtils, MainAppController appController) {
         this.appController = appController;
         this.serverUtils = serverUtils;
     }
 
-    public void enterRoom(){
-        String server = serverField.getText();
-        try {
-            serverUtils.initializeServer(server);
-        }
-        catch (Exception e) {
-            System.out.println("Invalid server!");
-            return;
-        }
+    public void enterRoom() throws InterruptedException {
         appController.initializeScore();
         appController.setGameMode(true);
         String name = nameString.getText();
         System.out.println(name);
-        String finalName = name.substring(0,Math.min(name.length(),16));
+        String finalName = name.substring(0, Math.min(name.length(), 16));
 
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             labelErrors.setText("Please enter your name");
             return;
         }
@@ -53,6 +60,7 @@ public class HomeScreenMultiplayerCtrl {
             // Send message to player that their name was too long
             labelErrors.setText("Your name was too long, we limited the number of characters");
         }
+        startSignal.await(); // wait for the thread in server utils to finish
 
         // Get request for the players that are currently waiting
         List<Player> playersInWaitingRoom = serverUtils.getAllNamesInWaitingRoom();
@@ -75,5 +83,20 @@ public class HomeScreenMultiplayerCtrl {
 
     public void backToHomeScreen() {
         appController.showHomeScreen();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        EventHandler<ActionEvent> event = e -> {
+            if (serversDropdown.getValue() != null) {
+                // when a user click on a server option the 'server' connect will happen in another thread
+                serverUtils.initializeServer(serversDropdown.getValue(), startSignal);
+            }
+        };
+        serversDropdown.setOnAction(event);
+        List<String> servers = IPScanner.scanServers();
+        System.out.println("Servers are : " + servers);
+        ObservableList<String> obsList = FXCollections.observableArrayList(servers);
+        serversDropdown.setItems(obsList);
     }
 }

@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 import java.nio.file.Path;
@@ -33,7 +34,32 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     @FXML
     private Text activity;
 
+    public Button getOptionA() {
+        return optionA;
+    }
+
+    public Button getOptionB() {
+        return optionB;
+    }
+
+    public Button getOptionC() {
+        return optionC;
+    }
+
     private boolean hasSubmittedAnswer = false;
+
+    @FXML
+    private Circle elimWrongAnswerCircle;
+    @FXML
+    private Circle doublePointsCircle;
+    @FXML
+    private Circle decreaseTimeCircle;
+    @FXML
+    private ImageView elimWrongAnswerImage;
+    @FXML
+    private ImageView doublePointsImage;
+    @FXML
+    private ImageView decreaseTimeImage;
 
     @Inject
     public QuestionSameAsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -117,5 +143,29 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
+    }
+
+    public Circle getElimWrongAnswerCircle() {
+        return elimWrongAnswerCircle;
+    }
+
+    public Circle getDoublePointsCircle() {
+        return doublePointsCircle;
+    }
+
+    public Circle getDecreaseTimeCircle() {
+        return decreaseTimeCircle;
+    }
+
+    public ImageView getElimWrongAnswerImage() {
+        return elimWrongAnswerImage;
+    }
+
+    public ImageView getDoublePointsImage() {
+        return doublePointsImage;
+    }
+
+    public ImageView getDecreaseTimeImage() {
+        return decreaseTimeImage;
     }
 }

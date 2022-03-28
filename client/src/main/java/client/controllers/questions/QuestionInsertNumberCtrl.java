@@ -7,13 +7,13 @@ import com.google.inject.Inject;
 import commons.Question;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Circle;
 
 public class QuestionInsertNumberCtrl extends AbstractQuestion implements ControllerInitialize {
     private Question question;
 
     @FXML
     private TextField number;
-
 
     @Inject
     public QuestionInsertNumberCtrl(ServerUtils server, MainAppController mainCtrl) {

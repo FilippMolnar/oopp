@@ -18,6 +18,8 @@ package client.jokers;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 import client.controllers.MainAppController;
+import client.controllers.questions.QuestionMultiOptionsCtrl;
+import client.controllers.questions.QuestionSameAsCtrl;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

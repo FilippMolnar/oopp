@@ -62,6 +62,7 @@ public abstract class AbstractQuestion implements Initializable {
     TimerTask timerTask;
     Timer numberTimer;
 
+    protected static boolean doublePointsJoker = false;
 
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
@@ -80,6 +81,10 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void setQuestionNumber(int num) {
         this.questionNumber.setText(num + "/20");
+    }
+
+    public static void setDoublePointsJoker(boolean doublePointsJoker) {
+        AbstractQuestion.doublePointsJoker = doublePointsJoker;
     }
 
     public void triggerJoker1(){
@@ -244,7 +249,6 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
-
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
         int maxPoints = 100;
@@ -257,9 +261,10 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void sendAnswerAndUpdateScore(MainAppController mainCtrl, String button_id, Activity a){
         int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
+        if (doublePointsJoker) score = score * 2;
+        setDoublePointsJoker(false);
         mainCtrl.updateScore(score);
         this.scoreText.setText("SCORE "+mainCtrl.getTotalScore());
-        Answer answer = new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName());
         if(isMultiPlayer) {
             sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
         } else {

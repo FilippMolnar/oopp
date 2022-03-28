@@ -4,6 +4,7 @@ import client.utils.ServerUtils;
 import commons.Game;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -140,21 +141,15 @@ public class LeaderBoardCtrl implements ControllerInitialize{
 
     public void loadingAnimation() {
         loadingLine.setVisible(true);
-        System.out.println("Initializing transition scene ctrl!");
-        double animationDuration = 1.7;
-        loadingLine.setEndX(-40); // for animation hardcoded
-        Timeline timeline = new Timeline();
-        KeyValue lineLength = new KeyValue(loadingLine.endXProperty(), 128); // some hardcoded value for animation
-        EventHandler<ActionEvent> onFinished = t -> {
-            Platform.runLater(() -> {
-                System.out.println("Calling next from question transition!");
+        ScaleTransition st = new ScaleTransition(Duration.millis(5000), loadingLine);
+        st.setToX(0);
+        st.setOnFinished( t-> {
+            Platform.runLater( () -> {
                 appController.showNext();
-            }); // show next scene after animation
-        };
-        KeyFrame keyFrame1 = new KeyFrame(Duration.millis(animationDuration * 1000),
-                onFinished, lineLength);
-        timeline.getKeyFrames().add(keyFrame1);
-        timeline.play();
+            });
+        });
+        st.play();
+
     }
 
     public void fillWithValues() {

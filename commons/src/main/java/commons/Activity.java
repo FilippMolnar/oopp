@@ -62,7 +62,7 @@ public class Activity implements Comparable {
         Activity that = (Activity) o;
         return this.title.equals(that.title)
                 && this.consumption == that.consumption
-                && this.imagePath == that.imagePath;
+                && this.imagePath.equals(that.imagePath);
     }
 
     @Override

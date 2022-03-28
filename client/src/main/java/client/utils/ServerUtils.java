@@ -242,6 +242,15 @@ public class ServerUtils {
                 .get(Response.class);
         return q.readEntity(Game.class);
     }
+    // "/game/leaderboard/{gameID}"
+    public Map<Integer, List<String>> getLeaderboard(int gameID) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/game/leaderboard/" + gameID)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<Map<Integer, List<String>>>() {
+                });
+    }
 
     /**
      * This method is used by single players, who do not have a game ID

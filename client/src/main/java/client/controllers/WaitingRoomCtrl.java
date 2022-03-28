@@ -1,5 +1,8 @@
 package client.controllers;
 
+import client.LinkedScene;
+import client.controllers.questions.QuestionInsertNumberCtrl;
+import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.utils.ServerUtils;
 import commons.Player;
 import commons.Question;
@@ -114,5 +117,17 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
             // disconnect from waiting room
             this.serverUtils.sendThroughSocket("/app/disconnect", new Player(appController.getName()));
         });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/decrease_time/gameID", Integer.class, gameID -> {
+            System.out.println("decreased");
+            LinkedScene current = appController.getCurrentScene();
+            if(current.getController() instanceof QuestionMultiOptionsCtrl qCtrl){
+                System.out.println("cutting animation");
+                qCtrl.cutAnimationInHalf();
+            } else if(current.getController() instanceof QuestionInsertNumberCtrl qCtrl){
+                qCtrl.cutAnimationInHalf();
+            }
+        });
+
+
     }
 }

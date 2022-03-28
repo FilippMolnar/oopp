@@ -80,15 +80,15 @@
     </GridPane>
     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="What server would you like to play in?" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
         <font>
-            <Font size="19.0" />
+            <Font size="19.0"/>
         </font>
         <GridPane.margin>
-            <Insets bottom="10.0" top="10.0" />
+            <Insets bottom="10.0" top="10.0"/>
         </GridPane.margin>
     </Text>
     <Button mnemonicParsing="false" onAction="#enterRoom" prefHeight="54.0" prefWidth="151.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Start game" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
         <font>
-            <Font size="15.0" />
+            <Font size="15.0"/>
         </font>
     </Button>
    <Button minWidth="56.0" mnemonicParsing="false" onAction="#backToHomeScreen" prefHeight="15.0" prefWidth="56.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: transparent;" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">

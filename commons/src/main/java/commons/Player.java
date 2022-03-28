@@ -15,7 +15,6 @@
  */
 package commons;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -35,7 +34,6 @@ public class Player {
 
     private String name;
     private String socketID;
-    private int gameID;
 
     @SuppressWarnings("unused")
     private Player() {
@@ -44,7 +42,6 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        this.gameID = 0;
     }
 
     public long getGameID() {return this.id;}
@@ -65,7 +62,12 @@ public class Player {
 
     @Override
     public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
+        if (obj == this)
+            return true;
+        if (obj instanceof Player that) {
+            return that.getName().equals(this.getName());
+        }
+        return false;
     }
 
     @Override

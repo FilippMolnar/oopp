@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -105,7 +106,7 @@
             </padding>
             <HBox alignment="CENTER" layoutX="73.0" layoutY="-5.0" prefHeight="60.0" prefWidth="214.0" AnchorPane.bottomAnchor="-11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <VBox alignment="CENTER">
-                    <Text fx:id="score" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE 1200">
+                    <Text fx:id="scoreText" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Score: 0">
                         <font>
                             <Font size="16.0" />
                         </font>
@@ -147,7 +148,7 @@
             </children>
          </Group>
             <ImageView fitHeight="91.0" fitWidth="228.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" StackPane.alignment="BOTTOM_CENTER">
-                <Image url="@../../33/computer.jpeg" />
+                <Image url="@/GoodActivities/33/Freezer.jpg"/>
             </ImageView>
         </StackPane>
         <StackPane GridPane.columnIndex="3">
@@ -162,7 +163,7 @@
             </children>
          </Group>
             <ImageView fitHeight="88.0" fitWidth="238.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" StackPane.alignment="BOTTOM_CENTER">
-                <Image url="@../../33/computer.jpeg" />
+                <Image url="@/GoodActivities/33/Freezer.jpg"/>
             </ImageView>
         </StackPane>
         <StackPane prefHeight="175.0" prefWidth="322.0" GridPane.columnIndex="4">
@@ -177,7 +178,7 @@
             </children>
          </Group>
             <ImageView fitHeight="131.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" StackPane.alignment="BOTTOM_CENTER">
-                <Image url="@../../33/HeatingBlanket.jpg" />
+                <Image url="@/GoodActivities/33/Freezer.jpg"/>
             </ImageView>
         </StackPane>
         <Button fx:id="optionA" mnemonicParsing="false" onAction="#pressedOption" prefHeight="74.0" prefWidth="206.0" styleClass="question-button" text="A" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
@@ -195,7 +196,8 @@
             </GridPane.margin>
             <Image url="@/client/pictures/angry.png" />
         </ImageView>
-        <ImageView fitHeight="150.0" fitWidth="45.0" onMouseClicked="#angelReact" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+        <ImageView fitHeight="150.0" fitWidth="45.0" onMouseClicked="#angelReact" pickOnBounds="true"
+                   preserveRatio="true" GridPane.rowIndex="3">
             <GridPane.margin>
                 <Insets left="10.0" />
             </GridPane.margin>
@@ -203,11 +205,13 @@
         </ImageView>
     </GridPane>
 
-    <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
-    <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="552.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+    <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true"
+               preserveRatio="true" GridPane.columnIndex="2"/>
+    <ImageView styleClass="back_image" fitHeight="39.0" fitWidth="39.0" layoutX="552.0" layoutY="15.0"
+               pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="TOP">
         <GridPane.margin>
-            <Insets left="10.0" top="40.0" />
+            <Insets left="10.0" top="40.0"/>
         </GridPane.margin>
-        <Image url="@/client/pictures/exit_button.png" />
+        <Image url="@/client/pictures/exit_button.png"/>
     </ImageView>
 </GridPane>

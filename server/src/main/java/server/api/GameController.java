@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.database.ScoreRepository;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,9 +14,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -47,10 +44,6 @@ public class GameController {
         games.get(gameID).addPlayer(player);
     }
 
-    public void setScore(int gameID, Player player, int score) {
-        games.get(gameID).setScore(player, score);
-    }
-
     public void removePlayer(int gameID, Player player) {
         games.get(gameID).removePlayer(player);
     }
@@ -66,7 +59,7 @@ public class GameController {
      * @return a list of pairs of score and player sorted in descending order by their score
      */
     @GetMapping(path = "/game/leaderboard/{gameID}")
-    public List<Pair<Integer, Player>> getLeaderboard(@PathVariable("gameID") int gameID) {
+    public Map<Integer,List<String>> getLeaderboard(@PathVariable("gameID") int gameID) {
         Game cur = getGame(gameID);
 
         return cur.getLeaderboard();
@@ -77,7 +70,7 @@ public class GameController {
         Game cur = getGame(gameID);
         Player player = pair.getLeft();
         int score = pair.getRight();
-        cur.setScore(player, score);
+        cur.setScore(player.getName(), score);
     }
 
     @GetMapping(path = "/game/getGame/{gameID}")
@@ -122,8 +115,10 @@ public class GameController {
     public void submitAnswer(@Payload Answer a) {
         int gameID = a.getGameID();
         Game current = this.getGame(gameID);
-        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID);
-        if(current.newRequest(a.getOption())){
+        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username "+a.getUsername());
+        LOGGER.info(a.toString());
+        current.updateScore(a.getUsername(), a.getScore());
+        if (current.newRequest(a.getOption())) {
             List<Integer> options = current.getOptionsStatistics();
             var playerList = current.getPlayers();
             LOGGER.info("Sending results: " + options + " to game ID " + gameID);
@@ -133,5 +128,6 @@ public class GameController {
             }
             current.resetOptions();
         }
+        }
     }
-}
+

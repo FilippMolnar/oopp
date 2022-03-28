@@ -22,7 +22,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.apache.commons.lang3.tuple.Pair;
+//import org.apache.commons.lang3.tuple.Pair;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -36,10 +36,24 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private Button optionB;
     @FXML
     private Button optionC;
+
+    public Button getOptionA() {
+        return optionA;
+    }
+
+    public Button getOptionB() {
+        return optionB;
+    }
+
+    public Button getOptionC() {
+        return optionC;
+    }
+
     @FXML
     private GridPane images;
     //private boolean hasSubmittedAnswer = false;
     private int correct;
+    private Button selectedButton;
 
     @FXML
     private Text questionNumber;
@@ -50,6 +64,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private Label countB;
     @FXML
     private Label countC;
+
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -73,8 +88,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
             Path path = Paths.get(choice.getImagePath());
+            String groupID = path.getParent().getName(0).toString();
             try {
-                var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
+                var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
                 var newImage = new Image(actualPath);
                 view.setFitWidth(1);
                 view.setFitHeight(1);
@@ -124,24 +140,19 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         String button_id = source.getId();
         Activity a;
         if (button_id.equals("optionA")) {
+            selectedButton = optionA;
             a = question.getChoices().get(0);
         } else if (button_id.equals("optionB")) {
+            selectedButton = optionB;
             a = question.getChoices().get(1);
         } else {
+            selectedButton = optionC;
             a = question.getChoices().get(2);
         }
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-
-        if(isMultiPlayer) {
-            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id));
-        } else {
-            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
-            System.out.println("Stopping timer");
-            stopTimer();
-            mainCtrl.showNext();
-        }
+        sendAnswerAndUpdateScore(mainCtrl, button_id, a);
     }
 
 
@@ -227,26 +238,18 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         userReaction("happy", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
-
-    public void calculateScore(Player player, boolean answerCorrect, int secondsToAnswer) {
-        int currentScore = server.getGameMapping(mainCtrl.getGameID()).getScore(player);
+    public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
 
         int scoreToBeAdded = 0;
-        int maxSeconds = 20;
+        double maxSeconds = 10;
         int maxPoints = 100;
         if (answerCorrect) {
-            scoreToBeAdded = Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+            scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
+        return scoreToBeAdded;
 
-        Integer score = currentScore + scoreToBeAdded;
-        Pair<Player, Integer> result = Pair.of(player, score);
-        server.postGameScore(mainCtrl.getGameID(), result);
     }
 
-    public void dummy() {
-        Player player = new Player(mainCtrl.getName());
-        calculateScore(player, true, 20);
-    }
 
 
     private void displayAnswers(List<Integer> answerList) {
@@ -256,10 +259,17 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         System.out.println("Received answer!!" + answerList);
         showChart(answerList, correct);
         List<Label> labels = List.of(countA, countB, countC);
-        List<Button> options = List.of(optionA,optionB,optionC);
+        List<Button> options = List.of(optionA, optionB, optionC);
         Button correctOption = options.get(correct);
-        correctOption.setOpacity(1);
-        correctOption.setStyle("-fx-font-weight: bold;");
+        correctOption.setDisable(false);
+        correctOption.setMouseTransparent(true);
+        if (selectedButton != null) {
+            selectedButton.setDisable(false);
+            selectedButton.setMouseTransparent(true);
+            selectedButton.setStyle("-fx-border-width: 2.4; -fx-border-color: #C56659");
+        }
+        correctOption.setStyle("-fx-border-width: 2.4; -fx-font-weight: bold; -fx-border-color: #83b159");
+
         for (int i = 0; i < labels.size(); i++) {
             if (answerList.get(i) > 0) {
                 Label label = labels.get(i);
@@ -270,13 +280,19 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
 
-        stopTimer();
+        //stopTimer();
 
         TimerTask delay = new TimerTask() {
             @Override
             public void run() {
-                correctOption.setStyle("-fx-font-weight: normal;");
-                correctOption.setTextFill(Paint.valueOf("#d6d3ee"));
+                correctOption.setDisable(true);
+                correctOption.setMouseTransparent(false);
+                correctOption.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
+                if (selectedButton != null) {
+                    selectedButton.setDisable(true);
+                    selectedButton.setMouseTransparent(false);
+                    selectedButton.setStyle("-fx-border-width: 0;");
+                }
                 Platform.runLater(mainCtrl::showNext);
             }
         };
@@ -288,6 +304,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.
      */
     private void resetUI() {
+        List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
+        selectedButton = null;
+        for(int  i=0;i<3;i++)
+        {
+            var bar = (Rectangle)charts.get(i);
+            bar.setVisible(false);
+        }
         informationLabel.setVisible(false);
         countA.setVisible(false);
         countB.setVisible(false);
@@ -313,10 +336,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      */
     @Override
     public void initializeController() {
+        this.scoreText.setText("SCORE " + mainCtrl.getScore());
+        questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        startTimerAnimation(10);
+        System.out.println("Initializing Qmulti!");
         resetUI();
         resetLogic();
         super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
-        startTimerAnimation();
         System.out.println("Initializing Qmulti!");
     }
 

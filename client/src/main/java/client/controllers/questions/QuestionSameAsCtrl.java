@@ -5,7 +5,6 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
-import commons.Answer;
 import commons.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -89,7 +88,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+        sendAnswerAndUpdateScore(mainCtrl, button_id, a);
     }
 
 
@@ -111,7 +110,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
 
     @Override
     public void initializeController() {
-        startTimerAnimation();
+        startTimerAnimation(10);
         resizeImages();
         hasSubmittedAnswer = false;
         System.out.println("Enabling scene");

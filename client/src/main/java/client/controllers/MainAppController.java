@@ -81,6 +81,7 @@ public class MainAppController {
         LinkedScene sameAsLinked = new LinkedScene(sameAsScene);
         LinkedScene singleplayerLinked = new LinkedScene(homeSingleplayerScene, homeSingleplayer.getKey());
         LinkedScene multiplayerLinked = new LinkedScene(homeMultiplayerScene, homeMultiplayer.getKey());
+        LinkedScene qInsertLinked = new LinkedScene(qInsertScene, qInsertCtrl);
 
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
         this.currentScene = new LinkedScene(this.homeScene);
@@ -90,11 +91,7 @@ public class MainAppController {
 
         multiplayerLinked.addNext(waitingRoomLinked);
 
-
-        multiplayerLinked.addNext(waitingRoomLinked);
-
         this.primaryStage = primaryStage;
-
 
         jokers = new JokersList(serverUtils);
 

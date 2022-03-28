@@ -238,8 +238,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         userReaction("happy", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
-    public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
 
+    public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
         int maxPoints = 100;
@@ -247,10 +247,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
         return scoreToBeAdded;
-
     }
-
-
 
     private void displayAnswers(List<Integer> answerList) {
         optionA.setDisable(true);

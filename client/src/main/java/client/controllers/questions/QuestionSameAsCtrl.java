@@ -111,7 +111,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
 
     @Override
     public void initializeController() {
-        startTimerAnimation();
+        startTimerAnimation(10);
         resizeImages();
         hasSubmittedAnswer = false;
         System.out.println("Enabling scene");

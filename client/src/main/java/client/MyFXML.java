@@ -18,6 +18,7 @@ package client;
 import com.google.inject.Injector;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.util.Callback;
 import javafx.util.Pair;
 
@@ -28,25 +29,26 @@ import java.nio.file.Path;
 
 public class MyFXML {
 
-    private Injector injector;
+    private final Injector injector;
 
     public MyFXML(Injector injector) {
         this.injector = injector;
     }
 
     /**
-     *
-     * @param c  class type to load, the controller's class, eg: <code>QuoteOverviewCtrl.class</code>
-     * @param parts  array that gives the path to the <code>.fxml</code> file
-     * @param <T>  controller's type
+     * @param c     class type to load, the controller's class, eg: <code>QuoteOverviewCtrl.class</code>
+     * @param parts array that gives the path to the <code>.fxml</code> file
+     * @param <T>   controller's type
      * @return a pair of the controller and the FXML root object
      */
-    public <T> Pair<T, Parent> load(Class<T> c, String... parts) {
+    public <T> Pair<T, Scene> load(Class<T> c, String... parts) {
         try {
             var loader = new FXMLLoader(getLocation(parts), null, null, new MyFactory(), StandardCharsets.UTF_8);
             Parent parent = loader.load();
             T ctrl = loader.getController();
-            return new Pair<>(ctrl, parent);
+            Scene scene = new Scene(parent);
+            scene.getStylesheets().add("client/scenes/waiting_room.css");
+            return new Pair<>(ctrl, scene);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

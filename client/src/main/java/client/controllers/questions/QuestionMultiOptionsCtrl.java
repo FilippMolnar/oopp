@@ -152,18 +152,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
-        mainCtrl.updateScore(score);
-        this.scoreText.setText("SCORE "+mainCtrl.getTotalScore());
-        Answer answer = new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName());
-        if(isMultiPlayer) {
-            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
-        } else {
-            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
-            System.out.println("Stopping timer");
-            stopTimer();
-            mainCtrl.showNext();
-        }
+        sendAnswerAndUpdateScore(mainCtrl, button_id, a);
     }
 
 

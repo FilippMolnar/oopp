@@ -3,6 +3,7 @@ package client.controllers.questions;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Activity;
 import commons.Answer;
 import commons.Question;
 import commons.UserReaction;
@@ -252,6 +253,21 @@ public abstract class AbstractQuestion implements Initializable {
             scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
         return scoreToBeAdded;
+    }
+
+    public void sendAnswerAndUpdateScore(MainAppController mainCtrl, String button_id, Activity a){
+        int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
+        mainCtrl.updateScore(score);
+        this.scoreText.setText("SCORE "+mainCtrl.getTotalScore());
+        Answer answer = new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName());
+        if(isMultiPlayer) {
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
+        } else {
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            System.out.println("Stopping timer");
+            stopTimer();
+            mainCtrl.showNext();
+        }
     }
 
     public int getTimerIntegerValue() {

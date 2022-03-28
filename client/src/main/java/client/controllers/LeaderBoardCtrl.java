@@ -2,20 +2,13 @@ package client.controllers;
 
 import client.utils.ServerUtils;
 import commons.Game;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import javax.inject.Inject;
-import javafx.fxml.FXML;
-//import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -27,7 +20,6 @@ import javafx.geometry.VPos;
 import javafx.scene.layout.Priority;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
-import javafx.scene.control.Label;
 import javafx.scene.layout.RowConstraints;
 
 import java.util.*;
@@ -107,8 +99,6 @@ public class LeaderBoardCtrl implements ControllerInitialize{
 
     @FXML
     private Line loadingLine;
-
-    private boolean isMultiPlayer;
 
     private List<Label> names;
     private List<Label> scores;

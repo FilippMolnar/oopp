@@ -40,7 +40,7 @@ public class Activity implements Comparable {
         return this.consumption;
     }
 
-    public String getSource() { return this. source; }
+    public String getSource() { return this.source; }
 
     /*
      * Compares the consumption of two activities.
@@ -66,8 +66,8 @@ public class Activity implements Comparable {
         Activity that = (Activity) o;
         return this.title.equals(that.title)
                 && this.consumption == that.consumption
-                && this.imagePath.equals(that.imagePath)
-                && this.source.equals(that.source);
+                && this.imagePath.equals(that.imagePath);
+//                && this.source.equals(that.source);
     }
 
     @Override

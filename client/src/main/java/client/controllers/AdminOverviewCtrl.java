@@ -4,6 +4,8 @@ import client.utils.ServerUtils;
 import commons.Activity;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,7 +21,8 @@ public class AdminOverviewCtrl implements Initializable {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
-    private final AdminEditCtrl editCtrl;
+    private AdminEditCtrl editCtrl;
+    private ObservableList<Activity> data;
 
     @FXML
     private TableView<Activity> activityTable;
@@ -52,12 +55,38 @@ public class AdminOverviewCtrl implements Initializable {
 
 //    List<Activity> activities = serverUtils.getAllActivities();
 
+    /**
+     * Refreshes the data in the TableView.
+     */
+    public void refresh() {
+        var activities = serverUtils.getAllActivities();
+        data = FXCollections.observableList(activities);
+        this.activityTable.setItems(data);
+    }
+
     @Override
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
         titleColumn.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().getTitle()));
         sourceColumn.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().getSource()));
         consumptionColumn.setCellValueFactory(x -> (new SimpleIntegerProperty(x.getValue().getConsumption())).asObject());
         imageColumn.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().getImagePath()));
+        refresh();
+    }
+
+    /**
+     * Getter for activityTable
+     * @return The activityTable
+     */
+    public TableView<Activity> getActivityTable() {
+        return activityTable;
+    }
+
+    /**
+     * Getter for the activity that is currently selected
+     * @return The selected activity
+     */
+    public Activity getSelectedActivity() {
+        return selectedActivity;
     }
 
     /**
@@ -65,43 +94,44 @@ public class AdminOverviewCtrl implements Initializable {
      * @return Activity that user selected
      */
     public Activity retrieveActivity(){
-        return activityTable.getSelectionModel().getSelectedItem();
+        if (activityTable != null) {
+            return activityTable.getSelectionModel().getSelectedItem();
+        }
+        else return null;
     }
 
-    // Method to go to homescreen
-    // Linked to exitButton
+    Activity selectedActivity = retrieveActivity();
+
+    /**
+     * Goes to homescreen when exitButton is clicked
+     */
     public void exit() {
         appController.showHomeScreen();
     }
 
-    // Method to go to edit screen to add an activity
-    // Linked to addButton
-    // TODO: navigation so it goes to edit screen
+    /**
+     * Goes to edit screen to add an activity when the addButton is clicked
+     */
     public void toAddActivity() {
-        // Go to edit screen
         appController.showAdminEdit();
-        // All fields will be empty
-
     }
 
-    // Method to go to edit screen to edit an activity
-    // Linked to editButton
-    // TODO: navigation so it goes to edit screen and calls showEditActivity(selectedActivity)
+    /**
+     * Goes to edit screen to edit an activity when the editButton is clicked
+     */
     public void toEditActivity() {
-        Activity selectedActivity = retrieveActivity();
         if (selectedActivity == null) {
             error.setVisible(true);
         }
         else {
             appController.showAdminEdit();
             editCtrl.showEditActivity(selectedActivity);
-            // Go to edit screen (MainAppController) (and bring the activity to show in the fields)
-            // Call showEditActivity(selectedActivity)
         }
     }
 
-    // Method to delete an activity
-    // Linked to deleteButton
+    /**
+     * Deletes the selected activity from the repo and table when deleteButton is called
+     */
     public void deleteActivity() {
         Activity a = retrieveActivity();
         serverUtils.deleteActivity(a);

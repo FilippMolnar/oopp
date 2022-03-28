@@ -202,7 +202,7 @@ public abstract class AbstractQuestion implements Initializable {
             if (!hasSubmittedAnswer){
                 disableOptions();
                 System.out.println("time out");
-                sendAnswer(new Answer(false, ""));
+                sendAnswer(new Answer(false, "", mainCtrl.getGameID()));
             }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);

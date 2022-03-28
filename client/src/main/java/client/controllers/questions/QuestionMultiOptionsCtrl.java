@@ -31,6 +31,21 @@ import java.util.*;
 
 public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
 
+    @FXML
+    private Button optionA;
+    @FXML
+    private Button optionB;
+    @FXML
+    private Button optionC;
+    @FXML
+    private Label countA;
+    @FXML
+    private Label countB;
+    @FXML
+    private Label countC;
+    @FXML
+    private GridPane images;
+
     public Button getOptionA() {
         return optionA;
     }
@@ -207,6 +222,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
             System.out.println("received reaction!");
             userReaction(userReaction.getReaction(), userReaction.getUsername());
+            server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
         });
         server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
     }

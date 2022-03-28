@@ -75,7 +75,7 @@ public abstract class AbstractQuestion implements Initializable {
 
     protected boolean hasSubmittedAnswer = false;
 
-    private Timeline timeline;
+    protected Timeline timeline;
     TimerTask timerTask;
     Timer numberTimer;
 
@@ -87,6 +87,7 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void showChart(List<Integer> ans, int correct) {
+        System.out.println("SHOWING CHART");
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
 
@@ -104,8 +105,8 @@ public abstract class AbstractQuestion implements Initializable {
             bar.setHeight(0);
             KeyValue heightValue = new KeyValue(bar.heightProperty(), bar.getHeight() + h);
             KeyFrame frame = new KeyFrame(Duration.millis(500), heightValue);
-            Timeline timeline = new Timeline(frame);
-            timeline.play();
+            Timeline timeline2 = new Timeline(frame);
+            timeline2.play();
         }
     }
 
@@ -295,6 +296,7 @@ public abstract class AbstractQuestion implements Initializable {
         timerArc.setFill(Paint.valueOf("#d6d3ee"));
         timerValue.setFill(Paint.valueOf("#d6d3ee"));
         //create a timeline for moving the circle
+        System.out.println("TIMELINE INITIALIZED");
         this.timeline = new Timeline();
         //You can add a specific action when each frame is started.
 

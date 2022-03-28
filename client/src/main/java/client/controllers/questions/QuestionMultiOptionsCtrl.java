@@ -65,6 +65,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @FXML
     private Label countC;
 
+
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
         super(server, mainCtrl);
@@ -278,11 +279,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         Button correctOption = options.get(correct);
         correctOption.setDisable(false);
         correctOption.setMouseTransparent(true);
-        correctOption.setStyle("-fx-border-color: white; -fx-border-width: 2.4; -fx-font-weight: bold;");
         if (selectedButton != null) {
             selectedButton.setDisable(false);
             selectedButton.setMouseTransparent(true);
+            selectedButton.setStyle("-fx-border-width: 2.4; -fx-border-color: #C56659");
         }
+        correctOption.setStyle("-fx-border-width: 2.4; -fx-font-weight: bold; -fx-border-color: #83b159");
+
         for (int i = 0; i < labels.size(); i++) {
             if (answerList.get(i) > 0) {
                 Label label = labels.get(i);
@@ -301,9 +304,11 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
                 correctOption.setDisable(true);
                 correctOption.setMouseTransparent(false);
                 correctOption.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
-
-                selectedButton.setDisable(true);
-                selectedButton.setMouseTransparent(false);
+                if (selectedButton != null) {
+                    selectedButton.setDisable(true);
+                    selectedButton.setMouseTransparent(false);
+                    selectedButton.setStyle("-fx-border-width: 0;");
+                }
                 Platform.runLater(mainCtrl::showNext);
             }
         };

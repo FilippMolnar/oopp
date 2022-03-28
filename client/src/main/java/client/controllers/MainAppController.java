@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.util.List;
+import java.util.Map;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
@@ -28,6 +29,7 @@ public class MainAppController {
 
     private String name;
     protected boolean isMultiPlayer;
+    private int totalScore;
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private QuestionMultiOptionsCtrl qMultiCtrl;
@@ -65,6 +67,7 @@ public class MainAppController {
         this.questionTransitionScene = qTransition.getValue();
         this.leaderBoardCtrl = leaderBoard.getKey();
         this.qTransitionCtrl = qTransition.getKey();
+        this.leaderBoardCtrl = leaderBoard.getKey();
 
         this.qInsertCtrl = qInsert.getKey();
         this.qTransitionCtrl = qTransition.getKey();
@@ -119,7 +122,7 @@ public class MainAppController {
     }
 
     public int getScore() {
-        return this.score.getScore();
+        return this.totalScore;
     }
 
     public void setScore(int score) {
@@ -169,13 +172,12 @@ public class MainAppController {
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
             if (i == 10 && mode == 0) {
-                current.addNext(new LinkedScene(this.leaderBoardScene));
+                current.addNext(new LinkedScene(this.leaderBoardScene, this.leaderBoardCtrl));
                 current = current.getNext();
-            } else {
-                // add the transition before a normal question
-                current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
-                current = current.getNext();
-            }
+            } 
+            // add the transition before a normal question
+            current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
+            current = current.getNext();
             current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
             current = current.getNext();
         }
@@ -272,4 +274,23 @@ public class MainAppController {
         this.currentScene = this.homeScreenLinked;
     }
 
+    public void updateScore(int amount) {
+        this.totalScore += amount;
+    }
+
+    public int getTotalScore() {
+        return this.totalScore;
+    }
+
+    public Map<Integer, List<String>> getLeaderboard() {
+        return serverUtils.getLeaderboard(gameID);
+    }
+
+    public void setQuestionIndex(int questionIndex) {
+        this.questionIndex = questionIndex;
+    }
+
+    public boolean isMultiPlayer() {
+        return this.isMultiPlayer;
+    }
 }

@@ -203,13 +203,15 @@ public class ServerUtils {
 
     public static Map<Player,Integer> getScoreboard(int gameID)
     {
-        var q = ClientBuilder.newClient(new ClientConfig())
+        return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/leaderboard/" + gameID)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(Response.class);
-        Map<Player,Integer> scoreboard = q.readEntity(Map.class);
-        return scoreboard;
+                .get(new GenericType<>() {
+
+                });
+        //Map<Player,Integer> scoreboard = q.readEntity(Map.class);
+        //return scoreboard;
     }
 
     public Game getGameMapping(int gameID) {
@@ -219,6 +221,15 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .get(Response.class);
         return q.readEntity(Game.class);
+    }
+    // "/game/leaderboard/{gameID}"
+    public Map<Integer, List<String>> getLeaderboard(int gameID) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/game/leaderboard/" + gameID)
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<Map<Integer, List<String>>>() {
+                });
     }
 
     /**

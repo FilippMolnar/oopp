@@ -20,10 +20,13 @@ import commons.Player;
 import commons.Question;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import server.Utils;
 
 import java.security.Principal;
@@ -103,9 +106,10 @@ public class WaitController {
      */
     @PostMapping(path = {"", "/start"})
     public void startGame() {
-        LOGGER.info("Starting game with id " + gameID);
 
         Game currentGame = gameController.getGame(gameID);
+        LOGGER.info("Starting game with id " + gameID + " with " + currentGame.getPlayers().size() + " players");
+
         lobbyPlayers.clear();
         var playerList = currentGame.getPlayers();
         if (playerList == null) {
@@ -119,8 +123,8 @@ public class WaitController {
         gameID++;
     }
 
-    public void addPlayerToGameID(String playerID, Player player) {
-        player.setSocketID(playerID);
+    public void addPlayerToGameID(String socketID, Player player) {
+        player.setSocketID(socketID);
         gameController.addPlayerToGame(gameID, player);
     }
 
@@ -138,25 +142,49 @@ public class WaitController {
     }
 
 
+    @EventListener
+    public void handleSessionDisconnect(SessionDisconnectEvent event) {
+        StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
+        if (headers.getUser() == null) {
+            LOGGER.error("The socket disconnect event did not have a socket id configured.This should probably not happen!");
+            return;
+        }
+        String socketID = headers.getUser().getName();
+        Game game = gameController.getGameFromSocket(socketID);
+        var optionalPlayer = game.getPlayers().stream().filter(p -> p.getSocketID().equals(socketID)).findFirst();
+        if(optionalPlayer.isPresent()){
+            Player player = optionalPlayer.get();
+            if (lobbyPlayers.remove(player)) {
+                LOGGER.info("Player " + player.getName() + " disconnected because he closed the socket!");
+                simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
+            }
+        }else{
+            LOGGER.error("There is no player with this socket ID in the game" + game.getGameID());
+        }
+    }
+
 
     @MessageMapping("/disconnect")
     public void playerDisconnect(Player player) {
         LOGGER.info("Trying to remove " + player.getName() + "!");
-
         if (lobbyPlayers.remove(player)) {
             LOGGER.info("Player " + player.getName() + " disconnected!");
             simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
+        } else {
+            List<String> playerNames = lobbyPlayers.stream().map(Player::getName).toList();
+            LOGGER.error("Trying to remove " + player.getName() + " but he is not in the lobby players: " + playerNames);
         }
     }
+
     @MessageMapping("/decrease_time")
     public void decreaseTime(Player player) {
-        int gid = gameID-1;
+        int gid = gameID - 1;
         Game currentGame = gameController.getGame(gid);
         var playerList = currentGame.getPlayers();
-        if(playerList == null) return;
+        if (playerList == null) return;
         for (Player p : playerList) {
             String playerID = p.getSocketID();
-            if(player.getName().equals(p.getName())) continue;
+            if (player.getName().equals(p.getName())) continue;
             simpMessagingTemplate.convertAndSendToUser(playerID, "queue/decrease_time/gameID", gid);
         }
     }

@@ -168,7 +168,7 @@ public class MainAppController {
         LinkedScene current = this.currentScene;
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
-            if (i == 10 && mode == 0) {
+            if (i == 2 && mode == 0) {
                 current.addNext(new LinkedScene(this.leaderBoardScene));
                 current = current.getNext();
             } else {
@@ -188,35 +188,7 @@ public class MainAppController {
      * This method shows the next scene in the list of linked scenes
      */
     public void showNext() {
-        this.currentScene = this.currentScene.getNext();
-
-        primaryStage.setScene(this.currentScene.getScene());
-        if (this.currentScene.getTitle() != null) {
-            primaryStage.setTitle(this.currentScene.getTitle());
-        }
-        primaryStage.show();
-        Object controller = this.currentScene.getController();
-        // if this controller is of the question then set the question
-        if (controller instanceof QuestionMultiOptionsCtrl qController) {
-            qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
-            qController.setQuestionNumber(questionIndex);
-            qController.setGameMode(isMultiPlayer);
-        }
-        // if this controller is of the question then set the question
-        else if (controller instanceof QuestionInsertNumberCtrl qController) {
-            qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
-            qController.setQuestionNumber(questionIndex);
-            qController.setGameMode(isMultiPlayer);
-        }
-        if (controller instanceof ControllerInitialize controllerInit) {
-            controllerInit.initializeController();
-            if(questionIndex == questionsInGame.size()) {
-                serverUtils.addScore(score);
-                questionIndex = 0;
-            }
-        }
+        showNext(0);
     }
 
     public Question getCurrentQuestion(){

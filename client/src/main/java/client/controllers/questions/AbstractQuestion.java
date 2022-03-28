@@ -4,6 +4,7 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Answer;
+import commons.Player;
 import commons.Question;
 import commons.UserReaction;
 import javafx.animation.*;
@@ -239,14 +240,10 @@ public abstract class AbstractQuestion implements Initializable {
         score.setText(newScore+"");
     }
 
-    /**
-     * Wrapper function used to showcase the userReaction method with the help of a button. Will be deleted once we
-     * complete the reaction functionality.
-     */
-    public void userReaction() {
-        userReaction("angel", "Bianca");
+    public void backToHomeScreen(){
+        server.removePlayerFromGame(new Player(mainCtrl.getName()),mainCtrl.getGameID());
+        mainCtrl.showHomeScreen();
     }
-
     // for single player
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
         int currentScore = mainCtrl.getScore();

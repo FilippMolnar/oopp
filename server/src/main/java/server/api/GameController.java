@@ -25,10 +25,11 @@ public class GameController {
     private ScoreRepository scoreRepository;
 
     private final Map<Integer, Game> games = new HashMap<>();
+    private final Map<String, Game> socketToGame = new HashMap<>();
 
 
-    private SimpMessageSendingOperations simpMessagingTemplate;
-    private Logger LOGGER = LoggerFactory.getLogger(GameController.class);
+    private final SimpMessageSendingOperations simpMessagingTemplate;
+    private final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
     public GameController(ScoreRepository scoreRepository, SimpMessageSendingOperations simpMessagingTemplate) {
         this.scoreRepository = scoreRepository;
@@ -44,6 +45,10 @@ public class GameController {
             addNewGame(gameID);
         }
         games.get(gameID).addPlayer(player);
+        socketToGame.put(player.getSocketID(), getGame(gameID));
+    }
+    public Game getGameFromSocket(String socketID) {
+        return socketToGame.get(socketID);
     }
 
     public void setScore(int gameID, Player player, int score) {
@@ -56,6 +61,12 @@ public class GameController {
 
     public Game getGame(int gameID) {
         return games.get(gameID);
+    }
+
+    @PostMapping("/game/removePlayer/{gameID}")
+    public void removePlayerFromGame(@PathVariable("gameID") int gameID, Player player){
+        Game cur = getGame(gameID);
+        cur.removePlayer(player);
     }
 
     /**

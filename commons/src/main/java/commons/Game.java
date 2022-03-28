@@ -137,17 +137,11 @@ public class Game {
 
         List<Pair<Integer, Player>> scores = new ArrayList<>();
         for (int i = 0; i < pnum; i++) {
-            if (inGame.get(i) == false) continue; // Players which left the game won`t be in the scoreboard
+            if (!inGame.get(i)) continue; // Players which left the game won`t be in the scoreboard
             Pair<Integer, Player> cscore = Pair.of(scoreboard.get(i), idToPlayer.get(i));
             scores.add(cscore);
         }
-        Collections.sort(scores, new Comparator<Pair<Integer, Player>>() {
-            @Override
-            public int compare(final Pair<Integer, Player> p1, final Pair<Integer, Player> p2) {
-                if (p1.getKey() < p2.getKey()) return 1;
-                else return -1;
-            }
-        });
+        scores.sort(Map.Entry.comparingByKey());
         return scores;
     }
 
@@ -159,10 +153,10 @@ public class Game {
     public int getScore(Player player) {
         List<Pair<Integer, Player>> scores = getLeaderboard();
         int score = 0;
-        for (int i = 0; i < scores.size(); i++) {
-            Player p = scores.get(i).getRight();
+        for (var integerPlayerPair : scores) {
+            Player p = integerPlayerPair.getRight();
             if (p.equals(player)) {
-                score = scores.get(i).getLeft();
+                score = integerPlayerPair.getLeft();
             }
         }
         return score;

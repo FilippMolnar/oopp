@@ -35,14 +35,10 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import javax.annotation.Nonnull;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
@@ -55,16 +51,6 @@ public class ServerUtils {
     private static final String SERVER = "http://localhost:8080";
     private static final String WEBSOCKET_SERVER = "ws://localhost:8080/websocket";
     private final StompSession session = connect(WEBSOCKET_SERVER);
-
-    public void getQuotesTheHardWay() throws IOException {
-        var url = new URL(SERVER + "api/quotes");
-        var is = url.openConnection().getInputStream();
-        var br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
-    }
 
     /**
      * Connects the websockets to a url specifed in <code>WebSocketConfig</code> class on the server side
@@ -250,6 +236,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(score, APPLICATION_JSON), Score.class);
+    }
+
+    public void removePlayerFromGame(Player player,int gameID){
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/game/removePlayer/" + gameID) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(player, APPLICATION_JSON), Score.class);
     }
 
 }

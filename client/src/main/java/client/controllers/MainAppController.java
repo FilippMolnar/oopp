@@ -80,7 +80,7 @@ public class MainAppController {
         this.qMultiScene = qMulti.getValue();
         Scene sameAsScene = sameAs.getValue();
 
-        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene);
+        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
         LinkedScene sameAsLinked = new LinkedScene(sameAsScene);
         LinkedScene singleplayerLinked = new LinkedScene(homeSingleplayerScene, homeSingleplayer.getKey());
@@ -226,10 +226,10 @@ public class MainAppController {
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();
-            if(questionIndex == questionsInGame.size()) {
+            /*if(questionIndex == questionsInGame.size()) {
                 serverUtils.addScore(score);
                 questionIndex = 0;
-            }
+            }*/
         }
     }
 
@@ -267,10 +267,10 @@ public class MainAppController {
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();
-            if(questionIndex == questionsInGame.size()) {
+            /*if(questionIndex == questionsInGame.size()) {
                 serverUtils.addScore(score);
                 questionIndex = -1;
-            }
+            }*/
         }
     }
 

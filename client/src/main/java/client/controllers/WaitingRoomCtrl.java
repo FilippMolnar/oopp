@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class WaitingRoomCtrl implements Initializable {
+public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
@@ -89,7 +89,15 @@ public class WaitingRoomCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Initialize called by the waiting roomCtrl");
+
+
+
+    }
+
+    @Override
+    public void initializeController() {
         updateUI();
+        System.out.println("-----------------------------------------------------");
         this.serverUtils.subscribeForSocketMessages("/topic/waitingRoom", Player.class, player -> {
             playerList.add(player);
             movePlayers(player);
@@ -122,5 +130,4 @@ public class WaitingRoomCtrl implements Initializable {
 
 
     }
-
 }

@@ -1,3 +1,4 @@
+
 package client.controllers;
 
 import client.utils.ServerUtils;
@@ -50,7 +51,7 @@ public class AdminOverviewCtrl implements Initializable {
     AdminOverviewCtrl(ServerUtils serverUtils, MainAppController appController){
         this.appController = appController;
         this.serverUtils = serverUtils;
-        this.editCtrl = new AdminEditCtrl(serverUtils,appController);
+        this.editCtrl = new AdminEditCtrl(serverUtils,appController,this);
     }
 
 //    List<Activity> activities = serverUtils.getAllActivities();
@@ -109,6 +110,8 @@ public class AdminOverviewCtrl implements Initializable {
         }
         else {
             error.setVisible(false);
+            activityTable.getItems().remove(selectedActivity);
+            serverUtils.deleteActivity(selectedActivity);
             editCtrl.showEditActivity(selectedActivity);
         }
     }

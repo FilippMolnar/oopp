@@ -65,19 +65,15 @@ public class ActivityController {
 
     @PostMapping("/activities/delete")
     @Transactional
-    public ResponseEntity<Activity> deleteActivity(@RequestBody Activity activity) {
-        List<Activity> list = activities.findAll();
-        Activity candidate = null;
-        //        Activity candidate = activities.findById(activity.id);
-        for (Activity a : list) {
-            if (a.equals(activity)) {
-                candidate = a;
+    public void deleteActivity(@RequestBody Activity activity) {
+        List<Activity> list = activities.getByConsumption(activity.getConsumption(),0);
+        for (Activity a:list)
+        {
+            if(a.equals(activity))
+            {
+                activities.deleteById(a.id);
+                break;
             }
         }
-        if (candidate == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        activities.deleteById(activity.id);
-        return ResponseEntity.ok(candidate);
     }
 }

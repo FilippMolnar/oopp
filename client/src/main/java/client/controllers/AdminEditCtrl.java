@@ -1,3 +1,4 @@
+
 package client.controllers;
 
 import client.utils.ServerUtils;
@@ -13,6 +14,7 @@ public class AdminEditCtrl {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
+    private final AdminOverviewCtrl adminOverviewCtrl;
 
     @FXML
     private TextField activityTitleField;
@@ -26,9 +28,10 @@ public class AdminEditCtrl {
     Activity selectedActivity;
 
     @Inject
-    AdminEditCtrl(ServerUtils serverUtils, MainAppController appController){
+    AdminEditCtrl(ServerUtils serverUtils, MainAppController appController,AdminOverviewCtrl adminOverviewCtrl){
         this.appController = appController;
         this.serverUtils = serverUtils;
+        this.adminOverviewCtrl=adminOverviewCtrl;
     }
 
     public TextField getActivityTitleField() {
@@ -59,11 +62,7 @@ public class AdminEditCtrl {
      * The activity that is added is the one currently on the edit screen
      */
     public void addActivity() {
-        String title = activityTitleField.getText();
-        String source = activitySourceField.getText();
-        int consumption = parseInt(activityConsumptionField.getText());
-        String image = activityImageField.getText();
-        Activity a = new Activity(title, consumption, image, source);
+        Activity a = getActivity();
         serverUtils.addAct(a);
     }
 
@@ -78,13 +77,22 @@ public class AdminEditCtrl {
         // Let user edit, then submit, when submit is clicked, submitEditActivity is called
     }
 
+    public Activity getActivity()
+    {
+        String title = activityTitleField.getText();
+        String source = activitySourceField.getText();
+        String image = activityImageField.getText();
+        int consumption = parseInt(activityConsumptionField.getText());
+        return new Activity(title,consumption,image,source);
+    }
+
     /**
      * Submits edited activity by deleting the original activity and then adding the new version
      */
     public void submitEditActivity() {
         // Remove original activity from repo
-        serverUtils.deleteActivity(selectedActivity);
         // A new activity will be added with the fields filled in at the moment the user clicks submit
         addActivity();
+        appController.showAdmin();
     }
 }

@@ -1,6 +1,5 @@
 package commons;
 
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
@@ -14,17 +13,20 @@ public class Game {
     private int gameID;
     private List<Question> questions = new ArrayList<>();
     private Set<Player> players = new HashSet<>();
-    private List<Integer> scoreboard = new ArrayList<>(); // A list of the scores according to playerID
     private int requested = 0; // Keeps track of how many players have requested a new question
     private int qnum = 0; // Keeps track on which question we are throughout the game
     private int pnum = 0; // Keeps track of what the next player`s id should be
     private int pInGame = 0; // Keeps track of how many players are in current game
     private Map<String, Integer> optionsStatistics = new TreeMap<>();
+    private Map<String, Integer> players_index; // For quickly finding the score of a specific user
+    private Map<Integer, List<String>> scores_index; // For quickly sorting the scores.
 
     public Game() {
         optionsStatistics.put("optionA",0);
         optionsStatistics.put("optionB",0);
         optionsStatistics.put("optionC",0);
+        this.scores_index = new HashMap<>();
+        this.players_index = new HashMap<>();
     }
 
     public Game(int gameID) {
@@ -32,6 +34,8 @@ public class Game {
         optionsStatistics.put("optionA",0);
         optionsStatistics.put("optionB",0);
         optionsStatistics.put("optionC",0);
+        this.scores_index = new HashMap<>();
+        this.players_index = new HashMap<>();
     }
 
     public int getRequested() {
@@ -95,11 +99,25 @@ public class Game {
         inGame.put(pnum, true);
         pInGame++;
         players.add(player);
-        scoreboard.add(0);
-        playerToID.put(player, pnum);
-        idToPlayer.put(pnum, player);
-        pnum++;
-    }
+        if (this.scores_index.get(0) == null) {
+            List lst = new ArrayList();
+            lst.add(player.getName());
+            this.scores_index.put(0, lst);
+        }
+        else {
+            this.scores_index.get(0).add(player.getName());
+        }
+        this.players_index.put(player.getName(), 0);
+        for (String s : this.players_index.keySet()) {
+            System.out.println(this.players_index.get(s));
+        }
+        for (Integer score : this.scores_index.keySet()) {
+            for (String name : this.scores_index.get(score)) {
+                System.out.println(name + " - "+ score);
+            }
+        }
+        System.out.println("----------------------------------");
+        }
 
     /**
      * TODO optimize if necessary
@@ -107,6 +125,7 @@ public class Game {
      *
      * @param player to be removed
      */
+
     public void removePlayer(Player player) {
         players.remove(player);
         inGame.replace(playerToID.get(player), false);
@@ -133,9 +152,9 @@ public class Game {
      * @return a list of pairs of score and player in descending order
      */
 
-    public List<Pair<Integer, Player>> getLeaderboard() {
+    public Map<Integer, List<String>> getLeaderboard() {
 
-        List<Pair<Integer, Player>> scores = new ArrayList<>();
+        /*List<Pair<Integer, Player>> scores = new ArrayList<>();
         for (int i = 0; i < pnum; i++) {
             if (inGame.get(i) == false) continue; // Players which left the game won`t be in the scoreboard
             Pair<Integer, Player> cscore = Pair.of(scoreboard.get(i), idToPlayer.get(i));
@@ -148,16 +167,43 @@ public class Game {
                 else return -1;
             }
         });
-        return scores;
+        return scores;*/
+        return this.scores_index;
     }
 
-    public void setScore(Player player, int score) {
-        int id = playerToID.get(player);
-        scoreboard.set(id, score);
+    public void updateScore(String name, int score) {
+        /*int id = playerToID.get(player);
+        scoreboard.set(id, score);*/
+        int oldScore = this.players_index.get(name);
+        int newScore = this.players_index.get(name) + score;
+        this.players_index.put(name, newScore);
+        if (this.scores_index.containsKey(newScore)) {
+            this.scores_index.get(newScore).add(name);
+        }
+        else {
+            List<String> lst = new ArrayList<>();
+            lst.add(name);
+            this.scores_index.put(newScore, lst);
+        }
+        this.scores_index.get(oldScore).remove(name);
+    }
+
+    public void setScore(String name, int score) {
+        /*int id = playerToID.get(player);
+        scoreboard.set(id, score);*/
+        this.players_index.put(name, score);
+        if (this.scores_index.containsKey(score)) {
+            this.scores_index.get(score).add(name);
+        }
+        else {
+            List<String> lst = new ArrayList<>();
+            lst.add(name);
+            this.scores_index.put(score, lst);
+        }
     }
 
     public int getScore(Player player) {
-        List<Pair<Integer, Player>> scores = getLeaderboard();
+        /*List<Pair<Integer, Player>> scores = getLeaderboard();
         int score = 0;
         for (int i = 0; i < scores.size(); i++) {
             Player p = scores.get(i).getRight();
@@ -165,7 +211,8 @@ public class Game {
                 score = scores.get(i).getLeft();
             }
         }
-        return score;
+        return score;*/
+        return this.players_index.get(player.getName());
     }
 
     /**
@@ -175,5 +222,30 @@ public class Game {
      */
     public Question getQuestion() {
         return questions.get(this.qnum);
+    }
+
+    /**
+     * For testing the leaderboard
+     */
+    public static void printLeaderboardToScreen(Map<Integer, List<String>> leaderboard) {
+        Object[] keySet = leaderboard.keySet().toArray(new Object[0]);
+        List<Integer> keysInt = new ArrayList<>();
+        for (Object o : keySet) {
+            System.out.println(o.getClass());
+            if (o instanceof String) {
+                keysInt.add(Integer.parseInt((String) o));
+            }
+            else {
+                keysInt.add((Integer) o);
+            }
+        }
+        Integer[] scores = keysInt.toArray(new Integer[0]);
+        Arrays.sort(scores, Collections.reverseOrder());
+        int i = 0;
+        for(Integer score : scores) {
+            for (String name : leaderboard.get(score)) {
+                System.out.println((i+1)+") "+name+" - "+score);
+            }
+        }
     }
 }

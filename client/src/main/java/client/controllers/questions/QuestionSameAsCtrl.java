@@ -5,7 +5,6 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
-import commons.Answer;
 import commons.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -122,6 +121,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
+<<<<<<< HEAD
 
         if(isMultiPlayer) {
             sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
@@ -131,6 +131,9 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
             System.out.println("Stopping timer");
             displayAnswers(new ArrayList());
         }
+=======
+        sendAnswerAndUpdateScore(mainCtrl, button_id, a);
+>>>>>>> main
     }
 
 

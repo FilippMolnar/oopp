@@ -20,13 +20,10 @@ import commons.Player;
 import commons.Question;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.socket.messaging.SessionConnectEvent;
 import server.Utils;
 
 import java.security.Principal;
@@ -144,15 +141,11 @@ public class WaitController {
     }
 
 
-    @EventListener
-    private void handleSessionConnected(SessionConnectEvent event) {
-        SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
-        LOGGER.info("New socket connection! " + headers.getUser().getName());
-    }
-
 
     @MessageMapping("/disconnect")
     public void playerDisconnect(Player player) {
+        LOGGER.info("Trying to remove " + player.getName() + "!");
+
         if (lobbyPlayers.remove(player)) {
             LOGGER.info("Player " + player.getName() + " disconnected!");
             simpMessagingTemplate.convertAndSend("/topic/disconnect", player);

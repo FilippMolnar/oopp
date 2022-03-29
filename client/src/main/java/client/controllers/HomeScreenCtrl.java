@@ -25,11 +25,13 @@ public class HomeScreenCtrl {
     }
 
     public void enterSinglePlayer() {
+        appController.setQuestionNumber(0);
         System.out.println("entering singleplayer screen");
         appController.showNext(1);
     }
 
     public void enterMultiPlayer() {
+        appController.setQuestionNumber(1);
         System.out.println("entering multiplayer screen");
         appController.showNext(0);
     }

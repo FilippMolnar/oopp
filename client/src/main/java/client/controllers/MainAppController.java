@@ -106,6 +106,10 @@ public class MainAppController {
         sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
+    public void setQuestionNumber(int number) {
+        this.questionIndex = number;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -168,7 +172,7 @@ public class MainAppController {
         LinkedScene current = this.currentScene;
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
-            if (i == 2 && mode == 0) {
+            if (i == 10 && mode == 0) {
                 current.addNext(new LinkedScene(this.leaderBoardScene));
                 current = current.getNext();
             } else {

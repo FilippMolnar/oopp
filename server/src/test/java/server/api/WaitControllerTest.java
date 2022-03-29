@@ -53,10 +53,10 @@ public class WaitControllerTest {
         sut.addName(player2);
         sut.addName(player3);
 
-        sut.playerDisconnect(player2); // [1,2,3] - [2] = [1,3]
+        sut.playerDisconnectWaitingRoom(player2); // [1,2,3] - [2] = [1,3]
         assertEquals(sut.getLobbyPlayers(), List.of(player1, player3));
 
-        sut.playerDisconnect(player1);// [1,3] - 1 = [3]
+        sut.playerDisconnectWaitingRoom(player1);// [1,3] - 1 = [3]
         assertEquals(sut.getLobbyPlayers(), List.of(player3));
 
     }
@@ -65,7 +65,7 @@ public class WaitControllerTest {
     public void removeInexistentPlayer() {
         sut.addName(player1);
 
-        sut.playerDisconnect(player2);
+        sut.playerDisconnectWaitingRoom(player2);
         assertEquals(sut.getLobbyPlayers(), List.of(player1));
     }
 

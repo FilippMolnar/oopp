@@ -25,9 +25,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 public abstract class AbstractQuestion implements Initializable {
@@ -240,8 +238,11 @@ public abstract class AbstractQuestion implements Initializable {
         score.setText(newScore+"");
     }
 
-    public void backToHomeScreen(){
-        server.removePlayerFromGame(new Player(mainCtrl.getName()),mainCtrl.getGameID());
+    public void backToHomeScreen() {
+        List<Object> answerList = new ArrayList<>(2);
+        answerList.add(new Player(mainCtrl.getName()));
+        answerList.add(mainCtrl.getGameID());
+        server.sendThroughSocket("/app/disconnectFromGame", answerList);
         mainCtrl.showHomeScreen();
     }
     // for single player

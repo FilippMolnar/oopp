@@ -51,7 +51,7 @@
          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
       <children>
-         <Button onAction="#submitEditActivity" mnemonicParsing="false" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#submitEditActivity" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <font>
                <Font size="16.0" />
             </font>
@@ -78,10 +78,10 @@
                <Insets right="20.0" />
             </GridPane.margin>
          </Text>
-         <TextField fx:id="activityTitleField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-         <TextField fx:id="activitySourceField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-         <TextField fx:id="activityConsumptionField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-         <TextField fx:id="activityImageField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+         <TextField fx:id="activityImageField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+         <TextField fx:id="activityConsumptionField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+         <TextField fx:id="activitySourceField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+         <TextField fx:id="activityTitleField" maxWidth="-Infinity" prefWidth="350.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" />
          <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Image" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <font>
                <Font size="18.0" />

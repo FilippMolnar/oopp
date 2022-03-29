@@ -7,6 +7,7 @@ import client.controllers.questions.QuestionSameAsCtrl;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import client.jokers.JokersList;
+import commons.Activity;
 import commons.Question;
 import commons.Score;
 import javafx.scene.Parent;
@@ -43,6 +44,7 @@ public class MainAppController {
     private LeaderBoardCtrl leaderBoardCtrl;
     private TransitionSceneCtrl qTransitionCtrl;
     private AdminOverviewCtrl adminOverviewCtrl;
+    private AdminEditCtrl adminEditCtrl;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
     private Score score;
@@ -101,6 +103,7 @@ public class MainAppController {
         multiplayerLinked.addNext(waitingRoomLinked);
 
         this.adminOverviewCtrl = adminOverview.getKey();
+        this.adminEditCtrl = adminEdit.getKey();
 
         this.primaryStage = primaryStage;
 
@@ -295,11 +298,15 @@ public class MainAppController {
         adminOverviewCtrl.refresh();
     }
 
-    public void showAdminEdit() {
+    public void showAdminEdit(Activity activity) {
         primaryStage.setTitle("AdminEdit");
         primaryStage.setScene(adminEditScene);
         primaryStage.show();
         this.currentScene = adminEditLinked;
+        adminEditCtrl.getActivityTitleField().setText(activity.getTitle());
+        adminEditCtrl.getActivityImageField().setText(activity.getImagePath());
+        adminEditCtrl.getActivityConsumptionField().setText(String.valueOf(activity.getConsumption()));
+        adminEditCtrl.getActivitySourceField().setText(activity.getSource());
     }
 
 }

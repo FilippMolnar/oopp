@@ -74,22 +74,6 @@ public class AdminOverviewCtrl implements Initializable {
     }
 
     /**
-     * Getter for activityTable
-     * @return The activityTable
-     */
-    public TableView<Activity> getActivityTable() {
-        return activityTable;
-    }
-
-    /**
-     * Getter for the activity that is currently selected
-     * @return The selected activity
-     */
-    public Activity getSelectedActivity() {
-        return selectedActivity;
-    }
-
-    /**
      * Retrieves the activity the user selects from table
      * @return Activity that user selected
      */
@@ -99,8 +83,6 @@ public class AdminOverviewCtrl implements Initializable {
         }
         else return null;
     }
-
-    Activity selectedActivity = retrieveActivity();
 
     /**
      * Goes to homescreen when exitButton is clicked
@@ -113,18 +95,20 @@ public class AdminOverviewCtrl implements Initializable {
      * Goes to edit screen to add an activity when the addButton is clicked
      */
     public void toAddActivity() {
-        appController.showAdminEdit();
+        Activity a = new Activity("",0, "","");
+        appController.showAdminEdit(a);
     }
 
     /**
      * Goes to edit screen to edit an activity when the editButton is clicked
      */
     public void toEditActivity() {
+        Activity selectedActivity = retrieveActivity();
         if (selectedActivity == null) {
             error.setVisible(true);
         }
         else {
-            appController.showAdminEdit();
+            error.setVisible(false);
             editCtrl.showEditActivity(selectedActivity);
         }
     }

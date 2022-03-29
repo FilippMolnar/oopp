@@ -13,7 +13,6 @@ public class AdminEditCtrl {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
-//    private final AdminOverviewCtrl overviewCtrl;
 
     @FXML
     private TextField activityTitleField;
@@ -30,6 +29,22 @@ public class AdminEditCtrl {
     AdminEditCtrl(ServerUtils serverUtils, MainAppController appController){
         this.appController = appController;
         this.serverUtils = serverUtils;
+    }
+
+    public TextField getActivityTitleField() {
+        return activityTitleField;
+    }
+
+    public TextField getActivitySourceField() {
+        return activitySourceField;
+    }
+
+    public TextField getActivityConsumptionField() {
+        return activityConsumptionField;
+    }
+
+    public TextField getActivityImageField() {
+        return activityImageField;
     }
 
     /**
@@ -58,10 +73,7 @@ public class AdminEditCtrl {
      */
     public void showEditActivity(Activity activity) {
         // Show original activity
-        activityTitleField.setText(activity.getTitle());
-        activitySourceField.setText(activity.getSource());
-        activityConsumptionField.setText(String.valueOf(activity.getConsumption()));
-        activityImageField.setText(activity.getImagePath());
+        appController.showAdminEdit(activity);
         selectedActivity = activity;
         // Let user edit, then submit, when submit is clicked, submitEditActivity is called
     }
@@ -72,11 +84,6 @@ public class AdminEditCtrl {
     public void submitEditActivity() {
         // Remove original activity from repo
         serverUtils.deleteActivity(selectedActivity);
-//        String title = activityTitleField.getText();
-//        int consumption = Integer.valueOf(activityConsumptionField.getText());
-//        String imagePath = activityImageField.getText();
-//        String source = activitySourceField.getText();
-//        Activity act = new Activity(title, consumption, imagePath, source);
         // A new activity will be added with the fields filled in at the moment the user clicks submit
         addActivity();
     }

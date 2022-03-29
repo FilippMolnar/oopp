@@ -1,7 +1,6 @@
 package client.jokers;
 
 import client.controllers.MainAppController;
-import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.controllers.questions.QuestionSameAsCtrl;
 import client.utils.ServerUtils;

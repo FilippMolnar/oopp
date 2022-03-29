@@ -62,8 +62,8 @@ public class HomeScreenMultiplayerCtrl {
                 }
             }
         }
-
-        // Show single player. 0 would be single player.
+        labelErrors.setText(""); // reset the error label
+                // Show single player. 0 would be single player.
         this.appController.showNext();
         //this.serverUtils.postName(finalName);
         this.appController.setName(finalName);

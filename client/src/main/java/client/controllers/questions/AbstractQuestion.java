@@ -110,44 +110,64 @@ public abstract class AbstractQuestion implements Initializable {
         Pane pane = new Pane();
         ImageView iv;
         Label label = new Label(name);
-        String imagePath = "/client/pictures/" + reaction;
-        Image img = new Image(getClass().getResource(imagePath).toString());
-
+        Image img;
+        switch (reaction) {
+            case "happy":
+                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
+                break;
+            case "angry":
+                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
+                break;
+            case "angel":
+                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
+                break;
+            default:
+                return;
+        }
         iv = new ImageView(img);
         pane.getChildren().add(iv);
         pane.getChildren().add(label);
+        iv.setMouseTransparent(false);
+        label.setMouseTransparent(false);
         label.setPadding(new Insets(-20, 0, 0, 5));
         TranslateTransition translate = new TranslateTransition();
-        translate.setByY(200);
-        translate.setDuration(Duration.millis(2000));
+        translate.setByY(700);
+        translate.setDuration(Duration.millis(2800));
         translate.setNode(pane);
+        translate.setOnFinished(t -> {
+                    System.out.println("deleted");
+                    pane.getChildren().remove(iv);
+                    pane.getChildren().remove(label);
+                }
+        );
         translate.play();
 
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(2000));
+        //fade.setDelay(Duration.millis(1000));
         fade.setFromValue(10);
         fade.setToValue(0);
         fade.setNode(pane);
         fade.play();
         parentGridPane.getChildren().add(pane);
+
     }
 
     public void angryReact() {
         String path = "/app/reactions";
-        userReaction("angry",mainCtrl.getName());
+        userReaction("angry", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
     }
 
     public void angelReact() {
         String path = "/app/reactions";
-        userReaction("angel",mainCtrl.getName());
-
+        userReaction("angel", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
     }
 
     public void happyReact() {
         String path = "/app/reactions";
-        userReaction("happy",mainCtrl.getName());
+        userReaction("happy", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
 
@@ -248,6 +268,7 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void backToHomeScreen() {
+        stopTimer();
         List<Object> answerList = new ArrayList<>(2);
         answerList.add(new Player(mainCtrl.getName()));
         answerList.add(mainCtrl.getGameID());

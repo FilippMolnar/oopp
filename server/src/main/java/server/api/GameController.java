@@ -119,16 +119,18 @@ public class GameController {
      * sends everyone the number of players who have chosen each option. This functionality should only apply for the two
      * types of multiple choice questions.
      * @param a - the answer
-     * When everyone has answered (or the time has run out), each client gets a List of 3 Integers where the 0 index corresponds
-     * to the number of players who have chosen A, 1 -> B and 2 -> C.
+     *          When everyone has answered (or the time has run out), each client gets a List of 3 Integers where the 0 index corresponds
+     *          to the number of players who have chosen A, 1 -> B and 2 -> C.
      */
     @MessageMapping("/submit_answer")
     public void submitAnswer(@Payload Answer a) {
         int gameID = a.getGameID();
         Game current = this.getGame(gameID);
-        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username "+a.getUsername());
+        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username " + a.getUsername());
         LOGGER.info(a.toString());
         current.updateScore(a.getUsername(), a.getScore());
+        LOGGER.info("Game with " + gameID + " has " + current.getRequested() + 1 + " answers and "
+                + current.getplayersInGame() + " total players");
         if (current.newRequest(a.getOption())) {
             List<Integer> options = current.getOptionsStatistics();
             var playerList = current.getPlayers();
@@ -139,6 +141,7 @@ public class GameController {
             }
             current.resetOptions();
         }
-        }
+
     }
+}
 

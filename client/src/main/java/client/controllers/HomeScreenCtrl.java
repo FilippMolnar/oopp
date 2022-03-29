@@ -31,7 +31,7 @@ public class HomeScreenCtrl {
     }
 
     public void enterMultiPlayer() {
-        appController.setQuestionNumber(1);
+        appController.setQuestionNumber(0);
         System.out.println("entering multiplayer screen");
         appController.showNext(0);
     }

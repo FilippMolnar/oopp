@@ -88,16 +88,6 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Initialize called by the waiting roomCtrl");
-
-
-
-    }
-
-    @Override
-    public void initializeController() {
-        updateUI();
-        System.out.println("-----------------------------------------------------");
         this.serverUtils.subscribeForSocketMessages("/topic/waitingRoom", Player.class, player -> {
             playerList.add(player);
             movePlayers(player);
@@ -107,7 +97,6 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
             playerList.remove(player);
             updateUI();
         });
-
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, gameID -> {
             appController.setGameID(gameID);
             List<Question> questions = serverUtils.getAllGameQuestions(gameID);
@@ -124,7 +113,10 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
                 qCtrl.cutAnimationInHalf();
             }
         });
+    }
 
-
+    @Override
+    public void initializeController() {
+        updateUI();
     }
 }

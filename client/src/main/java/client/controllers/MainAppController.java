@@ -229,15 +229,15 @@ public class MainAppController {
         // if this controller is of the question then set the question
         if (controller instanceof QuestionMultiOptionsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            questionIndex++;
             qController.setGameMode(isMultiPlayer);
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            questionIndex++;
             qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {

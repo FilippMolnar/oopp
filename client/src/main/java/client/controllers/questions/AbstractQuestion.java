@@ -3,6 +3,7 @@ package client.controllers.questions;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Activity;
 import commons.Answer;
 import commons.Player;
 import commons.Question;
@@ -39,8 +40,7 @@ public abstract class AbstractQuestion implements Initializable {
     protected Arc timerArc;
     @FXML
     private Text timerValue;
-    @FXML
-    protected Text score;
+
     @FXML
     protected Text questionNumber;
 
@@ -54,10 +54,14 @@ public abstract class AbstractQuestion implements Initializable {
 
     protected boolean hasSubmittedAnswer = false;
 
+    @FXML
+    protected Text scoreText;
+
     private Timeline timeline;
     TimerTask timerTask;
     Timer numberTimer;
 
+    protected static boolean doublePointsJoker = false;
 
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
@@ -76,6 +80,10 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void setQuestionNumber(int num) {
         this.questionNumber.setText(num + "/20");
+    }
+
+    public static void setDoublePointsJoker(boolean doublePointsJoker) {
+        AbstractQuestion.doublePointsJoker = doublePointsJoker;
     }
 
     public void triggerJoker1(){
@@ -198,10 +206,11 @@ public abstract class AbstractQuestion implements Initializable {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            if (!hasSubmittedAnswer){
+            System.out.println(hasSubmittedAnswer);
+            if (!hasSubmittedAnswer) {
+                System.out.println("submitting answer through the timer!");
                 disableOptions();
-                System.out.println("time out");
-                sendAnswer(new Answer(false, "", mainCtrl.getGameID()));
+                sendAnswer(new Answer(false, "", mainCtrl.getGameID(), 0, mainCtrl.getName()));
             }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
@@ -234,8 +243,8 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void checkAnswer(Answer answer) {
         int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
-        mainCtrl.setScore(newScore);
-        score.setText(newScore+"");
+        mainCtrl.updateScore(newScore);
+        scoreText.setText(newScore+"");
     }
 
     public void backToHomeScreen() {
@@ -247,8 +256,6 @@ public abstract class AbstractQuestion implements Initializable {
     }
     // for single player
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
-        int currentScore = mainCtrl.getScore();
-
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
         int maxPoints = 100;
@@ -256,8 +263,26 @@ public abstract class AbstractQuestion implements Initializable {
         if (answerCorrect) {
             scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
-        System.out.println(scoreToBeAdded);
-        return currentScore + scoreToBeAdded;
+        return scoreToBeAdded;
     }
 
+    public void sendAnswerAndUpdateScore(MainAppController mainCtrl, String button_id, Activity a){
+        int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
+        if (doublePointsJoker) score = score * 2;
+        setDoublePointsJoker(false);
+        mainCtrl.updateScore(score);
+        this.scoreText.setText("SCORE "+mainCtrl.getTotalScore());
+        if(isMultiPlayer) {
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
+        } else {
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            System.out.println("Stopping timer");
+            stopTimer();
+            mainCtrl.showNext();
+        }
+    }
+
+    public int getTimerIntegerValue() {
+        return timerIntegerValue;
+    }
 }

@@ -8,14 +8,15 @@ Add your own name (do not add the names for others!) to the section below.
 
 ## Group members
 
-| Profile Picture                                                                                                  | Name                 | Email                              |
-|------------------------------------------------------------------------------------------------------------------|----------------------|------------------------------------|
-| ![](C:\Users\Lieke\Downloads\Screenshot 2022-02-10 184835.png) | Lieke Sanders | L.Sanders@student.tudelft.nl |
-| ![](D:\downloads\picture.png) | Ivan Smilenov | I.Y.Smilenov@student.tudelft.nl |
-| ![](./photos/filip_photo.jpg) | Filip Molnar | F.M.T.Molnar@student.tudelft.nl |
-| ![](https://eu.ui-avatars.com/api/?name=Nicolae+Filat&length=2&size=50&color=DDD&background=558&font-size=0.325) | Nicolae Filat        | N.Filat@student.tudelft.nl         |
-| ![](https://eu.ui-avatars.com/api/?name=Izzy+Giessen&length=2&size=50&color=DDD&background=558&font-size=0.325)  | Izzy van der Giessen | I.VanDerGiessen@student.tudelft.nl |
-| ![](https://eu.ui-avatars.com/api/?name=Maria+Mihai&length=2&size=50&color=DDD&background=558&font-size=0.325)   | Maria Mihai          | M.T.Mihai@student.tudelft.nl       |
+
+| Profile Picture                                                                                                                         | Name                 | Email                              |
+|-----------------------------------------------------------------------------------------------------------------------------------------|----------------------|------------------------------------|
+| <img src="https://cdn-icons-png.flaticon.com/512/2857/2857433.png" height=60>                           | Lieke Sanders | L.Sanders@student.tudelft.nl |
+| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Database-icon.svg/640px-Database-icon.svg.png" height=60>            | Ivan Smilenov | I.Y.Smilenov@student.tudelft.nl |
+| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" width=60>                 | Filip Molnar | F.M.T.Molnar@student.tudelft.nl |
+| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/IntelliJ_IDEA_Icon.svg/2048px-IntelliJ_IDEA_Icon.svg.png" width=60> | Nicolae Filat        | N.Filat@student.tudelft.nl         |
+| <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Icon-Vim.svg/1200px-Icon-Vim.svg.png" width=60>                     | Izzy van der Giessen | I.VanDerGiessen@student.tudelft.nl |
+| <img src="https://icon-library.com/images/google-font-icon/google-font-icon-5.jpg" width=60>                          | Maria Mihai          | M.T.Mihai@student.tudelft.nl       |
 
 
 

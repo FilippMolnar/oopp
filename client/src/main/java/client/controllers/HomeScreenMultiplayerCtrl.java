@@ -3,6 +3,7 @@ package client.controllers;
 import client.utils.ServerUtils;
 import commons.Player;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -14,26 +15,33 @@ public class HomeScreenMultiplayerCtrl {
     private final MainAppController appController;
     private final ServerUtils serverUtils;
 
+
     @FXML
     private TextField nameString;
 
     @FXML
     private Label labelErrors;
 
+    @FXML
+    private TextField serverField;
+    @FXML
+    private ComboBox<String> serversDropdown;
+
+
     @Inject
-    HomeScreenMultiplayerCtrl(ServerUtils serverUtils, MainAppController appController){
+    HomeScreenMultiplayerCtrl(ServerUtils serverUtils, MainAppController appController) {
         this.appController = appController;
         this.serverUtils = serverUtils;
     }
 
-    public void enterRoom(){
+    public void enterRoom() throws InterruptedException {
         appController.initializeScore();
         appController.setGameMode(true);
         String name = nameString.getText();
         System.out.println(name);
-        String finalName = name.substring(0,Math.min(name.length(),16));
+        String finalName = name.substring(0, Math.min(name.length(), 16));
 
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             labelErrors.setText("Please enter your name");
             return;
         }
@@ -42,7 +50,7 @@ public class HomeScreenMultiplayerCtrl {
             // Send message to player that their name was too long
             labelErrors.setText("Your name was too long, we limited the number of characters");
         }
-
+        serverUtils.initializeServer(serverField.getText());
         // Get request for the players that are currently waiting
         List<Player> playersInWaitingRoom = serverUtils.getAllNamesInWaitingRoom();
         if (!playersInWaitingRoom.isEmpty()) {
@@ -65,4 +73,6 @@ public class HomeScreenMultiplayerCtrl {
     public void backToHomeScreen() {
         appController.showHomeScreen();
     }
+
+
 }

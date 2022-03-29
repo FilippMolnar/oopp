@@ -24,7 +24,7 @@
         <GridPane.margin>
             <Insets left="-10.0" />
         </GridPane.margin>
-        <Image url="@../pictures/quizzz.PNG" />
+        <Image url="@/client/pictures/quizzz.PNG"/>
     </ImageView>
     <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
         <rowConstraints>
@@ -38,14 +38,18 @@
                 </font>
             </Label>
             <GridPane alignment="CENTER" prefHeight="218.0" prefWidth="600.0" vgap="40.0">
-                <TextField fx:id="nameString" maxWidth="-Infinity" prefHeight="54.0" prefWidth="297.0" snapToPixel="false" style="-fx-background-color: #837ABA; -fx-background-radius: 50; -fx-text-fill: white;" text="Nickname" GridPane.rowIndex="2">
+                <TextField fx:id="nameString" maxWidth="-Infinity" prefHeight="58.0" prefWidth="287.0"
+                           snapToPixel="false"
+                           style="-fx-background-color: #837ABA; -fx-background-radius: 50; -fx-text-fill: white;"
+                           text="Nickname" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER"
+                           GridPane.rowIndex="2">
                     <font>
-                        <Font size="19.0" />
+                        <Font size="19.0"/>
                     </font>
                 </TextField>
 
                 <ImageView fitHeight="59.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                    <Image url="@../pictures/faq.png" />
+                    <Image url="@/client/pictures/faq.png"/>
                 </ImageView>
                 <Label alignment="CENTER" text="Please enter your name" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <font>
@@ -74,8 +78,7 @@
             <ColumnConstraints />
         </columnConstraints>
     </GridPane>
-    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="What server would you like to play in?"
-          GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="What server would you like to play in?" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
         <font>
             <Font size="19.0"/>
         </font>
@@ -83,24 +86,28 @@
             <Insets bottom="10.0" top="10.0"/>
         </GridPane.margin>
     </Text>
-    <ScrollPane maxHeight="1.7976931348623157E308" prefHeight="150.0" prefWidth="410.0" GridPane.columnIndex="1"
-                GridPane.rowIndex="1" GridPane.valignment="BOTTOM"/>
-    <Button mnemonicParsing="false" onAction="#enterRoom" prefHeight="54.0" prefWidth="151.0" text="Start game"
-            textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3"
-            GridPane.valignment="TOP">
+    <Button mnemonicParsing="false" onAction="#enterRoom" prefHeight="54.0" prefWidth="151.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Start game" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
         <font>
             <Font size="15.0"/>
         </font>
     </Button>
-    <ImageView fitHeight="53.0" fitWidth="36.0" onMousePressed="#backToHomeScreen" pickOnBounds="true"
-               preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-        <image>
-            <Image url="@../pictures/exit_button.png"/>
-        </image>
-        <GridPane.margin>
-            <Insets right="20.0"/>
-        </GridPane.margin>
-    </ImageView>
-
-
+   <Button minWidth="56.0" mnemonicParsing="false" onAction="#backToHomeScreen" prefHeight="15.0" prefWidth="56.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: transparent;" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+      <graphic>
+         <ImageView fitHeight="53.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@/client/pictures/exit_button.png"/>
+            </image>
+         </ImageView>
+      </graphic>
+      <padding>
+         <Insets right="20.0" top="20.0" />
+      </padding>
+   </Button>
+    <TextField fx:id="serverField" maxWidth="-Infinity" prefHeight="54.0" prefWidth="297.0" snapToPixel="false"
+               style="-fx-background-color: #837ABA; -fx-background-radius: 50; -fx-text-fill: white;" text="localhost"
+               GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <font>
+            <Font size="19.0"/>
+        </font>
+    </TextField>
 </GridPane>

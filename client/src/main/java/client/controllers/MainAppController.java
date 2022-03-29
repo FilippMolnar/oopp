@@ -13,7 +13,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
@@ -28,6 +33,7 @@ public class MainAppController {
 
     private String name;
     protected boolean isMultiPlayer;
+    private int totalScore;
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private QuestionMultiOptionsCtrl qMultiCtrl;
@@ -65,6 +71,7 @@ public class MainAppController {
         this.questionTransitionScene = qTransition.getValue();
         this.leaderBoardCtrl = leaderBoard.getKey();
         this.qTransitionCtrl = qTransition.getKey();
+        this.leaderBoardCtrl = leaderBoard.getKey();
 
         this.qInsertCtrl = qInsert.getKey();
         this.qTransitionCtrl = qTransition.getKey();
@@ -73,11 +80,12 @@ public class MainAppController {
         this.qMultiScene = qMulti.getValue();
         Scene sameAsScene = sameAs.getValue();
 
-        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene);
+        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
         LinkedScene sameAsLinked = new LinkedScene(sameAsScene);
         LinkedScene singleplayerLinked = new LinkedScene(homeSingleplayerScene, homeSingleplayer.getKey());
         LinkedScene multiplayerLinked = new LinkedScene(homeMultiplayerScene, homeMultiplayer.getKey());
+        LinkedScene qInsertLinked = new LinkedScene(qInsertScene, qInsertCtrl);
 
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
         this.currentScene = new LinkedScene(this.homeScene);
@@ -87,11 +95,7 @@ public class MainAppController {
 
         multiplayerLinked.addNext(waitingRoomLinked);
 
-
-        multiplayerLinked.addNext(waitingRoomLinked);
-
         this.primaryStage = primaryStage;
-
 
         jokers = new JokersList(serverUtils);
 
@@ -109,6 +113,16 @@ public class MainAppController {
     public void setQuestionNumber(int number) {
         this.questionIndex = number;
     }
+    public void openBrowser()
+    {
+        Desktop desktop = Desktop.getDesktop();
+        try{
+            URI url = new URI("https://www.google.com");
+            desktop.browse(url);
+        }catch(URISyntaxException | IOException e){
+            e.printStackTrace();
+        }
+    }
 
     public String getName() {
         return this.name;
@@ -123,7 +137,7 @@ public class MainAppController {
     }
 
     public int getScore() {
-        return this.score.getScore();
+        return this.totalScore;
     }
 
     public void setScore(int score) {
@@ -173,13 +187,12 @@ public class MainAppController {
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
             if (i == 10 && mode == 0) {
-                current.addNext(new LinkedScene(this.leaderBoardScene));
+                current.addNext(new LinkedScene(this.leaderBoardScene, this.leaderBoardCtrl));
                 current = current.getNext();
-            } else {
-                // add the transition before a normal question
-                current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
-                current = current.getNext();
-            }
+            } 
+            // add the transition before a normal question
+            current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
+            current = current.getNext();
             current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
             current = current.getNext();
         }
@@ -229,10 +242,10 @@ public class MainAppController {
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             controllerInit.initializeController();
-            if(questionIndex == questionsInGame.size()) {
+            /*if(questionIndex == questionsInGame.size()) {
                 serverUtils.addScore(score);
                 questionIndex = -1;
-            }
+            }*/
         }
     }
 
@@ -248,4 +261,23 @@ public class MainAppController {
         this.currentScene = this.homeScreenLinked;
     }
 
+    public void updateScore(int amount) {
+        this.totalScore += amount;
+    }
+
+    public int getTotalScore() {
+        return this.totalScore;
+    }
+
+    public Map<Integer, List<String>> getLeaderboard() {
+        return serverUtils.getLeaderboard(gameID);
+    }
+
+    public void setQuestionIndex(int questionIndex) {
+        this.questionIndex = questionIndex;
+    }
+
+    public boolean isMultiPlayer() {
+        return this.isMultiPlayer;
+    }
 }

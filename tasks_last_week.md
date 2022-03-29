@@ -1,5 +1,5 @@
-Please edit the document when you have time or I can make a drive and share it on whatsapp. \
-Try if possible to do the most important stuff until Thursday when we can test more thoroughly are see the bugs. \
+Please edit the document when you have time or I can make a drive and share it on whatsapp. 
+Try if possible to do the most important stuff until Thursday when we can test more thoroughly are see the bugs. 
 
 ## This how the tasks this week look like
 
@@ -7,7 +7,7 @@ Try if possible to do the most important stuff until Thursday when we can test m
 |:----------------------------------------------------------------------------------------------------------------|:--------:|:-------------------------------------------------:|:-----------------:|:--------:|
 | <li>Issue template</li> <li>weights </li> <li>assign issues to us that are already solved or to be solved </li> |  Gitlab  |                     Everyone                      | Wednesday Morning |  **10**  |
 | **Merge everything on gitlab that is not merged yet**                                                           |  Gitlab  | Everyone that has merge requests not merged today | Wednesday evening |  **10**  |
-| Install checkstyle                                                                                              | Refactor |                        dd                         | <i>fill here</i>  |    4     |
+| Install checkstyle                                                                                              | Refactor |                        Lieke                         | <i>fill here</i>  |    4     |
 | **Admin interface**                                                                                             |  Finish  |                   Lieke , Ivan                    | <i>fill here</i>  |  **8**   |
 | **Different question types**                                                                                    |  Finish  |                       Izzy                        | <i>fill here</i>  |  **7**   |
 | Joker randomization in the beginning of the game                                                                |  Finish  |                       Filip                       | <i>fill here</i>  |    5     | 

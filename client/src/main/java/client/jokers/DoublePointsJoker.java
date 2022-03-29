@@ -1,9 +1,7 @@
 package client.jokers;
 
 import client.controllers.MainAppController;
-import client.controllers.questions.AbstractQuestion;
-import client.controllers.questions.QuestionMultiOptionsCtrl;
-import client.controllers.questions.QuestionSameAsCtrl;
+import client.controllers.questions.*;
 import client.utils.ServerUtils;
 
 public class DoublePointsJoker extends Joker{
@@ -24,6 +22,10 @@ public class DoublePointsJoker extends Joker{
         if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl2) {
             qCtrl2.getDoublePointsCircle().setOpacity(0.5);
             qCtrl2.getDoublePointsImage().setOpacity(0.5);
+        }
+        if (mainCtrl.getCurrentScene().getController() instanceof QuestionInsertNumberCtrl qCtrl3) {
+            qCtrl3.getDoublePointsCircle().setOpacity(0.5);
+            qCtrl3.getDoublePointsImage().setOpacity(0.5);
         }
         use();
     }

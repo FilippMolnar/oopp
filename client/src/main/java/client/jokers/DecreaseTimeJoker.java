@@ -1,6 +1,7 @@
 package client.jokers;
 
 import client.controllers.MainAppController;
+import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.controllers.questions.QuestionSameAsCtrl;
 import client.utils.ServerUtils;
@@ -12,7 +13,7 @@ public class DecreaseTimeJoker extends Joker{
     }
 
     public void onClick(MainAppController mainCtrl){
-        if(isUsed()){
+        if (isUsed()){
             return;
         }
         System.out.println("DecreaseTimeJoker");
@@ -24,6 +25,10 @@ public class DecreaseTimeJoker extends Joker{
         if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl2) {
             qCtrl2.getDecreaseTimeCircle().setOpacity(0.5);
             qCtrl2.getDecreaseTimeImage().setOpacity(0.5);
+        }
+        if (mainCtrl.getCurrentScene().getController() instanceof QuestionInsertNumberCtrl qCtrl3) {
+            qCtrl3.getDecreaseTimeCircle().setOpacity(0.5);
+            qCtrl3.getDecreaseTimeImage().setOpacity(0.5);
         }
         use();
     }

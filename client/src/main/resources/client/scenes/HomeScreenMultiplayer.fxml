@@ -104,12 +104,10 @@
       </padding>
    </Button>
     <TextField fx:id="serverField" maxWidth="-Infinity" prefHeight="54.0" prefWidth="297.0" snapToPixel="false"
-               style="-fx-background-color: #837ABA; -fx-background-radius: 50; -fx-text-fill: white;"
+               style="-fx-background-color: #837ABA; -fx-background-radius: 50; -fx-text-fill: white;" text="localhost"
                GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
         <font>
             <Font size="19.0"/>
         </font>
     </TextField>
-    <ComboBox fx:id="serversDropdown" editable="true" prefHeight="41.0" prefWidth="271.0" promptText="localhost"
-              GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
 </GridPane>

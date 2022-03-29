@@ -76,7 +76,7 @@ public class MainAppController {
         this.qMultiScene = qMulti.getValue();
         Scene sameAsScene = sameAs.getValue();
 
-        LinkedScene waitingRoomLinked = new LinkedScene(this.waitingRoomScene, waitingRoomPair.getKey());
+        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
         LinkedScene sameAsLinked = new LinkedScene(sameAsScene);
         LinkedScene singleplayerLinked = new LinkedScene(homeSingleplayerScene, homeSingleplayer.getKey());

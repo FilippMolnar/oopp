@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -68,19 +67,16 @@ public class ServerUtils {
         }
     }
 
-    public void initializeServer(String server, CountDownLatch countDownLatch) {
+    public void initializeServer(String server) {
         // 172.435q3...
         SERVER = "http://" + server + ":8080";
         WEBSOCKET_SERVER = "ws://" + server + ":8080/websocket";
-        new Thread(() -> {
-            System.out.println("Trying to connect on another thread");
-            session = connect(WEBSOCKET_SERVER);
-            for (List<Object> l : subscribeParameters) {
-                System.out.println();
-                subscribeForSocketMessages((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
-            }
-            countDownLatch.countDown(); // let the UI thread know that this thread is done
-        }).start();
+        System.out.println("Trying to connect on another thread");
+        session = connect(WEBSOCKET_SERVER);
+        for (List<Object> l : subscribeParameters) {
+            System.out.println();
+            subscribeForSocketMessages((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
+        }
     }
 
     /**

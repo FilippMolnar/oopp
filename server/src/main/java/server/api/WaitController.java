@@ -78,15 +78,9 @@ public class WaitController {
         // 0 -> equal energy
         // 1 -> highest energy
         // 2 -> estimate answer
-<<<<<<< HEAD
         final int nrEqual = 8;
         final int nrEstimate = 4;
         final int nrHighest = 8;
-=======
-        final int nrEqual = 10;
-        final int nrEstimate = 0;
-        final int nrHighest = 10;
->>>>>>> c00e28c854cdf3610a6815683f8b543cd1376adb
         List<Question> list = new ArrayList<>();
         for (int i = 0; i < nrEqual; i++)
             list.add(questionController.getTypeEqual());

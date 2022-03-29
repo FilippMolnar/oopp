@@ -137,18 +137,6 @@ public abstract class AbstractQuestion implements Initializable {
         }
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
-
-        // For some reason, commenting this fixes bugs and doesn't break anything (???)
-       // TimerTask delay = new TimerTask() {
-       //     @Override
-       //     public void run() {
-       //         correctOption.setStyle("-fx-font-weight: normal;");
-       //         correctOption.setTextFill(Paint.valueOf("#d6d3ee"));
-       //         Platform.runLater(mainCtrl::showNext);
-       //     }
-       // };
-       // Timer myTimer = new Timer();
-       // myTimer.schedule(delay, 3000000); // wait for 4 seconds
     }
 
     public void setGameMode(boolean isMultiPlayer) {

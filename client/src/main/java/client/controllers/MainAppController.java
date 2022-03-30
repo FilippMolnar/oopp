@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import commons.Question;
 import commons.Score;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -95,6 +96,9 @@ public class MainAppController {
 
         jokers = new JokersList(serverUtils, true);
 
+
+        primaryStage.setMaximized(true);
+        resizeSceneToMaximize(homeScreenLinked);
         primaryStage.setScene(homeScene);
         primaryStage.show();
 
@@ -190,45 +194,17 @@ public class MainAppController {
      * This method shows the next scene in the list of linked scenes
      */
     public void showNext() {
-        this.currentScene = this.currentScene.getNext();
-
-        primaryStage.setScene(this.currentScene.getScene());
-        if (this.currentScene.getTitle() != null) {
-            primaryStage.setTitle(this.currentScene.getTitle());
-        }
-        primaryStage.show();
-        Object controller = this.currentScene.getController();
-        // if this controller is of the question then set the question
-        if (controller instanceof QuestionSameAsCtrl qController) {
-            qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
-            qController.setQuestionNumber(questionIndex);
-            qController.setGameMode(isMultiPlayer);
-        }
-        else if (controller instanceof QuestionMultiOptionsCtrl qController) {
-            qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
-            qController.setQuestionNumber(questionIndex);
-            qController.setGameMode(isMultiPlayer);
-        }
-        // if this controller is of the question then set the question
-        else if (controller instanceof QuestionInsertNumberCtrl qController) {
-            qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
-            qController.setQuestionNumber(questionIndex);
-            qController.setGameMode(isMultiPlayer);
-        }
-        if (controller instanceof ControllerInitialize controllerInit) {
-            controllerInit.initializeController();
-            /*if(questionIndex == questionsInGame.size()) {
-                serverUtils.addScore(score);
-                questionIndex = 0;
-            }*/
-        }
+        showNext(0);
     }
 
     public Question getCurrentQuestion(){
         return questionsInGame.get(questionIndex-1);
+    }
+
+    private void resizeSceneToMaximize(LinkedScene linked){
+        Pane element = (Pane) linked.getScene().getRoot(); // this assumes that root of the scene is a pane
+        element.setMinWidth(primaryStage.getWidth());
+        element.setMinHeight(primaryStage.getHeight());
     }
 
     /*
@@ -238,7 +214,7 @@ public class MainAppController {
      */
     public void showNext(int i) {
         this.currentScene = this.currentScene.getNext(i);
-
+        resizeSceneToMaximize(this.currentScene);
         primaryStage.setScene(this.currentScene.getScene());
         if (this.currentScene.getTitle() != null) {
             primaryStage.setTitle(this.currentScene.getTitle());
@@ -248,15 +224,15 @@ public class MainAppController {
         // if this controller is of the question then set the question
         if (controller instanceof QuestionMultiOptionsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            questionIndex++;
             qController.setGameMode(isMultiPlayer);
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            questionIndex++;
             qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
@@ -275,6 +251,7 @@ public class MainAppController {
      */
     public void showHomeScreen() {
         primaryStage.setTitle("Home");
+        resizeSceneToMaximize(homeScreenLinked);
         primaryStage.setScene(homeScene);
         primaryStage.show();
         this.currentScene = this.homeScreenLinked;

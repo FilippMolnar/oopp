@@ -35,15 +35,8 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import javax.annotation.Nonnull;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -56,27 +49,24 @@ public class ServerUtils {
     private final List<List<Object>> subscribeParameters = new ArrayList<>();
     private StompSession session;
     private String WEBSOCKET_SERVER;
+    private Set<List<Object>> connections = new HashSet<>();
 
-    public void getQuotesTheHardWay() throws IOException {
-        var url = new URL(SERVER + "api/quotes");
-        var is = url.openConnection().getInputStream();
-        var br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
-    }
 
     public void initializeServer(String server) {
         // 172.435q3...
         SERVER = "http://" + server + ":8080";
         WEBSOCKET_SERVER = "ws://" + server + ":8080/websocket";
-        System.out.println("Trying to connect on another thread");
-        session = connect(WEBSOCKET_SERVER);
-        for (List<Object> l : subscribeParameters) {
-            System.out.println();
-            subscribeForSocketMessages((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
+        System.out.println("Session is : " + session);
+        if(session != null){
+            System.out.println("Session is not null so disconnecting!");
+            session.disconnect(); // close all socket subscriptions with this session
         }
+        session = connect(WEBSOCKET_SERVER);
+        System.out.println("Prams:" + subscribeParameters);
+        for (List<Object> l : subscribeParameters) {
+            subscribeSocketFromList((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
+        }
+        connections.clear();
     }
 
     /**
@@ -113,10 +103,14 @@ public class ServerUtils {
      * @param consumer  the callback to execute when a message is received
      */
     public <T> void subscribeForSocketMessages(String dest, Class<T> classType, Consumer<T> consumer) {
+        List<Object> objects = List.of(dest, classType, consumer);
         if (session == null) {
-            subscribeParameters.add(List.of(dest, classType, consumer));
-            return;
+            subscribeParameters.add(objects);
+        }else {
+            System.out.println("Trying to subscribe to messages twice or from outside initialize() called once per controller");
         }
+    }
+    public <T> void subscribeSocketFromList(String dest, Class<T> classType, Consumer<T> consumer) {
         System.out.println("Registered to listen on the track " + dest);
         session.subscribe(dest, new StompFrameHandler() {
             @Override
@@ -278,6 +272,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(score, APPLICATION_JSON), Score.class);
+    }
+
+    public void removePlayerFromGame(Player player,int gameID){
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/game/removePlayer/" + gameID) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(player, APPLICATION_JSON), Score.class);
     }
 
 }

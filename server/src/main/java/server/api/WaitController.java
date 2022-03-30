@@ -20,17 +20,17 @@ import commons.Player;
 import commons.Question;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import server.Utils;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @RestController
@@ -103,9 +103,10 @@ public class WaitController {
      */
     @PostMapping(path = {"", "/start"})
     public void startGame() {
-        LOGGER.info("Starting game with id " + gameID);
 
         Game currentGame = gameController.getGame(gameID);
+        LOGGER.info("Starting game with id " + gameID + " with " + currentGame.getPlayers().size() + " players");
+
         lobbyPlayers.clear();
         var playerList = currentGame.getPlayers();
         if (playerList == null) {
@@ -116,12 +117,11 @@ public class WaitController {
         var questionList = questionController.get20RandomQuestions();
         currentGame.setQuestions(questionList);
         utils.sendToAllPlayers(playerList, "queue/startGame/gameID", gameID);
-
         gameID++;
     }
 
-    public void addPlayerToGameID(String playerID, Player player) {
-        player.setSocketID(playerID);
+    public void addPlayerToGameID(String socketID, Player player) {
+        player.setSocketID(socketID);
         gameController.addPlayerToGame(gameID, player);
     }
 
@@ -131,6 +131,7 @@ public class WaitController {
                 + gameID + " with sockets. The player's id is " + principal.getName());
         addName(player);
         addPlayerToGameID(principal.getName(), player);
+        simpMessagingTemplate.convertAndSendToUser(principal.getName(), "queue/socket", "ana");
     }
 
     @GetMapping(path = {"", "/"})
@@ -138,17 +139,63 @@ public class WaitController {
         return lobbyPlayers;
     }
 
+    @EventListener
+    public void handleSessionDisconnect(SessionDisconnectEvent event) {
+        StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
+        if (headers.getUser() == null) {
+            LOGGER.error("The socket disconnect event did not have a socket id configured.This should probably not happen!");
+            return;
+        }
+        String socketID = headers.getUser().getName();
+        Game game = gameController.getGameFromSocket(socketID);
+        if (game == null) {
+            LOGGER.warn("Socket message: Game is null meaning that the player is not in the game right now");
+            return;
+        }
+        var optionalPlayer = game.getPlayers().stream().filter(p -> p.getSocketID().equals(socketID)).findFirst();
+        if (optionalPlayer.isPresent()) {
+            Player player = optionalPlayer.get();
+            game.removePlayer(player);
+            if (lobbyPlayers.remove(player)) {
+                LOGGER.info("Socket message: Player " + player.getName() + " disconnected because he closed the socket!");
+                simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
+            } else {
+                LOGGER.info("Socket message: Player " + player.getName() + " disconnected from the game");
+            }
+        } else {
+            LOGGER.error("There is no player with this socket ID in the game" + game.getGameID());
+        }
+    }
+
+    @MessageMapping("/disconnectFromGame")
+    public void disconnectFromGame(List<Object> pair) {
+        Map map = (Map) pair.get(0);
+        LOGGER.info("Receiving : " + pair);
+        Player player = new Player((String) map.get("name"), (String) map.get("socketID"));
+        int goodGameId = (Integer) pair.get(1);
+        Game game = gameController.getGame(goodGameId);
+        if (game == null) {
+            LOGGER.error("Remove exit button for " + player.getName() + " failed because game is null");
+        } else {
+            game.removePlayer(player);
+            LOGGER.info("Remove exit button: " + player.getName() + " from the game with id " + game.getGameID());
+        }
+    }
 
 
     @MessageMapping("/disconnect")
-    public void playerDisconnect(Player player) {
-        LOGGER.info("Trying to remove " + player.getName() + "!");
-
+    public void playerDisconnectWaitingRoom(Player player) {
+        Game game = gameController.getGame(gameID);
         if (lobbyPlayers.remove(player)) {
-            LOGGER.info("Player " + player.getName() + " disconnected!");
+            game.removePlayer(player);
+            LOGGER.info("Manual remove waiting room: " + player.getName() + " succeeded!");
             simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
+        } else {
+            List<String> playerNames = lobbyPlayers.stream().map(Player::getName).toList();
+            LOGGER.error("Manual remove waiting room for " + player.getName() + " fail, he is not in the lobby players: " + playerNames);
         }
     }
+
     @MessageMapping("/decrease_time")
     public void decreaseTime(Player player) {
         int gid = (int) player.getGameID();

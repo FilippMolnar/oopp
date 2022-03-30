@@ -91,16 +91,6 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Initialize called by the waiting roomCtrl");
-
-
-
-    }
-
-    @Override
-    public void initializeController() {
-        updateUI();
-        System.out.println("-----------------------------------------------------");
         this.serverUtils.subscribeForSocketMessages("/topic/waitingRoom", Player.class, player -> {
             playerList.add(player);
             movePlayers(player);
@@ -110,7 +100,6 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
             playerList.remove(player);
             updateUI();
         });
-
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, gameID -> {
             appController.setGameID(gameID);
             List<Question> questions = serverUtils.getAllGameQuestions(gameID);
@@ -119,9 +108,6 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
             appController.setJokers(new JokersList(serverUtils, appController.isMultiPlayer()));
             appController.addQuestionScenes(questions, 0);
             appController.showNext();
-
-            // disconnect from waiting room
-            this.serverUtils.sendThroughSocket("/app/disconnect", new Player(appController.getName()));
         });
         this.serverUtils.subscribeForSocketMessages("/user/queue/decrease_time/gameID", Integer.class, gameID -> {
             System.out.println("decreased");
@@ -137,7 +123,6 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
                 CoverInkJoker.splashAnimation(qCtrl);
             }
         });
-
         this.serverUtils.subscribeForSocketMessages("/user/queue/cover_hands/gameID", Integer.class, gameID -> {
             System.out.println("cover_hands");
             LinkedScene current = appController.getCurrentScene();
@@ -146,5 +131,10 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
             }
         });
 
+    }
+
+    @Override
+    public void initializeController() {
+        updateUI();
     }
 }

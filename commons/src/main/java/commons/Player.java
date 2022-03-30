@@ -44,10 +44,17 @@ public class Player {
         this.name = name;
     }
 
-    public long getGameID() {return this.id;}
+    public Player(String name, String socketID) {
+        this.name = name;
+        this.socketID = socketID;
+    }
 
-    public void setGameID(int id){
-        this.id=id;
+    public long getGameID() {
+        return this.id;
+    }
+
+    public void setGameID(int id) {
+        this.id = id;
     }
 
     public String getName() {

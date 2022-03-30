@@ -15,28 +15,37 @@
  */
 package server.api;
 
+import commons.Game;
 import commons.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
 
 public class WaitControllerTest {
 
     private WaitController sut;
     private List<Player> lobby;
-    private MockSimpMessagingTemplate mockSimpMessagingTemplate;
+    private final SimpMessagingTemplate mockSimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    private final GameController mockGameController = Mockito.mock(GameController.class);
     private final Player player1 = new Player("player1");
     private final Player player2 = new Player("player2");
     private final Player player3 = new Player("player3");
 
     @BeforeEach
     public void setup() {
-        mockSimpMessagingTemplate = new MockSimpMessagingTemplate();
-        sut = new WaitController(mockSimpMessagingTemplate, null, null);
+        reset(mockSimpMessagingTemplate);
+        reset(mockGameController); // reset mock gameController
+        when(mockGameController.getGame(any(Integer.class))).thenReturn(new Game()); // return empty game
+        sut = new WaitController(mockSimpMessagingTemplate, mockGameController, null);
         lobby = new ArrayList<>();
     }
 
@@ -53,32 +62,25 @@ public class WaitControllerTest {
         sut.addName(player2);
         sut.addName(player3);
 
-        sut.playerDisconnect(player2); // [1,2,3] - [2] = [1,3]
+        sut.playerDisconnectWaitingRoom(player2); // [1,2,3] - [2] = [1,3]
         assertEquals(sut.getLobbyPlayers(), List.of(player1, player3));
 
-        sut.playerDisconnect(player1);// [1,3] - 1 = [3]
+        sut.playerDisconnectWaitingRoom(player1);// [1,3] - 1 = [3]
         assertEquals(sut.getLobbyPlayers(), List.of(player3));
-
     }
 
     @Test
     public void removeInexistentPlayer() {
         sut.addName(player1);
 
-        sut.playerDisconnect(player2);
+        sut.playerDisconnectWaitingRoom(player2);
         assertEquals(sut.getLobbyPlayers(), List.of(player1));
     }
 
     @Test
     public void checkSocketCalledAfterPostRequest() {
         sut.addName(new Player("Name"));
-        assertTrue(mockSimpMessagingTemplate.sendMesasgeToUser);
-        assertEquals(Player.class, mockSimpMessagingTemplate.objectSend.getClass(),
-                "Object send to the socket should be of type player");
-        try {
-            Player player = (Player) mockSimpMessagingTemplate.objectSend;
-        } catch (ClassCastException e) {
-            fail();
-        }
+        verify(mockSimpMessagingTemplate,times(1)).convertAndSend(
+                anyString(),eq(new Player("Name")));
     }
 }

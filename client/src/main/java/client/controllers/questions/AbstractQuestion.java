@@ -6,6 +6,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Answer;
+import commons.Player;
 import commons.Question;
 import commons.UserReaction;
 import javafx.animation.*;
@@ -28,10 +29,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 public abstract class AbstractQuestion implements Initializable {
@@ -162,26 +160,47 @@ public abstract class AbstractQuestion implements Initializable {
         Pane pane = new Pane();
         ImageView iv;
         Label label = new Label(name);
-        String imagePath = "/client/pictures/" + reaction;
-        Image img = new Image(getClass().getResource(imagePath).toString());
-
+        Image img;
+        switch (reaction) {
+            case "happy":
+                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
+                break;
+            case "angry":
+                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
+                break;
+            case "angel":
+                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
+                break;
+            default:
+                return;
+        }
         iv = new ImageView(img);
         pane.getChildren().add(iv);
         pane.getChildren().add(label);
+        iv.setMouseTransparent(false);
+        label.setMouseTransparent(false);
         label.setPadding(new Insets(-20, 0, 0, 5));
         TranslateTransition translate = new TranslateTransition();
-        translate.setByY(200);
-        translate.setDuration(Duration.millis(2000));
+        translate.setByY(700);
+        translate.setDuration(Duration.millis(2800));
         translate.setNode(pane);
+        translate.setOnFinished(t -> {
+                    System.out.println("deleted");
+                    pane.getChildren().remove(iv);
+                    pane.getChildren().remove(label);
+                }
+        );
         translate.play();
 
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(2000));
+        //fade.setDelay(Duration.millis(1000));
         fade.setFromValue(10);
         fade.setToValue(0);
         fade.setNode(pane);
         fade.play();
         parentGridPane.getChildren().add(pane);
+
     }
 
     public void angryReact() {
@@ -296,6 +315,15 @@ public abstract class AbstractQuestion implements Initializable {
         scoreText.setText(newScore + "");
     }
 
+    public void backToHomeScreen() {
+        stopTimer();
+        List<Object> answerList = new ArrayList<>(2);
+        answerList.add(new Player(mainCtrl.getName()));
+        answerList.add(mainCtrl.getGameID());
+        server.sendThroughSocket("/app/disconnectFromGame", answerList);
+        mainCtrl.showHomeScreen();
+    }
+    // for single player
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
         int scoreToBeAdded = 0;
         double maxSeconds = 10;

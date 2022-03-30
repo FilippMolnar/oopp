@@ -16,10 +16,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.scene.shape.Rectangle;
 
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.net.URL;
@@ -100,8 +98,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             try {
                 var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
                 var newImage = new Image(actualPath);
-                //view.setFitWidth(1);
-                //view.setFitHeight(1);
+                view.setFitWidth(1);
+                view.setFitHeight(1);
                 view.setImage(newImage);
                 view.setVisible(true);
             } catch (NullPointerException e) {
@@ -184,18 +182,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.
      */
     private void resetUI() {
-        List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
         selectedButton = null;
-        for(int  i=0;i<3;i++)
-        {
-            var bar = (Rectangle)charts.get(i);
-            bar.setVisible(false);
-        }
         informationLabel.setVisible(false);
         countA.setVisible(false);
         countB.setVisible(false);
         countC.setVisible(false);
         resizeImages();
+        resetChart();
         System.out.println("Enabling scene");
         optionA.setDisable(false);
         optionB.setDisable(false);

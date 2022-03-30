@@ -100,8 +100,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             try {
                 var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
                 var newImage = new Image(actualPath);
-                view.setFitWidth(1);
-                view.setFitHeight(1);
+                //view.setFitWidth(1);
+                //view.setFitHeight(1);
                 view.setImage(newImage);
                 view.setVisible(true);
             } catch (NullPointerException e) {

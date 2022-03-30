@@ -91,7 +91,6 @@
             <Circle fx:id="decreaseTimeCircle" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
             <ImageView fx:id="decreaseTimeImage" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@/client/pictures/joker_decrease_time.png"/>
->>>>>>> main
             </ImageView>
         </StackPane>
         <Group GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">

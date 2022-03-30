@@ -65,12 +65,9 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     @FXML
     private ImageView answerImage;
 
-<<<<<<< HEAD
-    //private int correct;
-    private boolean hasSubmittedAnswer = false;
 
     private Button selectedButton;
-=======
+
     public Button getOptionA() {
         return optionA;
     }
@@ -97,7 +94,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     private ImageView doublePointsImage;
     @FXML
     private ImageView decreaseTimeImage;
->>>>>>> main
 
     @Inject
     public QuestionSameAsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -220,7 +216,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionC.setDisable(false);
     }
 
-<<<<<<< HEAD
     /**
      * Since there is only one instance of the controller.
      * The controller won't reset it's state when a new scene loads.
@@ -250,7 +245,8 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
             userReaction(userReaction.getReaction(), userReaction.getUsername());
         });
         server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
-=======
+    }
+
     public Circle getElimWrongAnswerCircle() {
         return elimWrongAnswerCircle;
     }
@@ -273,6 +269,5 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
 
     public ImageView getDecreaseTimeImage() {
         return decreaseTimeImage;
->>>>>>> main
     }
 }

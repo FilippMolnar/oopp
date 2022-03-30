@@ -112,7 +112,8 @@ public class AdminEditCtrl {
         fileChooser.setTitle("Select image file");
         File file = fileChooser.showOpenDialog(null);
         String filePath = file.getAbsolutePath();
-        String newPath = "client/src/main/resources/client/pictures";
+//        src/main/resources/GoodActivities//oven.png
+        String newPath = "src/main/resources/GoodActivities//";
         String ending;
         if (filePath.contains("\\")) {
             ending = filePath.substring(filePath.lastIndexOf('\\') + 1);
@@ -123,6 +124,6 @@ public class AdminEditCtrl {
         String completePath = newPath + ending;
         this.sourceFile = new File(filePath);
         this.destinationFile = new File(completePath);
-        activityImageField.setText("client/src/main/resources/client/pictures/" + ending);
+        activityImageField.setText("src/main/resources/GoodActivities//" + ending);
     }
 }

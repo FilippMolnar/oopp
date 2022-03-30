@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 import commons.Question;
 import commons.Score;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -99,6 +100,9 @@ public class MainAppController {
 
         jokers = new JokersList(serverUtils);
 
+
+        primaryStage.setMaximized(true);
+        resizeSceneToMaximize(homeScreenLinked);
         primaryStage.setScene(homeScene);
         primaryStage.show();
 
@@ -211,6 +215,12 @@ public class MainAppController {
         return questionsInGame.get(questionIndex-1);
     }
 
+    private void resizeSceneToMaximize(LinkedScene linked){
+        Pane element = (Pane) linked.getScene().getRoot(); // this assumes that root of the scene is a pane
+        element.setMinWidth(primaryStage.getWidth());
+        element.setMinHeight(primaryStage.getHeight());
+    }
+
     /*
      * @param i in case multiple scenes follow the current scene,
      * the index of the following scenes is used to specify which
@@ -218,7 +228,7 @@ public class MainAppController {
      */
     public void showNext(int i) {
         this.currentScene = this.currentScene.getNext(i);
-
+        resizeSceneToMaximize(this.currentScene);
         primaryStage.setScene(this.currentScene.getScene());
         if (this.currentScene.getTitle() != null) {
             primaryStage.setTitle(this.currentScene.getTitle());
@@ -255,6 +265,7 @@ public class MainAppController {
      */
     public void showHomeScreen() {
         primaryStage.setTitle("Home");
+        resizeSceneToMaximize(homeScreenLinked);
         primaryStage.setScene(homeScene);
         primaryStage.show();
         this.currentScene = this.homeScreenLinked;

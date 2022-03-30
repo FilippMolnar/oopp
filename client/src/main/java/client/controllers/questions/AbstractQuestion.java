@@ -103,6 +103,20 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void setQuestionNumber(int num) {
         this.questionNumber.setText(num + "/20");
+        if(num % 5 == 0) {
+            mainCtrl.getJokers().replaceUsed(server);
+            uncheckJokers();
+        }
+    }
+
+    public void uncheckJokers(){
+        getCircle1().setOpacity(1.0);
+        getImage1().setOpacity(1.0);
+        getCircle2().setOpacity(1.0);
+        getImage2().setOpacity(1.0);
+        getCircle3().setOpacity(1.0);
+        getImage3().setOpacity(1.0);
+
     }
 
     public static void setDoublePointsJoker(boolean doublePointsJoker) {

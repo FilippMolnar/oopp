@@ -98,7 +98,7 @@ public class MainAppController {
         this.primaryStage = primaryStage;
 
         jokers = new JokersList(serverUtils);
-
+        jokers.replaceUsed(serverUtils);
         primaryStage.setScene(homeScene);
         primaryStage.show();
 
@@ -210,7 +210,13 @@ public class MainAppController {
         primaryStage.show();
         Object controller = this.currentScene.getController();
         // if this controller is of the question then set the question
-        if (controller instanceof QuestionMultiOptionsCtrl qController) {
+        if (controller instanceof QuestionSameAsCtrl qController) {
+            qController.setQuestion(questionsInGame.get(questionIndex));
+            questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
+        }
+        else if (controller instanceof QuestionMultiOptionsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);

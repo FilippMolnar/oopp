@@ -160,19 +160,8 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
                     " it can't be found on the client");
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
-<<<<<<< HEAD
-        elimWrongAnswerImage.setOpacity(0.0);
-        elimWrongAnswerCircle.setOpacity(0.0);
-=======
-        double randomMin = Math.random();
-        double randomMax = 1 + Math.random();
-        int min = (int) (answer * randomMin);
-        int max = (int) (answer * randomMax);
-        slider.setMin(min);
-        slider.setMax(max + 1);
         image3.setOpacity(0.0);
         circle3.setOpacity(0.0);
->>>>>>> main
     }
 
 

@@ -115,14 +115,8 @@ public class WaitController {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
-<<<<<<< HEAD
         //var questionList = get20RandomMostLeastQuestions();
         var questionList = getRandomQuestionTypes();
-        System.out.println("AMOUNT OF QUESTIONS = " + questionList.size());
-=======
-//        var questionList = get20RandomMostLeastQuestions();
-        var questionList = questionController.get20RandomQuestions();
->>>>>>> main
         currentGame.setQuestions(questionList);
         utils.sendToAllPlayers(playerList, "queue/startGame/gameID", gameID);
         gameID++;

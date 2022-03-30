@@ -55,7 +55,7 @@ public abstract class AbstractQuestion implements Initializable {
     protected GridPane images;
 
     @FXML
-    protected GridPane parentGridPane;
+    public GridPane parentGridPane;
     protected Circle circle1;
     @FXML
     protected Circle circle2;
@@ -68,8 +68,6 @@ public abstract class AbstractQuestion implements Initializable {
     @FXML
     protected ImageView image3;
 
-    @FXML
-    public GridPane parentGridPane;
     @FXML
     protected Arc timerArc;
     @FXML

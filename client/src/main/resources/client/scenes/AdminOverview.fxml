@@ -44,10 +44,10 @@
    </Button>
     <TableView fx:id="activityTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columns>
-            <TableColumn fx:id="titleColumn" maxWidth="270" text="Title" />
-            <TableColumn fx:id="sourceColumn" maxWidth="250" text="Source" />
-            <TableColumn fx:id="consumptionColumn" maxWidth="250" text="Consumption (in Wh)" />
-            <TableColumn fx:id="imageColumn" maxWidth="250" text="Image" />
+            <TableColumn fx:id="titleColumn" style="-fx-text-fill: #625998" maxWidth="270" text="Title" />
+            <TableColumn fx:id="sourceColumn" style="-fx-text-fill: #625998" maxWidth="250" text="Source" />
+            <TableColumn fx:id="consumptionColumn" style="-fx-text-fill: #625998" maxWidth="250" text="Consumption (in Wh)" />
+            <TableColumn fx:id="imageColumn" style="-fx-text-fill: #625998" maxWidth="250" text="Image" />
         </columns>
     </TableView>
     <GridPane GridPane.columnSpan="2147483647" GridPane.rowIndex="2">

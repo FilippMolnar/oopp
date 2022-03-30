@@ -269,19 +269,25 @@ public abstract class AbstractQuestion implements Initializable {
     public void angryReact() {
         String path = "/app/reactions";
         userReaction("angry",mainCtrl.getName());
-        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+        if(isMultiPlayer) {
+            server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+        }
     }
 
     public void angelReact() {
         String path = "/app/reactions";
         userReaction("angel",mainCtrl.getName());
-        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+        if(isMultiPlayer) {
+            server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+        }
     }
 
     public void happyReact() {
         String path = "/app/reactions";
         userReaction("happy",mainCtrl.getName());
-        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
+        if(isMultiPlayer) {
+            server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
+        }
     }
 
     public void stopTimer(){

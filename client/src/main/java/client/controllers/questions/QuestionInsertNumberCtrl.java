@@ -149,11 +149,10 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         activity.setText(choice.getTitle());
         Path path = Paths.get(choice.getImagePath());
         System.out.println(path.toString());
+        String groupID = path.getParent().getName(0).toString();
         try {
-            var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
+            var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
             var newImage = new Image(actualPath);
-            image.setFitWidth(1);
-            image.setFitHeight(1);
             image.setImage(newImage);
             System.out.println(path.getFileName() + " " + actualPath);
         } catch (NullPointerException e) {
@@ -161,12 +160,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
                     " it can't be found on the client");
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
-        double randomMin = Math.random();
-        double randomMax = 1 + Math.random();
-        int min = (int) (answer * randomMin);
-        int max = (int) (answer * randomMax);
-        slider.setMin(min);
-        slider.setMax(max + 1);
     }
 
     /**

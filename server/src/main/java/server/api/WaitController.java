@@ -70,7 +70,7 @@ public class WaitController {
         List<String> playerNames = lobbyPlayers.stream().map(Player::getName).toList();
         LOGGER.info("Players in waiting room are:" + playerNames);
     }
-
+    @GetMapping("/getRandomQuestions")
     private List<Question> getRandomQuestionTypes() {
         // 0 -> equal energy
         // 1 -> highest energy
@@ -89,7 +89,6 @@ public class WaitController {
         return list;
     }
 
-    @GetMapping("/getMostLeastQuestions")
     public List<Question> get20RandomMostLeastQuestions() {
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < 20; i++)

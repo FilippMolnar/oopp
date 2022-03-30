@@ -254,9 +254,9 @@ public class ServerUtils {
      *
      * @return 20 random questions
      */
-    public ArrayList<Question> getLeastMostQuestions() {
+    public ArrayList<Question> getRandomQuestions() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/wait/getMostLeastQuestions") //
+                .target(SERVER).path("api/wait/getRandomQuestions") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<>() {

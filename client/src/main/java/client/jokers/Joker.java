@@ -24,6 +24,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import client.utils.ServerUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Joker {
     public String name;
@@ -57,6 +58,11 @@ public class Joker {
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, imagePath, used, serverUtils);
     }
 
     @Override

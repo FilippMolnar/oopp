@@ -206,7 +206,7 @@
 
     <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true"
                preserveRatio="true" GridPane.columnIndex="2"/>
-    <ImageView styleClass="back_image" fitHeight="39.0" fitWidth="39.0" layoutX="552.0" layoutY="15.0"
+    <ImageView onMouseClicked="#backToHomeScreen" styleClass="back_image" fitHeight="39.0" fitWidth="39.0" layoutX="552.0" layoutY="15.0"
                pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="TOP">
         <GridPane.margin>
             <Insets left="10.0" top="40.0"/>

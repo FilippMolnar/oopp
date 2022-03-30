@@ -1,13 +1,13 @@
 package client.controllers;
 
 import client.utils.ServerUtils;
+import commons.Question;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import commons.Question;
-import java.util.ArrayList;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 public class HomeScreenSingleplayerCtrl {
 
@@ -34,7 +34,7 @@ public class HomeScreenSingleplayerCtrl {
             // Send message to player that their name was too long
             labelErrors.setText("Your name was too long, we limited the number of characters");
         }
-
+        serverUtils.initializeServer("localhost");
         ArrayList<Question> questions = serverUtils.getLeastMostQuestions();
         appController.addQuestionScenes(questions, 1);
         this.appController.setName(finalName);

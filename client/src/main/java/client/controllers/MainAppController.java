@@ -110,6 +110,9 @@ public class MainAppController {
         sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
+    public void setQuestionNumber(int number) {
+        this.questionIndex = number;
+    }
     public void openBrowser()
     {
         Desktop desktop = Desktop.getDesktop();
@@ -201,35 +204,7 @@ public class MainAppController {
      * This method shows the next scene in the list of linked scenes
      */
     public void showNext() {
-        this.currentScene = this.currentScene.getNext();
-
-        primaryStage.setScene(this.currentScene.getScene());
-        if (this.currentScene.getTitle() != null) {
-            primaryStage.setTitle(this.currentScene.getTitle());
-        }
-        primaryStage.show();
-        Object controller = this.currentScene.getController();
-        // if this controller is of the question then set the question
-        if (controller instanceof QuestionMultiOptionsCtrl qController) {
-            qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
-            qController.setQuestionNumber(questionIndex);
-            qController.setGameMode(isMultiPlayer);
-        }
-        // if this controller is of the question then set the question
-        else if (controller instanceof QuestionInsertNumberCtrl qController) {
-            qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
-            qController.setQuestionNumber(questionIndex);
-            qController.setGameMode(isMultiPlayer);
-        }
-        if (controller instanceof ControllerInitialize controllerInit) {
-            controllerInit.initializeController();
-            /*if(questionIndex == questionsInGame.size()) {
-                serverUtils.addScore(score);
-                questionIndex = 0;
-            }*/
-        }
+        showNext(0);
     }
 
     public Question getCurrentQuestion(){
@@ -253,15 +228,15 @@ public class MainAppController {
         // if this controller is of the question then set the question
         if (controller instanceof QuestionMultiOptionsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            questionIndex++;
             qController.setGameMode(isMultiPlayer);
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            questionIndex++;
             qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {

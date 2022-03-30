@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.application.Platform;
 import javafx.scene.shape.Rectangle;
 
 //import org.apache.commons.lang3.tuple.Pair;
@@ -69,8 +68,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     }
 
     public void setQuestion(Question question) {
-        System.out.println("question");
-        System.out.println(question);
         super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         optionA.setText(question.getChoices().get(0).getTitle());

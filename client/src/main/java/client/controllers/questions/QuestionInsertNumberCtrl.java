@@ -8,7 +8,6 @@ import commons.Question;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Slider;
-import javafx.scene.control.Button;
 import javafx.application.Platform;
 import java.util.*;
 import commons.Answer;
@@ -50,6 +49,8 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     private Text activity;
     @FXML
     private ImageView image;
+    @FXML
+    protected GridPane parentGridPane;
 
     @Inject
     public QuestionInsertNumberCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -58,7 +59,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void displayAnswers(List<Integer> answer) {
-        System.out.println("SHOWING ANSWERS");
         TimerTask delay = new TimerTask() {
             @Override
             public void run() {
@@ -67,7 +67,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         };
         Timer myTimer = new Timer();
         int consumption = mainCtrl.getCorrect().getConsumption();
-        System.out.println(mainCtrl.getCorrect());
         sliderValue.setText("Correct answer: " + consumption + "Wh");
         slider.setValue(consumption);
         myTimer.schedule(delay, 3000); // wait for 4 seconds
@@ -87,7 +86,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         int answer = (int) slider.getValue(); slider.setDisable(true);
         submitButton.setDisable(true);
         int newScore = calculateScore(Double.parseDouble(timerValue.getText()));
-        System.out.println("NEW SCORE: " + newScore);
         mainCtrl.updateScore(newScore);
         if(isMultiPlayer) {
             sendAnswer(new Answer(true, answer+"", mainCtrl.getGameID(), newScore, mainCtrl.getName()));
@@ -131,7 +129,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         startTimerAnimation(10);
         resizeImages();
         resetLogic();
-        System.out.println("Initializing insert number");
         questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         submitButton.setDisable(false);
         slider.setDisable(false);

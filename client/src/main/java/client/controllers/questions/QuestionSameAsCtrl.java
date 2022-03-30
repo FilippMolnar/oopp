@@ -32,7 +32,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.application.Platform;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -62,6 +61,8 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     private GridPane images;
     @FXML
     private Text activity;
+    @FXML
+    private ImageView answerImage;
 
     //private int correct;
     private boolean hasSubmittedAnswer = false;
@@ -89,7 +90,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
             Path path = Paths.get(choice.getImagePath());
-            System.out.println("PATH" + path);
             String groupID = path.getParent().getName(0).toString();
             try {
                 var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
@@ -107,6 +107,11 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
                 System.out.println(Arrays.toString(e.getStackTrace()));
             }
         }
+        Path path = Paths.get(question.getChoices().get(3).getImagePath());
+        String groupID = path.getParent().getName(0).toString();
+        var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
+        var newImage = new Image(actualPath);
+        answerImage.setImage(newImage);
     }
 
     /**
@@ -139,7 +144,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         } else {
             checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), 0, mainCtrl.getName()));
             stopTimer();
-            System.out.println("Stopping timer");
             displayAnswers(new ArrayList());
             if (selectedButton != null) {
                 selectedButton.setDisable(true);
@@ -181,7 +185,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         countB.setVisible(false);
         countC.setVisible(false);
         resizeImages();
-        System.out.println("Enabling scene");
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
@@ -202,7 +205,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         startTimerAnimation(10);
         resizeImages();
         hasSubmittedAnswer = false;
-        System.out.println("Enabling scene");
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);

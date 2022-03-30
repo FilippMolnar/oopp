@@ -264,7 +264,6 @@ public abstract class AbstractQuestion implements Initializable {
         fade.setNode(pane);
         fade.play();
         parentGridPane.getChildren().add(pane);
-
     }
 
     public void angryReact() {

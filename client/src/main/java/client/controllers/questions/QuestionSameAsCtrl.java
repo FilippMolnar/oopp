@@ -5,7 +5,6 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
-import commons.Answer;
 import commons.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 import java.nio.file.Path;
@@ -33,6 +33,18 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     private GridPane images;
     @FXML
     private Text activity;
+
+    public Button getOptionA() {
+        return optionA;
+    }
+
+    public Button getOptionB() {
+        return optionB;
+    }
+
+    public Button getOptionC() {
+        return optionC;
+    }
 
     private boolean hasSubmittedAnswer = false;
 
@@ -89,7 +101,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+        sendAnswerAndUpdateScore(mainCtrl, button_id, a);
     }
 
 

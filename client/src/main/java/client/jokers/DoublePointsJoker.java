@@ -1,6 +1,7 @@
 package client.jokers;
 
 import client.controllers.MainAppController;
+import client.controllers.questions.*;
 import client.utils.ServerUtils;
 
 public class DoublePointsJoker extends Joker{
@@ -9,10 +10,11 @@ public class DoublePointsJoker extends Joker{
     }
 
     public void onClick(MainAppController mainCtrl){
-        if(isUsed()){
+        if (isUsed()) {
             return;
         }
         System.out.println("DoublePointsJoker");
+        AbstractQuestion.setDoublePointsJoker(true);
         use();
     }
 }

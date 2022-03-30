@@ -58,12 +58,24 @@ public class Joker {
     }
 
     @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
-
-    @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
+    public void markUsed(MainAppController mainCtrl){
+        System.out.println(this.getClass());
+//        if (mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl) {
+//            qCtrl.getDecreaseTimeCircle().setOpacity(0.5);
+//            qCtrl.getDecreaseTimeImage().setOpacity(0.5);
+//        }
+//        if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl2) {
+//            qCtrl2.getDecreaseTimeCircle().setOpacity(0.5);
+//            qCtrl2.getDecreaseTimeImage().setOpacity(0.5);
+//        }
+//        if (mainCtrl.getCurrentScene().getController() instanceof QuestionInsertNumberCtrl qCtrl3) {
+//            qCtrl3.getDecreaseTimeCircle().setOpacity(0.5);
+//            qCtrl3.getDecreaseTimeImage().setOpacity(0.5);
+//        }
+
     }
 }

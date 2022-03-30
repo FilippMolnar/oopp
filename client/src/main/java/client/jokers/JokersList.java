@@ -31,9 +31,8 @@ public class JokersList {
 
     public JokersList(ServerUtils serverUtils) {
         this.jokers = new ArrayList<>();
-        //TODO randomly generate jokers, insert them to fxml
-        jokers.add(new CoverHandsJoker("cover hands", "@client/pictures/joker_double_points.png", serverUtils));
-        jokers.add(new CoverInkJoker("cover ink", "@client/pictures/joker_decrease_time.png", serverUtils));
+        jokers.add(new DoublePointsJoker("double points", "@client/pictures/joker_double_points.png", serverUtils));
+        jokers.add(new DecreaseTimeJoker("decrease time", "@client/pictures/joker_decrease_time.png", serverUtils));
         jokers.add(new ElimWrongJoker("eliminate wrong answer", "@client/pictures/joker_elim_wrong.png", serverUtils));
     }
 

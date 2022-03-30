@@ -3,6 +3,7 @@ package client.controllers.questions;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Activity;
 import commons.Answer;
 import commons.Question;
 import commons.UserReaction;
@@ -21,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -36,13 +38,25 @@ public abstract class AbstractQuestion implements Initializable {
     protected Question question;
 
     @FXML
+    protected Circle circle1;
+    @FXML
+    protected Circle circle2;
+    @FXML
+    protected Circle circle3;
+    @FXML
+    protected ImageView image1;
+    @FXML
+    protected ImageView image2;
+    @FXML
+    protected ImageView image3;
+
+    @FXML
     public GridPane parentGridPane;
     @FXML
     protected Arc timerArc;
     @FXML
     private Text timerValue;
-    @FXML
-    protected Text score;
+
     @FXML
     protected Text questionNumber;
 
@@ -63,10 +77,14 @@ public abstract class AbstractQuestion implements Initializable {
 
     protected boolean hasSubmittedAnswer = false;
 
+    @FXML
+    protected Text scoreText;
+
     private Timeline timeline;
     TimerTask timerTask;
     Timer numberTimer;
 
+    protected static boolean doublePointsJoker = false;
 
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
@@ -87,13 +105,19 @@ public abstract class AbstractQuestion implements Initializable {
         this.questionNumber.setText(num + "/20");
     }
 
-    public void triggerJoker1(){
+    public static void setDoublePointsJoker(boolean doublePointsJoker) {
+        AbstractQuestion.doublePointsJoker = doublePointsJoker;
+    }
+
+    public void triggerJoker1() {
         mainCtrl.getJokers().getJokers().get(0).onClick(mainCtrl);
     }
-    public void triggerJoker2(){
+
+    public void triggerJoker2() {
         mainCtrl.getJokers().getJokers().get(1).onClick(mainCtrl);
     }
-    public void triggerJoker3(){
+
+    public void triggerJoker3() {
         mainCtrl.getJokers().getJokers().get(2).onClick(mainCtrl);
     }
 
@@ -135,32 +159,32 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void angryReact() {
         String path = "/app/reactions";
-        userReaction("angry",mainCtrl.getName());
+        userReaction("angry", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
     }
 
     public void angelReact() {
         String path = "/app/reactions";
-        userReaction("angel",mainCtrl.getName());
+        userReaction("angel", mainCtrl.getName());
 
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
     }
 
     public void happyReact() {
         String path = "/app/reactions";
-        userReaction("happy",mainCtrl.getName());
+        userReaction("happy", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
 
-    public void stopTimer(){
+    public void stopTimer() {
         timeline.stop();
         timerTask.cancel();
         numberTimer.cancel();
     }
 
-    public void cutAnimationInHalf(){
+    public void cutAnimationInHalf() {
         stopTimer();
-        startTimerAnimation(timerIntegerValue/2);
+        startTimerAnimation(timerIntegerValue / 2);
 
     }
 
@@ -179,9 +203,9 @@ public abstract class AbstractQuestion implements Initializable {
                 Platform.runLater(() -> {
                     timerIntegerValue--;
                     System.out.println(timerIntegerValue);
-                    if(timerIntegerValue < 0){
+                    if (timerIntegerValue < 0) {
                         timerValue.setText(Integer.toString(0));
-                    } else{
+                    } else {
                         timerValue.setText(Integer.toString(timerIntegerValue));
                     }
                     if (timerIntegerValue <= 3) {
@@ -207,21 +231,19 @@ public abstract class AbstractQuestion implements Initializable {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            if (!hasSubmittedAnswer){
+            if (!hasSubmittedAnswer) {
                 disableOptions();
-                System.out.println("time out");
                 sendAnswer(new Answer(false, ""));
             }
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
-
-        //add the keyframe to the timeline
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
-    public void disableOptions(){
-        if(mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl){
+
+    public void disableOptions() {
+        if (mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl) {
             qCtrl.getOptionA().setDisable(true);
             qCtrl.getOptionB().setDisable(true);
             qCtrl.getOptionC().setDisable(true);
@@ -243,22 +265,11 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void checkAnswer(Answer answer) {
         int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
-        mainCtrl.setScore(newScore);
-        score.setText(newScore+"");
+        mainCtrl.updateScore(newScore);
+        scoreText.setText(newScore + "");
     }
 
-    /**
-     * Wrapper function used to showcase the userReaction method with the help of a button. Will be deleted once we
-     * complete the reaction functionality.
-     */
-    public void userReaction() {
-        userReaction("angel", "Bianca");
-    }
-
-    // for single player
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
-        int currentScore = mainCtrl.getScore();
-
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
         int maxPoints = 100;
@@ -266,63 +277,44 @@ public abstract class AbstractQuestion implements Initializable {
         if (answerCorrect) {
             scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
         }
-        System.out.println(scoreToBeAdded);
-        return currentScore + scoreToBeAdded;
+        return scoreToBeAdded;
     }
 
-
-    public void handsAnimation(){
-        int duration = timerIntegerValue * 1000;
-
-        /* create hands */
-        String pathLeft = "/client/pictures/left_hand.png";
-        String pathRight = "/client/pictures/right_hand.png";
-        Image imgLeft = new Image(getClass().getResource(pathLeft).toString());
-        Image imgRight = new Image(getClass().getResource(pathRight).toString());
-        ImageView ivLeft = new ImageView(imgLeft);
-        ImageView ivRight = new ImageView(imgRight);
-        ivRight.setPreserveRatio(true);
-        ivLeft.setPreserveRatio(true);
-        ivLeft.setFitWidth(700);
-        ivRight.setFitWidth(700);
-
-        /* add transition LEFT */
-        TranslateTransition translateLeft = new TranslateTransition();
-        translateLeft.setFromX(200);
-        translateLeft.setByX(-400);
-        translateLeft.setDuration(Duration.millis(7000));
-        translateLeft.setNode(ivLeft);
-        translateLeft.play();
-
-        /* add transition Right */
-        TranslateTransition translateRight = new TranslateTransition();
-        translateRight.setFromX(-400);
-        translateRight.setByX(200);
-        translateRight.setDuration(Duration.millis(7000));
-        translateRight.setNode(ivRight);
-        translateRight.play();
-
-        /* add in place */
-        parentGridPane.add(ivLeft, parentGridPane.getColumnCount() - 1, 1);
-        parentGridPane.add(ivRight, 0, 1);
-
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater( () -> {
-                    ivLeft.setDisable(true);
-                    ivRight.setDisable(true);
-                    parentGridPane.getChildren().remove(ivLeft);
-                    parentGridPane.getChildren().remove(ivRight);
-                });
-            }
-        };
-        timer.schedule(timerTask, Math.min(7000, duration));
+    public void sendAnswerAndUpdateScore(MainAppController mainCtrl, String button_id, Activity a) {
+        int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
+        if (doublePointsJoker) score = score * 2;
+        setDoublePointsJoker(false);
+        mainCtrl.updateScore(score);
+        this.scoreText.setText("SCORE " + mainCtrl.getTotalScore());
+        if (isMultiPlayer) {
+            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
+        } else {
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            System.out.println("Stopping timer");
+            stopTimer();
+            mainCtrl.showNext();
+        }
     }
 
+    public Circle getCircle1() {
+        return circle1;
     }
 
+    public Circle getCircle2() {
+        return circle2;
+    }
 
+    public Circle getCircle3() {
+        return circle3;
+    }
 
+    public ImageView getImage1() { return image1; }
 
+    public ImageView getImage2() {
+        return image2;
+    }
+
+    public ImageView getImage3() {
+        return image3;
+    }
+}

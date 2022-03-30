@@ -23,10 +23,11 @@ public class GameController {
     private ScoreRepository scoreRepository;
 
     private final Map<Integer, Game> games = new HashMap<>();
+    private final Map<String, Game> socketToGame = new HashMap<>();
 
 
-    private SimpMessageSendingOperations simpMessagingTemplate;
-    private Logger LOGGER = LoggerFactory.getLogger(GameController.class);
+    private final SimpMessageSendingOperations simpMessagingTemplate;
+    private final Logger LOGGER = LoggerFactory.getLogger(GameController.class);
 
     public GameController(ScoreRepository scoreRepository, SimpMessageSendingOperations simpMessagingTemplate) {
         this.scoreRepository = scoreRepository;
@@ -42,6 +43,10 @@ public class GameController {
             addNewGame(gameID);
         }
         games.get(gameID).addPlayer(player);
+        socketToGame.put(player.getSocketID(), getGame(gameID));
+    }
+    public Game getGameFromSocket(String socketID) {
+        return socketToGame.get(socketID);
     }
 
     public void removePlayer(int gameID, Player player) {
@@ -50,6 +55,12 @@ public class GameController {
 
     public Game getGame(int gameID) {
         return games.get(gameID);
+    }
+
+    @PostMapping("/game/removePlayer/{gameID}")
+    public void removePlayerFromGame(@PathVariable("gameID") int gameID, Player player){
+        Game cur = getGame(gameID);
+        cur.removePlayer(player);
     }
 
     /**
@@ -108,16 +119,18 @@ public class GameController {
      * sends everyone the number of players who have chosen each option. This functionality should only apply for the two
      * types of multiple choice questions.
      * @param a - the answer
-     * When everyone has answered (or the time has run out), each client gets a List of 3 Integers where the 0 index corresponds
-     * to the number of players who have chosen A, 1 -> B and 2 -> C.
+     *          When everyone has answered (or the time has run out), each client gets a List of 3 Integers where the 0 index corresponds
+     *          to the number of players who have chosen A, 1 -> B and 2 -> C.
      */
     @MessageMapping("/submit_answer")
     public void submitAnswer(@Payload Answer a) {
         int gameID = a.getGameID();
         Game current = this.getGame(gameID);
-        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username "+a.getUsername());
+        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username " + a.getUsername());
         LOGGER.info(a.toString());
         current.updateScore(a.getUsername(), a.getScore());
+        LOGGER.info("Game with " + gameID + " has " + current.getRequested() + 1 + " answers and "
+                + current.getplayersInGame() + " total players");
         if (current.newRequest(a.getOption())) {
             List<Integer> options = current.getOptionsStatistics();
             var playerList = current.getPlayers();
@@ -128,6 +141,7 @@ public class GameController {
             }
             current.resetOptions();
         }
-        }
+
     }
+}
 

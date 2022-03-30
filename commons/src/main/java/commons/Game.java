@@ -16,15 +16,14 @@ public class Game {
     private int requested = 0; // Keeps track of how many players have requested a new question
     private int qnum = 0; // Keeps track on which question we are throughout the game
     private int pnum = 0; // Keeps track of what the next player`s id should be
-    private int pInGame = 0; // Keeps track of how many players are in current game
     private Map<String, Integer> optionsStatistics = new TreeMap<>();
     private Map<String, Integer> players_index; // For quickly finding the score of a specific user
     private Map<Integer, List<String>> scores_index; // For quickly sorting the scores.
 
     public Game() {
-        optionsStatistics.put("optionA",0);
-        optionsStatistics.put("optionB",0);
-        optionsStatistics.put("optionC",0);
+        optionsStatistics.put("optionA", 0);
+        optionsStatistics.put("optionB", 0);
+        optionsStatistics.put("optionC", 0);
         this.scores_index = new HashMap<>();
         this.players_index = new HashMap<>();
     }
@@ -46,6 +45,10 @@ public class Game {
         this.requested = count;
     }
 
+    public int getplayersInGame() {
+        return players.size();
+    }
+
     /**
      * Increments the number of players that have requested a new question
      *
@@ -58,7 +61,7 @@ public class Game {
             optionsStatistics.put(option, before + 1);
         }
 
-        if (this.requested == pInGame) {
+        if (this.requested == players.size()) {
             this.requested = 0;
             return true;
         }
@@ -66,9 +69,9 @@ public class Game {
     }
 
     public void resetOptions() {
-        optionsStatistics.put("optionA",0);
-        optionsStatistics.put("optionB",0);
-        optionsStatistics.put("optionC",0);
+        optionsStatistics.put("optionA", 0);
+        optionsStatistics.put("optionB", 0);
+        optionsStatistics.put("optionC", 0);
     }
 
     public List<Integer> getOptionsStatistics() {
@@ -97,14 +100,12 @@ public class Game {
 
     public void addPlayer(Player player) {
         inGame.put(pnum, true);
-        pInGame++;
         players.add(player);
         if (this.scores_index.get(0) == null) {
-            List lst = new ArrayList();
+            List lst = new ArrayList<>();
             lst.add(player.getName());
             this.scores_index.put(0, lst);
-        }
-        else {
+        } else {
             this.scores_index.get(0).add(player.getName());
         }
         this.players_index.put(player.getName(), 0);
@@ -117,7 +118,7 @@ public class Game {
             }
         }
         System.out.println("----------------------------------");
-        }
+    }
 
     /**
      * TODO optimize if necessary
@@ -129,7 +130,6 @@ public class Game {
     public void removePlayer(Player player) {
         players.remove(player);
         inGame.replace(playerToID.get(player), false);
-        pInGame--;
     }
 
     /**
@@ -156,10 +156,14 @@ public class Game {
 
         /*List<Pair<Integer, Player>> scores = new ArrayList<>();
         for (int i = 0; i < pnum; i++) {
-            if (inGame.get(i) == false) continue; // Players which left the game won`t be in the scoreboard
+            if (!inGame.get(i)) continue; // Players which left the game won`t be in the scoreboard
             Pair<Integer, Player> cscore = Pair.of(scoreboard.get(i), idToPlayer.get(i));
             scores.add(cscore);
         }
+<<<<<<< HEAD
+        scores.sort(Map.Entry.comparingByKey());
+        return scores;
+=======
         Collections.sort(scores, new Comparator<Pair<Integer, Player>>() {
             @Override
             public int compare(final Pair<Integer, Player> p1, final Pair<Integer, Player> p2) {
@@ -179,8 +183,7 @@ public class Game {
         this.players_index.put(name, newScore);
         if (this.scores_index.containsKey(newScore)) {
             this.scores_index.get(newScore).add(name);
-        }
-        else {
+        } else {
             List<String> lst = new ArrayList<>();
             lst.add(name);
             this.scores_index.put(newScore, lst);
@@ -194,8 +197,7 @@ public class Game {
         this.players_index.put(name, score);
         if (this.scores_index.containsKey(score)) {
             this.scores_index.get(score).add(name);
-        }
-        else {
+        } else {
             List<String> lst = new ArrayList<>();
             lst.add(name);
             this.scores_index.put(score, lst);
@@ -205,10 +207,10 @@ public class Game {
     public int getScore(Player player) {
         /*List<Pair<Integer, Player>> scores = getLeaderboard();
         int score = 0;
-        for (int i = 0; i < scores.size(); i++) {
-            Player p = scores.get(i).getRight();
+        for (var integerPlayerPair : scores) {
+            Player p = integerPlayerPair.getRight();
             if (p.equals(player)) {
-                score = scores.get(i).getLeft();
+                score = integerPlayerPair.getLeft();
             }
         }
         return score;*/

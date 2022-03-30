@@ -110,8 +110,15 @@ public abstract class AbstractQuestion implements Initializable {
         this.server = server;
     }
 
+    public void resetChart() {
+        List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
+        for(int i = 0; i < charts.size(); i++) {
+            var bar = (Rectangle) charts.get(i);
+            bar.setVisible(false);
+        }
+    }
+
     public void showChart(List<Integer> ans, int correct) {
-        System.out.println("SHOWING CHART");
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
 

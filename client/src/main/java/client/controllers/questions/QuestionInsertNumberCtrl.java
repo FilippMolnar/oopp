@@ -62,6 +62,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         TimerTask delay = new TimerTask() {
             @Override
             public void run() {
+                resetChart();
                 Platform.runLater(mainCtrl::showNext);
             }
         };

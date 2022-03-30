@@ -13,13 +13,11 @@ import java.util.List;
 public class ActivityController {
     private static ActivityRepository activities;
 
-    public ActivityController(ActivityRepository act)
-    {
+    public ActivityController(ActivityRepository act) {
         activities = act;
     }
 
-    public static boolean addActivity(Activity act)
-    {
+    public static boolean addActivity(Activity act) {
         if(act == null) return false;
         activities.save(act);
         return true;
@@ -37,14 +35,12 @@ public class ActivityController {
     }
 
     @GetMapping(path = "/activities")
-    public Iterable<Activity> getAllActivities()
-    {
+    public Iterable<Activity> getAllActivities() {
         return activities.findAll();
     }
 
     @GetMapping(path = "/data/rand")
-    public Activity getRandom()
-    {
+    public Activity getRandom() {
         long size = activities.count();
         int idx = (int)(Math.random()*size);
 
@@ -52,14 +48,12 @@ public class ActivityController {
     }
 
     @GetMapping(path = "/data/fetch/{cons}/{range}")
-    public List<Activity> getAllByConsumption(@PathVariable("cons")int cons,@PathVariable("range")int range)
-    {
+    public List<Activity> getAllByConsumption(@PathVariable("cons")int cons,@PathVariable("range")int range) {
         return activities.getByConsumption(cons, range);
     }
 
     @GetMapping(path = "/data/diff/{cons}")
-    public List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
-    {
+    public List<Activity>getAllDiffCons(@PathVariable("cons")int cons) {
         return activities.getAllDiff(cons, 100);
     }
 
@@ -67,10 +61,8 @@ public class ActivityController {
     @Transactional
     public void deleteActivity(@RequestBody Activity activity) {
         List<Activity> list = activities.getByConsumption(activity.getConsumption(),0);
-        for (Activity a:list)
-        {
-            if(a.equals(activity))
-            {
+        for (Activity a : list) {
+            if (a.equals(activity)) {
                 activities.deleteById(a.id);
                 break;
             }

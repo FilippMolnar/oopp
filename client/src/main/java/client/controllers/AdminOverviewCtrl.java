@@ -51,7 +51,7 @@ public class AdminOverviewCtrl implements Initializable {
     AdminOverviewCtrl(ServerUtils serverUtils, MainAppController appController){
         this.appController = appController;
         this.serverUtils = serverUtils;
-        this.editCtrl = new AdminEditCtrl(serverUtils,appController,this);
+        this.editCtrl = new AdminEditCtrl(serverUtils, appController, this);
     }
 
 //    List<Activity> activities = serverUtils.getAllActivities();

@@ -119,8 +119,6 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
                 CoverInkJoker.splashAnimation(qCtrl);
             }
         });
-    }
-
         this.serverUtils.subscribeForSocketMessages("/user/queue/cover_hands/gameID", Integer.class, gameID -> {
             System.out.println("cover_hands");
             LinkedScene current = appController.getCurrentScene();
@@ -129,5 +127,10 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
             }
         });
 
+    }
+
+    @Override
+    public void initializeController() {
+        updateUI();
     }
 }

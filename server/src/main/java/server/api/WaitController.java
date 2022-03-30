@@ -30,10 +30,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import server.Utils;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -117,7 +114,8 @@ public class WaitController {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
-        var questionList = get20RandomMostLeastQuestions();
+//        var questionList = get20RandomMostLeastQuestions();
+        var questionList = questionController.get20RandomQuestions();
         currentGame.setQuestions(questionList);
         utils.sendToAllPlayers(playerList, "queue/startGame/gameID", gameID);
         gameID++;
@@ -201,14 +199,36 @@ public class WaitController {
 
     @MessageMapping("/decrease_time")
     public void decreaseTime(Player player) {
-        int gid = gameID - 1;
+        int gid = (int) player.getGameID();
         Game currentGame = gameController.getGame(gid);
         var playerList = currentGame.getPlayers();
-        if (playerList == null) return;
+        sendToAllOtherUsers(playerList,"queue/decrease_time/gameID", gid, player);
+
+    }
+
+    @MessageMapping("/cover_hands")
+    public void coverHands(Player player) {
+        int gid = (int) player.getGameID();
+        Game currentGame = gameController.getGame(gid);
+        var playerList = currentGame.getPlayers();
+        sendToAllOtherUsers(playerList,"queue/cover_hands/gameID", gid, player);
+
+    }
+
+    @MessageMapping("/cover_ink")
+    public void coverInk(Player player) {
+        int gid = (int) player.getGameID();
+        Game currentGame = gameController.getGame(gid);
+        var playerList = currentGame.getPlayers();
+        sendToAllOtherUsers(playerList,"queue/cover_ink/gameID", gid, player);
+    }
+
+    public void sendToAllOtherUsers(Set<Player> playerList, String destination, int gID, Player player){
+        if(playerList == null) return;
         for (Player p : playerList) {
             String playerID = p.getSocketID();
-            if (player.getName().equals(p.getName())) continue;
-            simpMessagingTemplate.convertAndSendToUser(playerID, "queue/decrease_time/gameID", gid);
+            if(player.getName().equals(p.getName())) continue;
+            simpMessagingTemplate.convertAndSendToUser(playerID, destination, gID);
         }
     }
 }

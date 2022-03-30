@@ -14,5 +14,7 @@ public class GoogleJoker extends Joker{
         if(isUsed())return ;
 
         mainCtrl.openBrowser();
+        markUsed(mainCtrl);
+        use();
     }
 }

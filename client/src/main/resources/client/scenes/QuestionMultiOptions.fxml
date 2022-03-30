@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -64,20 +65,20 @@
             <RowConstraints maxHeight="55.20001220703125" minHeight="10.0" prefHeight="55.20001220703125" vgrow="SOMETIMES" />
         </rowConstraints>
         <StackPane fx:id="joker3" onMouseClicked="#triggerJoker3" GridPane.columnIndex="8" GridPane.rowIndex="1">
-            <Circle fx:id="elimWrongAnswerCircle" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <ImageView fx:id="elimWrongAnswerImage" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+            <Circle fx:id="circle3" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <ImageView fx:id="image3" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@/client/pictures/joker_elim_wrong.png" />
             </ImageView>
         </StackPane>
         <StackPane fx:id="joker1" onMouseClicked="#triggerJoker1" GridPane.columnIndex="6" GridPane.rowIndex="1">
-            <Circle fx:id="doublePointsCircle" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <ImageView fx:id="doublePointsImage" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+            <Circle fx:id="circle1" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <ImageView fx:id="image1" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@/client/pictures/joker_double_points.png" />
             </ImageView>
         </StackPane>
         <StackPane fx:id="joker2" onMouseClicked="#triggerJoker2" GridPane.columnIndex="7" GridPane.rowIndex="1">
-            <Circle fx:id="decreaseTimeCircle" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-            <ImageView fx:id="decreaseTimeImage" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+            <Circle fx:id="circle2" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <ImageView fx:id="image2" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@/client/pictures/joker_decrease_time.png" />
             </ImageView>
         </StackPane>
@@ -118,7 +119,7 @@
             </font>
         </Label>
     </GridPane>
-    <GridPane fx:id="images" alignment="CENTER" hgap="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+    <GridPane fx:id="images" alignment="CENTER" hgap="30.0"  AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />

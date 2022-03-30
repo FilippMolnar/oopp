@@ -12,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 import java.nio.file.Path;
@@ -34,19 +33,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     private Text activity;
     @FXML
     private ImageView image;
-
-    @FXML
-    private Circle elimWrongAnswerCircle;
-    @FXML
-    private Circle doublePointsCircle;
-    @FXML
-    private Circle decreaseTimeCircle;
-    @FXML
-    private ImageView elimWrongAnswerImage;
-    @FXML
-    private ImageView doublePointsImage;
-    @FXML
-    private ImageView decreaseTimeImage;
 
     @Inject
     public QuestionInsertNumberCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -88,8 +74,8 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         int max = (int) (answer * randomMax);
         slider.setMin(min);
         slider.setMax(max + 1);
-        elimWrongAnswerImage.setOpacity(0.0);
-        elimWrongAnswerCircle.setOpacity(0.0);
+        image3.setOpacity(0.0);
+        circle3.setOpacity(0.0);
     }
 
     @FXML
@@ -160,21 +146,4 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         }
         return scoreToBeAdded;
     }
-
-    public Circle getDoublePointsCircle() {
-        return doublePointsCircle;
-    }
-
-    public Circle getDecreaseTimeCircle() {
-        return decreaseTimeCircle;
-    }
-
-    public ImageView getDoublePointsImage() {
-        return doublePointsImage;
-    }
-
-    public ImageView getDecreaseTimeImage() {
-        return decreaseTimeImage;
-    }
-
 }

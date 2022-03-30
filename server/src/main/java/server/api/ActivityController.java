@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.database.ActivityRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -26,9 +28,12 @@ public class ActivityController {
         return true;
     }
 
-    public List<Activity> getAllActivities()
-    {
-        return activities.findAll();
+    @GetMapping(path = "/data/all")
+    public List<Activity> getAllActivities() {
+        System.out.println("get all");
+        List<Activity> a = activities.findAll();
+        Collections.sort(a);
+        return a;
     }
 
     @GetMapping(path = "/data/rand")
@@ -38,6 +43,31 @@ public class ActivityController {
         int idx = (int)(Math.random()*size);
 
         return activities.findAll().get(idx);
+    }
+
+    @GetMapping(path = "/data/rand_range")
+    public List<Activity> getThreeRandom()
+    {
+        List<Activity> act = activities.findAll();
+        Collections.sort(act);
+        int seed = (int)(Math.random()*act.size());
+
+        List<Activity> filtered = new ArrayList<>();
+        filtered.add(act.get(seed));
+        while(filtered.size() < 3){
+            int rand = (int)(Math.random()*20);
+            Activity act_to_add = act.get(0);
+            if(seed-10+rand < 0)
+                act_to_add = act.get(0);
+            else if(seed-10+rand >= act.size())
+                act_to_add = act.get(act.size()-1);
+            else
+                act_to_add = act.get(seed-10+rand);
+            if(!filtered.contains(act_to_add)){
+                filtered.add(act_to_add);
+            }
+        }
+        return filtered;
     }
 
     @GetMapping(path = "/data/fetch/{cons}")

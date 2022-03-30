@@ -15,18 +15,7 @@ public class DoublePointsJoker extends Joker{
         }
         System.out.println("DoublePointsJoker");
         AbstractQuestion.setDoublePointsJoker(true);
-        if (mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl) {
-            qCtrl.getDoublePointsCircle().setOpacity(0.5);
-            qCtrl.getDoublePointsImage().setOpacity(0.5);
-        }
-        if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl2) {
-            qCtrl2.getDoublePointsCircle().setOpacity(0.5);
-            qCtrl2.getDoublePointsImage().setOpacity(0.5);
-        }
-        if (mainCtrl.getCurrentScene().getController() instanceof QuestionInsertNumberCtrl qCtrl3) {
-            qCtrl3.getDoublePointsCircle().setOpacity(0.5);
-            qCtrl3.getDoublePointsImage().setOpacity(0.5);
-        }
+        markUsed(mainCtrl);
         use();
     }
 }

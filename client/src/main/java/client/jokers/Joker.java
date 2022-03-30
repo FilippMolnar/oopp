@@ -18,10 +18,13 @@ package client.jokers;
 import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 
 import client.controllers.MainAppController;
+import client.controllers.questions.AbstractQuestion;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import client.utils.ServerUtils;
+
+import java.util.List;
 
 public class Joker {
     public String name;
@@ -63,19 +66,28 @@ public class Joker {
     }
 
     public void markUsed(MainAppController mainCtrl){
-        System.out.println(this.getClass());
-//        if (mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl) {
-//            qCtrl.getDecreaseTimeCircle().setOpacity(0.5);
-//            qCtrl.getDecreaseTimeImage().setOpacity(0.5);
-//        }
-//        if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl2) {
-//            qCtrl2.getDecreaseTimeCircle().setOpacity(0.5);
-//            qCtrl2.getDecreaseTimeImage().setOpacity(0.5);
-//        }
-//        if (mainCtrl.getCurrentScene().getController() instanceof QuestionInsertNumberCtrl qCtrl3) {
-//            qCtrl3.getDecreaseTimeCircle().setOpacity(0.5);
-//            qCtrl3.getDecreaseTimeImage().setOpacity(0.5);
-//        }
-
+        List<Joker> jokers = mainCtrl.getJokers().getJokers();
+        int idx = 1;
+        for(int i=0; i<jokers.size(); i++){
+            if(jokers.get(i).getClass() == this.getClass()){
+                idx = i+1;
+                break;
+            }
+        }
+        AbstractQuestion qCtrl = (AbstractQuestion) mainCtrl.getCurrentScene().getController();
+        switch (idx) {
+            case 1 -> {
+                qCtrl.getCircle1().setOpacity(0.5);
+                qCtrl.getImage1().setOpacity(0.5);
+            }
+            case 2 -> {
+                qCtrl.getCircle2().setOpacity(0.5);
+                qCtrl.getImage2().setOpacity(0.5);
+            }
+            case 3 -> {
+                qCtrl.getCircle3().setOpacity(0.5);
+                qCtrl.getImage3().setOpacity(0.5);
+            }
+        }
     }
 }

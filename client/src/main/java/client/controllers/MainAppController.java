@@ -155,7 +155,6 @@ public class MainAppController {
 
     public void setGameID(int gameID) {
         this.gameID = gameID;
-        System.out.println(gameID);
     }
 
     public int getGameID() {

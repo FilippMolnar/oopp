@@ -15,6 +15,7 @@ public class DoublePointsJoker extends Joker{
         }
         System.out.println("DoublePointsJoker");
         AbstractQuestion.setDoublePointsJoker(true);
+        markUsed(mainCtrl);
         use();
     }
 }

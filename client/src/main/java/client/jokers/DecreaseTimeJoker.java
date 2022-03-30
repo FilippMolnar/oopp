@@ -17,12 +17,13 @@ public class DecreaseTimeJoker extends Joker{
         if (isUsed()){
             return;
         }
-        markUsed(mainCtrl);
+
         System.out.println("DecreaseTimeJoker");
         Player p = new Player(mainCtrl.getName());
         p.setGameID(mainCtrl.getGameID());
         serverUtils.sendThroughSocket("/app/decrease_time", p);
 
+        markUsed(mainCtrl);
         use();
     }
 

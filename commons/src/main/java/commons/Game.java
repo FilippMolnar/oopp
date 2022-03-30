@@ -100,7 +100,7 @@ public class Game {
         pInGame++;
         players.add(player);
         if (this.scores_index.get(0) == null) {
-            List lst = new ArrayList();
+            List<String> lst = new ArrayList<>();
             lst.add(player.getName());
             this.scores_index.put(0, lst);
         }
@@ -116,8 +116,7 @@ public class Game {
                 System.out.println(name + " - "+ score);
             }
         }
-        System.out.println("----------------------------------");
-        }
+    }
 
     /**
      * TODO optimize if necessary

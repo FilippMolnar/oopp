@@ -8,7 +8,9 @@ public class Answer {
     private int gameID;
     private int score;
     private String name;
+
     public Answer() { }
+
     public Answer(boolean isCorrect, String option, int gameID, int score, String username) {
         this.isCorrect = isCorrect;
         this.option = option;

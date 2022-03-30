@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.application.Platform;
 import java.util.*;
 import commons.Answer;
@@ -27,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 
 public class QuestionInsertNumberCtrl extends AbstractQuestion implements ControllerInitialize {
 
@@ -34,8 +34,11 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     private TextField number;
 
     @FXML
-    private Button submitButton;
+    private Text submitButton;
 
+    @FXML
+    private Text scoreText;
+    @FXML
     private Slider slider;
     @FXML
     private Text sliderValue;
@@ -53,8 +56,9 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         super(server, mainCtrl);
     }
 
-<<<<<<< HEAD
-    public void displayAnswer(List<Integer> answer) {
+    @Override
+    public void displayAnswers(List<Integer> answer) {
+        System.out.println("SHOWING ANSWERS");
         TimerTask delay = new TimerTask() {
             @Override
             public void run() {
@@ -62,8 +66,11 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
             }
         };
         Timer myTimer = new Timer();
-        myTimer.schedule(delay, 3000); // wait for 4 seconds
+        int consumption = mainCtrl.getCorrect().getConsumption();
         System.out.println(mainCtrl.getCorrect());
+        sliderValue.setText("Correct answer: " + consumption + "Wh");
+        slider.setValue(consumption);
+        myTimer.schedule(delay, 3000); // wait for 4 seconds
     }
 
     private Integer getNumber() {
@@ -71,7 +78,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         return Integer.parseInt(n);
     }
 
-    public void changeSliderValue() {
+    public void changeValueSlider() {
         sliderValue.setText((int)slider.getValue()+"");
     }
 
@@ -79,18 +86,18 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         stopTimer();
         int answer = (int) slider.getValue(); slider.setDisable(true);
         submitButton.setDisable(true);
-        int newScore = calculateScore(answer, Double.parseDouble(timerValue.getText()));
+        int newScore = calculateScore(Double.parseDouble(timerValue.getText()));
         System.out.println("NEW SCORE: " + newScore);
-        mainCtrl.setScore(newScore);
+        mainCtrl.updateScore(newScore);
         if(isMultiPlayer) {
-            sendAnswer(new Answer(true, answer+"", mainCtrl.getGameID()));
+            sendAnswer(new Answer(true, answer+"", mainCtrl.getGameID(), newScore, mainCtrl.getName()));
         } else {
-            score.setText(newScore+"");
-            stopTimer();
-            mainCtrl.showNext();
+            scoreText.setText(mainCtrl.getScore()+"");
+            displayAnswers(new ArrayList());
         }
     }
 
+    /*
     public int calculateScore(int answer, double secondsLeft) {
         int currentScore = mainCtrl.getScore();
 
@@ -105,19 +112,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         System.out.println(scoreToBeAdded);
         return currentScore + scoreToBeAdded;
     }
-
-    @Override
-    public void initializeController() {
-        this.hasSubmittedAnswer = false;
-        score.setText(mainCtrl.getScore()+"");
-        slider.setDisable(false);
-        submitButton.setDisable(false);
-        int correct = mainCtrl.getCorrect().getConsumption();
-        slider.setMin(Math.random()*correct);
-        slider.setMax((Math.random()+1)*correct);
-        startTimerAnimation(10);
-
-    }
+    */
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -125,16 +120,29 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
             System.out.println("received reaction!");
             userReaction(userReaction.getReaction(), userReaction.getUsername());
         });
-        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswer);
-=======
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
+    }
+
     @Override
     public void initializeController() {
-        this.scoreText.setText("SCORE " + mainCtrl.getScore());
+        this.informationLabel.setVisible(false);
+        this.scoreText.setText(mainCtrl.getScore()+"");
+        this.sliderValue.setText("0");
         startTimerAnimation(10);
         resizeImages();
         resetLogic();
         System.out.println("Initializing insert number");
         questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        submitButton.setDisable(false);
+        slider.setDisable(false);
+        int correct = mainCtrl.getCorrect().getConsumption();
+        int min = (int) Math.random()*correct;
+        slider.setMin(min);
+        int max = (int) ((Math.random()+1)*correct);
+        slider.setMax(max);
+        int middle = (min+max)/2;
+        slider.setValue(middle);
+        sliderValue.setText(middle + "");
     }
 
     public void setQuestion(Question question) {
@@ -164,11 +172,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         slider.setMax(max + 1);
     }
 
-    @FXML
-    private void changeValueSlider() {
-        sliderValue.setText((int) slider.getValue() + "");
-    }
-
     /**
      * This method should be called after the scene is shown because otherwise the stackPane width/height won't exist
      * I wrapped the images into a <code>StackPane</code> that is resizable and fits the grid cell
@@ -195,8 +198,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     }
 
 
-    @Override
-    public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
+    public int calculateScore(double secondsToAnswer) {
         int answerPlayer = (int) slider.getValue();
         int correctAnswer = question.getCorrect().getConsumption();
 
@@ -231,6 +233,5 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
             scoreToBeAdded = timeBonus + rangeBonus;
         }
         return scoreToBeAdded;
->>>>>>> main
     }
 }

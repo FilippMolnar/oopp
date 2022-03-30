@@ -32,6 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.application.Platform;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -65,6 +66,8 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     //private int correct;
     private boolean hasSubmittedAnswer = false;
 
+    private Button selectedButton;
+
     @Inject
     public QuestionSameAsCtrl(ServerUtils server, MainAppController mainCtrl) {
         super(server, mainCtrl);
@@ -78,12 +81,19 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionC.setText(question.getChoices().get(2).getTitle());
         activity.setText(question.getChoices().get(3).getTitle());
 
-        for (int i = 0; i < imageViews.size(); i++) {
+        if (question.getChoices().get(0).equals(question.getCorrect())) correct = 0;
+        else if (question.getChoices().get(1).equals(question.getCorrect())) correct = 1;
+        else correct = 2;
+
+        for (int i = 0; i < 3; i++) {
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
             Path path = Paths.get(choice.getImagePath());
+            System.out.println("PATH" + path);
+            String groupID = path.getParent().getName(0).toString();
             try {
-                var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
+                var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
+                //var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
                 var newImage = new Image(actualPath);
                 view.setFitWidth(1);
                 view.setFitHeight(1);
@@ -93,12 +103,10 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
             } catch (NullPointerException e) {
                 System.out.println("Having an issue with the image " + path.getFileName() +
                         " it can't be found on the client");
+                System.out.println("GROUP ID: " + groupID);
                 System.out.println(Arrays.toString(e.getStackTrace()));
             }
         }
-        if (question.getChoices().get(0).equals(question.getCorrect())) correct = 0;
-        else if (question.getChoices().get(1).equals(question.getCorrect())) correct = 1;
-        else correct = 2;
     }
 
     /**
@@ -112,28 +120,33 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         String button_id = source.getId();
         Activity a;
         if (button_id.equals("optionA")) {
-            a = question.getChoices().get(0);
+            selectedButton = optionA;
+            a = this.question.getChoices().get(0);
         } else if (button_id.equals("optionB")) {
-            a = question.getChoices().get(1);
+            selectedButton = optionB;
+            a = this.question.getChoices().get(1);
         } else {
-            a = question.getChoices().get(2);
+            selectedButton = optionC;
+            a = this.question.getChoices().get(2);
         }
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-<<<<<<< HEAD
 
         if(isMultiPlayer) {
-            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+            sendAnswerAndUpdateScore(mainCtrl, button_id, a);
+            //sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
         } else {
-            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), 0, mainCtrl.getName()));
             stopTimer();
             System.out.println("Stopping timer");
             displayAnswers(new ArrayList());
+            if (selectedButton != null) {
+                selectedButton.setDisable(true);
+                selectedButton.setMouseTransparent(false);
+                selectedButton.setStyle("-fx-border-width: 0;");
+            }
         }
-=======
-        sendAnswerAndUpdateScore(mainCtrl, button_id, a);
->>>>>>> main
     }
 
 
@@ -185,7 +198,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
 
     @Override
     public void initializeController() {
-        score.setText(mainCtrl.getScore()+"");
+        scoreText.setText(mainCtrl.getScore()+"");
         startTimerAnimation(10);
         resizeImages();
         hasSubmittedAnswer = false;

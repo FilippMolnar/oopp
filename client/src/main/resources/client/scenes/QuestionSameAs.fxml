@@ -116,7 +116,7 @@
             </padding>
             <HBox alignment="CENTER" layoutX="73.0" layoutY="-5.0" prefHeight="60.0" prefWidth="214.0" AnchorPane.bottomAnchor="-11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <VBox alignment="CENTER">
-                    <Text fx:id="score" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE 1200">
+                    <Text fx:id="scoreText" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE 1200">
                         <font>
                             <Font size="16.0" />
                         </font>

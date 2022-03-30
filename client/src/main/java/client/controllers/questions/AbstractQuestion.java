@@ -96,6 +96,7 @@ public abstract class AbstractQuestion implements Initializable {
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
 
+        System.out.println(ans.size());
         double all = ans.get(0) + ans.get(1) + ans.get(2);
 
         for (int i = 0; i < 3; i++) {
@@ -139,6 +140,20 @@ public abstract class AbstractQuestion implements Initializable {
                     label.setText("" + answerList.get(i));
                 }
             }
+        } else {
+            TimerTask delay = new TimerTask() {
+                @Override
+                public void run() {
+                    List<Button> options = List.of(optionA,optionB,optionC);
+                    Button correctOption = options.get(correct);
+                    correctOption.setDisable(true);
+                    correctOption.setMouseTransparent(false);
+                    correctOption.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
+                    Platform.runLater(mainCtrl::showNext);
+                }
+            };
+            Timer myTimer = new Timer();
+            myTimer.schedule(delay, 3000); // wait for 4 seconds
         }
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
@@ -148,7 +163,9 @@ public abstract class AbstractQuestion implements Initializable {
         this.isMultiPlayer = isMultiPlayer;
     }
 
-    public void setQuestion(Question question) { this.question = question; hasSubmittedAnswer = false;
+    public void setQuestion(Question question) {
+        this.question = question;
+        this.hasSubmittedAnswer = false;
     }
 
     public void setQuestionNumber(int num) {
@@ -365,8 +382,9 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void checkAnswer(Answer answer) {
         int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
+        answer.setScore(newScore);
         mainCtrl.updateScore(newScore);
-        scoreText.setText(newScore+"");
+        scoreText.setText(mainCtrl.getScore()+"");
     }
 
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
@@ -389,10 +407,10 @@ public abstract class AbstractQuestion implements Initializable {
         if(isMultiPlayer) {
             sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
         } else {
-            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id));
+            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, 0, score, mainCtrl.getName()));
             System.out.println("Stopping timer");
             stopTimer();
-            mainCtrl.showNext();
+            displayAnswers(new ArrayList());
         }
     }
 

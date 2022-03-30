@@ -16,12 +16,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-<<<<<<< HEAD
-import org.apache.commons.lang3.tuple.Pair;
-=======
-import javafx.util.Duration;
+import javafx.application.Platform;
+import javafx.scene.shape.Rectangle;
+
 //import org.apache.commons.lang3.tuple.Pair;
->>>>>>> main
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -58,27 +56,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     }
 
     //private boolean hasSubmittedAnswer = false;
-<<<<<<< HEAD
-    //private int correct;
-=======
     private int correct;
     private Button selectedButton;
->>>>>>> main
 
     @FXML
     private Text questionNumber;
 
-<<<<<<< HEAD
-=======
-    @FXML
-    private Label countA;
-    @FXML
-    private Label countB;
-    @FXML
-    private Label countC;
 
-
->>>>>>> main
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
         super(server, mainCtrl);
@@ -112,6 +96,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             } catch (NullPointerException e) {
                 System.out.println("Having an issue with the image " + path.getFileName() +
                         " it can't be found on the client");
+                System.out.println("GROUP ID: " + groupID);
                 System.out.println(Arrays.toString(e.getStackTrace()));
 
             }
@@ -141,19 +126,19 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-<<<<<<< HEAD
 
         if(isMultiPlayer) {
-            sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+            //sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+            sendAnswerAndUpdateScore(mainCtrl, button_id, a);
         } else {
-            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
-            stopTimer();
-            System.out.println("Stopping timer");
-            displayAnswers(new ArrayList());
+            //checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, 0, mainCtrl.getName()));
+            sendAnswerAndUpdateScore(mainCtrl, button_id, a);
+            if (selectedButton != null) {
+                selectedButton.setDisable(true);
+                selectedButton.setMouseTransparent(false);
+                selectedButton.setStyle("-fx-border-width: 0;");
+            }
         }
-=======
-        sendAnswerAndUpdateScore(mainCtrl, button_id, a);
->>>>>>> main
     }
 
 
@@ -184,59 +169,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         return scoreToBeAdded;
     }
 
-<<<<<<< HEAD
-    public void dummy() {
-        Player player = new Player(mainCtrl.getName());
-        calculateScore(player, true, 20);
-=======
-    private void displayAnswers(List<Integer> answerList) {
-        optionA.setDisable(true);
-        optionB.setDisable(true);
-        optionC.setDisable(true);
-        System.out.println("Received answer!!" + answerList);
-        showChart(answerList, correct);
-        List<Label> labels = List.of(countA, countB, countC);
-        List<Button> options = List.of(optionA, optionB, optionC);
-        Button correctOption = options.get(correct);
-        correctOption.setDisable(false);
-        correctOption.setMouseTransparent(true);
-        if (selectedButton != null) {
-            selectedButton.setDisable(false);
-            selectedButton.setMouseTransparent(true);
-            selectedButton.setStyle("-fx-border-width: 2.4; -fx-border-color: #C56659");
-        }
-        correctOption.setStyle("-fx-border-width: 2.4; -fx-font-weight: bold; -fx-border-color: #83b159");
-
-        for (int i = 0; i < labels.size(); i++) {
-            if (answerList.get(i) > 0) {
-                Label label = labels.get(i);
-                label.setVisible(true);
-                label.setText("" + answerList.get(i));
-            }
-        }
-        informationLabel.setVisible(true);
-        informationLabel.setText("Stats received!");
-
-        //stopTimer();
-
-        TimerTask delay = new TimerTask() {
-            @Override
-            public void run() {
-                correctOption.setDisable(true);
-                correctOption.setMouseTransparent(false);
-                correctOption.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
-                if (selectedButton != null) {
-                    selectedButton.setDisable(true);
-                    selectedButton.setMouseTransparent(false);
-                    selectedButton.setStyle("-fx-border-width: 0;");
-                }
-                Platform.runLater(mainCtrl::showNext);
-            }
-        };
-        Timer myTimer = new Timer();
-        myTimer.schedule(delay, 3000); // wait for 4 seconds
->>>>>>> main
-    }
 
     /**
      * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.

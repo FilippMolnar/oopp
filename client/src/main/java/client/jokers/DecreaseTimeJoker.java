@@ -1,6 +1,7 @@
 package client.jokers;
 
 import client.controllers.MainAppController;
+import client.controllers.questions.AbstractQuestion;
 import client.utils.ServerUtils;
 import commons.Player;
 
@@ -10,12 +11,20 @@ public class DecreaseTimeJoker extends Joker{
     }
 
     public void onClick(MainAppController mainCtrl){
-        if(isUsed()){
+        if (isUsed()){
             return;
         }
-        System.out.println("DecreaseTimeJoker");
-        serverUtils.sendThroughSocket("/app/decrease_time", new Player(mainCtrl.getName()));
 
+        System.out.println("DecreaseTimeJoker");
+        Player p = new Player(mainCtrl.getName());
+        p.setGameID(mainCtrl.getGameID());
+        serverUtils.sendThroughSocket("/app/decrease_time", p);
+
+        markUsed(mainCtrl);
         use();
+    }
+
+    public static void decreaseTime(AbstractQuestion qCtrl){
+        qCtrl.cutAnimationInHalf();
     }
 }

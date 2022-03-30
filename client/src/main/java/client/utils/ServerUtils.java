@@ -273,7 +273,7 @@ public class ServerUtils {
 
     public List<Activity> getAllActivities() {
         return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/activities")
+                .target(SERVER).path("api/data/all")
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .get(new GenericType<>() {});

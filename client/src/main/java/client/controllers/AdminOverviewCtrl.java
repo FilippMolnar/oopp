@@ -60,6 +60,7 @@ public class AdminOverviewCtrl implements Initializable {
      * Refreshes the data in the TableView.
      */
     public void refresh() {
+        serverUtils.initializeServer("localhost");
         var activities = serverUtils.getAllActivities();
         data = FXCollections.observableList(activities);
         this.activityTable.setItems(data);
@@ -68,7 +69,14 @@ public class AdminOverviewCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         titleColumn.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().getTitle()));
-        sourceColumn.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().getSource()));
+        sourceColumn.setCellValueFactory(x -> {
+            String source = x.getValue().getSource();
+            if(source != null) {
+                return new SimpleStringProperty(source);
+            } else {
+                return new SimpleStringProperty("");
+            }
+        });
         consumptionColumn.setCellValueFactory(x -> (new SimpleIntegerProperty(x.getValue().getConsumption())).asObject());
         imageColumn.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().getImagePath()));
         refresh();

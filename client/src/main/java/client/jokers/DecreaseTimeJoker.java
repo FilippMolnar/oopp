@@ -1,9 +1,7 @@
 package client.jokers;
 
 import client.controllers.MainAppController;
-import client.controllers.questions.QuestionInsertNumberCtrl;
-import client.controllers.questions.QuestionMultiOptionsCtrl;
-import client.controllers.questions.QuestionSameAsCtrl;
+import client.controllers.questions.AbstractQuestion;
 import client.utils.ServerUtils;
 import commons.Player;
 
@@ -16,20 +14,17 @@ public class DecreaseTimeJoker extends Joker{
         if (isUsed()){
             return;
         }
+
         System.out.println("DecreaseTimeJoker");
-        serverUtils.sendThroughSocket("/app/decrease_time", new Player(mainCtrl.getName()));
-        if (mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl) {
-            qCtrl.getDecreaseTimeCircle().setOpacity(0.5);
-            qCtrl.getDecreaseTimeImage().setOpacity(0.5);
-        }
-        if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl2) {
-            qCtrl2.getDecreaseTimeCircle().setOpacity(0.5);
-            qCtrl2.getDecreaseTimeImage().setOpacity(0.5);
-        }
-        if (mainCtrl.getCurrentScene().getController() instanceof QuestionInsertNumberCtrl qCtrl3) {
-            qCtrl3.getDecreaseTimeCircle().setOpacity(0.5);
-            qCtrl3.getDecreaseTimeImage().setOpacity(0.5);
-        }
+        Player p = new Player(mainCtrl.getName());
+        p.setGameID(mainCtrl.getGameID());
+        serverUtils.sendThroughSocket("/app/decrease_time", p);
+
+        markUsed(mainCtrl);
         use();
+    }
+
+    public static void decreaseTime(AbstractQuestion qCtrl){
+        qCtrl.cutAnimationInHalf();
     }
 }

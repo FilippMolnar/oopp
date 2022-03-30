@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
 
 import javafx.scene.shape.Circle;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -75,6 +76,11 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     private ImageView doublePointsImage;
     @FXML
     private ImageView decreaseTimeImage;
+    private Label countA;
+    @FXML
+    private Label countB;
+    @FXML
+    private Label countC;
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -239,29 +245,5 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             userReaction(userReaction.getReaction(), userReaction.getUsername());
         });
         server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
-    }
-
-    public Circle getElimWrongAnswerCircle() {
-        return elimWrongAnswerCircle;
-    }
-
-    public Circle getDoublePointsCircle() {
-        return doublePointsCircle;
-    }
-
-    public Circle getDecreaseTimeCircle() {
-        return decreaseTimeCircle;
-    }
-
-    public ImageView getElimWrongAnswerImage() {
-        return elimWrongAnswerImage;
-    }
-
-    public ImageView getDoublePointsImage() {
-        return doublePointsImage;
-    }
-
-    public ImageView getDecreaseTimeImage() {
-        return decreaseTimeImage;
     }
 }

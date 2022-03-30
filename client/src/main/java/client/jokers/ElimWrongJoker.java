@@ -35,9 +35,8 @@ public class ElimWrongJoker extends Joker {
                 case 1 -> qCtrl.getOptionB().setDisable(true);
                 case 2 -> qCtrl.getOptionC().setDisable(true);
             }
+            markUsed(mainCtrl);
             use();
-            qCtrl.getElimWrongAnswerCircle().setOpacity(0.5);
-            qCtrl.getElimWrongAnswerImage().setOpacity(0.5);
         }
         if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl2) {
             switch (wrong_options.get(index)) {
@@ -45,9 +44,8 @@ public class ElimWrongJoker extends Joker {
                 case 1 -> qCtrl2.getOptionB().setDisable(true);
                 case 2 -> qCtrl2.getOptionC().setDisable(true);
             }
+            markUsed(mainCtrl);
             use();
-            qCtrl2.getElimWrongAnswerCircle().setOpacity(0.5);
-            qCtrl2.getElimWrongAnswerImage().setOpacity(0.5);
         }
     }
 }

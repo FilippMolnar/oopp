@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -25,6 +26,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -54,6 +56,20 @@ public abstract class AbstractQuestion implements Initializable {
 
     @FXML
     protected GridPane parentGridPane;
+    protected Circle circle1;
+    @FXML
+    protected Circle circle2;
+    @FXML
+    protected Circle circle3;
+    @FXML
+    protected ImageView image1;
+    @FXML
+    protected ImageView image2;
+    @FXML
+    protected ImageView image3;
+
+    @FXML
+    public GridPane parentGridPane;
     @FXML
     protected Arc timerArc;
     @FXML
@@ -66,6 +82,13 @@ public abstract class AbstractQuestion implements Initializable {
 
     @FXML
     protected Label informationLabel;
+
+    @FXML
+    protected Button splashButton;
+
+    public int getTimerIntegerValue() {
+        return timerIntegerValue;
+    }
 
     private int timerIntegerValue;
     protected int correct;
@@ -174,13 +197,15 @@ public abstract class AbstractQuestion implements Initializable {
         AbstractQuestion.doublePointsJoker = doublePointsJoker;
     }
 
-    public void triggerJoker1(){
+    public void triggerJoker1() {
         mainCtrl.getJokers().getJokers().get(0).onClick(mainCtrl);
     }
-    public void triggerJoker2(){
+
+    public void triggerJoker2() {
         mainCtrl.getJokers().getJokers().get(1).onClick(mainCtrl);
     }
-    public void triggerJoker3(){
+
+    public void triggerJoker3() {
         mainCtrl.getJokers().getJokers().get(2).onClick(mainCtrl);
     }
 
@@ -313,15 +338,15 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
-    public void stopTimer(){
+    public void stopTimer() {
         timeline.stop();
         timerTask.cancel();
         numberTimer.cancel();
     }
 
-    public void cutAnimationInHalf(){
+    public void cutAnimationInHalf() {
         stopTimer();
-        startTimerAnimation(timerIntegerValue/2);
+        startTimerAnimation(timerIntegerValue / 2);
 
     }
 
@@ -341,9 +366,9 @@ public abstract class AbstractQuestion implements Initializable {
                 Platform.runLater(() -> {
                     timerIntegerValue--;
                     System.out.println(timerIntegerValue);
-                    if(timerIntegerValue < 0){
+                    if (timerIntegerValue < 0) {
                         timerValue.setText(Integer.toString(0));
-                    } else{
+                    } else {
                         timerValue.setText(Integer.toString(timerIntegerValue));
                     }
                     if (timerIntegerValue <= 3) {
@@ -369,9 +394,7 @@ public abstract class AbstractQuestion implements Initializable {
             numberTimer.cancel();
             timerIntegerValue = 0;
             timerValue.setText("0");
-            System.out.println(hasSubmittedAnswer);
             if (!hasSubmittedAnswer) {
-                System.out.println("submitting answer through the timer!");
                 disableOptions();
                 if(isMultiPlayer) {
                     sendAnswer(new Answer(false, "", mainCtrl.getGameID(), 0, mainCtrl.getName()));
@@ -382,13 +405,12 @@ public abstract class AbstractQuestion implements Initializable {
         };
         KeyFrame keyFrame = new KeyFrame(duration, onFinished, lengthProperty);
 
-
-        //add the keyframe to the timeline
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
-    public void disableOptions(){
-        if(mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl){
+
+    public void disableOptions() {
+        if (mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl) {
             qCtrl.getOptionA().setDisable(true);
             qCtrl.getOptionB().setDisable(true);
             qCtrl.getOptionC().setDisable(true);
@@ -435,13 +457,13 @@ public abstract class AbstractQuestion implements Initializable {
         return scoreToBeAdded;
     }
 
-    public void sendAnswerAndUpdateScore(MainAppController mainCtrl, String button_id, Activity a){
+    public void sendAnswerAndUpdateScore(MainAppController mainCtrl, String button_id, Activity a) {
         int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
         if (doublePointsJoker) score = score * 2;
         setDoublePointsJoker(false);
         mainCtrl.updateScore(score);
-        this.scoreText.setText("SCORE "+mainCtrl.getTotalScore());
-        if(isMultiPlayer) {
+        this.scoreText.setText("SCORE " + mainCtrl.getTotalScore());
+        if (isMultiPlayer) {
             sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
         } else {
             checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, 0, score, mainCtrl.getName()));
@@ -451,7 +473,25 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
-    public int getTimerIntegerValue() {
-        return timerIntegerValue;
+    public Circle getCircle1() {
+        return circle1;
+    }
+
+    public Circle getCircle2() {
+        return circle2;
+    }
+
+    public Circle getCircle3() {
+        return circle3;
+    }
+
+    public ImageView getImage1() { return image1; }
+
+    public ImageView getImage2() {
+        return image2;
+    }
+
+    public ImageView getImage3() {
+        return image3;
     }
 }

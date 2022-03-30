@@ -47,6 +47,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         resetLogic();
         System.out.println("Initializing insert number");
         questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        showJokerImages();
     }
 
     public void setQuestion(Question question) {

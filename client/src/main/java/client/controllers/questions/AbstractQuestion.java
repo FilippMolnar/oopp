@@ -1,6 +1,7 @@
 package client.controllers.questions;
 
 import client.controllers.MainAppController;
+import client.jokers.Joker;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
@@ -27,6 +28,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -117,6 +119,17 @@ public abstract class AbstractQuestion implements Initializable {
         getCircle3().setOpacity(1.0);
         getImage3().setOpacity(1.0);
 
+    }
+
+    public void showJokerImages(){
+        List<Joker> jokers = mainCtrl.getJokers().getJokers();
+        var resources = getClass().getResource("/client/pictures/").toString();
+        Image image1 = new Image(resources + jokers.get(0).imagePath);
+        Image image2 = new Image(resources + jokers.get(1).imagePath);
+        Image image3 = new Image(resources + jokers.get(2).imagePath);
+        getImage1().setImage(image1);
+        getImage2().setImage(image2);
+        getImage3().setImage(image3);
     }
 
     public static void setDoublePointsJoker(boolean doublePointsJoker) {

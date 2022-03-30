@@ -24,6 +24,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 //import org.apache.commons.lang3.tuple.Pair;
 
+import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -335,11 +336,11 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         this.scoreText.setText("SCORE " + mainCtrl.getScore());
         questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation(10);
-        System.out.println("Initializing Qmulti!");
         resetUI();
         resetLogic();
         super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         System.out.println("Initializing Qmulti!");
+        showJokerImages();
     }
 
     /**

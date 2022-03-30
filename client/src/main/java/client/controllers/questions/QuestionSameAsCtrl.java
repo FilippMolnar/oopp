@@ -129,5 +129,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
+        showJokerImages();
     }
 }

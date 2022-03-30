@@ -64,6 +64,7 @@ public class Activity implements Comparable {
         if (o == null) return false;
         if (!(o instanceof Activity)) return false;
         Activity that = (Activity) o;
+        if(source == null) return false;
         return this.title.equals(that.title)
                 && this.consumption == that.consumption
                 && this.imagePath.equals(that.imagePath)

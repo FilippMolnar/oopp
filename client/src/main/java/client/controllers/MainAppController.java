@@ -97,8 +97,8 @@ public class MainAppController {
 
         this.primaryStage = primaryStage;
 
-        jokers = new JokersList(serverUtils);
-        jokers.replaceUsed(serverUtils);
+        jokers = new JokersList(serverUtils, true);
+
         primaryStage.setScene(homeScene);
         primaryStage.show();
 
@@ -110,15 +110,8 @@ public class MainAppController {
         sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
-    public void openBrowser()
-    {
-        Desktop desktop = Desktop.getDesktop();
-        try{
-            URI url = new URI("https://www.google.com");
-            desktop.browse(url);
-        }catch(URISyntaxException | IOException e){
-            e.printStackTrace();
-        }
+    public void setJokers(JokersList jokers) {
+        this.jokers = jokers;
     }
 
     public String getName() {

@@ -5,6 +5,7 @@ import client.controllers.questions.AbstractQuestion;
 import client.jokers.CoverHandsJoker;
 import client.jokers.CoverInkJoker;
 import client.jokers.DecreaseTimeJoker;
+import client.jokers.JokersList;
 import client.utils.ServerUtils;
 import commons.Player;
 import commons.Question;
@@ -113,6 +114,9 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, gameID -> {
             appController.setGameID(gameID);
             List<Question> questions = serverUtils.getAllGameQuestions(gameID);
+            System.out.println("appController.isMultiPlayer()");
+            System.out.println(appController.isMultiPlayer());
+            appController.setJokers(new JokersList(serverUtils, appController.isMultiPlayer()));
             appController.addQuestionScenes(questions, 0);
             appController.showNext();
 

@@ -106,7 +106,7 @@ public abstract class AbstractQuestion implements Initializable {
     public void setQuestionNumber(int num) {
         this.questionNumber.setText(num + "/20");
         if(num % 5 == 0) {
-            mainCtrl.getJokers().replaceUsed(server);
+            mainCtrl.getJokers().replaceUsed(server, mainCtrl.isMultiPlayer());
             uncheckJokers();
         }
     }

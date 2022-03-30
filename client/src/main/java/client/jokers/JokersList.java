@@ -31,7 +31,12 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 public class JokersList {
     private List<Joker> jokers;
 
-    public JokersList(ServerUtils serverUtils) {
+    public JokersList(ServerUtils serverUtils, boolean isMultiplayer) {
+        if(!isMultiplayer){
+            generateSP(serverUtils);
+            return;
+        }
+
         List<Joker>j = new ArrayList<>();
         this.jokers = new ArrayList<>();
 
@@ -55,7 +60,23 @@ public class JokersList {
 
     }
 
-    public void replaceUsed(ServerUtils serverUtils){
+    public void generateSP(ServerUtils serverUtils){
+        Joker doublePoints = new DoublePointsJoker("double points", "joker_double_points.png", serverUtils);
+        Joker google = new GoogleJoker("google", "joker_google.png", serverUtils);
+        Joker elimWrong = new ElimWrongJoker("eliminate wrong answer", "joker_elim_wrong.png", serverUtils);
+        List<Joker>j = new ArrayList<>();
+        j.add(doublePoints);
+        j.add(google);
+        j.add(elimWrong);
+        this.jokers = j;
+    }
+
+    public void replaceUsed(ServerUtils serverUtils, boolean isMultiplayer){
+        if(!isMultiplayer){
+            generateSP(serverUtils);
+            return;
+        }
+
         List<Joker>j = new ArrayList<>();
         List<Joker>notUsed = new ArrayList<>();
 

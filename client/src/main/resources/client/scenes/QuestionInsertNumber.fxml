@@ -71,8 +71,8 @@
             <children>
                 <StackPane fx:id="joker3" onMouseClicked="#triggerJoker3" GridPane.columnIndex="5" GridPane.rowIndex="1">
                     <children>
-                        <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                        <Circle fx:id="elimWrongAnswerCircle" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <ImageView fx:id="elimWrongAnswerImage" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@/client/pictures/joker_elim_wrong.png" />
                             </image>
@@ -81,8 +81,8 @@
                 </StackPane>
                 <StackPane fx:id="joker1" onMouseClicked="#triggerJoker1" GridPane.columnIndex="3" GridPane.rowIndex="1">
                     <children>
-                        <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                        <Circle fx:id="doublePointsCircle" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <ImageView fx:id="doublePointsImage" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@/client/pictures/joker_double_points.png" />
                             </image>
@@ -91,8 +91,8 @@
                 </StackPane>
                 <StackPane fx:id="joker2" onMouseClicked="#triggerJoker2" GridPane.columnIndex="4" GridPane.rowIndex="1">
                     <children>
-                        <Circle fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <ImageView fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                        <Circle fx:id="decreaseTimeCircle" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <ImageView fx:id="decreaseTimeImage" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@/client/pictures/joker_decrease_time.png" />
                             </image>

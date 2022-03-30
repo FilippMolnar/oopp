@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 import java.nio.file.Path;
@@ -51,6 +52,19 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     private ImageView image;
     @FXML
     protected GridPane parentGridPane;
+
+    @FXML
+    private Circle elimWrongAnswerCircle;
+    @FXML
+    private Circle doublePointsCircle;
+    @FXML
+    private Circle decreaseTimeCircle;
+    @FXML
+    private ImageView elimWrongAnswerImage;
+    @FXML
+    private ImageView doublePointsImage;
+    @FXML
+    private ImageView decreaseTimeImage;
 
     @Inject
     public QuestionInsertNumberCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -160,7 +174,10 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
                     " it can't be found on the client");
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
+        elimWrongAnswerImage.setOpacity(0.0);
+        elimWrongAnswerCircle.setOpacity(0.0);
     }
+
 
     /**
      * This method should be called after the scene is shown because otherwise the stackPane width/height won't exist
@@ -224,4 +241,21 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         }
         return scoreToBeAdded;
     }
+
+    public Circle getDoublePointsCircle() {
+        return doublePointsCircle;
+    }
+
+    public Circle getDecreaseTimeCircle() {
+        return decreaseTimeCircle;
+    }
+
+    public ImageView getDoublePointsImage() {
+        return doublePointsImage;
+    }
+
+    public ImageView getDecreaseTimeImage() {
+        return decreaseTimeImage;
+    }
+
 }

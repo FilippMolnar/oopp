@@ -35,15 +35,8 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import javax.annotation.Nonnull;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
@@ -52,22 +45,33 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 public class ServerUtils {
 
     // use this variable to define the server address and port to connect to
-    private static final String SERVER = "http://localhost:8080";
-    private static final String WEBSOCKET_SERVER = "ws://localhost:8080/websocket";
-    private final StompSession session = connect(WEBSOCKET_SERVER);
+    private String SERVER;
+    private final List<List<Object>> subscribeParameters = new ArrayList<>();
+    private StompSession session;
+    private String WEBSOCKET_SERVER;
+    private Set<List<Object>> connections = new HashSet<>();
 
-    public void getQuotesTheHardWay() throws IOException {
-        var url = new URL(SERVER + "api/quotes");
-        var is = url.openConnection().getInputStream();
-        var br = new BufferedReader(new InputStreamReader(is));
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
+
+    public void initializeServer(String server) {
+        // 172.435q3...
+        SERVER = "http://" + server + ":8080";
+        WEBSOCKET_SERVER = "ws://" + server + ":8080/websocket";
+        System.out.println("Session is : " + session);
+        if(session != null){
+            System.out.println("Session is not null so disconnecting!");
+            session.disconnect(); // close all socket subscriptions with this session
         }
+        session = connect(WEBSOCKET_SERVER);
+        System.out.println("Prams:" + subscribeParameters);
+        for (List<Object> l : subscribeParameters) {
+            subscribeSocketFromList((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
+        }
+        connections.clear();
     }
 
     /**
      * Connects the websockets to a url specifed in <code>WebSocketConfig</code> class on the server side
+     *
      * @param url url to connect to
      * @return a new StompSession
      */
@@ -99,6 +103,14 @@ public class ServerUtils {
      * @param consumer  the callback to execute when a message is received
      */
     public <T> void subscribeForSocketMessages(String dest, Class<T> classType, Consumer<T> consumer) {
+        List<Object> objects = List.of(dest, classType, consumer);
+        if (session == null) {
+            subscribeParameters.add(objects);
+        }else {
+            System.out.println("Trying to subscribe to messages twice or from outside initialize() called once per controller");
+        }
+    }
+    public <T> void subscribeSocketFromList(String dest, Class<T> classType, Consumer<T> consumer) {
         System.out.println("Registered to listen on the track " + dest);
         session.subscribe(dest, new StompFrameHandler() {
             @Override
@@ -134,6 +146,7 @@ public class ServerUtils {
      * already in the waiting room. <br\>
      * It is used by the <code>WaitingRoomCtrl</code> class to initialize the
      * UI based on the list it receives.
+     *
      * @return List of players that are currently in the waiting room
      */
     public List<Player> getAllNamesInWaitingRoom() {
@@ -201,17 +214,14 @@ public class ServerUtils {
                 .post(Entity.entity(result, APPLICATION_JSON), Pair.class);
     }
 
-    public static Map<Player,Integer> getScoreboard(int gameID)
-    {
-        return ClientBuilder.newClient(new ClientConfig())
+    public Map<Player, Integer> getScoreboard(int gameID) {
+        var q = ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/leaderboard/" + gameID)
                 .request(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .get(new GenericType<>() {
-
-                });
-        //Map<Player,Integer> scoreboard = q.readEntity(Map.class);
-        //return scoreboard;
+                .get(Response.class);
+        Map<Player, Integer> scoreboard = q.readEntity(Map.class);
+        return scoreboard;
     }
 
     public Game getGameMapping(int gameID) {
@@ -235,6 +245,7 @@ public class ServerUtils {
     /**
      * This method is used by single players, who do not have a game ID
      * and just need to get 20 questions at the start of the game.
+     *
      * @return 20 random questions
      */
     public ArrayList<Question> getLeastMostQuestions() {
@@ -270,6 +281,14 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(score, APPLICATION_JSON), Score.class);
+    }
+
+    public void removePlayerFromGame(Player player,int gameID){
+        ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/game/removePlayer/" + gameID) //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .post(Entity.entity(player, APPLICATION_JSON), Score.class);
     }
 
 }

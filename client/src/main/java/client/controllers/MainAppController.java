@@ -86,7 +86,7 @@ public class MainAppController {
         this.sameAsScene = sameAs.getValue();
         this.sameAsCtrl = sameAs.getKey();
 
-        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene);
+        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
         LinkedScene sameAsLinked = new LinkedScene(sameAsScene);
         LinkedScene singleplayerLinked = new LinkedScene(homeSingleplayerScene, homeSingleplayer.getKey());
@@ -116,6 +116,9 @@ public class MainAppController {
         sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
+    public void setQuestionNumber(int number) {
+        this.questionIndex = number;
+    }
     public void openBrowser()
     {
         Desktop desktop = Desktop.getDesktop();
@@ -245,8 +248,8 @@ public class MainAppController {
         // if this controller is of the question then set the question
         if (controller instanceof QuestionMultiOptionsCtrl qController) {
             qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            questionIndex++;
             qController.setGameMode(isMultiPlayer);
         }
         // if this controller is of the question then set the question
@@ -260,17 +263,17 @@ public class MainAppController {
         else if (controller instanceof QuestionSameAsCtrl qController) {
             System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
             qController.setQuestionNumber(questionIndex);
+            questionIndex++;
             qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("INITIALIZE CONTROLLER");
             controllerInit.initializeController();
-            if(questionIndex == questionsInGame.size()) {
+            /*if(questionIndex == questionsInGame.size()) {
                 serverUtils.addScore(score);
                 questionIndex = -1;
-            }
+            }*/
         }
     }
 

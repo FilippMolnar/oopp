@@ -5,6 +5,7 @@ import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
 import commons.Answer;
+import commons.Player;
 import commons.Question;
 import commons.UserReaction;
 import javafx.animation.*;
@@ -28,11 +29,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 
 public abstract class AbstractQuestion implements Initializable {
@@ -84,6 +81,7 @@ public abstract class AbstractQuestion implements Initializable {
     TimerTask timerTask;
     Timer numberTimer;
 
+    protected static boolean doublePointsJoker = false;
 
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
@@ -172,6 +170,10 @@ public abstract class AbstractQuestion implements Initializable {
         this.questionNumber.setText(num + "/20");
     }
 
+    public static void setDoublePointsJoker(boolean doublePointsJoker) {
+        AbstractQuestion.doublePointsJoker = doublePointsJoker;
+    }
+
     public void triggerJoker1(){
         mainCtrl.getJokers().getJokers().get(0).onClick(mainCtrl);
     }
@@ -197,26 +199,47 @@ public abstract class AbstractQuestion implements Initializable {
         Pane pane = new Pane();
         ImageView iv;
         Label label = new Label(name);
-        String imagePath = "/client/pictures/" + reaction;
-        Image img = new Image(getClass().getResource(imagePath).toString());
-
+        Image img;
+        switch (reaction) {
+            case "happy":
+                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
+                break;
+            case "angry":
+                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
+                break;
+            case "angel":
+                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
+                break;
+            default:
+                return;
+        }
         iv = new ImageView(img);
         pane.getChildren().add(iv);
         pane.getChildren().add(label);
+        iv.setMouseTransparent(false);
+        label.setMouseTransparent(false);
         label.setPadding(new Insets(-20, 0, 0, 5));
         TranslateTransition translate = new TranslateTransition();
-        translate.setByY(200);
-        translate.setDuration(Duration.millis(2000));
+        translate.setByY(700);
+        translate.setDuration(Duration.millis(2800));
         translate.setNode(pane);
+        translate.setOnFinished(t -> {
+                    System.out.println("deleted");
+                    pane.getChildren().remove(iv);
+                    pane.getChildren().remove(label);
+                }
+        );
         translate.play();
 
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(2000));
+        //fade.setDelay(Duration.millis(1000));
         fade.setFromValue(10);
         fade.setToValue(0);
         fade.setNode(pane);
         fade.play();
         parentGridPane.getChildren().add(pane);
+
     }
     */
     public void userReaction(String reaction, String name) {
@@ -392,8 +415,16 @@ public abstract class AbstractQuestion implements Initializable {
         scoreText.setText(mainCtrl.getScore()+"");
     }
 
+    public void backToHomeScreen() {
+        stopTimer();
+        List<Object> answerList = new ArrayList<>(2);
+        answerList.add(new Player(mainCtrl.getName()));
+        answerList.add(mainCtrl.getGameID());
+        server.sendThroughSocket("/app/disconnectFromGame", answerList);
+        mainCtrl.showHomeScreen();
+    }
+    // for single player
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
-
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
         int maxPoints = 100;
@@ -406,9 +437,10 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void sendAnswerAndUpdateScore(MainAppController mainCtrl, String button_id, Activity a){
         int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
+        if (doublePointsJoker) score = score * 2;
+        setDoublePointsJoker(false);
         mainCtrl.updateScore(score);
         this.scoreText.setText("SCORE "+mainCtrl.getTotalScore());
-        Answer answer = new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName());
         if(isMultiPlayer) {
             sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
         } else {

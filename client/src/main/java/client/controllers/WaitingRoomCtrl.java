@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class WaitingRoomCtrl implements Initializable {
+public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
@@ -88,8 +88,6 @@ public class WaitingRoomCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Initialize called by the waiting roomCtrl");
-        updateUI();
         this.serverUtils.subscribeForSocketMessages("/topic/waitingRoom", Player.class, player -> {
             playerList.add(player);
             movePlayers(player);
@@ -99,15 +97,11 @@ public class WaitingRoomCtrl implements Initializable {
             playerList.remove(player);
             updateUI();
         });
-
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, gameID -> {
             appController.setGameID(gameID);
             List<Question> questions = serverUtils.getAllGameQuestions(gameID);
             appController.addQuestionScenes(questions, 0);
             appController.showNext();
-
-            // disconnect from waiting room
-            this.serverUtils.sendThroughSocket("/app/disconnect", new Player(appController.getName()));
         });
         this.serverUtils.subscribeForSocketMessages("/user/queue/decrease_time/gameID", Integer.class, gameID -> {
             System.out.println("decreased");
@@ -119,8 +113,10 @@ public class WaitingRoomCtrl implements Initializable {
                 qCtrl.cutAnimationInHalf();
             }
         });
-
-
     }
 
+    @Override
+    public void initializeController() {
+        updateUI();
+    }
 }

@@ -18,7 +18,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
 
-//import org.apache.commons.lang3.tuple.Pair;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -61,6 +65,18 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @FXML
     private Text questionNumber;
 
+    @FXML
+    private Circle elimWrongAnswerCircle;
+    @FXML
+    private Circle doublePointsCircle;
+    @FXML
+    private Circle decreaseTimeCircle;
+    @FXML
+    private ImageView elimWrongAnswerImage;
+    @FXML
+    private ImageView doublePointsImage;
+    @FXML
+    private ImageView decreaseTimeImage;
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -155,7 +171,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         }
     }
 
-
     public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
@@ -203,14 +218,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      */
     @Override
     public void initializeController() {
+        System.out.println("Initializing Qmulti!");
         this.scoreText.setText("SCORE " + mainCtrl.getScore());
         questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation(10);
-        System.out.println("Initializing Qmulti!");
         resetUI();
         resetLogic();
         super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
-        System.out.println("Initializing Qmulti!");
     }
 
     /**
@@ -227,5 +241,29 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             userReaction(userReaction.getReaction(), userReaction.getUsername());
         });
         server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
+    }
+
+    public Circle getElimWrongAnswerCircle() {
+        return elimWrongAnswerCircle;
+    }
+
+    public Circle getDoublePointsCircle() {
+        return doublePointsCircle;
+    }
+
+    public Circle getDecreaseTimeCircle() {
+        return decreaseTimeCircle;
+    }
+
+    public ImageView getElimWrongAnswerImage() {
+        return elimWrongAnswerImage;
+    }
+
+    public ImageView getDoublePointsImage() {
+        return doublePointsImage;
+    }
+
+    public ImageView getDecreaseTimeImage() {
+        return decreaseTimeImage;
     }
 }

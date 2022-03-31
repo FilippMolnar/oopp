@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 
 public class ActivityTest {
-	Activity a = new Activity("Activity", 100, "/path/to/img");
+	Activity a = new Activity("Activity", 100, "/path/to/img", "google.com");
 
 	@Test
 	public void constructorTest() {
@@ -38,19 +38,19 @@ public class ActivityTest {
 
 	@Test
 	public void equalsTest() {
-        Activity b = new Activity("Activity", 100, "/path/to/img");
+        Activity b = new Activity("Activity", 100, "/path/to/img", "google.com");
         assertEquals(a, b);
 	}
 
 	@Test
 	public void notEqualsTest() {
-        Activity b = new Activity("Activity", 200, "/path/to/img");
+        Activity b = new Activity("Activity", 200, "/path/to/img", "google.com");
         assertNotEquals(a, b);
 	}
 
 	@Test
 	public void compareTest() {
-        Activity b = new Activity("Activity", 200, "/path/to/img");
+        Activity b = new Activity("Activity", 200, "/path/to/img", "google.com");
         assertEquals(1, a.compareTo(b));
         assertEquals(-1, b.compareTo(a));
         assertEquals(0, a.compareTo(a));

@@ -25,6 +25,7 @@ public class DecreaseTimeJoker extends Joker{
     }
 
     public static void decreaseTime(AbstractQuestion qCtrl){
+        playSound("reduce-time");
         qCtrl.cutAnimationInHalf();
     }
 }

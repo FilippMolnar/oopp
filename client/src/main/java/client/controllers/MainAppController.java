@@ -13,6 +13,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 import java.awt.*;
 import java.io.IOException;
@@ -20,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
@@ -128,6 +132,15 @@ public class MainAppController {
         }
     }
 
+    public static void playSound(String dirPath) {
+        String path = "src/main/resources/client/sounds/" + dirPath;
+        File[] dir = new File(path).listFiles();
+        int idx = new Random().nextInt(dir.length);
+        Media sound = new Media(dir[idx].toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+    }
+
     public String getName() {
         return this.name;
     }
@@ -192,7 +205,7 @@ public class MainAppController {
             if (i == 10 && mode == 0) {
                 current.addNext(new LinkedScene(this.leaderBoardScene, this.leaderBoardCtrl));
                 current = current.getNext();
-            } 
+            }
             // add the transition before a normal question
             current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
             current = current.getNext();

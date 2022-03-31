@@ -13,6 +13,7 @@ public class DoublePointsJoker extends Joker{
         if (isUsed()) {
             return;
         }
+        playSound("double-points");
         System.out.println("DoublePointsJoker");
         AbstractQuestion.setDoublePointsJoker(true);
         markUsed(mainCtrl);

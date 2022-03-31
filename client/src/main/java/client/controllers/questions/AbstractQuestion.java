@@ -181,6 +181,7 @@ public abstract class AbstractQuestion implements Initializable {
         String path = "/app/reactions";
         userReaction("angry", mainCtrl.getName());
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+
     }
 
     public void angelReact() {

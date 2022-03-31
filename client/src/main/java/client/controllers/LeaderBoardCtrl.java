@@ -196,6 +196,7 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     }
     @Override
     public void initializeController() {
+        appController.playSound("leaderboard");
         names = List.of(rank1_name, rank2_name, rank3_name, rank4_name, rank5_name, rank6_name, rank7_name, rank8_name);
         scores = List.of(rank1_score, rank2_score, rank3_score, rank4_score, rank5_score, rank6_score, rank7_score, rank8_score);
         panes = List.of(rank1_pane, rank2_pane, rank3_pane, rank4_pane, rank5_pane, rank6_pane, rank7_pane, rank8_pane);

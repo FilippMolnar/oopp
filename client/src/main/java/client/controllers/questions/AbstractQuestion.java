@@ -3,11 +3,7 @@ package client.controllers.questions;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Activity;
-import commons.Answer;
-import commons.Player;
-import commons.Question;
-import commons.UserReaction;
+import commons.*;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,15 +14,14 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -112,8 +107,8 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void resetChart() {
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
-        for(int i = 0; i < charts.size(); i++) {
-            var bar = (Rectangle) charts.get(i);
+        for (Node chart : charts) {
+            var bar = (Rectangle) chart;
             bar.setVisible(false);
         }
     }
@@ -121,6 +116,14 @@ public abstract class AbstractQuestion implements Initializable {
     public void showChart(List<Integer> ans, int correct) {
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
+        List<Label> labels = List.of(countA, countB, countC);
+        for (int i = 0; i < labels.size(); i++) {
+            if (ans.get(i) > 0) {
+                Label label = labels.get(i);
+                label.setVisible(true);
+                label.setText("" + ans.get(i));
+            }
+        }
 
         System.out.println(ans.size());
         double all = ans.get(0) + ans.get(1) + ans.get(2);
@@ -149,38 +152,28 @@ public abstract class AbstractQuestion implements Initializable {
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        System.out.println("Received answer!!" + answerList);
+        System.out.println("Received answer!!" + answerList + " from "
+                + mainCtrl.getCurrentScene().getController().getClass() );
         if(isMultiPlayer) {
             showChart(answerList, correct);
         }
-        List<Label> labels = List.of(countA, countB, countC);
         List<Button> options = List.of(optionA,optionB,optionC);
         Button correctOption = options.get(correct);
         correctOption.setOpacity(1);
-        correctOption.setStyle("-fx-font-weight: bold;");
-        if(isMultiPlayer) {
-            for (int i = 0; i < labels.size(); i++) {
-                if (answerList.get(i) > 0) {
-                    Label label = labels.get(i);
-                    label.setVisible(true);
-                    label.setText("" + answerList.get(i));
-                }
+        correctOption.setStyle("-fx-border-width: 2.4; -fx-font-weight: bold; -fx-border-color: #83b159");
+        TimerTask delay = new TimerTask() {
+            @Override
+            public void run() {
+                List<Button> options = List.of(optionA,optionB,optionC);
+                Button correctOption = options.get(correct);
+                correctOption.setDisable(true);
+                correctOption.setMouseTransparent(false);
+                correctOption.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
+                Platform.runLater(mainCtrl::showNext);
             }
-        } else {
-            TimerTask delay = new TimerTask() {
-                @Override
-                public void run() {
-                    List<Button> options = List.of(optionA,optionB,optionC);
-                    Button correctOption = options.get(correct);
-                    correctOption.setDisable(true);
-                    correctOption.setMouseTransparent(false);
-                    correctOption.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
-                    Platform.runLater(mainCtrl::showNext);
-                }
-            };
-            Timer myTimer = new Timer();
-            myTimer.schedule(delay, 3000); // wait for 4 seconds
-        }
+        };
+        Timer myTimer = new Timer();
+        myTimer.schedule(delay, 3000); // wait for 3 seconds
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
     }

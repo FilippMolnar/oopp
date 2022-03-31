@@ -5,23 +5,9 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
+import commons.Answer;
 import commons.Question;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.animation.*;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import client.controllers.ControllerInitialize;
-import client.controllers.MainAppController;
-import client.utils.ServerUtils;
-import com.google.inject.Inject;
-import commons.*;
-import javafx.animation.*;
+import commons.UserReaction;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -36,13 +22,10 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerInitialize {
     @FXML
@@ -175,7 +158,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         for (Node imageView : imageViews) {
             var view = (ImageView) imageView;
-            //GridPane pane = (GridPane) view.getParent();
             if(view.getParent() instanceof GridPane pane){
                 if(pane.getId() != null && pane.getId().equals("answerImage")) {
                     view.setPreserveRatio(true);
@@ -184,6 +166,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
                 }
             }
             else if(view.getParent() instanceof StackPane pane) {
+                view.setVisible(true); // fix not visible image
                 view.setPreserveRatio(true);
                 view.setFitHeight(pane.getHeight() - 5);
                 view.setFitWidth(pane.getWidth() - 5);
@@ -196,7 +179,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         countA.setVisible(false);
         countB.setVisible(false);
         countC.setVisible(false);
-        resizeImages();
         resetChart();
         optionA.setDisable(false);
         optionB.setDisable(false);

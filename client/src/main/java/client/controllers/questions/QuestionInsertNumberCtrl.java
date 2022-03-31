@@ -4,28 +4,24 @@ import client.controllers.ControllerInitialize;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import commons.Question;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Slider;
-import javafx.application.Platform;
-import java.util.*;
 import commons.Answer;
+import commons.Question;
 import commons.UserReaction;
-import java.net.URL;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class QuestionInsertNumberCtrl extends AbstractQuestion implements ControllerInitialize {
 
@@ -59,6 +55,11 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void displayAnswers(List<Integer> answer) {
+        // guard the socket message call with this check
+        if(!(mainCtrl.getCurrentScene().getController().getClass() == getClass())) {
+            return;
+        }
+        System.out.println("Calling display answers from QInsert");
         TimerTask delay = new TimerTask() {
             @Override
             public void run() {

@@ -39,7 +39,7 @@ subprojects {
 
 		afterEvaluate {
 			classDirectories.setFrom(files(classDirectories.files.collect {
-				fileTree(dir: it, exclude: "client/src/main/resources/**")
+				fileTree(dir: it, exclude: "client/**")
 			}))
 		}
 	}

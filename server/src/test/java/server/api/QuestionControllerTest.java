@@ -12,10 +12,10 @@ class QuestionControllerTest {
     private TestActivityRepository repo;
     private ActivityController acont;
     private QuestionController cont;
-    Activity act1 = new Activity("Activity1",1000,"path");
-    Activity act2 = new Activity("Activity2",1500,"path1");
-    Activity act3 = new Activity("Activity3",2000,"path2");
-    Activity act4 = new Activity("Activity4",2500,"path3");
+    Activity act1 = new Activity("Activity1",1000,"path","google.com");
+    Activity act2 = new Activity("Activity2",1500,"path1","google.com");
+    Activity act3 = new Activity("Activity3",2000,"path2","google.com");
+    Activity act4 = new Activity("Activity4",2500,"path3","google.com");
     @BeforeEach
     void setUp() {
         repo = new TestActivityRepository();

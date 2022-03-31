@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import server.api.ActivityController;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -40,10 +39,10 @@ public class ImportData {
             // Read the activity from JSON file
             TemplateActivity temp = mapper.readValue(jsonPath, TemplateActivity.class);
             // Create a new activity to add to database
-            Activity act = new Activity(temp.title, temp.consumption_in_wh, groupName + "/" + imagePath.getName());
+            Activity act = new Activity(temp.title, temp.consumption_in_wh, groupName + "/" + imagePath.getName(), temp.getSource());
             // Add activity to database
             ActivityController.addActivity(act);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

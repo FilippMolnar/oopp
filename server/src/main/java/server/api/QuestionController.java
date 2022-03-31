@@ -90,10 +90,10 @@ public class QuestionController {
     @GetMapping(path = {"/equal"})
     public Question getTypeEqual() {
         Activity act = activityController.getRandom();
-        List<Activity> same = activityController.getAllByConsumption(act.getConsumption());
+        List<Activity> same = activityController.getAllByConsumption(act.getConsumption(),100);
         List<Activity> choices = new ArrayList<>();
         //Activity neither = new Activity("neither", -1, "location of cross");
-        Activity neither = new Activity("neither", -1, "21/brew-coffee.jpg");
+        Activity neither = new Activity("neither", -1, "21/brew-coffee.jpg", "");
 
         if (same.size() == 1) same.add(neither);
 

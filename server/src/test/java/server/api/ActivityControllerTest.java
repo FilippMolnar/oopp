@@ -28,7 +28,7 @@ public class ActivityControllerTest {
 
     private TestActivityRepository repo;
     private ActivityController sut;
-	Activity a = new Activity("Activity", 100, "/path/to/img");
+	Activity a = new Activity("Activity", 100, "/path/to/img", "google.com");
 
     @BeforeEach
     public void setup() {

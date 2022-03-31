@@ -33,7 +33,6 @@ public class MainAppController {
     private Scene leaderBoardScene; private Scene qMultiScene;
     private Scene qInsertScene;
     private Scene questionTransitionScene;
-    private Scene sameAsScene;
     private Scene homeSingleplayerScene;
     private Scene homeMultiplayerScene;
     private Scene adminOverviewScene;

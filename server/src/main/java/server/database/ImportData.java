@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import server.api.ActivityController;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 @RestController

@@ -32,8 +32,8 @@ import static org.mockito.Mockito.*;
 
 public class WaitControllerTest {
 
-    private WaitController sut;
-    private List<Player> lobby;
+    private WaitController waitController;
+    private List<Player> lobby = new ArrayList<>();
     private final SimpMessagingTemplate mockSimpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
     private final GameController mockGameController = Mockito.mock(GameController.class);
     private final Player player1 = new Player("player1");
@@ -43,44 +43,52 @@ public class WaitControllerTest {
     @BeforeEach
     public void setup() {
         reset(mockSimpMessagingTemplate);
-        reset(mockGameController); // reset mock gameController
+        reset(mockGameController);
         when(mockGameController.getGame(any(Integer.class))).thenReturn(new Game()); // return empty game
-        sut = new WaitController(mockSimpMessagingTemplate, mockGameController, null);
-        lobby = new ArrayList<>();
+
+        lobby.clear();
+        waitController = new WaitController(mockSimpMessagingTemplate, mockGameController, null);
     }
 
     @Test
     public void addsNameTest() {
-        sut.addName(new Player("Name"));
+        waitController.addName(new Player("Name"));
         lobby.add(new Player("Name"));
-        assertEquals(lobby, sut.getLobbyPlayers());
+        assertEquals(lobby, waitController.getLobbyPlayers());
     }
 
     @Test
     public void remove2PlayersTest() {
-        sut.addName(player1);
-        sut.addName(player2);
-        sut.addName(player3);
+        waitController.addName(player1);
+        waitController.addName(player2);
+        waitController.addName(player3);
 
-        sut.playerDisconnectWaitingRoom(player2); // [1,2,3] - [2] = [1,3]
-        assertEquals(sut.getLobbyPlayers(), List.of(player1, player3));
+        waitController.playerDisconnectWaitingRoom(player2); // [1,2,3] - [2] = [1,3]
+        assertEquals(waitController.getLobbyPlayers(), List.of(player1, player3));
 
-        sut.playerDisconnectWaitingRoom(player1);// [1,3] - 1 = [3]
-        assertEquals(sut.getLobbyPlayers(), List.of(player3));
+        waitController.playerDisconnectWaitingRoom(player1);// [1,3] - 1 = [3]
+        assertEquals(waitController.getLobbyPlayers(), List.of(player3));
     }
 
     @Test
     public void removeInexistentPlayer() {
-        sut.addName(player1);
+        waitController.addName(player1);
 
-        sut.playerDisconnectWaitingRoom(player2);
-        assertEquals(sut.getLobbyPlayers(), List.of(player1));
+        waitController.playerDisconnectWaitingRoom(player2);
+        assertEquals(waitController.getLobbyPlayers(), List.of(player1));
     }
 
     @Test
     public void checkSocketCalledAfterPostRequest() {
-        sut.addName(new Player("Name"));
+        waitController.addName(new Player("Name"));
         verify(mockSimpMessagingTemplate,times(1)).convertAndSend(
                 anyString(),eq(new Player("Name")));
+    }
+
+    @Test
+    public void coverHands(){
+        player1.setGameID(1);
+        waitController.coverHands(player1);
+
     }
 }

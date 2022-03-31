@@ -19,7 +19,7 @@ public class ActivityController {
         activities = act;
     }
 
-    public static boolean addActivity(Activity act) {
+    public boolean addActivity(Activity act) {
         if(act == null) return false;
         activities.save(act);
         return true;
@@ -28,7 +28,7 @@ public class ActivityController {
     @PostMapping(path = "/activities")
     public ResponseEntity<Activity> addAct(@RequestBody Activity activity) {
         if (activity == null || activity.getTitle() == null
-                || activity.getTitle().isEmpty() || activity.getConsumption() == 0 || activity.getImagePath() == null
+                || activity.getTitle().isEmpty() || activity.getConsumption() == 0 || activity.getConsumption() < 0 || activity.getImagePath() == null
                 || activity.getImagePath().isEmpty() || activity.getSource() == null || activity.getSource().isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
@@ -48,7 +48,6 @@ public class ActivityController {
     public Activity getRandom() {
         long size = activities.count();
         int idx = (int)(Math.random()*size);
-
         return activities.findAll().get(idx);
     }
 
@@ -58,7 +57,7 @@ public class ActivityController {
     }
 
     @GetMapping(path = "/data/rand_range")
-    public List<Activity> getThreeRandom() {
+    public List<Activity> getThreeRandomActivities() {
         List<Activity> act = activities.findAll();
         Collections.sort(act);
         int seed = (int)(Math.random()*act.size());

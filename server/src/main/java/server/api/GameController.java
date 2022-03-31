@@ -57,11 +57,6 @@ public class GameController {
         return games.get(gameID);
     }
 
-    @PostMapping("/game/removePlayer/{gameID}")
-    public void removePlayerFromGame(@PathVariable("gameID") int gameID, Player player){
-        Game cur = getGame(gameID);
-        cur.removePlayer(player);
-    }
 
     /**
      * Retrieve the leaderboard for the current game
@@ -96,9 +91,8 @@ public class GameController {
     }
 
     @GetMapping("api/game/getSingleLeaderboard")
-    private List<Score> getSingleLeaderboard() {
-        List<Score> leaderboard = scoreRepository.getLeaderboard();
-        return leaderboard;
+    public List<Score> getSingleLeaderboard() {
+        return scoreRepository.getLeaderboard();
     }
 
     @MessageMapping("/reactions")

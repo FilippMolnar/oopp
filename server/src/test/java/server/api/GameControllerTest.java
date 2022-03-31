@@ -4,6 +4,9 @@ import commons.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import server.database.ScoreRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +14,24 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class GameControllerTest {
-    GameController gameController = new GameController(null, null);
+    SimpMessagingTemplate simpMessagingTemplate = Mockito.mock(SimpMessagingTemplate.class);
+    ScoreRepository scoreRepository = Mockito.mock(ScoreRepository.class);
+
+    GameController gameController = new GameController(scoreRepository, simpMessagingTemplate);
     Player p1 = new Player("First");
     Player p2 = new Player("Second");
+    Player p3 = new Player("Second");
+
 
     @BeforeEach
     void setup() {
+        reset(simpMessagingTemplate);
         gameController.addNewGame(1);
         p1.setSocketID("id1");
         p2.setSocketID("id2");
-
-        gameController.addPlayerToGame(1,p2);
     }
     @Test
     void addNewGame() {
@@ -37,13 +45,34 @@ class GameControllerTest {
         Set<Player> s = game.getPlayers();
         assertTrue(s.contains(p1));
     }
+    @Test
+    void addPlayerToEmptyGameID(){
+        int gameID = 10;
+        gameController.addPlayerToGame(gameID,p1);
+        Game game = gameController.getGame(gameID);
+        Set<Player> s = game.getPlayers();
+        assertTrue(s.contains(p1));
+    }
+    @Test
+    public void userReaction(){
+        gameController.addPlayerToGame(1,p1);
+        gameController.addPlayerToGame(1,p2);
+        gameController.addPlayerToGame(1,p3);
+        UserReaction reaction = new UserReaction(1, "nick","happy");
+        gameController.userReact(reaction);
+        // call the sendUser to all players in game (p1,p2,p3) once
+        for(Player player : gameController.getGame(1).getPlayers()) {
+            verify(simpMessagingTemplate).
+                    convertAndSendToUser(eq(player.getSocketID()), anyString(), eq(reaction));
+        }
+    }
 
     @Test
     void setScore() {
         gameController.addPlayerToGame(1,p1);
         gameController.setScore(1, Pair.of(p1, 50));
         Game game = gameController.getGame(1);
-        assertTrue(game.getScore(p1)==50);
+        assertEquals(50, game.getScore(p1));
     }
 
     @Test
@@ -55,6 +84,26 @@ class GameControllerTest {
         gameController.removePlayer(1,p1);
         game = gameController.getGame(1);
         assertNull(game.getPlayers());
+    }
+
+    @Test
+    void submitAnswer(){
+        gameController.addPlayerToGame(1,p1);
+        gameController.addPlayerToGame(1,p2);
+        gameController.addPlayerToGame(1,p3);
+        Game game = gameController.getGame(1);
+
+        gameController.submitAnswer(new Answer(true,"optionA",1,120,p1.getName()));
+        verify(simpMessagingTemplate,times(0))
+                .convertAndSendToUser(any(), any(), any()); // still wait for the other players to answer
+        // we just have 2 players
+        gameController.submitAnswer(new Answer(true,"optionA",1,120,p1.getName()));
+        verify(simpMessagingTemplate,times(0))
+                .convertAndSendToUser(any(), any(), any()); // still wait for the other players to answer
+        // we have [3,0,0] as options
+        gameController.submitAnswer(new Answer(true,"optionA",1,120,p1.getName()));
+        verify(simpMessagingTemplate,times(3))
+                .convertAndSendToUser(any(), any(), eq(List.of(3,0,0))); // still wait for the other players to answer
     }
 
     @Test
@@ -101,5 +150,17 @@ class GameControllerTest {
         ls.add(q);
         game.setQuestions(ls);
         assertEquals(ls,gameController.getGameQuestions(1));
+    }
+
+    @Test
+    void testGetGameFromSocket(){
+        p1.setSocketID("sockID");
+        gameController.addPlayerToGame(10,p1);
+        assertEquals(gameController.getGameFromSocket("sockID")
+                ,gameController.getGame(10),"I should get game with id 10");
+    }
+    @Test
+    void testGetSingleLeaderboard(){
+        assertNotNull(gameController.getSingleLeaderboard());
     }
 }

@@ -16,10 +16,10 @@ import java.util.Random;
 @RequestMapping(path = "/api")
 public class QuestionController {
 
-    private static ActivityController activityController;
+    private ActivityController activityController;
 
     public QuestionController(ActivityController activityController) {
-        QuestionController.activityController = activityController;
+        this.activityController = activityController;
     }
 
     @GetMapping("/generate_20")
@@ -68,7 +68,7 @@ public class QuestionController {
      */
     @GetMapping(path = {"/most"})
     public Question getTypeMostLeast() {
-        List<Activity> choices = activityController.getThreeRandom();
+        List<Activity> choices = activityController.getThreeRandomActivities();
 
         Activity highest = choices.get(0);
         for(Activity a : choices){
@@ -89,6 +89,7 @@ public class QuestionController {
      */
     @GetMapping(path = {"/equal"})
     public Question getTypeEqual() {
+        // get a random activity
         Activity act = activityController.getRandom();
         List<Activity> same = activityController.getAllByConsumption(act.getConsumption(),100);
         List<Activity> choices = new ArrayList<>();

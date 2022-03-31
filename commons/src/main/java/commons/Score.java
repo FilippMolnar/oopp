@@ -39,6 +39,15 @@ public class Score{
         this.score += toAdd; 
     }
 
+    public boolean equals(Object other){
+        if(other == this)
+            return true;
+        if(other instanceof Score that){
+            return that.score == this.score && that.name.equals(this.getName());
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();

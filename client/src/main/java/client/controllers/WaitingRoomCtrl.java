@@ -2,8 +2,6 @@ package client.controllers;
 
 import client.LinkedScene;
 import client.controllers.questions.AbstractQuestion;
-import client.controllers.questions.QuestionInsertNumberCtrl;
-import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.jokers.CoverHandsJoker;
 import client.jokers.CoverInkJoker;
 import client.jokers.DecreaseTimeJoker;
@@ -22,7 +20,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class WaitingRoomCtrl implements Initializable {
+public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
@@ -92,8 +90,6 @@ public class WaitingRoomCtrl implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("Initialize called by the waiting roomCtrl");
-        updateUI();
         this.serverUtils.subscribeForSocketMessages("/topic/waitingRoom", Player.class, player -> {
             playerList.add(player);
             movePlayers(player);
@@ -103,21 +99,17 @@ public class WaitingRoomCtrl implements Initializable {
             playerList.remove(player);
             updateUI();
         });
-
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, gameID -> {
             appController.setGameID(gameID);
             List<Question> questions = serverUtils.getAllGameQuestions(gameID);
             appController.addQuestionScenes(questions, 0);
             appController.showNext();
-
-            // disconnect from waiting room
-            this.serverUtils.sendThroughSocket("/app/disconnect", new Player(appController.getName()));
         });
         this.serverUtils.subscribeForSocketMessages("/user/queue/decrease_time/gameID", Integer.class, gameID -> {
             System.out.println("decreased");
             LinkedScene current = appController.getCurrentScene();
             if(current.getController() instanceof AbstractQuestion qCtrl){
-                DecreaseTimeJoker.decraseTime(qCtrl);
+                DecreaseTimeJoker.decreaseTime(qCtrl);
             }
         });
         this.serverUtils.subscribeForSocketMessages("/user/queue/cover_ink/gameID", Integer.class, gameID -> {
@@ -127,7 +119,6 @@ public class WaitingRoomCtrl implements Initializable {
                 CoverInkJoker.splashAnimation(qCtrl);
             }
         });
-
         this.serverUtils.subscribeForSocketMessages("/user/queue/cover_hands/gameID", Integer.class, gameID -> {
             System.out.println("cover_hands");
             LinkedScene current = appController.getCurrentScene();
@@ -138,4 +129,8 @@ public class WaitingRoomCtrl implements Initializable {
 
     }
 
+    @Override
+    public void initializeController() {
+        updateUI();
+    }
 }

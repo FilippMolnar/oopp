@@ -27,6 +27,7 @@ public class CoverHandsJoker extends Joker{
         serverUtils.sendThroughSocket("/app/cover_hands", p);
 
         System.out.println("Cover Screen with Hands Joker");
+        markUsed(mainCtrl);
         use();
     }
 

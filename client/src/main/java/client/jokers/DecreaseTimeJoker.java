@@ -11,18 +11,20 @@ public class DecreaseTimeJoker extends Joker{
     }
 
     public void onClick(MainAppController mainCtrl){
-        if(isUsed()){
+        if (isUsed()){
             return;
         }
+
         System.out.println("DecreaseTimeJoker");
         Player p = new Player(mainCtrl.getName());
         p.setGameID(mainCtrl.getGameID());
         serverUtils.sendThroughSocket("/app/decrease_time", p);
 
+        markUsed(mainCtrl);
         use();
     }
 
-    public static void decraseTime(AbstractQuestion qCtrl){
+    public static void decreaseTime(AbstractQuestion qCtrl){
         qCtrl.cutAnimationInHalf();
     }
 }

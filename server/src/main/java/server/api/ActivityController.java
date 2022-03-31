@@ -1,32 +1,39 @@
 package server.api;
 
 import commons.Activity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import server.database.ActivityRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api")
 public class ActivityController {
     private static ActivityRepository activities;
 
-    public ActivityController(ActivityRepository act)
-    {
+    public ActivityController(ActivityRepository act) {
         activities = act;
     }
 
-    public static boolean addActivity(Activity act)
-    {
+    public static boolean addActivity(Activity act) {
         if(act == null) return false;
         activities.save(act);
         return true;
+    }
+
+    @PostMapping(path = "/activities")
+    public ResponseEntity<Activity> addAct(@RequestBody Activity activity) {
+        if (activity == null || activity.getTitle() == null
+                || activity.getTitle().isEmpty() || activity.getConsumption() == 0 || activity.getImagePath() == null
+                || activity.getImagePath().isEmpty() || activity.getSource() == null || activity.getSource().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Activity added = activities.save(activity);
+        return ResponseEntity.ok(added);
     }
 
     @GetMapping(path = "/data/all")
@@ -38,17 +45,20 @@ public class ActivityController {
     }
 
     @GetMapping(path = "/data/rand")
-    public Activity getRandom()
-    {
+    public Activity getRandom() {
         long size = activities.count();
         int idx = (int)(Math.random()*size);
 
         return activities.findAll().get(idx);
     }
 
+    @GetMapping(path = "/data/fetch/{cons}/{range}")
+    public List<Activity> getAllByConsumption(@PathVariable("cons")int cons,@PathVariable("range")int range) {
+        return activities.getByConsumption(cons, range);
+    }
+
     @GetMapping(path = "/data/rand_range")
-    public List<Activity> getThreeRandom()
-    {
+    public List<Activity> getThreeRandom() {
         List<Activity> act = activities.findAll();
         Collections.sort(act);
         int seed = (int)(Math.random()*act.size());
@@ -72,14 +82,24 @@ public class ActivityController {
     }
 
     @GetMapping(path = "/data/fetch/{cons}")
-    public List<Activity> getAllByConsumption(@PathVariable("cons")int cons)
-    {
+    public List<Activity> getAllByConsumption(@PathVariable("cons")int cons) {
         return activities.getByConsumption(cons, 100);
     }
 
     @GetMapping(path = "/data/diff/{cons}")
-    public List<Activity>getAllDiffCons(@PathVariable("cons")int cons)
-    {
+    public List<Activity>getAllDiffCons(@PathVariable("cons")int cons) {
         return activities.getAllDiff(cons, 100);
+    }
+
+    @PostMapping("/activities/delete")
+    @Transactional
+    public void deleteActivity(@RequestBody Activity activity) {
+        List<Activity> list = activities.getByConsumption(activity.getConsumption(),0);
+        for (Activity a : list) {
+            if (a.equals(activity)) {
+                activities.deleteById(a.id);
+                break;
+            }
+        }
     }
 }

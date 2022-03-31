@@ -24,9 +24,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class QuestionTest {
-    Activity a = new Activity("Activity1", 100, "/path/to/img");
-    Activity b = new Activity("Activity2", 200, "/path/to/img");
-    Activity c = new Activity("Activity3", 300, "/path/to/img");
+    Activity a = new Activity("Activity1", 100, "/path/to/img", "google.com");
+    Activity b = new Activity("Activity2", 200, "/path/to/img", "google.com");
+    Activity c = new Activity("Activity3", 300, "/path/to/img", "google.com");
 
     Question q = new Question(c, Arrays.asList(a, b, c), QuestionType.HighestEnergy);
 
@@ -81,7 +81,7 @@ public class QuestionTest {
 
     @Test
     public void compareTest() {
-        Activity b = new Activity("Activity", 200, "/path/to/img");
+        Activity b = new Activity("Activity", 200, "/path/to/img", "google.com");
         assertEquals(1, a.compareTo(b));
         assertEquals(-1, b.compareTo(a));
         assertEquals(0, a.compareTo(a));

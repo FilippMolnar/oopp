@@ -142,9 +142,8 @@
          </HBox>
       </VBox>
       <HBox alignment="CENTER" AnchorPane.bottomAnchor="90" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
-         <Button mnemonicParsing="false" prefHeight="82.0" prefWidth="177.0" onAction="#startGame"
-                 style="-fx-background-color: #625998; -fx-border-radius: 50px; -fx-background-radius: 50px;"
-                 text="Start game" textFill="#d6d3ee">
+         <Button id="startGame" mnemonicParsing="false" onAction="#startGame" prefHeight="82.0" prefWidth="177.0"
+                 stylesheets="@waiting_room.css" text="Start game" textFill="#d6d3ee">
             <font>
                <Font size="24.0"/>
             </font>
@@ -152,15 +151,13 @@
       </HBox>
       <HBox alignment="CENTER" layoutX="477.0" prefHeight="100.0" prefWidth="122.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="52.0" onAction="#goBack" textAlignment="CENTER">
-            <graphic>
-            <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+            <ImageView onMouseClicked="#goBack" fitHeight="47.0" fitWidth="39.0" pickOnBounds="true"
+                       preserveRatio="true" styleClass="back_image" AnchorPane.rightAnchor="50.0"
+                       AnchorPane.topAnchor="50.0">
                <image>
-                   <Image url="@/client/pictures/exit_button.png" />
+                  <Image url="@/client/pictures/exit_button.png"/>
                </image>
             </ImageView>
-            </graphic>
-            </Button>
          </children>
       </HBox>
 

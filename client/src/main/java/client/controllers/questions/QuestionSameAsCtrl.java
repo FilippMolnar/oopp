@@ -5,7 +5,6 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
-import commons.Answer;
 import commons.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +33,18 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     @FXML
     private Text activity;
 
+    public Button getOptionA() {
+        return optionA;
+    }
+
+    public Button getOptionB() {
+        return optionB;
+    }
+
+    public Button getOptionC() {
+        return optionC;
+    }
+
     private boolean hasSubmittedAnswer = false;
 
     @Inject
@@ -53,8 +64,9 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
             var view = (ImageView) imageViews.get(i);
             var choice = question.getChoices().get(i);
             Path path = Paths.get(choice.getImagePath());
+            String groupID = path.getParent().getName(0).toString();
             try {
-                var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
+                var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
                 var newImage = new Image(actualPath);
                 view.setFitWidth(1);
                 view.setFitHeight(1);
@@ -89,7 +101,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-        sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
+        sendAnswerAndUpdateScore(mainCtrl, button_id, a);
     }
 
 

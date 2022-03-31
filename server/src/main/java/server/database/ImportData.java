@@ -9,55 +9,84 @@ import org.springframework.web.bind.annotation.RestController;
 import server.api.ActivityController;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/data")
 public class ImportData {
+
+
+    /**
+     * Gets the base name, without extension, of given file name.
+     * <p/>
+     * e.g. getBaseName("file.txt") will return "file"
+     *
+     * @param fileName
+     * @return the base name
+     */
+    public static String getBaseName(String fileName) {
+        int index = fileName.lastIndexOf('.');
+        if (index == -1) {
+            return fileName;
+        } else {
+            return fileName.substring(0, index);
+        }
+    }
+
+    private void addActivityToDb(File jsonPath, File imagePath, String groupName) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            // Read the activity from JSON file
+            TemplateActivity temp = mapper.readValue(jsonPath, TemplateActivity.class);
+            // Create a new activity to add to database
+            Activity act = new Activity(temp.title, temp.consumption_in_wh, groupName + "/" + imagePath.getName(), temp.getSource());
+            // Add activity to database
+            ActivityController.addActivity(act);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @GetMapping(path = "/load")
-    public static String ImportAllFiles() {
-        String loc = "src/main/resources/GoodActivities/";
-
-        for(int j=0;j<=78;j++) {
-
-            String groupID = "";
-            String location = loc;
-            if(j<10)groupID+="0";
-            groupID+=j;
-            //System.out.println(location);
-            File dir = new File("server/"+location+groupID);
-            File[] listing = dir.listFiles();
-
-            //the corresponding image id in list
-            int id = -1;
-            if(listing == null)continue;
-            for (int i = 0; i < listing.length; i++) {
-                File log = listing[i];
-                File image = listing[i];
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    // Read the activity from JSON file
-                    TemplateActivity temp = mapper.readValue(log, TemplateActivity.class);
-
-                    // Create a new activity to add to database
-                    if (id >= 0) {
-                        image = listing[id];
-                        id = -1;
-                    } else {
-                        image = listing[i + 1];
-                        id = -2;
-                    }
-                    Activity act = new Activity(temp.title, temp.consumption_in_wh,  groupID + "/" + image.getName());
-
-                    // Add activity to database
-                    ActivityController.addActivity(act);
-
-                } catch (IOException e) {
-                    if (id == -2) id = -1;
-                    else id = i;
+    public String ImportAllFiles() {
+        String resourceFolder = "src/main/resources/GoodActivities";
+        File dir = new File(resourceFolder);
+        File[] directories = dir.listFiles(File::isDirectory);
+        if (directories == null) {
+            return "<h3>The server cannot find the file specified " + resourceFolder + "</h3>\n<p>Try using server/main/resources or " +
+                    "main/resources </p>";
+        }
+        for (File directoryPath : directories) {
+            // groupName will be 33 or 13 basically the group number
+            String groupName = directoryPath.getName();
+            File[] listing = directoryPath.listFiles();
+            if (listing == null) {
+                return "The path " + directoryPath + " does not have subdirectories";
+            }
+            // map String 33/Freezer -> [Freezer.jpg,Freezer.json]
+            Map<String, List<File>> map = new HashMap<>();
+            for (File file : listing) {
+                String path = getBaseName(file.getPath()); // base path just ignores the extension
+                System.out.println("Path is :" + path);
+                var listBefore = map.getOrDefault(path, new ArrayList<>());
+               listBefore.add(file);
+                map.put(path, listBefore);
+            }
+            for (var mapEntry : map.entrySet()) {
+                String path = mapEntry.getKey(); // 33/Freezer
+                List<File> files = mapEntry.getValue(); // [Freezer.jpg,Freezer.json]
+                // each pair consists of [image,json] or [json,image] I don't know the order
+                // I have to first get the image and then the json
+                Optional<File> imgPath = files.stream().filter(f -> !f.getName().endsWith(".json")).findFirst();
+                if (imgPath.isEmpty()) {
+                    return "There is a json without an image associated.For path:" + path + " we have : " + files;
                 }
+                File imagePath = imgPath.get(); // get the image for this pair
+                for (File jsonPath : files)
+                    if (jsonPath.getName().endsWith(".json"))
+                        addActivityToDb(jsonPath, imagePath, groupName);
             }
         }
-        return "Data was loaded in database!";
+        return "Data from all activities was loaded in database!";
     }
 }

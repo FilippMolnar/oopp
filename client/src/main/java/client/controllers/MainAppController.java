@@ -82,8 +82,8 @@ public class MainAppController {
         this.name = "";
         Scene waitingRoomScene = waitingRoomPair.getValue();
         this.homeScene = home.getValue();
-        Scene homeSingleplayerScene = homeSingleplayer.getValue();
-        Scene homeMultiplayerScene = homeMultiplayer.getValue();
+        this.homeSingleplayerScene = homeSingleplayer.getValue();
+        this.homeMultiplayerScene = homeMultiplayer.getValue();
         this.leaderBoardScene = leaderBoard.getValue();
         this.questionTransitionScene = qTransition.getValue();
         this.leaderBoardCtrl = leaderBoard.getKey();
@@ -267,7 +267,7 @@ public class MainAppController {
     public void showNext(int i) {
         System.out.println("SHOWING NEXT");
         this.currentScene = this.currentScene.getNext(i);
-        resizeSceneToMaximize(this.currentScene);
+        //resizeSceneToMaximize(this.currentScene);
         primaryStage.setScene(this.currentScene.getScene());
         if (this.currentScene.getTitle() != null) {
             primaryStage.setTitle(this.currentScene.getTitle());

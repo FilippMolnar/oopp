@@ -35,7 +35,7 @@ public class TransitionSceneCtrl extends AbstractQuestion implements ControllerI
         System.out.println("Initializing transition scene ctrl!");
         double animationDuration = 1.7;
         loadingLine.setEndX(-40); // for animation hardcoded
-        questionText.setText("Question " + (mainCtrl.getQuestionIndex() + 1));
+        questionText.setText("Question " + (mainCtrl.getQuestionIndex()));
         Timeline timeline = new Timeline();
         KeyValue lineLength = new KeyValue(loadingLine.endXProperty(), 128); // some hardcoded value for animation
         EventHandler<ActionEvent> onFinished = t -> {

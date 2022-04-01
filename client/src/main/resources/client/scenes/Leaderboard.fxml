@@ -120,8 +120,8 @@
                         <RowConstraints minHeight="10.0" percentHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label fx:id="rank4_name" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <Label fx:id="rank4_score" text="" GridPane.columnIndex="1" />
+                        <Label fx:id="rank4_score" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <Label fx:id="rank4_name" text="" GridPane.columnIndex="1" />
                         <Circle fill="#1f93ff00" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                      </children>
@@ -140,8 +140,8 @@
                         <RowConstraints minHeight="10.0" percentHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label fx:id="rank5_name" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <Label fx:id="rank5_score" text="" GridPane.columnIndex="1" />
+                        <Label fx:id="rank5_score" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <Label fx:id="rank5_name" text="" GridPane.columnIndex="1" />
                         <Circle fill="#1f93ff00" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                      </children>
@@ -160,8 +160,8 @@
                         <RowConstraints minHeight="10.0" percentHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label fx:id="rank6_name" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <Label fx:id="rank6_score" text="" GridPane.columnIndex="1" />
+                        <Label fx:id="rank6_score" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <Label fx:id="rank6_name" text="" GridPane.columnIndex="1" />
                         <Circle fill="#1f93ff00" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                      </children>
@@ -180,8 +180,8 @@
                         <RowConstraints minHeight="10.0" percentHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label fx:id="rank7_name" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <Label fx:id="rank7_score" text="" GridPane.columnIndex="1" />
+                        <Label fx:id="rank7_score" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <Label fx:id="rank7_name" text="" GridPane.columnIndex="1" />
                         <Circle fill="#1f93ff00" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                      </children>
@@ -200,8 +200,8 @@
                         <RowConstraints minHeight="10.0" percentHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label fx:id="rank8_name" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <Label fx:id="rank8_score" text="" GridPane.columnIndex="1" />
+                        <Label fx:id="rank8_score" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <Label fx:id="rank8_name" text="" GridPane.columnIndex="1" />
                         <Circle fill="#1f93ff00" radius="16.0" stroke="#d6d3ee" strokeType="INSIDE" strokeWidth="2.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="8" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                      </children>

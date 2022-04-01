@@ -432,7 +432,7 @@ public abstract class AbstractQuestion implements Initializable {
         int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
         answer.setScore(newScore);
         mainCtrl.updateScore(newScore);
-        scoreText.setText(mainCtrl.getScore()+"");
+        scoreText.setText("SCORE " + mainCtrl.getScore());
     }
 
     public void backToHomeScreen() {
@@ -460,7 +460,7 @@ public abstract class AbstractQuestion implements Initializable {
         if (doublePointsJoker) score = score * 2;
         setDoublePointsJoker(false);
         mainCtrl.updateScore(score);
-        this.scoreText.setText("SCORE " + mainCtrl.getTotalScore());
+        this.scoreText.setText("SCORE " + mainCtrl.getScore());
         if (isMultiPlayer) {
             sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), score, mainCtrl.getName()));
         } else {

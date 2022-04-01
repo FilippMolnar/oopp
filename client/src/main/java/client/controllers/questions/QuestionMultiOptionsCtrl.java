@@ -80,6 +80,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     }
 
     public void setQuestion(Question question) {
+        setQuestionNumber(mainCtrl.getQuestionIndex());
         super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         optionA.setText(question.getChoices().get(0).getTitle());
@@ -211,11 +212,10 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     public void initializeController() {
         System.out.println("Initializing Qmulti!");
         this.scoreText.setText("SCORE " + mainCtrl.getScore());
-        questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        //questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation(10);
         resetUI();
         resetLogic();
-        super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
     }
 
     /**

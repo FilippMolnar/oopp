@@ -29,7 +29,7 @@ import commons.Question;
 import javafx.geometry.Insets;
 import javafx.util.Duration;
 
-public class LeaderBoardCtrl implements ControllerInitialize{
+public class LeaderBoardCtrl implements ControllerInitialize {
 
     @FXML
     private GridPane spots;
@@ -195,6 +195,7 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         this.appController.initializeScore();
         this.appController.showNext();
     }
+
     @Override
     public void initializeController() {
         names = List.of(rank1_name, rank2_name, rank3_name, rank4_name, rank5_name, rank6_name, rank7_name, rank8_name);
@@ -204,9 +205,15 @@ public class LeaderBoardCtrl implements ControllerInitialize{
             multiPlayerInitializer();
         }
         else {
+            System.out.println("INITIALIZE SINGLE PLAYER");
             singlePlayerInitializer();
         }
 
+    }
+
+    public void disableRematch() {
+        rematchButton.setDisable(true);
+        rematchButton.setVisible(false);
     }
 
     private void createLeaderboardSpot(Score score, int row) {
@@ -273,8 +280,8 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     }
 
     public void singlePlayerInitializer() {
-
         List<Score> allScores = serverUtils.getSingleLeaderboard();
+        System.out.println("ALL SCORES: " + allScores + allScores.size());
         int i;
         for (i = 0; i < 8; i++) {
             if (i < allScores.size()) {
@@ -293,7 +300,7 @@ public class LeaderBoardCtrl implements ControllerInitialize{
 
     public void multiPlayerInitializer() {
         fillWithValues();
-        if (appController.getQuestionIndex() == 10) {
+        if (appController.getQuestionIndex() == 11) {
             after10Questions();
         }
         else {

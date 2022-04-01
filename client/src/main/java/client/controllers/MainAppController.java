@@ -44,8 +44,7 @@ public class MainAppController {
     private LinkedScene adminEditLinked;
 
     private String name;
-    protected boolean isMultiPlayer;
-    private int totalScore;
+    protected boolean isMultiPlayer = false;
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private QuestionMultiOptionsCtrl qMultiCtrl;
@@ -59,7 +58,7 @@ public class MainAppController {
     private Score score;
 
     private List<Question> questionsInGame;
-    private int questionIndex = 0;
+    private int questionIndex = 1;
     private JokersList jokers;
 
     @Inject
@@ -101,7 +100,7 @@ public class MainAppController {
         this.sameAsCtrl = sameAs.getKey();
 
         LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
-        LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
+        LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene, this.leaderBoardCtrl);
         LinkedScene sameAsLinked = new LinkedScene(this.sameAsScene);
         LinkedScene singleplayerLinked = new LinkedScene(this.homeSingleplayerScene, homeSingleplayer.getKey());
         LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
@@ -113,6 +112,8 @@ public class MainAppController {
         this.currentScene = new LinkedScene(this.homeScene);
         this.currentScene.addNext(multiplayerLinked);
         this.currentScene.addNext(singleplayerLinked);
+        this.currentScene.addNext(adminOverviewLinked);
+        this.currentScene.addNext(leaderBoardLinked);
         this.homeScreenLinked = this.currentScene;
         this.adminOverviewLinked = adminOverviewLinked;
         this.adminEditLinked = adminEditLinked;
@@ -167,7 +168,7 @@ public class MainAppController {
     }
 
     public int getScore() {
-        return this.totalScore;
+        return this.score.getScore();
     }
 
     public void setScore(int score) {
@@ -259,7 +260,7 @@ public class MainAppController {
         element.setMinHeight(primaryStage.getHeight());
     }
 
-    /*
+    /**
      * @param i in case multiple scenes follow the current scene,
      * the index of the following scenes is used to specify which
      * one to show next.
@@ -276,33 +277,36 @@ public class MainAppController {
         Object controller = this.currentScene.getController();
         // if this controller is of the question then set the question
         if (controller instanceof QuestionMultiOptionsCtrl qController) {
-            qController.setQuestion(questionsInGame.get(questionIndex));
+            qController.setQuestion(questionsInGame.get(questionIndex-1));
             qController.setQuestionNumber(questionIndex);
-            questionIndex++;
             qController.setGameMode(isMultiPlayer);
+            questionIndex++;
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
-            System.out.println("INSEEERT");
-            qController.setQuestion(questionsInGame.get(questionIndex));
-            questionIndex++;
+            qController.setQuestion(questionsInGame.get(questionIndex-1));
             qController.setQuestionNumber(questionIndex);
             qController.setGameMode(isMultiPlayer);
+            questionIndex++;
         }
         else if (controller instanceof QuestionSameAsCtrl qController) {
-            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-            qController.setQuestion(questionsInGame.get(questionIndex));
+            qController.setQuestion(questionsInGame.get(questionIndex-1));
             qController.setQuestionNumber(questionIndex);
-            questionIndex++;
             qController.setGameMode(isMultiPlayer);
+            questionIndex++;
+        }
+        if(controller instanceof LeaderBoardCtrl c && !isMultiPlayer) {
+            if(questionsInGame != null && questionIndex == questionsInGame.size()) {
+                System.out.println("UPLOADING SCORE");
+                serverUtils.addScore(score);
+                questionIndex = 1;
+            } else {
+                c.disableRematch();
+            }
         }
         if (controller instanceof ControllerInitialize controllerInit) {
             System.out.println("INITIALIZE CONTROLLER");
             controllerInit.initializeController();
-            /*if(questionIndex == questionsInGame.size()) {
-                serverUtils.addScore(score);
-                questionIndex = -1;
-            }*/
         }
     }
 
@@ -312,6 +316,7 @@ public class MainAppController {
      * current scene to the homescreen.
      */
     public void showHomeScreen() {
+        this.isMultiPlayer = false;
         primaryStage.setTitle("Home");
         resizeSceneToMaximize(homeScreenLinked);
         primaryStage.setScene(homeScene);
@@ -319,6 +324,7 @@ public class MainAppController {
         this.currentScene = this.homeScreenLinked;
     }
 
+    // not used anymore
     public void showAdmin() {
         primaryStage.setTitle("Admin");
         primaryStage.setScene(adminOverviewScene);
@@ -339,11 +345,11 @@ public class MainAppController {
     }
 
     public void updateScore(int amount) {
-        this.totalScore += amount;
+        this.score.addScore(amount);
     }
 
     public int getTotalScore() {
-        return this.totalScore;
+        return this.score.getScore();
     }
 
     public Map<Integer, List<String>> getLeaderboard() {

@@ -70,6 +70,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     }
 
     public void setQuestion(Question question) {
+        setQuestionNumber(mainCtrl.getQuestionIndex());
         super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(4).toList();
         optionA.setText(question.getChoices().get(0).getTitle());
@@ -195,7 +196,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
 
     @Override
     public void initializeController() {
-        scoreText.setText(mainCtrl.getScore()+"");
+        scoreText.setText("SCORE " + mainCtrl.getScore());
         startTimerAnimation(10);
         resizeImages();
         hasSubmittedAnswer = false;

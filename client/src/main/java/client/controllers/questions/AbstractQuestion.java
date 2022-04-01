@@ -1,6 +1,7 @@
 package client.controllers.questions;
 
 import client.controllers.MainAppController;
+import client.jokers.Joker;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.*;
@@ -51,6 +52,7 @@ public abstract class AbstractQuestion implements Initializable {
 
     @FXML
     public GridPane parentGridPane;
+    @FXML
     protected Circle circle1;
     @FXML
     protected Circle circle2;
@@ -189,6 +191,36 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void setQuestionNumber(int num) {
         this.questionNumber.setText(num + "/20");
+        if(num % 5 == 0) {
+            mainCtrl.getJokers().replaceUsed(server, mainCtrl.isMultiPlayer());
+            uncheckJokers();
+        }
+    }
+
+    public void uncheckJokers(){
+        getCircle1().setOpacity(1.0);
+        getImage1().setOpacity(1.0);
+        getCircle2().setOpacity(1.0);
+        getImage2().setOpacity(1.0);
+        getCircle3().setOpacity(1.0);
+        getImage3().setOpacity(1.0);
+
+    }
+
+    public void showJokerImages(){
+        System.out.println("show jokers");
+        List<Joker> jokers = mainCtrl.getJokers().getJokers();
+        var resources = getClass().getResource("/client/pictures/").toString();
+        Image image1 = new Image(resources + jokers.get(0).imagePath);
+        Image image2 = new Image(resources + jokers.get(1).imagePath);
+        Image image3 = new Image(resources + jokers.get(2).imagePath);
+        getImage1().setImage(image1);
+        getImage2().setImage(image2);
+        getImage3().setImage(image3);
+        uncheckJokers();
+        jokers.get(0).markUsed(mainCtrl);
+        jokers.get(1).markUsed(mainCtrl);
+        jokers.get(2).markUsed(mainCtrl);
     }
 
     public static void setDoublePointsJoker(boolean doublePointsJoker) {

@@ -90,7 +90,6 @@ public class WaitController {
         return list;
     }
 
-    @GetMapping("/getMostLeastQuestions")
     public List<Question> get20RandomMostLeastQuestions() {
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < 20; i++)

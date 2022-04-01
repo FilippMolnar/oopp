@@ -124,7 +124,7 @@ public class MainAppController {
 
         this.primaryStage = primaryStage;
 
-        jokers = new JokersList(serverUtils);
+        jokers = new JokersList(serverUtils, false);
 
 
         primaryStage.setMaximized(true);
@@ -138,6 +138,10 @@ public class MainAppController {
         waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.questionTransitionScene.getStylesheets().add("client/scenes/waiting_room.css");
         sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
+    }
+
+    public void setJokers(JokersList jokers) {
+        this.jokers = jokers;
     }
 
     public void setQuestionNumber(int number) {
@@ -238,7 +242,7 @@ public class MainAppController {
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
-                    leaderBoardCtrl));
+                leaderBoardCtrl));
         current.getNext().addNext(homeScreenLinked.getNext(mode));
     }
 

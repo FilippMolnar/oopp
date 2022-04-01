@@ -141,6 +141,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         int middle = (min+max)/2;
         slider.setValue(middle);
         sliderValue.setText(middle + "");
+        showJokerImages();
     }
 
     public void setQuestion(Question question) {

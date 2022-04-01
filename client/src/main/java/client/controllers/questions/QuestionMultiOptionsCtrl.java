@@ -8,18 +8,19 @@ import commons.*;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
 
+import javafx.util.Duration;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,19 +61,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
     @FXML
     private Text questionNumber;
-
-    @FXML
-    private Circle elimWrongAnswerCircle;
-    @FXML
-    private Circle doublePointsCircle;
-    @FXML
-    private Circle decreaseTimeCircle;
-    @FXML
-    private ImageView elimWrongAnswerImage;
-    @FXML
-    private ImageView doublePointsImage;
-    @FXML
-    private ImageView decreaseTimeImage;
 
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -167,6 +155,73 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         }
     }
 
+    public void userReaction(String reaction, String name) {
+
+        Pane pane = new Pane();
+        ImageView iv;
+        Label label = new Label(name);
+        Image img;
+        switch (reaction) {
+            case "happy":
+                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
+                break;
+            case "angry":
+                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
+                break;
+            case "angel":
+                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
+                break;
+            default:
+                return;
+        }
+        iv = new ImageView(img);
+        pane.getChildren().add(iv);
+        pane.getChildren().add(label);
+        iv.setMouseTransparent(false);
+        label.setMouseTransparent(false);
+        label.setPadding(new Insets(-20, 0, 0, 5));
+        TranslateTransition translate = new TranslateTransition();
+        translate.setByY(700);
+        translate.setDuration(Duration.millis(2800));
+        translate.setNode(pane);
+        translate.setOnFinished(t -> {
+                    System.out.println("deleted");
+                    pane.getChildren().remove(iv);
+                    pane.getChildren().remove(label);
+                }
+        );
+        translate.play();
+
+        FadeTransition fade = new FadeTransition();
+        fade.setDuration(Duration.millis(2000));
+        //fade.setDelay(Duration.millis(1000));
+        fade.setFromValue(10);
+        fade.setToValue(0);
+        fade.setNode(pane);
+        fade.play();
+        parentGridPane.getChildren().add(pane);
+
+    }
+
+    public void angryReact() {
+        String path = "/app/reactions";
+        userReaction("angry", mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+    }
+
+    public void angelReact() {
+        String path = "/app/reactions";
+        userReaction("angel", mainCtrl.getName());
+
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+    }
+
+    public void happyReact() {
+        String path = "/app/reactions";
+        userReaction("happy", mainCtrl.getName());
+        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
+    }
+
     public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
@@ -216,6 +271,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         resetUI();
         resetLogic();
         super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        showJokerImages();
     }
 
     /**

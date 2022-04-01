@@ -23,7 +23,7 @@ class GameControllerTest {
     GameController gameController = new GameController(scoreRepository, simpMessagingTemplate);
     Player p1 = new Player("First");
     Player p2 = new Player("Second");
-    Player p3 = new Player("Second");
+    Player p3 = new Player("Third");
 
 
     @BeforeEach

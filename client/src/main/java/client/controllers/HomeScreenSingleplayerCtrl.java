@@ -35,7 +35,7 @@ public class HomeScreenSingleplayerCtrl {
             labelErrors.setText("Your name was too long, we limited the number of characters");
         }
         serverUtils.initializeServer("localhost");
-        ArrayList<Question> questions = serverUtils.getLeastMostQuestions();
+        ArrayList<Question> questions = serverUtils.getRandomQuestions();
         appController.addQuestionScenes(questions, 1);
         this.appController.setName(finalName);
         this.appController.initializeScore();

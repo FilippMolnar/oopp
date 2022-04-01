@@ -141,7 +141,5 @@ public class GameController {
             }
             current.resetOptions();
         }
-
     }
 }
-

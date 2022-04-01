@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import server.api.utils.TestUtils;
 import server.database.ActivityRepository;
 
 import java.util.Arrays;
@@ -88,5 +89,22 @@ class QuestionControllerTest {
         Set<Activity> choices = new HashSet<>(q.getChoices());
         assertEquals(choices.size(),q.getChoices().size(),"There should not be duplicate choices");
         assertEquals(q.getChoices().size(),4);
+    }
+
+    @Test
+    void generateRandomQuestionsWithParameters() {
+        initializeActControllerWithList(Arrays.asList(act1,act2,act3,act4));
+        var questions = questionController.generateRandomQuestions(1,2, 3);
+        int countEstimate = (int)questions.stream().filter(q -> q.getType() == QuestionType.Estimate).count();
+        int countMostLeast = (int)questions.stream().filter(q -> q.getType() == QuestionType.HighestEnergy).count();
+        int countTypeEqual = (int)questions.stream().filter(q -> q.getType() == QuestionType.EqualEnergy).count();
+        assertEquals(countEstimate,2);
+        assertEquals(countMostLeast,1);
+        assertEquals(countTypeEqual,3);
+    }
+    @Test
+    void generate20RandomQuestions(){
+        initializeActControllerWithList(TestUtils.getRandomActivities(20));
+        assertEquals(questionController.get20RandomQuestions().size(),20);
     }
 }

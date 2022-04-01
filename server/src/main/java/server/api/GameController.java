@@ -124,7 +124,7 @@ public class GameController {
         LOGGER.info(a.toString());
         current.updateScore(a.getUsername(), a.getScore());
         LOGGER.info("Game with " + gameID + " has " + current.getRequested() + 1 + " answers and "
-                + current.getplayersInGame() + " total players");
+                + current.getPlayersInGame() + " total players");
         if (current.newRequest(a.getOption())) {
             List<Integer> options = current.getOptionsStatistics();
             var playerList = current.getPlayers();

@@ -45,7 +45,7 @@ public class Game {
         this.requested = count;
     }
 
-    public int getplayersInGame() {
+    public int getPlayersInGame() {
         return players.size();
     }
 

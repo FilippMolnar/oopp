@@ -22,17 +22,21 @@ public class QuestionController {
         this.activityController = activityController;
     }
 
-    @GetMapping("/generate_20")
-    public List<Question> get20RandomQuestions() {
+    public List<Question> generateRandomQuestions(int typeMostLeast,int typeMostEstimate, int typeEqual){
         List<Question> questions = new ArrayList<>();
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < typeMostLeast; i++)
             questions.add(getTypeMostLeast());
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < typeMostEstimate; i++)
             questions.add(getTypeEstimate());
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < typeEqual; i++)
             questions.add(getTypeEqual());
         Collections.shuffle(questions);
         return questions;
+    }
+
+    @GetMapping("/generate_20")
+    public List<Question> get20RandomQuestions() {
+        return generateRandomQuestions(9,6,5);
     }
 
     @GetMapping("/question")

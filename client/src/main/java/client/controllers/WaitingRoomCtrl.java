@@ -41,6 +41,7 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
     }
 
 
+
     /**
      * Moves all players one to the right and adds one player up front.
      *

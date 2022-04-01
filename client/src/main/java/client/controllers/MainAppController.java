@@ -82,8 +82,8 @@ public class MainAppController {
         this.name = "";
         Scene waitingRoomScene = waitingRoomPair.getValue();
         this.homeScene = home.getValue();
-        Scene homeSingleplayerScene = homeSingleplayer.getValue();
-        Scene homeMultiplayerScene = homeMultiplayer.getValue();
+        this.homeSingleplayerScene = homeSingleplayer.getValue();
+        this.homeMultiplayerScene = homeMultiplayer.getValue();
         this.leaderBoardScene = leaderBoard.getValue();
         this.questionTransitionScene = qTransition.getValue();
         this.leaderBoardCtrl = leaderBoard.getKey();

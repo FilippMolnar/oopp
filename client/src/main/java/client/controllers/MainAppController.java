@@ -7,8 +7,12 @@ import client.controllers.questions.QuestionSameAsCtrl;
 import client.jokers.JokersList;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import client.jokers.JokersList;
+import commons.Activity;
 import commons.Question;
 import commons.Score;
+import commons.QuestionType;
+import commons.Activity;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -20,12 +24,19 @@ public class MainAppController {
     private final ServerUtils serverUtils;
     private Stage primaryStage;
     private Scene homeScene;
+    private Scene sameAsScene;
     private Scene leaderBoardScene; private Scene qMultiScene;
     private Scene qInsertScene;
     private Scene questionTransitionScene;
+    private Scene homeSingleplayerScene;
+    private Scene homeMultiplayerScene;
+    private Scene adminOverviewScene;
+    private Scene adminEditScene;
 
     private LinkedScene currentScene;
     private LinkedScene homeScreenLinked;
+    private LinkedScene adminOverviewLinked;
+    private LinkedScene adminEditLinked;
 
     private String name;
     protected boolean isMultiPlayer;
@@ -33,8 +44,11 @@ public class MainAppController {
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private QuestionMultiOptionsCtrl qMultiCtrl;
+    private QuestionSameAsCtrl sameAsCtrl;
     private LeaderBoardCtrl leaderBoardCtrl;
     private TransitionSceneCtrl qTransitionCtrl;
+    private AdminOverviewCtrl adminOverviewCtrl;
+    private AdminEditCtrl adminEditCtrl;
 
     private int gameID; // Game ID that the client stores and is sent to get the question
     private Score score;
@@ -56,31 +70,38 @@ public class MainAppController {
                            Pair<QuestionMultiOptionsCtrl, Scene> qMulti,
                            Pair<QuestionInsertNumberCtrl, Scene> qInsert,
                            Pair<QuestionSameAsCtrl, Scene> sameAs,
-                           Pair<TransitionSceneCtrl, Scene> qTransition) {
+                           Pair<TransitionSceneCtrl, Scene> qTransition,
+                           Pair<AdminOverviewCtrl, Scene> adminOverview,
+                           Pair<AdminEditCtrl, Scene> adminEdit) {
 
         this.name = "";
         Scene waitingRoomScene = waitingRoomPair.getValue();
         this.homeScene = home.getValue();
-        Scene homeSingleplayerScene = homeSingleplayer.getValue();
-        Scene homeMultiplayerScene = homeMultiplayer.getValue();
+        this.homeSingleplayerScene = homeSingleplayer.getValue();
+        this.homeMultiplayerScene = homeMultiplayer.getValue();
         this.leaderBoardScene = leaderBoard.getValue();
         this.questionTransitionScene = qTransition.getValue();
         this.leaderBoardCtrl = leaderBoard.getKey();
         this.qTransitionCtrl = qTransition.getKey();
-        this.leaderBoardCtrl = leaderBoard.getKey();
+        this.adminOverviewScene = adminOverview.getValue();
+        this.adminEditScene = adminEdit.getValue();
+
 
         this.qInsertCtrl = qInsert.getKey();
         this.qTransitionCtrl = qTransition.getKey();
         this.qInsertScene = qInsert.getValue();
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = qMulti.getValue();
-        Scene sameAsScene = sameAs.getValue();
+        this.sameAsScene = sameAs.getValue();
+        this.sameAsCtrl = sameAs.getKey();
 
         LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
-        LinkedScene sameAsLinked = new LinkedScene(sameAsScene);
-        LinkedScene singleplayerLinked = new LinkedScene(homeSingleplayerScene, homeSingleplayer.getKey());
-        LinkedScene multiplayerLinked = new LinkedScene(homeMultiplayerScene, homeMultiplayer.getKey());
+        LinkedScene sameAsLinked = new LinkedScene(this.sameAsScene);
+        LinkedScene singleplayerLinked = new LinkedScene(this.homeSingleplayerScene, homeSingleplayer.getKey());
+        LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
+        LinkedScene adminOverviewLinked = new LinkedScene(this.adminOverviewScene,adminOverview.getKey());
+        LinkedScene adminEditLinked = new LinkedScene(this.adminEditScene,adminEdit.getKey());
         LinkedScene qInsertLinked = new LinkedScene(qInsertScene, qInsertCtrl);
 
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
@@ -88,8 +109,13 @@ public class MainAppController {
         this.currentScene.addNext(multiplayerLinked);
         this.currentScene.addNext(singleplayerLinked);
         this.homeScreenLinked = this.currentScene;
+        this.adminOverviewLinked = adminOverviewLinked;
+        this.adminEditLinked = adminEditLinked;
 
         multiplayerLinked.addNext(waitingRoomLinked);
+
+        this.adminOverviewCtrl = adminOverview.getKey();
+        this.adminEditCtrl = adminEdit.getKey();
 
         this.primaryStage = primaryStage;
 
@@ -154,6 +180,10 @@ public class MainAppController {
         return questionIndex;
     }
 
+    public Activity getCorrect() {
+        return questionsInGame.get(questionIndex-1).getCorrect();
+    }
+
     public void setGameMode(boolean isMultiPlayer) {
         this.isMultiPlayer = isMultiPlayer;
     }
@@ -178,7 +208,15 @@ public class MainAppController {
             // add the transition before a normal question
             current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
             current = current.getNext();
-            current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
+            Question currentQuestion = questions.get(i);
+            if (currentQuestion.getType() == QuestionType.HighestEnergy) {
+                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
+            }
+            else if (currentQuestion.getType() == QuestionType.Estimate) {
+                current.addNext(new LinkedScene(this.qInsertScene, this.qInsertCtrl));
+            } else {
+                current.addNext(new LinkedScene(this.sameAsScene, this.sameAsCtrl));
+            }
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
@@ -237,6 +275,7 @@ public class MainAppController {
      * one to show next.
      */
     public void showNext(int i) {
+        System.out.println("SHOWING NEXT");
         this.currentScene = this.currentScene.getNext(i);
 
         primaryStage.setScene(this.currentScene.getScene());
@@ -254,12 +293,21 @@ public class MainAppController {
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
+            System.out.println("INSEEERT");
+            qController.setQuestion(questionsInGame.get(questionIndex));
+            questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
+        }
+        else if (controller instanceof QuestionSameAsCtrl qController) {
+            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             qController.setQuestion(questionsInGame.get(questionIndex));
             questionIndex++;
             qController.setQuestionNumber(questionIndex);
             qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
+            System.out.println("INITIALIZE CONTROLLER");
             controllerInit.initializeController();
             /*if(questionIndex == questionsInGame.size()) {
                 serverUtils.addScore(score);
@@ -278,6 +326,25 @@ public class MainAppController {
         primaryStage.setScene(homeScene);
         primaryStage.show();
         this.currentScene = this.homeScreenLinked;
+    }
+
+    public void showAdmin() {
+        primaryStage.setTitle("Admin");
+        primaryStage.setScene(adminOverviewScene);
+        primaryStage.show();
+        this.currentScene = adminOverviewLinked;
+        adminOverviewCtrl.refresh();
+    }
+
+    public void showAdminEdit(Activity activity) {
+        primaryStage.setTitle("AdminEdit");
+        primaryStage.setScene(adminEditScene);
+        primaryStage.show();
+        this.currentScene = adminEditLinked;
+        adminEditCtrl.getActivityTitleField().setText(activity.getTitle());
+        adminEditCtrl.getActivityImageField().setText(activity.getImagePath());
+        adminEditCtrl.getActivityConsumptionField().setText(String.valueOf(activity.getConsumption()));
+        adminEditCtrl.getActivitySourceField().setText(activity.getSource());
     }
 
     public void updateScore(int amount) {

@@ -191,6 +191,7 @@ public class LeaderBoardCtrl implements ControllerInitialize{
 
         this.appController.showNext();
         appController.addQuestionScenes(questions, 1);
+        System.out.println("INITIALIZING SCORE");
         this.appController.initializeScore();
         this.appController.showNext();
     }

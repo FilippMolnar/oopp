@@ -15,10 +15,7 @@
  */
 package client.utils;
 
-import commons.Game;
-import commons.Player;
-import commons.Question;
-import commons.Score;
+import commons.*;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
@@ -272,6 +269,31 @@ public class ServerUtils {
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .post(Entity.entity(score, APPLICATION_JSON), Score.class);
+    }
+
+    public List<Activity> getAllActivities() {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/data/all")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .get(new GenericType<>() {});
+    }
+
+    public Activity deleteActivity(Activity activity) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/activities/delete")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
+    }
+
+    // Method to add activity that is called from AdminEditCtrl and works with addActivity in ActivityController
+    public Activity addAct(Activity activity) {
+        return ClientBuilder.newClient(new ClientConfig())
+                .target(SERVER).path("api/activities")
+                .request(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
     }
 
     public void removePlayerFromGame(Player player,int gameID){

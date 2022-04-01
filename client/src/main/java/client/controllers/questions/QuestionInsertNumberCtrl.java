@@ -4,23 +4,35 @@ import client.controllers.ControllerInitialize;
 import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
+import commons.Answer;
 import commons.Question;
+import commons.UserReaction;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class QuestionInsertNumberCtrl extends AbstractQuestion implements ControllerInitialize {
 
+    @FXML
+    private TextField number;
+
+    @FXML
+    private Text submitButton;
+
+    @FXML
+    private Text scoreText;
     @FXML
     private Slider slider;
     @FXML
@@ -33,6 +45,8 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     private Text activity;
     @FXML
     private ImageView image;
+    @FXML
+    protected GridPane parentGridPane;
 
     @Inject
     public QuestionInsertNumberCtrl(ServerUtils server, MainAppController mainCtrl) {
@@ -40,13 +54,93 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     }
 
     @Override
+    public void displayAnswers(List<Integer> answer) {
+        // guard the socket message call with this check
+        if(!(mainCtrl.getCurrentScene().getController().getClass() == getClass())) {
+            return;
+        }
+        System.out.println("Calling display answers from QInsert");
+        TimerTask delay = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(mainCtrl::showNext);
+            }
+        };
+        Timer myTimer = new Timer();
+        int consumption = mainCtrl.getCorrect().getConsumption();
+        sliderValue.setText("Correct answer: " + consumption + "Wh");
+        slider.setValue(consumption);
+        myTimer.schedule(delay, 3000); // wait for 4 seconds
+    }
+
+    private Integer getNumber() {
+        var n = number.getText();
+        return Integer.parseInt(n);
+    }
+
+    public void changeValueSlider() {
+        sliderValue.setText((int)slider.getValue()+"");
+    }
+
+    public void submitAnswer() {
+        stopTimer();
+        int answer = (int) slider.getValue(); slider.setDisable(true);
+        submitButton.setDisable(true);
+        int newScore = calculateScore(Double.parseDouble(timerValue.getText()));
+        mainCtrl.updateScore(newScore);
+        if(isMultiPlayer) {
+            sendAnswer(new Answer(true, answer+"", mainCtrl.getGameID(), newScore, mainCtrl.getName()));
+        } else {
+            scoreText.setText(mainCtrl.getScore()+"");
+            displayAnswers(new ArrayList());
+        }
+    }
+
+    /*
+    public int calculateScore(int answer, double secondsLeft) {
+        int currentScore = mainCtrl.getScore();
+
+        int scoreToBeAdded = 0;
+        double maxSeconds = 10;
+        System.out.println(Math.abs(1 - (double)answer /
+                (double)mainCtrl.getCorrect().getConsumption()) + "");
+        int maxPoints = (int)(150.0 * Math.abs(1 - (double)answer /
+                (double)mainCtrl.getCorrect().getConsumption()));
+        double secondsToAnswer = maxSeconds - secondsLeft;
+        scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
+        System.out.println(scoreToBeAdded);
+        return currentScore + scoreToBeAdded;
+    }
+    */
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("received reaction!");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
+    }
+
+    @Override
     public void initializeController() {
-        this.scoreText.setText("SCORE " + mainCtrl.getScore());
+        this.informationLabel.setVisible(false);
+        this.scoreText.setText(mainCtrl.getScore()+"");
+        this.sliderValue.setText("0");
         startTimerAnimation(10);
         resizeImages();
         resetLogic();
-        System.out.println("Initializing insert number");
         questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
+        submitButton.setDisable(false);
+        slider.setDisable(false);
+        int correct = mainCtrl.getCorrect().getConsumption();
+        int min = (int) Math.random()*correct;
+        slider.setMin(min);
+        int max = (int) ((Math.random()+1)*correct);
+        slider.setMax(max);
+        int middle = (min+max)/2;
+        slider.setValue(middle);
+        sliderValue.setText(middle + "");
         showJokerImages();
     }
 
@@ -57,11 +151,10 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         activity.setText(choice.getTitle());
         Path path = Paths.get(choice.getImagePath());
         System.out.println(path.toString());
+        String groupID = path.getParent().getName(0).toString();
         try {
-            var actualPath = getClass().getResource("/33/" + path.getFileName()).toString();
+            var actualPath = getClass().getResource("/GoodActivities/" + groupID + "/" + path.getFileName()).toString();
             var newImage = new Image(actualPath);
-            image.setFitWidth(1);
-            image.setFitHeight(1);
             image.setImage(newImage);
             System.out.println(path.getFileName() + " " + actualPath);
         } catch (NullPointerException e) {
@@ -69,20 +162,10 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
                     " it can't be found on the client");
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
-        double randomMin = Math.random();
-        double randomMax = 1 + Math.random();
-        int min = (int) (answer * randomMin);
-        int max = (int) (answer * randomMax);
-        slider.setMin(min);
-        slider.setMax(max + 1);
         image3.setOpacity(0.0);
         circle3.setOpacity(0.0);
     }
 
-    @FXML
-    private void changeValueSlider() {
-        sliderValue.setText((int) slider.getValue() + "");
-    }
 
     /**
      * This method should be called after the scene is shown because otherwise the stackPane width/height won't exist
@@ -110,8 +193,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     }
 
 
-    @Override
-    public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
+    public int calculateScore(double secondsToAnswer) {
         int answerPlayer = (int) slider.getValue();
         int correctAnswer = question.getCorrect().getConsumption();
 

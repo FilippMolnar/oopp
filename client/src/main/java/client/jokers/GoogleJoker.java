@@ -27,7 +27,7 @@ public class GoogleJoker extends Joker{
             e.printStackTrace();
         }
 
-        markUsed(mainCtrl);
         use();
+        markUsed(mainCtrl);
     }
 }

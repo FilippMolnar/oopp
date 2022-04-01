@@ -73,8 +73,12 @@ public class Main extends Application {
                 "client", "scenes", "transition_between_questions.fxml");
         var sameAs = FXML.load(QuestionSameAsCtrl.class,
                 "client", "scenes", "QuestionSameAs.fxml");
+        var adminEdit = FXML.load(AdminEditCtrl.class,
+                "client","scenes","AdminEdit.fxml");
+        var adminOverview = FXML.load(AdminOverviewCtrl.class,
+                "client","scenes","AdminOverview.fxml");
         MainAppController appcontroller = INJECTOR.getInstance(MainAppController.class);
-        appcontroller.initialize(primaryStage, waitingRoom, home, homeSingleplayer, homeMultiplayer, leaderBoard, qMulti, qInsert, sameAs, qTransition);
+        appcontroller.initialize(primaryStage, waitingRoom, home, homeSingleplayer, homeMultiplayer, leaderBoard, qMulti, qInsert, sameAs, qTransition,adminOverview,adminEdit);
     }
 
     @Override

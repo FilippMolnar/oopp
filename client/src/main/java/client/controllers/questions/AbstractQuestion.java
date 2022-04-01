@@ -217,6 +217,7 @@ public abstract class AbstractQuestion implements Initializable {
         getImage1().setImage(image1);
         getImage2().setImage(image2);
         getImage3().setImage(image3);
+        uncheckJokers();
         jokers.get(0).markUsed(mainCtrl);
         jokers.get(1).markUsed(mainCtrl);
         jokers.get(2).markUsed(mainCtrl);

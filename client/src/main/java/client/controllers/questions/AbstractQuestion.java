@@ -469,10 +469,9 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void backToHomeScreen() {
         stopTimer();
-        List<Object> answerList = new ArrayList<>(2);
-        answerList.add(new Player(mainCtrl.getName()));
-        answerList.add(mainCtrl.getGameID());
-        server.sendThroughSocket("/app/disconnectFromGame", answerList);
+        Player player = new Player(mainCtrl.getName());
+        player.setGameID(mainCtrl.getGameID());
+        server.sendThroughSocket("/app/disconnectFromGame",player);
         mainCtrl.showHomeScreen();
     }
     // for single player

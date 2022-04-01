@@ -18,6 +18,7 @@ package server.api;
 import commons.Game;
 import commons.Player;
 import commons.Question;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
@@ -30,7 +31,10 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import server.Utils;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -44,6 +48,8 @@ public class WaitController {
     private final Logger LOGGER = LoggerFactory.getLogger(WaitController.class);
     private final GameController gameController;
     private final QuestionController questionController;
+
+    @Getter
     private int gameID = 0;
 
 
@@ -54,21 +60,19 @@ public class WaitController {
         this.questionController = questionController;
     }
 
-    public List<Player> getLobbyPlayers() {
-        return lobbyPlayers;
-    }
-
     /**
      * Adds the player to the current player list in the lobby and then pushes it to the socket channel
      *
      * @param player Player that is sent in the request
      */
     @PostMapping(path = {"", "/"})
-    public void addName(@RequestBody Player player) {
+    public void addNamePost(@RequestBody Player player) {
         lobbyPlayers.add(player);
+        player.setGameID(gameID);
         simpMessagingTemplate.convertAndSend("/topic/waitingRoom", player);
         List<String> playerNames = lobbyPlayers.stream().map(Player::getName).toList();
         LOGGER.info("Players in waiting room are:" + playerNames);
+        addPlayerToGameID(player);
     }
 
     @GetMapping("/getRandomQuestions")
@@ -114,35 +118,35 @@ public class WaitController {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
-        //var questionList = get20RandomMostLeastQuestions();
+
         var questionList = getRandomQuestionTypes();
         currentGame.setQuestions(questionList);
         utils.sendToAllPlayers(playerList, "queue/startGame/gameID", gameID);
         gameID++;
     }
 
-    public void addPlayerToGameID(String socketID, Player player) {
-        player.setSocketID(socketID);
+    public void addPlayerToGameID(Player player) {
         gameController.addPlayerToGame(gameID, player);
     }
 
     @MessageMapping("/enterRoom")
-    public void socketAddName(@Payload Player player, Principal principal) {
+    public void addNameSockets(@Payload Player player, Principal principal) {
         LOGGER.info("add player with name " + player.getName() + " to the waiting room(gameID = "
                 + gameID + " with sockets. The player's id is " + principal.getName());
-        addName(player);
-        addPlayerToGameID(principal.getName(), player);
-        simpMessagingTemplate.convertAndSendToUser(principal.getName(), "queue/socket", "ana");
+        player.setSocketID(principal.getName());
+        addNamePost(player);
     }
 
     @GetMapping(path = {"", "/"})
-    public List<Player> getPlayersAlreadyWaiting() {
+    public List<Player> getLobbyPlayers() {
         return lobbyPlayers;
     }
 
     @EventListener
     public void handleSessionDisconnect(SessionDisconnectEvent event) {
         StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
+        System.out.println(event);
+        System.out.println(event.getMessage());
         if (headers.getUser() == null) {
             LOGGER.error("The socket disconnect event did not have a socket id configured.This should probably not happen!");
             return;
@@ -169,11 +173,9 @@ public class WaitController {
     }
 
     @MessageMapping("/disconnectFromGame")
-    public void disconnectFromGame(List<Object> pair) {
-        Map map = (Map) pair.get(0);
-        LOGGER.info("Receiving : " + pair);
-        Player player = new Player((String) map.get("name"), (String) map.get("socketID"));
-        int goodGameId = (Integer) pair.get(1);
+    public void disconnectFromGame(Player player) {
+        LOGGER.info("Receiving : " + player);
+        int goodGameId = (int)player.getGameID();
         Game game = gameController.getGame(goodGameId);
         if (game == null) {
             LOGGER.error("Remove exit button for " + player.getName() + " failed because game is null");
@@ -186,6 +188,7 @@ public class WaitController {
 
     @MessageMapping("/disconnect")
     public void playerDisconnectWaitingRoom(Player player) {
+        int gameID = (int)player.getGameID();
         Game game = gameController.getGame(gameID);
         if (lobbyPlayers.remove(player)) {
             game.removePlayer(player);
@@ -199,25 +202,23 @@ public class WaitController {
 
     @MessageMapping("/decrease_time")
     public void decreaseTime(Player player) {
-        int gid = (int) player.getGameID();
+        int gid = (int)player.getGameID();
         Game currentGame = gameController.getGame(gid);
         var playerList = currentGame.getPlayers();
         sendToAllOtherUsers(playerList,"queue/decrease_time/gameID", gid, player);
-
     }
 
     @MessageMapping("/cover_hands")
     public void coverHands(Player player) {
-        int gid = (int) player.getGameID();
+        int gid = (int)player.getGameID();
         Game currentGame = gameController.getGame(gid);
         var playerList = currentGame.getPlayers();
         sendToAllOtherUsers(playerList,"queue/cover_hands/gameID", gid, player);
-
     }
 
     @MessageMapping("/cover_ink")
     public void coverInk(Player player) {
-        int gid = (int) player.getGameID();
+        int gid = (int)player.getGameID();
         Game currentGame = gameController.getGame(gid);
         var playerList = currentGame.getPlayers();
         sendToAllOtherUsers(playerList,"queue/cover_ink/gameID", gid, player);

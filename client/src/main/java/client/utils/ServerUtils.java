@@ -296,12 +296,6 @@ public class ServerUtils {
                 .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
     }
 
-    public void removePlayerFromGame(Player player,int gameID){
-        ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/game/removePlayer/" + gameID) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(player, APPLICATION_JSON), Score.class);
-    }
+
 
 }

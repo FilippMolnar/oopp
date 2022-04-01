@@ -267,7 +267,7 @@ public class MainAppController {
     public void showNext(int i) {
         System.out.println("SHOWING NEXT");
         this.currentScene = this.currentScene.getNext(i);
-        //resizeSceneToMaximize(this.currentScene);
+        resizeSceneToMaximize(this.currentScene);
         primaryStage.setScene(this.currentScene.getScene());
         if (this.currentScene.getTitle() != null) {
             primaryStage.setTitle(this.currentScene.getTitle());

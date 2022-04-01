@@ -120,9 +120,9 @@ public class GameController {
     public void submitAnswer(@Payload Answer a) {
         int gameID = a.getGameID();
         Game current = this.getGame(gameID);
-        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username " + a.getUsername());
+        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username " + a.getName());
         LOGGER.info(a.toString());
-        current.updateScore(a.getUsername(), a.getScore());
+        current.updateScore(a.getName(), a.getScore());
         LOGGER.info("Game with " + gameID + " has " + current.getRequested() + 1 + " answers and "
                 + current.getPlayersInGame() + " total players");
         if (current.newRequest(a.getOption())) {
@@ -135,7 +135,5 @@ public class GameController {
             }
             current.resetOptions();
         }
-
     }
 }
-

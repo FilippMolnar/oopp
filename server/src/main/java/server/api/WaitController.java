@@ -32,6 +32,7 @@ import server.Utils;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -74,6 +75,25 @@ public class WaitController {
         addPlayerToGameID(player);
     }
 
+    @GetMapping("/getRandomQuestions")
+    public List<Question> getRandomQuestionTypes() {
+        // 0 -> equal energy
+        // 1 -> highest energy
+        // 2 -> estimate answer
+        final int nrEqual = 8;
+        final int nrEstimate = 4;
+        final int nrHighest = 8;
+        List<Question> list = new ArrayList<>();
+        for (int i = 0; i < nrEqual; i++)
+            list.add(questionController.getTypeEqual());
+        for (int i = 0; i < nrHighest; i++)
+            list.add(questionController.getTypeMostLeast());
+        for (int i = 0; i < nrEstimate; i++)
+            list.add(questionController.getTypeEstimate());
+        Collections.shuffle(list);
+        return list;
+    }
+
     @GetMapping("/getMostLeastQuestions")
     public List<Question> get20RandomMostLeastQuestions() {
         List<Question> questions = new ArrayList<>();
@@ -99,9 +119,8 @@ public class WaitController {
             LOGGER.error("There are no players in the waiting room, but POST is called!");
             return;
         }
-//        var questionList = get20RandomMostLeastQuestions();
-        var questionList = questionController.get20RandomQuestions();
 
+        var questionList = getRandomQuestionTypes();
         currentGame.setQuestions(questionList);
         utils.sendToAllPlayers(playerList, "queue/startGame/gameID", gameID);
         gameID++;

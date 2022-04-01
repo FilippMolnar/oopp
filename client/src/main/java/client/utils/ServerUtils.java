@@ -254,6 +254,15 @@ public class ServerUtils {
                 });
     }
 
+    public ArrayList<Question> getRandomQuestions() {
+        return ClientBuilder.newClient(new ClientConfig()) //
+                .target(SERVER).path("api/wait/getRandomQuestions") //
+                .request(APPLICATION_JSON) //
+                .accept(APPLICATION_JSON) //
+                .get(new GenericType<>() {
+                });
+    }
+
     public List<Score> getSingleLeaderboard() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/score") //

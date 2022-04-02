@@ -7,6 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
 
     Player player = new Player("player");
+
+    @Test
+    void testConstructor2() {
+        Player p = new Player("player", "0");
+        assertEquals(p.getName(),"player");
+        assertEquals(p.getSocketID(),"0");
+    }
+
     @Test
     void getGameID() {
         assertEquals(player.getGameID(),0);
@@ -37,8 +45,20 @@ class PlayerTest {
     @Test
     void equalsTest()
     {
-        Player check = new Player("player");
-        assertEquals(player, check);
+        Player a = new Player("player");
+        Player b = new Player("player");
+        Player c = new Player("p");
+        assertEquals(a, a);
+        assertEquals(a, b);
+        assertNotEquals(a, c);
+        assertNotEquals(a, "str");
+    }
+
+    @Test
+    void toStringTest()
+    {
+        Player p = new Player("player");
+        assertEquals(p.toString(), "Player{id=0, name='player', socketID='null'}");
     }
 
 }

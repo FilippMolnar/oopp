@@ -15,11 +15,9 @@
  */
 package commons;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ActivityTest {
 	Activity a = new Activity("Activity", 100, "/path/to/img", "google.com");
@@ -34,6 +32,8 @@ public class ActivityTest {
 		assertEquals("Activity", a.getTitle());
 		assertEquals(100, a.getConsumption());
 		assertEquals("/path/to/img", a.getImagePath());
+		assertEquals("google.com", a.getSource());
+
 	}
 
 	@Test
@@ -44,8 +44,18 @@ public class ActivityTest {
 
 	@Test
 	public void notEqualsTest() {
-        Activity b = new Activity("Activity", 200, "/path/to/img", "google.com");
-        assertNotEquals(a, b);
+
+		Activity b = new Activity("Activity", 200, "/path/to/img", "google.com");
+		Activity c = new Activity("Activity", 200, "/path/to/img", null);
+		Activity d = new Activity("Activity", 200, "/path/to/imgs", "google.com");
+		Activity e = new Activity("Activity", 200, "/path/to/img", "google.sk");
+		assertNotEquals(a, b);
+		assertFalse(b.equals(null));
+		assertFalse(b.equals("string")); // not instance of activity
+		assertFalse(c.equals(b)); //no source
+		assertFalse(b.equals(d));
+		assertFalse(b.equals(e));
+
 	}
 
 	@Test
@@ -54,7 +64,8 @@ public class ActivityTest {
         assertEquals(1, a.compareTo(b));
         assertEquals(-1, b.compareTo(a));
         assertEquals(0, a.compareTo(a));
-    }
+		assertThrows(IllegalArgumentException.class, () -> b.compareTo("string"));
+	}
 
     @Test
     public void toStringTest() {

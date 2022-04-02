@@ -5,7 +5,6 @@ import client.controllers.MainAppController;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.Activity;
-import commons.Answer;
 import commons.Question;
 import commons.UserReaction;
 import javafx.event.ActionEvent;
@@ -22,7 +21,6 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -47,8 +45,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     @FXML
     private ImageView answerImage;
 
-
-    private Button selectedButton;
 
     public Button getOptionA() {
         return optionA;
@@ -77,10 +73,10 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionC.setText(question.getChoices().get(2).getTitle());
         activity.setText(question.getChoices().get(3).getTitle());
 
-        if (question.getChoices().get(0).id == question.getCorrect().id) correctAbstractClass = 0;
-        else if (question.getChoices().get(1).id == question.getCorrect().id) correctAbstractClass = 1;
-        else correctAbstractClass = 2;
-        System.out.println("Correct from same as is : "  + correctAbstractClass);
+        if (question.getChoices().get(0).id == question.getCorrect().id) correctOption = 0;
+        else if (question.getChoices().get(1).id == question.getCorrect().id) correctOption = 1;
+        else correctOption = 2;
+        System.out.println("Correct from same as is : "  + correctOption);
 
         for (int i = 0; i < 3; i++) {
             var view = (ImageView) imageViews.get(i);
@@ -118,15 +114,12 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         String button_id = source.getId();
         Activity a;
         if (button_id.equals("optionA")) {
-            selectedButton = optionA;
             a = this.question.getChoices().get(0);
             selectedOption = 0;
         } else if (button_id.equals("optionB")) {
-            selectedButton = optionB;
             a = this.question.getChoices().get(1);
             selectedOption = 1;
         } else {
-            selectedButton = optionC;
             a = this.question.getChoices().get(2);
             selectedOption = 2;
         }
@@ -136,16 +129,8 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
 
         if(isMultiPlayer) {
             sendAnswerAndUpdateScore(mainCtrl, button_id, a);
-            //sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
         } else {
-            checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID(), 0, mainCtrl.getName()));
-            stopTimer();
-            displayAnswers(new ArrayList());
-            if (selectedButton != null) {
-                selectedButton.setDisable(true);
-                selectedButton.setMouseTransparent(false);
-                selectedButton.setStyle("-fx-border-width: 0;");
-            }
+            sendAnswerAndUpdateScore(mainCtrl, button_id, a);
         }
     }
 
@@ -176,7 +161,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     }
 
     private void resetUI() {
-        selectedOption = -1;
         informationLabel.setVisible(false);
         countA.setVisible(false);
         countB.setVisible(false);
@@ -193,6 +177,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
      * Thus, we need to reset everything by ourselves.
      */
     private void resetLogic() {
+        selectedOption = -1;
         this.hasSubmittedAnswer = false; // this is false at the beginning of the game
     }
 

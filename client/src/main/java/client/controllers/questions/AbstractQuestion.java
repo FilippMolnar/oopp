@@ -83,8 +83,8 @@ public abstract class AbstractQuestion implements Initializable {
 
 
     private int timerIntegerValue;
-    protected int correctAbstractClass;
-    protected int selectedOption;
+    protected int correctOption; // number of the correct option (0,1,2)
+    protected int selectedOption; // number of the selected option (-1,0,1,2) (-1 if timer runs out)
     protected boolean hasSubmittedAnswer = false;
 
 
@@ -153,7 +153,7 @@ public abstract class AbstractQuestion implements Initializable {
             return;
         }
         List<Button> options = List.of(optionA,optionB,optionC);
-        Button correctOption = options.get(correctAbstractClass);
+        Button correctOption = options.get(this.correctOption);
         System.out.println("Correct option is : " + correctOption.getId());
         for(Button option : options){
             option.setDisable(true);
@@ -162,7 +162,7 @@ public abstract class AbstractQuestion implements Initializable {
         System.out.println("Received answer list: " + answerList + " from "
                 + mainCtrl.getCurrentScene().getController().getClass() );
         if(isMultiPlayer) {
-            showChart(answerList, correctAbstractClass);
+            showChart(answerList, this.correctOption);
         }
         Button selectedButton = null;
         if(selectedOption != -1) {

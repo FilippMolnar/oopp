@@ -60,10 +60,10 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionB.setText(question.getChoices().get(1).getTitle());
         optionC.setText(question.getChoices().get(2).getTitle());
 
-        if (question.getChoices().get(0).id == question.getCorrect().id) correctAbstractClass = 0;
-        else if (question.getChoices().get(1).id == question.getCorrect().id) correctAbstractClass = 1;
-        else correctAbstractClass = 2;
-        System.out.println("Correct from highest energy : "  + correctAbstractClass);
+        if (question.getChoices().get(0).id == question.getCorrect().id) correctOption = 0;
+        else if (question.getChoices().get(1).id == question.getCorrect().id) correctOption = 1;
+        else correctOption = 2;
+        System.out.println("Correct from highest energy : "  + correctOption);
 
 
         for (int i = 0; i < imageViews.size(); i++) {

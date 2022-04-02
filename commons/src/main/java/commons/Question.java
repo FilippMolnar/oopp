@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class Question{
@@ -30,6 +31,18 @@ public class Question{
         return a.equals(correct);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return choices.equals(question.choices) && type == question.type && correct.equals(question.correct);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(choices, type, correct);
+    }
 
     @Override
     public String toString() {

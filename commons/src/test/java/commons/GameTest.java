@@ -3,10 +3,7 @@ package commons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -129,32 +126,42 @@ class GameTest {
 
     @Test
     void getLeaderboard() {
-//        game.setScore(p1,50);
-//        game.setScore(p,100);
-//        List<Pair<Integer,Player>> leaderboard = game.getLeaderboard();
-//        assertTrue(leaderboard.get(0).getLeft()==100);
-//        assertTrue(leaderboard.get(1).getLeft()==50);
-//        assertTrue(leaderboard.get(1).getRight()==p1);
-//        assertTrue(leaderboard.get(0).getRight()==p);
+        game.setScore(p1.getName(),50);
+        game.setScore(p.getName(),100);
+        Map<Integer, List<String>> leaderboard = game.getLeaderboard();
+        Map<Integer, List<String>> l = new HashMap<>();
+
+        l.put(0, new ArrayList<>(Arrays.asList("play", "pl")));
+        l.put(50, new ArrayList<>(Arrays.asList("pl")));
+        l.put(100, new ArrayList<>(Arrays.asList("play")));
+        assertEquals(leaderboard, l);
     }
 
     @Test
     void setScore() {
-        /*game.setScore("abc",100);
-        game.setScore("p1",75);
-        assertEquals(game.getScore("abc"),100);
-        assertNotEquals(game.getScore("p1"),100);*/
+        game.setScore(p.getName(),100);
+        game.setScore(p1.getName(),100);
+        assertEquals(game.getScore(p),100);
+        assertEquals(game.getScore(p1),100);
 
     }
 
     @Test
     void getScore() {
-        /*game.setScore(p,100);
-        game.setScore(p1,75);
-        List<Pair<Integer,Player>>ls = new ArrayList<>();
-        ls = game.getLeaderboard();
-        assertEquals(ls.get(0).getLeft(),100);
-        assertEquals(ls.get(1).getLeft(),75); */
+        game.setScore(p.getName(),100);
+        game.setScore(p1.getName(),75);
+
+        assertEquals(game.getScore(p),100);
+        assertEquals(game.getScore(p1),75);
+    }
+
+    @Test
+    void updateScore() {
+        game.updateScore(p.getName(),5);
+        game.updateScore(p1.getName(),5);
+
+        assertEquals(game.getScore(p),5);
+        assertEquals(game.getScore(p1),5);
     }
 
     @Test
@@ -169,5 +176,11 @@ class GameTest {
         assertEquals(game.getQuestion(),q);
         game.IncrementQNum();
         assertEquals(game.getQuestion(),q1);
+    }
+
+    @Test
+    void printLeaderBoardTest() {
+        Map<Integer, List<String>> leaderboard = game.getLeaderboard();
+        Game.printLeaderboardToScreen(leaderboard);
     }
 }

@@ -13,6 +13,8 @@ public class Answer {
     private int score;
     private String username;
 
+    public Answer(){}
+
     public Answer(boolean isCorrect, String option, int gameID, int score, String username) {
         this.isCorrect = isCorrect;
         this.option = option;
@@ -53,11 +55,11 @@ public class Answer {
     }
 
 
-    public String getUsername() {
+    public String getName() {
         return this.username;
     }
 
-    public void setUsername(String o) {
+    public void setName(String o) {
         this.username = o;
     }
 }

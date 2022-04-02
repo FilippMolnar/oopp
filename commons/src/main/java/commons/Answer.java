@@ -14,7 +14,6 @@ public class Answer {
     private int score;
     private String name;
 
-    public Answer() { }
     public Answer(boolean isCorrect, String option, int gameID, int score, String username) {
         this.isCorrect = isCorrect;
         this.option = option;
@@ -42,4 +41,11 @@ public class Answer {
     }
 
 
+    public String getUsername() {
+        return this.name;
+    }
+
+    public void setUsername(String o) {
+        this.name = o;
+    }
 }

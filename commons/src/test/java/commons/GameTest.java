@@ -22,7 +22,19 @@ class GameTest {
         game.addPlayer(p1);
     }
     @Test
-    void constructorTest() {assertNotNull(game);}
+    void constructorTest() {
+        Game g = new Game();
+        assertEquals(g.getOptionsStatistics().get(0),0);
+        assertEquals(g.getOptionsStatistics().get(1),0);
+        assertEquals(g.getOptionsStatistics().get(2),0);
+        assertNotNull(game);
+    }
+
+    @Test
+    void testGetPlayers() {
+        assertEquals(game.getPlayersInGame(),2);
+    }
+
     @Test
     void getRequested() {
         assertEquals(game.getRequested(),0);
@@ -38,6 +50,16 @@ class GameTest {
     void newRequest() {
         game.newRequest("option");
         assertEquals(game.getRequested(),1);
+        assertTrue(game.newRequest(""));
+    }
+
+    @Test
+    void resetOptions() {
+        Game g = new Game();
+        g.resetOptions();
+        assertEquals(g.getOptionsStatistics().get(0),0);
+        assertEquals(g.getOptionsStatistics().get(1),0);
+        assertEquals(g.getOptionsStatistics().get(2),0);
     }
 
     @Test
@@ -91,6 +113,8 @@ class GameTest {
 
     @Test
     void getPlayers() {
+        Game g = new Game();
+        assertNull(g.getPlayers());
         assertTrue(game.getPlayers().size()==2);
     }
 
@@ -105,13 +129,13 @@ class GameTest {
 
     @Test
     void getLeaderboard() {
-        /*game.setScore(p1,50);
-        game.setScore(p,100);
-        List<Pair<Integer,Player>> leaderboard = game.getLeaderboard();
-        assertTrue(leaderboard.get(0).getLeft()==100);
-        assertTrue(leaderboard.get(1).getLeft()==50);
-        assertTrue(leaderboard.get(1).getRight()==p1);
-        assertTrue(leaderboard.get(0).getRight()==p); */
+//        game.setScore(p1,50);
+//        game.setScore(p,100);
+//        List<Pair<Integer,Player>> leaderboard = game.getLeaderboard();
+//        assertTrue(leaderboard.get(0).getLeft()==100);
+//        assertTrue(leaderboard.get(1).getLeft()==50);
+//        assertTrue(leaderboard.get(1).getRight()==p1);
+//        assertTrue(leaderboard.get(0).getRight()==p);
     }
 
     @Test

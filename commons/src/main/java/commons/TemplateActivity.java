@@ -11,10 +11,6 @@ public class TemplateActivity {
     public int consumption_in_wh;
     public String source;
 
-    public TemplateActivity() {
-
-    }
-
     public TemplateActivity(String title, int consumption_in_wh, String source) {
         this.title = title;
         this.consumption_in_wh = consumption_in_wh;
@@ -51,11 +47,6 @@ public class TemplateActivity {
         if (!(o instanceof TemplateActivity)) return false;
         TemplateActivity that = (TemplateActivity) o;
         return consumption_in_wh == that.consumption_in_wh && Objects.equals(title, that.title) && Objects.equals(source, that.source);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, consumption_in_wh, source);
     }
 
     @Override

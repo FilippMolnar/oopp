@@ -41,10 +41,31 @@ class AnswerTest {
         assertTrue(ans.equals(ans));
         assertFalse(answer.equals(null));
         assertFalse(answer.equals("string"));
-        assertTrue(answer.equals(new Answer(false,"option",1,100,"Ana")));
-        assertFalse(answer.equals(new Answer(false,null,1,100,null)));
-        assertFalse(answer.equals(ans));
+        Answer a = new Answer(false,"option",1,100,"Ana");
+        assertTrue(answer.equals(a));
+
+        a = new Answer(true,"option",1,100,"Ana");
+        assertFalse(answer.equals(a));
+
+        a = new Answer(false,"option2",1,100,"Ana");
+        assertFalse(answer.equals(a));
+
+        a = new Answer(false,"option",2,100,"Ana");
+        assertFalse(answer.equals(a));
+
+        a = new Answer(false,"option",1,0,"Ana");
+        assertFalse(answer.equals(a));
+
+        a = new Answer(false,"option",1,100,"string");
+        assertFalse(answer.equals(a));
+
     }
+
+    @Test
+    void testHashCode() {
+        assertEquals(answer.hashCode(),-1278532624);
+    }
+
 
     @Test
     void testGetGameId() {

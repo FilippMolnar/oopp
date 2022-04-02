@@ -84,6 +84,10 @@ public class Player {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+        return "Player{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", socketID='" + socketID + '\'' +
+                '}';
     }
 }

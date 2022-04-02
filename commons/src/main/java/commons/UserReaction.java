@@ -1,8 +1,14 @@
 package commons;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class UserReaction {
+    @Getter @Setter
     private int gameID;
+    @Getter @Setter
     private String username;
+    @Getter
     private String reaction;
     public UserReaction() {
 
@@ -12,26 +18,6 @@ public class UserReaction {
         this.username = username;
         this.reaction = reaction;
         validate();
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public int getGameID() {
-        return gameID;
-    }
-
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
-
-    public String getReaction() {
-        return reaction;
     }
 
     public void setReaction(String reaction) {

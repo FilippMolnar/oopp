@@ -71,6 +71,7 @@ public class Joker {
     }
 
     public void markUsed(MainAppController mainCtrl){
+        if(!used) return;
         List<Joker> jokers = mainCtrl.getJokers().getJokers();
         int idx = 1;
         for(int i=0; i<jokers.size(); i++){

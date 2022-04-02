@@ -15,7 +15,11 @@ import java.util.*;
 @RequestMapping("/api/data")
 public class ImportData {
 
+    ActivityController activityController;
 
+    ImportData(ActivityController activityController){
+        this.activityController = activityController;
+    }
     /**
      * Gets the base name, without extension, of given file name.
      * <p/>
@@ -41,7 +45,7 @@ public class ImportData {
             // Create a new activity to add to database
             Activity act = new Activity(temp.title, temp.consumption_in_wh, groupName + "/" + imagePath.getName(), temp.getSource());
             // Add activity to database
-            ActivityController.addActivity(act);
+            activityController.addActivity(act);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,7 +53,7 @@ public class ImportData {
 
     @GetMapping(path = "/load")
     public String ImportAllFiles() {
-        String resourceFolder = "src/main/resources/GoodActivities";
+        String resourceFolder = "main/resources/GoodActivities";
         File dir = new File(resourceFolder);
         File[] directories = dir.listFiles(File::isDirectory);
         if (directories == null) {

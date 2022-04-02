@@ -245,9 +245,9 @@ public class ServerUtils {
      *
      * @return 20 random questions
      */
-    public ArrayList<Question> getLeastMostQuestions() {
+    public ArrayList<Question> getRandomQuestions() {
         return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/wait/getMostLeastQuestions") //
+                .target(SERVER).path("api/wait/getRandomQuestions") //
                 .request(APPLICATION_JSON) //
                 .accept(APPLICATION_JSON) //
                 .get(new GenericType<>() {
@@ -296,12 +296,6 @@ public class ServerUtils {
                 .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
     }
 
-    public void removePlayerFromGame(Player player,int gameID){
-        ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/game/removePlayer/" + gameID) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(player, APPLICATION_JSON), Score.class);
-    }
+
 
 }

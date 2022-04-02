@@ -11,6 +11,8 @@ import client.jokers.JokersList;
 import commons.Activity;
 import commons.Question;
 import commons.Score;
+import commons.QuestionType;
+import commons.Activity;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -27,10 +29,10 @@ public class MainAppController {
     private final ServerUtils serverUtils;
     private Stage primaryStage;
     private Scene homeScene;
+    private Scene sameAsScene;
     private Scene leaderBoardScene; private Scene qMultiScene;
     private Scene qInsertScene;
     private Scene questionTransitionScene;
-    private Scene sameAsScene;
     private Scene homeSingleplayerScene;
     private Scene homeMultiplayerScene;
     private Scene adminOverviewScene;
@@ -47,6 +49,7 @@ public class MainAppController {
 
     private QuestionInsertNumberCtrl qInsertCtrl;
     private QuestionMultiOptionsCtrl qMultiCtrl;
+    private QuestionSameAsCtrl sameAsCtrl;
     private LeaderBoardCtrl leaderBoardCtrl;
     private TransitionSceneCtrl qTransitionCtrl;
     private AdminOverviewCtrl adminOverviewCtrl;
@@ -79,8 +82,8 @@ public class MainAppController {
         this.name = "";
         Scene waitingRoomScene = waitingRoomPair.getValue();
         this.homeScene = home.getValue();
-        Scene homeSingleplayerScene = homeSingleplayer.getValue();
-        Scene homeMultiplayerScene = homeMultiplayer.getValue();
+        this.homeSingleplayerScene = homeSingleplayer.getValue();
+        this.homeMultiplayerScene = homeMultiplayer.getValue();
         this.leaderBoardScene = leaderBoard.getValue();
         this.questionTransitionScene = qTransition.getValue();
         this.leaderBoardCtrl = leaderBoard.getKey();
@@ -88,12 +91,14 @@ public class MainAppController {
         this.adminOverviewScene = adminOverview.getValue();
         this.adminEditScene = adminEdit.getValue();
 
+
         this.qInsertCtrl = qInsert.getKey();
         this.qTransitionCtrl = qTransition.getKey();
         this.qInsertScene = qInsert.getValue();
         this.qMultiCtrl = qMulti.getKey();
         this.qMultiScene = qMulti.getValue();
-        Scene sameAsScene = sameAs.getValue();
+        this.sameAsScene = sameAs.getValue();
+        this.sameAsCtrl = sameAs.getKey();
 
         LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
         LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
@@ -119,7 +124,7 @@ public class MainAppController {
 
         this.primaryStage = primaryStage;
 
-        jokers = new JokersList(serverUtils);
+        jokers = new JokersList(serverUtils, false);
 
 
         primaryStage.setMaximized(true);
@@ -133,6 +138,10 @@ public class MainAppController {
         waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.questionTransitionScene.getStylesheets().add("client/scenes/waiting_room.css");
         sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
+    }
+
+    public void setJokers(JokersList jokers) {
+        this.jokers = jokers;
     }
 
     public void setQuestionNumber(int number) {
@@ -193,6 +202,10 @@ public class MainAppController {
         return questionIndex;
     }
 
+    public Activity getCorrect() {
+        return questionsInGame.get(questionIndex-1).getCorrect();
+    }
+
     public void setGameMode(boolean isMultiPlayer) {
         this.isMultiPlayer = isMultiPlayer;
     }
@@ -213,15 +226,23 @@ public class MainAppController {
             if (i == 10 && mode == 0) {
                 current.addNext(new LinkedScene(this.leaderBoardScene, this.leaderBoardCtrl));
                 current = current.getNext();
-            } 
+            }
             // add the transition before a normal question
             current.addNext(new LinkedScene(this.questionTransitionScene, this.qTransitionCtrl));
             current = current.getNext();
-            current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
+            Question currentQuestion = questions.get(i);
+            if (currentQuestion.getType() == QuestionType.HighestEnergy) {
+                current.addNext(new LinkedScene(this.qMultiScene, this.qMultiCtrl));
+            }
+            else if (currentQuestion.getType() == QuestionType.Estimate) {
+                current.addNext(new LinkedScene(this.qInsertScene, this.qInsertCtrl));
+            } else {
+                current.addNext(new LinkedScene(this.sameAsScene, this.sameAsCtrl));
+            }
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
-                    leaderBoardCtrl));
+                leaderBoardCtrl));
         current.getNext().addNext(homeScreenLinked.getNext(mode));
     }
 
@@ -248,6 +269,7 @@ public class MainAppController {
      * one to show next.
      */
     public void showNext(int i) {
+        System.out.println("SHOWING NEXT");
         this.currentScene = this.currentScene.getNext(i);
         resizeSceneToMaximize(this.currentScene);
         primaryStage.setScene(this.currentScene.getScene());
@@ -265,12 +287,21 @@ public class MainAppController {
         }
         // if this controller is of the question then set the question
         else if (controller instanceof QuestionInsertNumberCtrl qController) {
+            System.out.println("INSEEERT");
+            qController.setQuestion(questionsInGame.get(questionIndex));
+            questionIndex++;
+            qController.setQuestionNumber(questionIndex);
+            qController.setGameMode(isMultiPlayer);
+        }
+        else if (controller instanceof QuestionSameAsCtrl qController) {
+            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             qController.setQuestion(questionsInGame.get(questionIndex));
             qController.setQuestionNumber(questionIndex);
             questionIndex++;
             qController.setGameMode(isMultiPlayer);
         }
         if (controller instanceof ControllerInitialize controllerInit) {
+            System.out.println("INITIALIZE CONTROLLER");
             controllerInit.initializeController();
             /*if(questionIndex == questionsInGame.size()) {
                 serverUtils.addScore(score);

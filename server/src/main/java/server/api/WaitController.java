@@ -145,8 +145,6 @@ public class WaitController {
     @EventListener
     public void handleSessionDisconnect(SessionDisconnectEvent event) {
         StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
-        System.out.println(event);
-        System.out.println(event.getMessage());
         if (headers.getUser() == null) {
             LOGGER.error("The socket disconnect event did not have a socket id configured.This should probably not happen!");
             return;

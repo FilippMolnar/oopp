@@ -28,18 +28,7 @@ import java.util.*;
 
 public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
 
-    @FXML
-    private Button optionA;
-    @FXML
-    private Button optionB;
-    @FXML
-    private Button optionC;
-    @FXML
-    private Label countA;
-    @FXML
-    private Label countB;
-    @FXML
-    private Label countC;
+
     @FXML
     private GridPane images;
 
@@ -55,9 +44,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         return optionC;
     }
 
-    //private boolean hasSubmittedAnswer = false;
-    private int correct;
-    private Button selectedButton;
 
     @FXML
     private Text questionNumber;
@@ -74,9 +60,11 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         optionB.setText(question.getChoices().get(1).getTitle());
         optionC.setText(question.getChoices().get(2).getTitle());
 
-        if (question.getChoices().get(0).equals(question.getCorrect())) correct = 0;
-        else if (question.getChoices().get(1).equals(question.getCorrect())) correct = 1;
-        else correct = 2;
+        if (question.getChoices().get(0).id == question.getCorrect().id) correctAbstractClass = 0;
+        else if (question.getChoices().get(1).id == question.getCorrect().id) correctAbstractClass = 1;
+        else correctAbstractClass = 2;
+        System.out.println("Correct from highest energy : "  + correctAbstractClass);
+
 
         for (int i = 0; i < imageViews.size(); i++) {
             var view = (ImageView) imageViews.get(i);
@@ -107,34 +95,32 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      * @param actionEvent event used to get the button
      */
     public void pressedOption(ActionEvent actionEvent) {
-        final Node source = (Node) actionEvent.getSource();
+        final Button source = (Button) actionEvent.getSource();
         String button_id = source.getId();
         Activity a;
         if (button_id.equals("optionA")) {
-            selectedButton = optionA;
+            selectedOption = 0;
             a = question.getChoices().get(0);
         } else if (button_id.equals("optionB")) {
-            selectedButton = optionB;
+            selectedOption = 1;
             a = question.getChoices().get(1);
         } else {
-            selectedButton = optionC;
+            selectedOption = 2;
             a = question.getChoices().get(2);
+        }
+        if(a.id == question.getCorrect().id){
+            System.out.println(button_id + "is Correct!");
+        }else{
+            System.out.println(button_id + "is Wrong!");
         }
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
 
         if(isMultiPlayer) {
-            //sendAnswer(new Answer(a.id == question.getCorrect().id, button_id, mainCtrl.getGameID()));
             sendAnswerAndUpdateScore(mainCtrl, button_id, a);
         } else {
-            //checkAnswer(new Answer(a.id == question.getCorrect().id, button_id, 0, mainCtrl.getName()));
             sendAnswerAndUpdateScore(mainCtrl, button_id, a);
-            if (selectedButton != null) {
-                selectedButton.setDisable(true);
-                selectedButton.setMouseTransparent(false);
-                selectedButton.setStyle("-fx-border-width: 0;");
-            }
         }
     }
 
@@ -237,14 +223,13 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.
      */
     private void resetUI() {
-        selectedButton = null;
+        selectedOption = -1;
         informationLabel.setVisible(false);
         countA.setVisible(false);
         countB.setVisible(false);
         countC.setVisible(false);
         resizeImages();
         resetChart();
-        System.out.println("Enabling scene");
         optionA.setDisable(false);
         optionB.setDisable(false);
         optionC.setDisable(false);
@@ -264,7 +249,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
      */
     @Override
     public void initializeController() {
-        System.out.println("Initializing Qmulti!");
         this.scoreText.setText("SCORE " + mainCtrl.getScore());
         questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation(10);

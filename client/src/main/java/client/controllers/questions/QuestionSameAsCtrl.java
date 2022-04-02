@@ -77,9 +77,10 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionC.setText(question.getChoices().get(2).getTitle());
         activity.setText(question.getChoices().get(3).getTitle());
 
-        if (question.getChoices().get(0).equals(question.getCorrect())) correct = 0;
-        else if (question.getChoices().get(1).equals(question.getCorrect())) correct = 1;
-        else correct = 2;
+        if (question.getChoices().get(0).id == question.getCorrect().id) correctAbstractClass = 0;
+        else if (question.getChoices().get(1).id == question.getCorrect().id) correctAbstractClass = 1;
+        else correctAbstractClass = 2;
+        System.out.println("Correct from same as is : "  + correctAbstractClass);
 
         for (int i = 0; i < 3; i++) {
             var view = (ImageView) imageViews.get(i);
@@ -92,8 +93,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
                 view.setFitWidth(1);
                 view.setFitHeight(1);
                 view.setImage(newImage);
-
-                System.out.println(path.getFileName() + " " + actualPath);
             } catch (NullPointerException e) {
                 System.out.println("Having an issue with the image " + path.getFileName() +
                         " it can't be found on the client");
@@ -121,12 +120,15 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         if (button_id.equals("optionA")) {
             selectedButton = optionA;
             a = this.question.getChoices().get(0);
+            selectedOption = 0;
         } else if (button_id.equals("optionB")) {
             selectedButton = optionB;
             a = this.question.getChoices().get(1);
+            selectedOption = 1;
         } else {
             selectedButton = optionC;
             a = this.question.getChoices().get(2);
+            selectedOption = 2;
         }
         optionA.setDisable(true);
         optionB.setDisable(true);
@@ -174,6 +176,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     }
 
     private void resetUI() {
+        selectedOption = -1;
         informationLabel.setVisible(false);
         countA.setVisible(false);
         countB.setVisible(false);

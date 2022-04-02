@@ -7,21 +7,19 @@ import client.controllers.questions.QuestionSameAsCtrl;
 import client.jokers.JokersList;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import client.jokers.JokersList;
 import commons.Activity;
 import commons.Question;
-import commons.Score;
 import commons.QuestionType;
-import commons.Activity;
+import commons.Score;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.util.Pair;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import java.io.File;
+import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -307,7 +305,6 @@ public class MainAppController {
             qController.setGameMode(isMultiPlayer);
         }
         else if (controller instanceof QuestionSameAsCtrl qController) {
-            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
             qController.setQuestion(questionsInGame.get(questionIndex));
             qController.setQuestionNumber(questionIndex);
             questionIndex++;

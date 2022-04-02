@@ -120,10 +120,11 @@ public class GameController {
     public void submitAnswer(@Payload Answer a) {
         int gameID = a.getGameID();
         Game current = this.getGame(gameID);
-        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username " + a.getName());
-        LOGGER.info(a.toString());
+        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID +
+                " with username " + a.getName() + " correct:" + a.isCorrect());
+        LOGGER.info("Full answer:"  + a);
         current.updateScore(a.getName(), a.getScore());
-        LOGGER.info("Game with " + gameID + " has " + current.getRequested() + 1 + " answers and "
+        LOGGER.info("Game with " + gameID + " has " + (current.getRequested() + 1) + " answers and "
                 + current.getPlayersInGame() + " total players");
         if (current.newRequest(a.getOption())) {
             List<Integer> options = current.getOptionsStatistics();
@@ -134,6 +135,7 @@ public class GameController {
                 simpMessagingTemplate.convertAndSendToUser(playerID, "queue/statistics", options);
             }
             current.resetOptions();
+            LOGGER.info("================");
         }
     }
 }

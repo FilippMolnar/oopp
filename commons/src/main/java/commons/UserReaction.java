@@ -1,9 +1,14 @@
 package commons;
 
+import lombok.Getter;
+import lombok.Setter;
 
 public class UserReaction {
+    @Getter @Setter
     private int gameID;
+    @Getter @Setter
     private String username;
+    @Getter
     private String reaction;
     public UserReaction() {
 

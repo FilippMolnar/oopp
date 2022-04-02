@@ -17,6 +17,7 @@ public class GoogleJoker extends Joker{
     public void onClick(MainAppController mainCtrl)
     {
         if(isUsed())return ;
+        playSound("google");
 
 //        mainCtrl.openBrowser();
         Desktop desktop = Desktop.getDesktop();

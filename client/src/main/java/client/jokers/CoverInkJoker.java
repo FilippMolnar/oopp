@@ -33,6 +33,7 @@ public class CoverInkJoker extends Joker{
     }
 
     public static void splashAnimation(AbstractQuestion qCtrl) {
+        playSound("ink");
         int noOfSplatters = 3+ (int) Math.round(Math.random()*3);
         for (int i = 0; i < noOfSplatters; i++) {
             int duration = qCtrl.getTimerIntegerValue() * 1000;

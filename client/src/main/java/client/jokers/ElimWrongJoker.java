@@ -19,6 +19,7 @@ public class ElimWrongJoker extends Joker {
         if (isUsed()) {
             return;
         }
+        playSound("remove-answer");
         Question question = mainCtrl.getCurrentQuestion();
         ArrayList<Integer> wrong_options = new ArrayList<>();
         int i = 0;

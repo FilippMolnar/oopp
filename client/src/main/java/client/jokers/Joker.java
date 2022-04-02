@@ -22,9 +22,13 @@ import client.controllers.questions.AbstractQuestion;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import client.utils.ServerUtils;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class Joker {
     public String name;
@@ -68,6 +72,15 @@ public class Joker {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);
+    }
+
+    public static void playSound(String dirPath) {
+        String path = "src/main/resources/client/sounds/" + dirPath;
+        File[] dir = new File(path).listFiles();
+        int idx = new Random().nextInt(dir.length);
+        Media sound = new Media(dir[idx].toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 
     public void markUsed(MainAppController mainCtrl){

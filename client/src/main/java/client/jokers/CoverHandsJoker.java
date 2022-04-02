@@ -32,6 +32,7 @@ public class CoverHandsJoker extends Joker{
     }
 
     public static void handsAnimation(AbstractQuestion qCtrl){
+        playSound("hands");
         int duration = qCtrl.getTimerIntegerValue() * 1000;
 
         /* create hands */

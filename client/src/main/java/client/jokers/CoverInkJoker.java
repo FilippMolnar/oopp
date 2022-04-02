@@ -28,11 +28,12 @@ public class CoverInkJoker extends Joker{
         serverUtils.sendThroughSocket("/app/cover_ink", p);
 
         System.out.println("Cover Screen with Ink Joker");
-        markUsed(mainCtrl);
         use();
+        markUsed(mainCtrl);
     }
 
     public static void splashAnimation(AbstractQuestion qCtrl) {
+        playSound("ink");
         int noOfSplatters = 3+ (int) Math.round(Math.random()*3);
         for (int i = 0; i < noOfSplatters; i++) {
             int duration = qCtrl.getTimerIntegerValue() * 1000;

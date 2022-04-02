@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/score")
 public class ScoreController {
 
-    private ScoreRepository repo;
+    private final ScoreRepository repo;
 
     public ScoreController(ScoreRepository scoreRepository) {
         this.repo = scoreRepository;
@@ -22,7 +22,6 @@ public class ScoreController {
 
     @GetMapping(path = { "", "/" })
     public List<Score> getAll() {
-        //return repo.findAll();
         return repo.getLeaderboard();
     }
 

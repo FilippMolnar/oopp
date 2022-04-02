@@ -16,23 +16,27 @@ import java.util.Random;
 @RequestMapping(path = "/api")
 public class QuestionController {
 
-    private static ActivityController activityController;
+    private ActivityController activityController;
 
     public QuestionController(ActivityController activityController) {
-        QuestionController.activityController = activityController;
+        this.activityController = activityController;
+    }
+
+    public List<Question> generateRandomQuestions(int typeMostLeast,int typeMostEstimate, int typeEqual){
+        List<Question> questions = new ArrayList<>();
+        for (int i = 0; i < typeMostLeast; i++)
+            questions.add(getTypeMostLeast());
+        for (int i = 0; i < typeMostEstimate; i++)
+            questions.add(getTypeEstimate());
+        for (int i = 0; i < typeEqual; i++)
+            questions.add(getTypeEqual());
+        Collections.shuffle(questions);
+        return questions;
     }
 
     @GetMapping("/generate_20")
     public List<Question> get20RandomQuestions() {
-        List<Question> questions = new ArrayList<>();
-        for (int i = 0; i < 9; i++)
-            questions.add(getTypeMostLeast());
-        for (int i = 0; i < 6; i++)
-            questions.add(getTypeEstimate());
-        for (int i = 0; i < 5; i++)
-            questions.add(getTypeEqual());
-        Collections.shuffle(questions);
-        return questions;
+        return generateRandomQuestions(9,6,5);
     }
 
     @GetMapping("/question")
@@ -68,7 +72,7 @@ public class QuestionController {
      */
     @GetMapping(path = {"/most"})
     public Question getTypeMostLeast() {
-        List<Activity> choices = activityController.getThreeRandom();
+        List<Activity> choices = activityController.getThreeRandomActivities();
 
         Activity highest = choices.get(0);
         for(Activity a : choices){
@@ -89,10 +93,12 @@ public class QuestionController {
      */
     @GetMapping(path = {"/equal"})
     public Question getTypeEqual() {
+        // get a random activity
         Activity act = activityController.getRandom();
-        List<Activity> same = activityController.getAllByConsumption(act.getConsumption());
+        List<Activity> same = activityController.getAllByConsumption(act.getConsumption(),100);
         List<Activity> choices = new ArrayList<>();
-        Activity neither = new Activity("neither", -1, "location of cross");
+        //Activity neither = new Activity("neither", -1, "location of cross");
+        Activity neither = new Activity("neither", -1, "21/brew-coffee.jpg", "");
 
         if (same.size() == 1) same.add(neither);
 

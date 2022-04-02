@@ -25,14 +25,20 @@ public class HomeScreenCtrl {
     }
 
     public void enterSinglePlayer() {
-        appController.setQuestionNumber(0);
+        appController.setQuestionIndex(0);
         System.out.println("entering singleplayer screen");
         appController.showNext(1);
     }
 
     public void enterMultiPlayer() {
-        appController.setQuestionNumber(0);
+        appController.setQuestionIndex(0);
         System.out.println("entering multiplayer screen");
         appController.showNext(0);
+    }
+
+    public void showAdminOverview()
+    {
+        System.out.println("entering admin screen");
+        appController.showAdmin();
     }
 }

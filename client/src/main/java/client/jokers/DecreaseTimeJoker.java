@@ -20,11 +20,12 @@ public class DecreaseTimeJoker extends Joker{
         p.setGameID(mainCtrl.getGameID());
         serverUtils.sendThroughSocket("/app/decrease_time", p);
 
-        markUsed(mainCtrl);
         use();
+        markUsed(mainCtrl);
     }
 
     public static void decreaseTime(AbstractQuestion qCtrl){
+        playSound("reduce-time");
         qCtrl.cutAnimationInHalf();
     }
 }

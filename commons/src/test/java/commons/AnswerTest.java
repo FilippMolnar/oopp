@@ -8,6 +8,15 @@ class AnswerTest {
 
     Answer answer = new Answer(false,"option",1,100,"Ana");
     Answer ans = new Answer(true,"option2",1,75,"David");
+
+    @Test
+    void testConstructor2() {
+        Answer a = new Answer(true,"option");
+        assertTrue(a.isCorrect());
+        assertEquals(a.getOption(),"option");
+
+    }
+
     @Test
     void isCorrect() {
         assertFalse(answer.isCorrect());
@@ -29,6 +38,9 @@ class AnswerTest {
 
     @Test
     void testEquals() {
+        assertTrue(ans.equals(ans));
+        assertFalse(answer.equals(null));
+        assertFalse(answer.equals("string"));
         assertTrue(answer.equals(new Answer(false,"option",1,100,"Ana")));
         assertFalse(answer.equals(new Answer(false,null,1,100,null)));
         assertFalse(answer.equals(ans));

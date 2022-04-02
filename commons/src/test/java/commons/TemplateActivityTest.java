@@ -53,8 +53,12 @@ class TemplateActivityTest {
     void testEquals() {
         TemplateActivity eq = new TemplateActivity("Name" , 100 , "Source");
         TemplateActivity neq = new TemplateActivity("Name" , 100 , "Sourcee");
+        TemplateActivity neqConsumption = new TemplateActivity("Name" , 0 , "Source");
         assertTrue(temp.equals(eq));
+        assertTrue(temp.equals(temp));
         assertFalse(temp.equals(neq));
+        assertFalse(temp.equals("s"));
+        assertFalse(temp.equals(neqConsumption));
     }
 
     @Test

@@ -1,6 +1,5 @@
 package commons;
 
-import net.bytebuddy.dynamic.scaffold.TypeInitializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

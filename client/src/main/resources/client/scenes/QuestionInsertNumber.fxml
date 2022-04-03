@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import io.github.palexdev.materialfx.controls.MFXSlider?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -136,11 +136,11 @@
                         </HBox>
                     </children>
                 </AnchorPane>
-            <Label fx:id="informationLabel" text="Answer submitted!" GridPane.columnIndex="2" GridPane.halignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
+                <Label fx:id="informationLabel" text="Answer submitted!" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
             </children>
         </GridPane>
         <Text fx:id="activity" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Taking a 10 storey lift" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
@@ -153,15 +153,7 @@
                 <Image url="@/GoodActivities/33/lift.png" />
             </image>
         </ImageView>
-        <Text fx:id="sliderValue" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-            <GridPane.margin>
-                <Insets bottom="40.0" />
-            </GridPane.margin>
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Text>
-        <GridPane fx:id="images1" alignment="CENTER" hgap="30.0" onMouseReleased="#changeValueSlider" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
+        <GridPane fx:id="images1" alignment="CENTER" hgap="30.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />
@@ -176,7 +168,7 @@
                 <RowConstraints maxHeight="135.20001220703122" minHeight="10.0" percentHeight="33.0" prefHeight="46.999975585937534" valignment="CENTER" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <ImageView fitHeight="45.0" onMouseClicked="#happyReact" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="45.0" fitWidth="45.0" onMouseClicked="#happyReact" pickOnBounds="true" preserveRatio="true">
                     <GridPane.margin>
                         <Insets left="10.0" />
                     </GridPane.margin>
@@ -184,7 +176,7 @@
                         <Image url="@../pictures/happy.png" />
                     </image>
                 </ImageView>
-                <ImageView fitHeight="150.0" onMouseClicked="#angryReact" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                <ImageView fitHeight="150.0" fitWidth="45.0" onMouseClicked="#angryReact" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
                     <GridPane.margin>
                         <Insets left="10.0" />
                     </GridPane.margin>
@@ -192,7 +184,7 @@
                         <Image url="@../pictures/angry.png" />
                     </image>
                 </ImageView>
-                <ImageView fitHeight="150.0" onMouseClicked="#angelReact" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+                <ImageView fitHeight="150.0" fitWidth="45.0" onMouseClicked="#angelReact" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets left="10.0" />
                     </GridPane.margin>
@@ -200,32 +192,29 @@
                         <Image url="@../pictures/angel.png" />
                     </image>
                 </ImageView>
-            <AnchorPane prefHeight="55.0" prefWidth="105.0" styleClass="non-clickable" GridPane.columnIndex="3" GridPane.rowIndex="2">
-               <padding>
-                  <Insets bottom="10.0" />
-               </padding>
-               <children>
-                  <HBox alignment="CENTER" fillHeight="false" layoutX="73.0" layoutY="-5.0" onMouseClicked="#submitAnswer" prefHeight="60.0" prefWidth="214.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <VBox alignment="CENTER">
-                           <children>
-                              <Text fx:id="submitButton" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="SUBMIT">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
+                <AnchorPane prefHeight="55.0" prefWidth="105.0" styleClass="non-clickable" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                    <padding>
+                        <Insets bottom="10.0" />
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER" fillHeight="false" layoutX="73.0" layoutY="-5.0" onMouseClicked="#submitAnswer" prefHeight="60.0" prefWidth="214.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <VBox alignment="CENTER">
+                                    <children>
+                                        <Text fx:id="submitButton" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="SUBMIT">
+                                            <font>
+                                                <Font size="16.0" />
+                                            </font>
+                                        </Text>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </AnchorPane>
             </children>
         </GridPane>
-        <Slider fx:id="slider" onMouseReleased="#changeValueSlider" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-            <GridPane.margin>
-                <Insets />
-            </GridPane.margin>
-        </Slider>
+        <MFXSlider fx:id="slider" prefHeight="1.0" prefWidth="313.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+        </MFXSlider>
     </children>
 </GridPane>

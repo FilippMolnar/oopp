@@ -59,7 +59,6 @@ public class ServerUtils {
             session.disconnect(); // close all socket subscriptions with this session
         }
         session = connect(WEBSOCKET_SERVER);
-        System.out.println("Prams:" + subscribeParameters);
         for (List<Object> l : subscribeParameters) {
             subscribeSocketFromList((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
         }

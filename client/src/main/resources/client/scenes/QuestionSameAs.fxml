@@ -76,21 +76,21 @@
             <RowConstraints maxHeight="55.20001220703125" minHeight="10.0" prefHeight="55.20001220703125" vgrow="SOMETIMES" />
         </rowConstraints>
         <StackPane fx:id="joker3" onMouseClicked="#triggerJoker3" GridPane.columnIndex="8" GridPane.rowIndex="1">
-            <Circle fx:id="circle3" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+            <Circle fx:id="circle3" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
             <ImageView fx:id="image3" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@/client/pictures/joker_elim_wrong.png"/>
+                <Image url="@/client/pictures/joker_elim_wrong.png" />
             </ImageView>
         </StackPane>
         <StackPane fx:id="joker1" onMouseClicked="#triggerJoker1" GridPane.columnIndex="6" GridPane.rowIndex="1">
-            <Circle fx:id="circle1" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+            <Circle fx:id="circle1" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
             <ImageView fx:id="image1" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@/client/pictures/joker_double_points.png"/>
+                <Image url="@/client/pictures/joker_double_points.png" />
             </ImageView>
         </StackPane>
         <StackPane fx:id="joker2" onMouseClicked="#triggerJoker2" GridPane.columnIndex="7" GridPane.rowIndex="1">
-            <Circle fx:id="circle2" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0"/>
+            <Circle fx:id="circle2" fill="#837aba" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
             <ImageView fx:id="image2" fitHeight="45.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@/client/pictures/joker_decrease_time.png"/>
+                <Image url="@/client/pictures/joker_decrease_time.png" />
             </ImageView>
         </StackPane>
         <Group GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
@@ -124,7 +124,7 @@
                 </VBox>
             </HBox>
         </AnchorPane>
-        <Label fx:id="informationLabel" alignment="CENTER" prefHeight="51.0" prefWidth="1033.0" styleClass="info" text="Answer submitted!" textAlignment="CENTER" textFill="#d6d3ee" GridPane.columnIndex="4"/>
+        <Label fx:id="informationLabel" alignment="CENTER" prefHeight="51.0" prefWidth="1033.0" styleClass="info" text="Answer submitted!" textAlignment="CENTER" textFill="#d6d3ee" GridPane.columnIndex="4" />
     </GridPane>
     <GridPane fx:id="images" alignment="CENTER" hgap="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
         <columnConstraints>
@@ -168,9 +168,14 @@
                </Label>
             </children>
          </Group>
+            <ImageView fitHeight="146.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <Image url="@../../33/watch.png" />
+            </ImageView>
+        </StackPane>
+        <StackPane GridPane.columnIndex="4">
          <Group StackPane.alignment="BOTTOM_CENTER">
             <children>
-               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="52.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
+               <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="111.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="80.0" />
                <Label fx:id="countC" alignment="CENTER" prefHeight="17.0" prefWidth="78.0" text="countC">
                   <padding>
                      <Insets top="-40.0" />
@@ -178,11 +183,6 @@
                </Label>
             </children>
          </Group>
-            <ImageView fitHeight="146.0" fitWidth="264.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                <Image url="@../../33/watch.png" />
-            </ImageView>
-        </StackPane>
-        <StackPane GridPane.columnIndex="4">
             <ImageView fitHeight="169.0" fitWidth="381.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                 <Image url="@../../33/Dishwasher.jpg" />
             </ImageView>

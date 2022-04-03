@@ -32,7 +32,6 @@ public class TransitionSceneCtrl extends AbstractQuestion implements ControllerI
      */
     @Override
     public void initializeController() {
-        System.out.println("Initializing transition scene ctrl!");
         double animationDuration = 1.7;
         loadingLine.setEndX(-40); // for animation hardcoded
         questionText.setText("Question " + (mainCtrl.getQuestionIndex() + 1));

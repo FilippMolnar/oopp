@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.scene.control.Button;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -29,7 +30,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     private TextField number;
 
     @FXML
-    private Text submitButton;
+    private Button submitButton;
 
     @FXML
     private Text scoreText;

@@ -7,10 +7,10 @@ import com.google.inject.Inject;
 import commons.Answer;
 import commons.Question;
 import commons.UserReaction;
+import io.github.palexdev.materialfx.controls.MFXSlider;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,9 +34,8 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     @FXML
     private Text scoreText;
     @FXML
-    private Slider slider;
-    @FXML
-    private Text sliderValue;
+    private MFXSlider slider;
+
     @FXML
     private GridPane images;
     @FXML
@@ -69,23 +68,16 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         };
         Timer myTimer = new Timer();
         int consumption = mainCtrl.getCorrect().getConsumption();
-        sliderValue.setText("Correct answer: " + consumption + "Wh");
         slider.setValue(consumption);
+        slider.animateOnPressProperty();
         myTimer.schedule(delay, 3000); // wait for 4 seconds
-    }
-
-    private Integer getNumber() {
-        var n = number.getText();
-        return Integer.parseInt(n);
-    }
-
-    public void changeValueSlider() {
-        sliderValue.setText((int)slider.getValue()+"");
     }
 
     public void submitAnswer() {
         stopTimer();
-        int answer = (int) slider.getValue(); slider.setDisable(true);
+        int answer = (int) slider.getValue();
+        slider.setMouseTransparent(true);
+        slider.setDisable(true);
         submitButton.setDisable(true);
         int newScore = calculateScore(Double.parseDouble(timerValue.getText()));
         mainCtrl.updateScore(newScore);
@@ -124,6 +116,9 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void initializeController() {
+        slider.setMouseTransparent(false);
+        slider.setDisable(false);
+
         this.informationLabel.setVisible(false);
         this.scoreText.setText("SCORE " + mainCtrl.getScore());
         this.sliderValue.setText("0");
@@ -131,15 +126,14 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         resizeImages();
         resetLogic();
         submitButton.setDisable(false);
-        slider.setDisable(false);
         int correct = mainCtrl.getCorrect().getConsumption();
         int min = (int) Math.random()*correct;
         slider.setMin(min);
         int max = (int) ((Math.random()+1)*correct);
+        System.out.println("Min is : " + min + " : Max is : " + max);
         slider.setMax(max);
         int middle = (min+max)/2;
         slider.setValue(middle);
-        sliderValue.setText(middle + "");
         showJokerImages();
     }
 

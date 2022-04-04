@@ -57,11 +57,6 @@ public class GameController {
         return games.get(gameID);
     }
 
-    @PostMapping("/game/removePlayer/{gameID}")
-    public void removePlayerFromGame(@PathVariable("gameID") int gameID, Player player){
-        Game cur = getGame(gameID);
-        cur.removePlayer(player);
-    }
 
     /**
      * Retrieve the leaderboard for the current game
@@ -96,9 +91,8 @@ public class GameController {
     }
 
     @GetMapping("api/game/getSingleLeaderboard")
-    private List<Score> getSingleLeaderboard() {
-        List<Score> leaderboard = scoreRepository.getLeaderboard();
-        return leaderboard;
+    public List<Score> getSingleLeaderboard() {
+        return scoreRepository.getLeaderboard();
     }
 
     @MessageMapping("/reactions")
@@ -126,11 +120,12 @@ public class GameController {
     public void submitAnswer(@Payload Answer a) {
         int gameID = a.getGameID();
         Game current = this.getGame(gameID);
-        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID + " with username " + a.getUsername());
-        LOGGER.info(a.toString());
-        current.updateScore(a.getUsername(), a.getScore());
-        LOGGER.info("Game with " + gameID + " has " + current.getRequested() + 1 + " answers and "
-                + current.getplayersInGame() + " total players");
+        LOGGER.info("Receiving option " + a.getOption() + " for game ID " + gameID +
+                " with username " + a.getName() + " correct:" + a.isCorrect());
+        LOGGER.info("Full answer:"  + a);
+        current.updateScore(a.getName(), a.getScore());
+        LOGGER.info("Game with " + gameID + " has " + (current.getRequested() + 1) + " answers and "
+                + current.getPlayersInGame() + " total players");
         if (current.newRequest(a.getOption())) {
             List<Integer> options = current.getOptionsStatistics();
             var playerList = current.getPlayers();
@@ -140,6 +135,7 @@ public class GameController {
                 simpMessagingTemplate.convertAndSendToUser(playerID, "queue/statistics", options);
             }
             current.resetOptions();
+            LOGGER.info("================");
         }
     }
 }

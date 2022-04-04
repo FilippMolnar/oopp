@@ -26,10 +26,15 @@ public class AssignPrincipalHandshakeHandler extends DefaultHandshakeHandler {
         } else {
             name = (String) attributes.get(ATTR_PRINCIPAL);
         }
-        return () -> name;
+        return new Principal() {
+            @Override
+            public String getName() {
+                return name;
+            }
+        };
     }
 
-    private String generateRandomUsername() {
+    public String generateRandomUsername() {
         return UUID.randomUUID().toString();
     }
 }

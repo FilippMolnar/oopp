@@ -1,8 +1,12 @@
 package commons;
 
-import java.util.List;
-import java.util.Comparator;
+import lombok.Data;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+
+@Data
 public class Question{
 
     private List<Activity> choices;
@@ -23,32 +27,21 @@ public class Question{
         this.choices.sort(Comparator.naturalOrder());
     }
 
-    public List<Activity> getChoices() {
-        return this.choices;
-    }
-
-    public QuestionType getType() {
-        return type;
-    }
-
-    public Activity getCorrect() {
-        return correct;
-    }
-
-    public void setChoices(List<Activity> choices) {
-        this.choices = choices;
-    }
-
-    public void setType(QuestionType type) {
-        this.type = type;
-    }
-
-    public void setCorrect(Activity correct) {
-        this.correct = correct;
-    }
-
     public Boolean isCorrect(Activity a) {
         return a.equals(correct);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return choices.equals(question.choices) && type == question.type && correct.equals(question.correct);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(choices, type, correct);
     }
 
     @Override

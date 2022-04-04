@@ -5,6 +5,7 @@ import client.controllers.questions.AbstractQuestion;
 import client.jokers.CoverHandsJoker;
 import client.jokers.CoverInkJoker;
 import client.jokers.DecreaseTimeJoker;
+import client.jokers.JokersList;
 import client.utils.ServerUtils;
 import commons.Player;
 import commons.Question;
@@ -17,6 +18,7 @@ import javafx.scene.layout.StackPane;
 
 import javax.inject.Inject;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -24,7 +26,7 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
-    private List<Player> playerList;
+    private List<Player> playerList = new ArrayList<Player>();
 
     @FXML
     private GridPane pane;
@@ -38,6 +40,7 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
         this.appController = appController;
         this.serverUtils = serverUtils;
     }
+
 
 
     /**
@@ -102,6 +105,9 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
         this.serverUtils.subscribeForSocketMessages("/user/queue/startGame/gameID", Integer.class, gameID -> {
             appController.setGameID(gameID);
             List<Question> questions = serverUtils.getAllGameQuestions(gameID);
+            System.out.println("appController.isMultiPlayer()");
+            System.out.println(appController.isMultiPlayer());
+            appController.setJokers(new JokersList(serverUtils, appController.isMultiPlayer()));
             appController.addQuestionScenes(questions, 0);
             appController.showNext();
         });

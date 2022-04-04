@@ -1,6 +1,7 @@
 package client.controllers.questions;
 
 import client.controllers.MainAppController;
+import client.jokers.Joker;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
 import commons.*;
@@ -51,6 +52,7 @@ public abstract class AbstractQuestion implements Initializable {
 
     @FXML
     public GridPane parentGridPane;
+    @FXML
     protected Circle circle1;
     @FXML
     protected Circle circle2;
@@ -79,14 +81,16 @@ public abstract class AbstractQuestion implements Initializable {
     @FXML
     protected Button splashButton;
 
+
+    private int timerIntegerValue;
+    protected int correctOption; // number of the correct option (0,1,2)
+    protected int selectedOption; // number of the selected option (-1,0,1,2) (-1 if timer runs out)
+    protected boolean hasSubmittedAnswer = false;
+
+
     public int getTimerIntegerValue() {
         return timerIntegerValue;
     }
-
-    private int timerIntegerValue;
-    protected int correct;
-
-    protected boolean hasSubmittedAnswer = false;
 
 
     @FXML
@@ -127,7 +131,6 @@ public abstract class AbstractQuestion implements Initializable {
 
         System.out.println(ans.size());
         double all = ans.get(0) + ans.get(1) + ans.get(2);
-
         for (int i = 0; i < 3; i++) {
             imageViews.get(i).setVisible(false);
             double h = 150 * ans.get(i) / all;
@@ -149,23 +152,32 @@ public abstract class AbstractQuestion implements Initializable {
         if(!(mainCtrl.getCurrentScene().getController().getClass() == getClass())) {
             return;
         }
-        optionA.setDisable(true);
-        optionB.setDisable(true);
-        optionC.setDisable(true);
-        System.out.println("Received answer!!" + answerList + " from "
+        List<Button> options = List.of(optionA,optionB,optionC);
+        Button correctOption = options.get(this.correctOption);
+        System.out.println("Correct option is : " + correctOption.getId());
+        for(Button option : options){
+            option.setDisable(true);
+            option.setOpacity(1);
+        }
+        System.out.println("Received answer list: " + answerList + " from "
                 + mainCtrl.getCurrentScene().getController().getClass() );
         if(isMultiPlayer) {
-            showChart(answerList, correct);
+            showChart(answerList, this.correctOption);
         }
-        List<Button> options = List.of(optionA,optionB,optionC);
-        Button correctOption = options.get(correct);
-        correctOption.setOpacity(1);
+        Button selectedButton = null;
+        if(selectedOption != -1) {
+            selectedButton = options.get(selectedOption);
+            selectedButton.setStyle("-fx-border-width: 2.4; -fx-border-color: #C56659");
+        }
+
         correctOption.setStyle("-fx-border-width: 2.4; -fx-font-weight: bold; -fx-border-color: #83b159");
+        Button finalSelectedButton = selectedButton;
         TimerTask delay = new TimerTask() {
             @Override
             public void run() {
-                List<Button> options = List.of(optionA,optionB,optionC);
-                Button correctOption = options.get(correct);
+                if(selectedOption != -1) {
+                    finalSelectedButton.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
+                }
                 correctOption.setDisable(true);
                 correctOption.setMouseTransparent(false);
                 correctOption.setStyle("-fx-border-width: 0; -fx-font-weight: normal;");
@@ -189,6 +201,35 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void setQuestionNumber(int num) {
         this.questionNumber.setText(num + "/20");
+        if(num % 5 == 0) {
+            mainCtrl.getJokers().replaceUsed(server, mainCtrl.isMultiPlayer());
+            uncheckJokers();
+        }
+    }
+
+    public void uncheckJokers(){
+        getCircle1().setOpacity(1.0);
+        getImage1().setOpacity(1.0);
+        getCircle2().setOpacity(1.0);
+        getImage2().setOpacity(1.0);
+        getCircle3().setOpacity(1.0);
+        getImage3().setOpacity(1.0);
+    }
+
+    public void showJokerImages(){
+        System.out.println("show jokers");
+        List<Joker> jokers = mainCtrl.getJokers().getJokers();
+        var resources = getClass().getResource("/client/pictures/").toString();
+        Image image1 = new Image(resources + jokers.get(0).imagePath);
+        Image image2 = new Image(resources + jokers.get(1).imagePath);
+        Image image3 = new Image(resources + jokers.get(2).imagePath);
+        getImage1().setImage(image1);
+        getImage2().setImage(image2);
+        getImage3().setImage(image3);
+        uncheckJokers();
+        jokers.get(0).markUsed(mainCtrl);
+        jokers.get(1).markUsed(mainCtrl);
+        jokers.get(2).markUsed(mainCtrl);
     }
 
     public static void setDoublePointsJoker(boolean doublePointsJoker) {
@@ -211,60 +252,6 @@ public abstract class AbstractQuestion implements Initializable {
         server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> userReaction(userReaction.getReaction(), userReaction.getUsername()));
     }
 
-    /**
-     * Animates the reactions of users.
-     *
-     * @param reaction - a String that can have one of the following values: "happy", "angry", "angel"
-     * @param name     - the nickname of the user who reacted
-     */
-    /*
-    public void userReaction(String reaction, String name) {
-        Pane pane = new Pane();
-        ImageView iv;
-        Label label = new Label(name);
-        Image img;
-        switch (reaction) {
-            case "happy":
-                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
-                break;
-            case "angry":
-                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
-                break;
-            case "angel":
-                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
-                break;
-            default:
-                return;
-        }
-        iv = new ImageView(img);
-        pane.getChildren().add(iv);
-        pane.getChildren().add(label);
-        iv.setMouseTransparent(false);
-        label.setMouseTransparent(false);
-        label.setPadding(new Insets(-20, 0, 0, 5));
-        TranslateTransition translate = new TranslateTransition();
-        translate.setByY(700);
-        translate.setDuration(Duration.millis(2800));
-        translate.setNode(pane);
-        translate.setOnFinished(t -> {
-                    System.out.println("deleted");
-                    pane.getChildren().remove(iv);
-                    pane.getChildren().remove(label);
-                }
-        );
-        translate.play();
-
-        FadeTransition fade = new FadeTransition();
-        fade.setDuration(Duration.millis(2000));
-        //fade.setDelay(Duration.millis(1000));
-        fade.setFromValue(10);
-        fade.setToValue(0);
-        fade.setNode(pane);
-        fade.play();
-        parentGridPane.getChildren().add(pane);
-
-    }
-    */
     public void userReaction(String reaction, String name) {
 
         Pane pane = new Pane();
@@ -295,7 +282,6 @@ public abstract class AbstractQuestion implements Initializable {
         translate.setDuration(Duration.millis(2800));
         translate.setNode(pane);
         translate.setOnFinished(t -> {
-            System.out.println("deleted");
             pane.getChildren().remove(iv);
             pane.getChildren().remove(label);
         }
@@ -354,7 +340,6 @@ public abstract class AbstractQuestion implements Initializable {
         timerArc.setFill(Paint.valueOf("#d6d3ee"));
         timerValue.setFill(Paint.valueOf("#d6d3ee"));
         //create a timeline for moving the circle
-        System.out.println("TIMELINE INITIALIZED");
         this.timeline = new Timeline();
         //You can add a specific action when each frame is started.
 
@@ -363,7 +348,6 @@ public abstract class AbstractQuestion implements Initializable {
             public void run() {
                 Platform.runLater(() -> {
                     timerIntegerValue--;
-                    System.out.println(timerIntegerValue);
                     if (timerIntegerValue < 0) {
                         timerValue.setText(Integer.toString(0));
                     } else {
@@ -437,10 +421,9 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void backToHomeScreen() {
         stopTimer();
-        List<Object> answerList = new ArrayList<>(2);
-        answerList.add(new Player(mainCtrl.getName()));
-        answerList.add(mainCtrl.getGameID());
-        server.sendThroughSocket("/app/disconnectFromGame", answerList);
+        Player player = new Player(mainCtrl.getName());
+        player.setGameID(mainCtrl.getGameID());
+        server.sendThroughSocket("/app/disconnectFromGame",player);
         mainCtrl.showHomeScreen();
     }
     // for single player

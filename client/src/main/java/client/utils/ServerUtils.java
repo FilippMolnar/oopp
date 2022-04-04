@@ -59,7 +59,6 @@ public class ServerUtils {
             session.disconnect(); // close all socket subscriptions with this session
         }
         session = connect(WEBSOCKET_SERVER);
-        System.out.println("Prams:" + subscribeParameters);
         for (List<Object> l : subscribeParameters) {
             subscribeSocketFromList((String) l.get(0), (Class<Object>) l.get(1), (Consumer<Object>) l.get(2));
         }
@@ -245,15 +244,6 @@ public class ServerUtils {
      *
      * @return 20 random questions
      */
-    public ArrayList<Question> getLeastMostQuestions() {
-        return ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/wait/getMostLeastQuestions") //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .get(new GenericType<>() {
-                });
-    }
-
     public ArrayList<Question> getRandomQuestions() {
         return ClientBuilder.newClient(new ClientConfig()) //
                 .target(SERVER).path("api/wait/getRandomQuestions") //
@@ -305,12 +295,6 @@ public class ServerUtils {
                 .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
     }
 
-    public void removePlayerFromGame(Player player,int gameID){
-        ClientBuilder.newClient(new ClientConfig()) //
-                .target(SERVER).path("api/game/removePlayer/" + gameID) //
-                .request(APPLICATION_JSON) //
-                .accept(APPLICATION_JSON) //
-                .post(Entity.entity(player, APPLICATION_JSON), Score.class);
-    }
+
 
 }

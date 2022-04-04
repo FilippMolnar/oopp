@@ -1,5 +1,7 @@
 package commons;
 
+import lombok.Getter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,11 +13,15 @@ public class Activity implements Comparable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
 
+    @Getter
     private String title;
+    @Getter
     private String imagePath;
+    @Getter
     private String source;
 
     // Consumption is in WH
+    @Getter
     private int consumption;
 
     public Activity() {
@@ -28,19 +34,7 @@ public class Activity implements Comparable {
         this.source = source;
     }
 
-    public String getTitle() {
-        return this.title;
-    }
 
-    public String getImagePath() {
-        return this.imagePath;
-    }
-
-    public int getConsumption() {
-        return this.consumption;
-    }
-
-    public String getSource() { return this.source; }
 
     /*
      * Compares the consumption of two activities.

@@ -51,10 +51,21 @@ class TemplateActivityTest {
 
     @Test
     void testEquals() {
-        TemplateActivity eq = new TemplateActivity("Name" , 100 , "Source");
-        TemplateActivity neq = new TemplateActivity("Name" , 100 , "Sourcee");
-        assertTrue(temp.equals(eq));
-        assertFalse(temp.equals(neq));
+        TemplateActivity a = new TemplateActivity("Name" , 100 , "Source");
+        assertTrue(a.equals(a));
+        assertFalse(a.equals("s"));
+
+        TemplateActivity b = new TemplateActivity("N" , 100 , "Source");
+        assertFalse(a.equals(b));
+
+        b = new TemplateActivity("Name" , 0 , "Source");
+        assertFalse(a.equals(b));
+
+        b = new TemplateActivity("Name" , 100 , "S");
+        assertFalse(a.equals(b));
+
+        b = new TemplateActivity("Name" , 100 , "Source");
+        assertTrue(a.equals(b));
     }
 
     @Test

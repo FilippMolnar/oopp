@@ -98,4 +98,52 @@ public class QuestionTest {
                 + "\nOptions:\n" + c.toString() + "\n" + b.toString() + "\n"
                 + a.toString() + "\n", q.toString());
     }
+
+    @Test
+    public void hashTest()
+    {
+        Question q = new Question();
+        assertEquals(q.hashCode(), 29791);
+    }
+
+    @Test
+    public void equalsTest()
+    {
+        Activity a = new Activity("Activity1", 100, "/path/to/img", "google.com");
+        Activity b = new Activity("Activity2", 200, "/path/to/img", "google.com");
+        Activity c = new Activity("Activity3", 300, "/path/to/img", "google.com");
+
+        Activity a1 = new Activity("Activity1", 100, "/path/to/img", "google.com");
+        Activity b1 = new Activity("Activity2", 200, "/path/to/img", "google.com");
+        Activity c1 = new Activity("Activity3", 300, "/path/to/img", "google.com");
+
+        List<Activity> ls = new ArrayList<>();
+        ls.add(a);
+        ls.add(b);
+        ls.add(c);
+        Question q = new Question(c, ls, QuestionType.HighestEnergy);
+
+        List<Activity> ls1 = new ArrayList<>();
+        ls1.add(a1);
+        ls1.add(b1);
+        ls1.add(c1);
+        Question q1 = new Question(c1, ls1, QuestionType.HighestEnergy);
+
+        assertEquals(q, q);
+        assertFalse(q.equals(null));
+        assertFalse(q.equals(new String("s")));
+
+        assertTrue(q.equals(q1));
+
+        q1 = new Question(b1, ls1, QuestionType.HighestEnergy);
+        assertFalse(q.equals(q1));
+
+        q1 = new Question(c1, new ArrayList<>(), QuestionType.HighestEnergy);
+        assertFalse(q.equals(q1));
+
+        q1 = new Question(c1, ls1, QuestionType.EqualEnergy);
+        assertFalse(q.equals(q1));
+
+    }
+
 }

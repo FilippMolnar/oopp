@@ -19,6 +19,7 @@ public class ElimWrongJoker extends Joker {
         if (isUsed()) {
             return;
         }
+        playSound("remove-answer");
         Question question = mainCtrl.getCurrentQuestion();
         ArrayList<Integer> wrong_options = new ArrayList<>();
         int i = 0;
@@ -35,8 +36,8 @@ public class ElimWrongJoker extends Joker {
                 case 1 -> qCtrl.getOptionB().setDisable(true);
                 case 2 -> qCtrl.getOptionC().setDisable(true);
             }
-            markUsed(mainCtrl);
             use();
+            markUsed(mainCtrl);
         }
         if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl2) {
             switch (wrong_options.get(index)) {

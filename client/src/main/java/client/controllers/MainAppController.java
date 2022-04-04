@@ -7,23 +7,25 @@ import client.controllers.questions.QuestionSameAsCtrl;
 import client.jokers.JokersList;
 import client.utils.ServerUtils;
 import com.google.inject.Inject;
-import client.jokers.JokersList;
 import commons.Activity;
 import commons.Question;
-import commons.Score;
 import commons.QuestionType;
-import commons.Activity;
+import commons.Score;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class MainAppController {
     private final ServerUtils serverUtils;
@@ -125,7 +127,7 @@ public class MainAppController {
 
         this.primaryStage = primaryStage;
 
-        jokers = new JokersList(serverUtils);
+        jokers = new JokersList(serverUtils, false);
 
 
         primaryStage.setMaximized(true);
@@ -141,6 +143,10 @@ public class MainAppController {
         sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
+    public void setJokers(JokersList jokers) {
+        this.jokers = jokers;
+    }
+
     public void setQuestionNumber(int number) {
         this.questionIndex = number;
     }
@@ -153,6 +159,15 @@ public class MainAppController {
         }catch(URISyntaxException | IOException e){
             e.printStackTrace();
         }
+    }
+
+    public static void playSound(String dirPath) {
+        String path = "src/main/resources/client/sounds/" + dirPath;
+        File[] dir = new File(path).listFiles();
+        int idx = new Random().nextInt(dir.length);
+        Media sound = new Media(dir[idx].toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 
     public String getName() {
@@ -239,7 +254,7 @@ public class MainAppController {
             current = current.getNext();
         }
         current.addNext(new LinkedScene(this.leaderBoardScene,
-                    leaderBoardCtrl));
+                leaderBoardCtrl));
         current.getNext().addNext(homeScreenLinked.getNext(mode));
     }
 

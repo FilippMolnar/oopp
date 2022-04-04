@@ -45,7 +45,7 @@ public class Game {
         this.requested = count;
     }
 
-    public int getplayersInGame() {
+    public int getPlayersInGame() {
         return players.size();
     }
 
@@ -69,29 +69,10 @@ public class Game {
     }
 
     public void resetOptions() {
-        List<String> toRemove = new ArrayList();
-        for(Map.Entry<String, Integer> e : optionsStatistics.entrySet()) {
-            switch(e.getKey()) {
-                case "optionA":
-                    e.setValue(0);
-                    break;
-                case "optionB":
-                    e.setValue(0);
-                    break;
-                case "optionC":
-                    e.setValue(0);
-                    break;
-                default:
-                    toRemove.add(e.getKey());
-            }
-        }
-        for(String key : toRemove) {
-            optionsStatistics.remove(key);
-        }
-
-        //optionsStatistics.put("optionA", 0);
-        //optionsStatistics.put("optionB", 0);
-        //optionsStatistics.put("optionC", 0);
+        optionsStatistics.clear();
+        optionsStatistics.put("optionA", 0);
+        optionsStatistics.put("optionB", 0);
+        optionsStatistics.put("optionC", 0);
     }
 
     public List<Integer> getOptionsStatistics() {

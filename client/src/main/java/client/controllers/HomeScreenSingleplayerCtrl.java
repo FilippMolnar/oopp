@@ -34,6 +34,7 @@ public class HomeScreenSingleplayerCtrl {
             // Send message to player that their name was too long
             labelErrors.setText("Your name was too long, we limited the number of characters");
         }
+
         serverUtils.initializeServer("localhost");
         ArrayList<Question> questions = serverUtils.getRandomQuestions();
         appController.addQuestionScenes(questions, 1);

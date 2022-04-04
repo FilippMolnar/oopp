@@ -66,6 +66,10 @@ public class AdminOverviewCtrl implements Initializable {
         this.activityTable.setItems(data);
     }
 
+    public void setEditCtrl(AdminEditCtrl editCtrl) {
+        this.editCtrl = editCtrl;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         titleColumn.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().getTitle()));
@@ -105,7 +109,8 @@ public class AdminOverviewCtrl implements Initializable {
      */
     public void toAddActivity() {
         Activity a = new Activity("",0, "","");
-        appController.showAdminEdit(a);
+        //appController.showAdminEdit(a);
+        appController.showNext();
     }
 
     /**
@@ -120,6 +125,7 @@ public class AdminOverviewCtrl implements Initializable {
             error.setVisible(false);
             activityTable.getItems().remove(selectedActivity);
             serverUtils.deleteActivity(selectedActivity);
+            appController.showNext();
             editCtrl.showEditActivity(selectedActivity);
         }
     }

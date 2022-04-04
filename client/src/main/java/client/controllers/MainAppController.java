@@ -109,6 +109,8 @@ public class MainAppController {
         LinkedScene adminOverviewLinked = new LinkedScene(this.adminOverviewScene,adminOverview.getKey());
         LinkedScene adminEditLinked = new LinkedScene(this.adminEditScene,adminEdit.getKey());
         LinkedScene qInsertLinked = new LinkedScene(qInsertScene, qInsertCtrl);
+        adminOverviewLinked.addNext(adminEditLinked);
+        adminEditLinked.addNext(adminOverviewLinked);
 
         // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
         this.currentScene = new LinkedScene(this.homeScene);
@@ -124,6 +126,7 @@ public class MainAppController {
 
         this.adminOverviewCtrl = adminOverview.getKey();
         this.adminEditCtrl = adminEdit.getKey();
+        this.adminOverviewCtrl.setEditCtrl(this.adminEditCtrl);
 
         this.primaryStage = primaryStage;
 
@@ -337,26 +340,6 @@ public class MainAppController {
         primaryStage.setScene(homeScene);
         primaryStage.show();
         this.currentScene = this.homeScreenLinked;
-    }
-
-    // not used anymore
-    public void showAdmin() {
-        primaryStage.setTitle("Admin");
-        primaryStage.setScene(adminOverviewScene);
-        primaryStage.show();
-        this.currentScene = adminOverviewLinked;
-        adminOverviewCtrl.refresh();
-    }
-
-    public void showAdminEdit(Activity activity) {
-        primaryStage.setTitle("AdminEdit");
-        primaryStage.setScene(adminEditScene);
-        primaryStage.show();
-        this.currentScene = adminEditLinked;
-        adminEditCtrl.getActivityTitleField().setText(activity.getTitle());
-        adminEditCtrl.getActivityImageField().setText(activity.getImagePath());
-        adminEditCtrl.getActivityConsumptionField().setText(String.valueOf(activity.getConsumption()));
-        adminEditCtrl.getActivitySourceField().setText(activity.getSource());
     }
 
     public void updateScore(int amount) {

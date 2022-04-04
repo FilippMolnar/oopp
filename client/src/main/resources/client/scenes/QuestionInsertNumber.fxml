@@ -193,18 +193,11 @@
                         <Image url="@../pictures/angel.png" />
                     </image>
                 </ImageView>
-                <AnchorPane GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                    <padding>
-                        <Insets bottom="10.0" />
-                    </padding>
-                    <children>
-                        <Button fx:id="submitButton" styleClass="question-button" text="SUBMIT" alignment="CENTER" onMouseClicked="#submitAnswer" prefHeight="60.0" prefWidth="214.0" mnemonicParsing="false" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Button>
-                    </children>
-                </AnchorPane>
+                <Button fx:id="submitButton" styleClass="question-button" text="SUBMIT" onMouseClicked="#submitAnswer" prefHeight="60.0" prefWidth="214.0" mnemonicParsing="false" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Button>
             </children>
         </GridPane>
         <MFXSlider fx:id="slider" prefHeight="1.0" prefWidth="313.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">

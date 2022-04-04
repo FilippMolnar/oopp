@@ -334,6 +334,12 @@ public abstract class AbstractQuestion implements Initializable {
 
     }
 
+    public void addTimeForGoogling()
+    {
+        stopTimer();
+        startTimerAnimation(timerIntegerValue+10);
+    }
+
     public void startTimerAnimation(int length) {
         timerIntegerValue = length;
         timerArc.setLength(360);

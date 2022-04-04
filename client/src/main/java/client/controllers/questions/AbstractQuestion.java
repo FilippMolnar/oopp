@@ -83,6 +83,7 @@ public abstract class AbstractQuestion implements Initializable {
 
 
     private int timerIntegerValue;
+    private static boolean google = false;
     protected int correctOption; // number of the correct option (0,1,2)
     protected int selectedOption; // number of the selected option (-1,0,1,2) (-1 if timer runs out)
     protected boolean hasSubmittedAnswer = false;
@@ -336,6 +337,7 @@ public abstract class AbstractQuestion implements Initializable {
 
     public void addTimeForGoogling()
     {
+        google = true;
         stopTimer();
         startTimerAnimation(timerIntegerValue+10);
     }
@@ -444,8 +446,22 @@ public abstract class AbstractQuestion implements Initializable {
         return scoreToBeAdded;
     }
 
+    public int calculateScoreGoogle(boolean answerCorrect, double secondsLeft) {
+
+        int scoreToBeAdded = 0;
+        double maxSeconds = 20;
+        int maxPoints = 100;
+        double secondsToAnswer = maxSeconds - secondsLeft;
+        if (answerCorrect) {
+            scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.0)));
+        }
+        return scoreToBeAdded;
+    }
+
     public void sendAnswerAndUpdateScore(MainAppController mainCtrl, String button_id, Activity a) {
-        int score = calculateScore(a.id == question.getCorrect().id, 10 - (double) this.getTimerIntegerValue());
+        int score;
+        if(google == false){score = calculateScore(a.id == question.getCorrect().id, 10.0 - (double) this.getTimerIntegerValue());}
+        else {score = calculateScoreGoogle(a.id == question.getCorrect().id, 20.0 - (double) this.getTimerIntegerValue());}
         if (doublePointsJoker) score = score * 2;
         setDoublePointsJoker(false);
         mainCtrl.updateScore(score);

@@ -121,7 +121,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
         this.informationLabel.setVisible(false);
         this.scoreText.setText("SCORE " + mainCtrl.getScore());
-        this.sliderValue.setText("0");
         startTimerAnimation(10);
         resizeImages();
         resetLogic();

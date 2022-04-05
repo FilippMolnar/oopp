@@ -31,10 +31,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import server.Utils;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @RestController
@@ -206,6 +203,15 @@ public class WaitController {
         sendToAllOtherUsers(playerList,"queue/decrease_time/gameID", gid, player);
     }
 
+    @MessageMapping("/increase_time")
+    public void googling(Player player)
+    {
+        int gid = (int)player.getGameID();
+        Game currentGame = gameController.getGame(gid);
+        var playerList = currentGame.getPlayers();
+        sendToUser(playerList,"/queue/increase_time/gameID", gid, player);
+    }
+
     @MessageMapping("/cover_hands")
     public void coverHands(Player player) {
         int gid = (int)player.getGameID();
@@ -227,6 +233,16 @@ public class WaitController {
         for (Player p : playerList) {
             String playerID = p.getSocketID();
             if(player.getName().equals(p.getName())) continue;
+            simpMessagingTemplate.convertAndSendToUser(playerID, destination, gID);
+        }
+    }
+
+    public void sendToUser(Set<Player> playerList, String destination, int gID, Player player)
+    {
+        if(playerList == null) return;
+        for (Player p : playerList) {
+            String playerID = p.getSocketID();
+            if(player.getName().equals(p.getName()))
             simpMessagingTemplate.convertAndSendToUser(playerID, destination, gID);
         }
     }

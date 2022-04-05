@@ -5,17 +5,10 @@ import client.controllers.questions.AbstractQuestion;
 import client.utils.ServerUtils;
 import commons.Player;
 import javafx.animation.RotateTransition;
-import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class BarrelRollJoker extends Joker{
     public BarrelRollJoker(String name, String imagePath, ServerUtils serverUtils) {

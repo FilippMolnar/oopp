@@ -249,7 +249,7 @@
                   <Insets bottom="10.0" top="10.0" />
                </padding>
                <GridPane.margin>
-                  <Insets bottom="10.0" right="20.0" />
+                  <Insets bottom="30.0" right="20.0" />
                </GridPane.margin>
             </Button>
             <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
@@ -257,7 +257,7 @@
                   <Insets bottom="10.0" top="10.0" />
                </padding>
                <GridPane.margin>
-                  <Insets bottom="10.0" left="20.0" />
+                  <Insets bottom="30.0" left="20.0" />
                </GridPane.margin>
             </Button>
             <Line fx:id="loadingLine" endX="260.5" startX="-100.0" stroke="#d6d3ee" strokeLineCap="ROUND" strokeWidth="5.0" visible="false" GridPane.columnSpan="2" GridPane.halignment="CENTER" />

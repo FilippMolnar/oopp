@@ -20,23 +20,23 @@ public class Score{
 
     public Score(String name, int score) {
         this.name = name;
-        this.score = score; 
+        this.score = score;
     }
 
     public int getScore() {
-        return this.score; 
+        return this.score;
     }
 
     public void setScore(int score) {
-        this.score = score; 
+        this.score = score;
     }
 
     public String getName() {
-        return this.name; 
+        return this.name;
     }
 
     public void addScore(int toAdd) {
-        this.score += toAdd; 
+        this.score += toAdd;
     }
 
     public boolean equals(Object other){

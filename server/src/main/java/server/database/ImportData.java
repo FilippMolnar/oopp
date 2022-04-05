@@ -53,7 +53,7 @@ public class ImportData {
 
     @GetMapping(path = "/load")
     public String ImportAllFiles() {
-        String resourceFolder = "main/resources/GoodActivities";
+        String resourceFolder = "server/src/main/resources/GoodActivities";
         File dir = new File(resourceFolder);
         File[] directories = dir.listFiles(File::isDirectory);
         if (directories == null) {

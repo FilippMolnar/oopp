@@ -15,19 +15,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #625998#625998;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LeaderBoardCtrl">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #625998#625998;" stylesheets="@waiting_room.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.LeaderBoardCtrl">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" percentWidth="20.0" prefWidth="83.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="10.0" percentWidth="60.0" prefWidth="317.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="600.0" minHeight="10.0" prefHeight="253.2881622314453" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="144.9860076904297" minHeight="10.0" prefHeight="46.71183776855469" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="88.0" minHeight="10.0" prefHeight="72.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="600.0" minHeight="10.0" prefHeight="251.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="144.9860076904297" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <ScrollPane fx:id="scrollPane" maxHeight="480.0" maxWidth="360.0" prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #625998;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+      <ScrollPane fx:id="scrollPane" maxHeight="400.0" maxWidth="360.0" minViewportHeight="30.0" prefViewportHeight="30.0" prefWidth="200.0" style="-fx-background-color: #625998;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <content>
             <GridPane fx:id="parentGridPane" maxHeight="1.7976931348623157E308" maxWidth="360.0" prefHeight="488.0" prefWidth="344.0" style="-fx-background-color: #625998#625998; -fx-border-style: none;">
                <columnConstraints>
@@ -228,7 +228,7 @@
                   <Font size="40.0" />
                </font>
             </Label>
-            <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+            <ImageView fitHeight="75.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <image>
                   <Image url="@../pictures/podium.png" />
                </image>
@@ -244,24 +244,46 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="rematchButton" mnemonicParsing="false" onAction="#rematch" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Rematch" GridPane.halignment="RIGHT">
+            <Button fx:id="rematchButton" mnemonicParsing="false" onAction="#rematch" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Rematch" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM">
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>
                <GridPane.margin>
-                  <Insets right="20.0" />
+                  <Insets bottom="10.0" right="20.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
                <padding>
                   <Insets bottom="10.0" top="10.0" />
                </padding>
                <GridPane.margin>
-                  <Insets left="20.0" />
+                  <Insets bottom="10.0" left="20.0" />
                </GridPane.margin>
             </Button>
-            <Line fx:id="loadingLine" endX="260.5" startX="-100.0" stroke="#d6d3ee" strokeLineCap="ROUND" strokeWidth="5.0" visible="false" />
+            <Line fx:id="loadingLine" endX="260.5" startX="-100.0" stroke="#d6d3ee" strokeLineCap="ROUND" strokeWidth="5.0" visible="false" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
          </children>
+      </GridPane>
+      <GridPane fx:id="you_pane" maxHeight="30.0" maxWidth="344.0" minHeight="0.0" prefHeight="61.0" prefWidth="344.0" style="-fx-background-color: #625998; -fx-border-color: #d6d3ee; -fx-border-width: 2;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="101.0" minWidth="10.0" percentWidth="20.0" prefWidth="37.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="223.0" minWidth="10.0" prefWidth="213.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.0" minWidth="10.0" percentWidth="20.0" prefWidth="62.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" percentHeight="100.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label fx:id="your_score" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+            <Label text="You" GridPane.columnIndex="1" />
+            <Text fx:id="your_rank" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="9" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+         </children>
+         <styleClass>
+            <String fx:value="non-clickable" />
+            <String fx:value="leaderboard-entry" />
+         </styleClass>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
       </GridPane>
    </children>
 </GridPane>

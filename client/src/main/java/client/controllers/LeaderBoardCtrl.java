@@ -24,6 +24,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+
 import javax.inject.Inject;
 import java.util.*;
 
@@ -98,6 +99,13 @@ public class LeaderBoardCtrl implements ControllerInitialize{
     @FXML
     private Line loadingLine;
 
+    @FXML
+    private GridPane you_pane;
+    @FXML
+    private Label your_score;
+    @FXML
+    private Text your_rank;
+
     private List<Label> names;
     private List<Label> scores;
     private Map<Integer, List<String>> leaderboard;
@@ -142,6 +150,7 @@ public class LeaderBoardCtrl implements ControllerInitialize{
 
     public void fillWithValues() {
         int i = 0;
+        int maxEntries = 8;
         System.out.println("Filling with values!");
         this.leaderboard = serverUtils.getLeaderboard(appController.getGameID());
         Game.printLeaderboardToScreen(this.leaderboard);
@@ -154,24 +163,39 @@ public class LeaderBoardCtrl implements ControllerInitialize{
         }
         sortedScores = keysInt.toArray(new Integer[0]);
         Arrays.sort(sortedScores, Collections.reverseOrder());
-        Arrays.sort(sortedScores, Collections.reverseOrder());
-            for (Integer score : sortedScores) {
-                for (String name : leaderboard.get(score)) {
-                    if (i < 8) {
+        boolean yourPaneNecessary = true;
+        for (Integer score : sortedScores) {
+            for (String name : leaderboard.get(score)) {
+                if (i < maxEntries) {
+                    names.get(i).setText(name);
+                    scores.get(i).setText(score + "");
+                    System.out.println();
+                    if (name.equals(appController.getName())) {
+                        yourPaneNecessary = false;
+                        you_pane.setVisible(false);
                         names.get(i).setText(name);
-                        scores.get(i).setText(score + "");
-                        i++;
                     }
-                    else {
+                }
+                else {
+                    if (!yourPaneNecessary) {
+                        break;
+                    }
+                    if (name.equals(appController.getName())) {
+                        you_pane.setVisible(true);
+                        your_rank.setText((i+1)+"");
+                        your_score.setText(score+"");
                         break;
                     }
                 }
+                i++;
             }
-        if (i < 8) {
+        }
+        if (i < maxEntries) {
+            you_pane.setVisible(false);
             parentGridPane.setMinWidth(scrollPane.getWidth());
             scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
             scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-            while (i < 8) {
+            while (i < maxEntries) {
                 panes.get(i).setVisible(false);
                 i++;
             }

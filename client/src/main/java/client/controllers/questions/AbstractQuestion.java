@@ -81,6 +81,13 @@ public abstract class AbstractQuestion implements Initializable {
     @FXML
     protected Button splashButton;
 
+    @FXML
+    protected Label cons_A;
+    @FXML
+    protected Label cons_B;
+    @FXML
+    protected Label cons_C;
+
 
     private int timerIntegerValue;
     protected int correctOption; // number of the correct option (0,1,2)
@@ -188,6 +195,11 @@ public abstract class AbstractQuestion implements Initializable {
         myTimer.schedule(delay, 3000); // wait for 3 seconds
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
+        if (this instanceof QuestionMultiOptionsCtrl) {
+            cons_A.setText(question.getChoices().get(0).getConsumption()+" Wh");
+            cons_B.setText(question.getChoices().get(1).getConsumption()+" Wh");
+            cons_C.setText(question.getChoices().get(2).getConsumption()+" Wh");
+        }
     }
 
     public void setGameMode(boolean isMultiPlayer) {
@@ -197,6 +209,11 @@ public abstract class AbstractQuestion implements Initializable {
     public void setQuestion(Question question) {
         this.question = question;
         this.hasSubmittedAnswer = false;
+        if (this instanceof QuestionMultiOptionsCtrl) {
+            cons_A.setText("");
+            cons_B.setText("");
+            cons_C.setText("");
+        }
     }
 
     public void setQuestionNumber(int num) {
@@ -418,7 +435,7 @@ public abstract class AbstractQuestion implements Initializable {
         int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
         answer.setScore(newScore);
         mainCtrl.updateScore(newScore);
-        scoreText.setText(mainCtrl.getScore()+"");
+        scoreText.setText("SCORE "+mainCtrl.getScore());
     }
 
     public void backToHomeScreen() {

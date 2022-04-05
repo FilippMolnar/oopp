@@ -69,10 +69,10 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         setQuestionNumber(mainCtrl.getQuestionIndex());
         super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(4).toList();
-        optionA.setText(question.getChoices().get(0).getTitle());
+        optionA.setText(question.getChoices().get(3).getTitle());
         optionB.setText(question.getChoices().get(1).getTitle());
         optionC.setText(question.getChoices().get(2).getTitle());
-        activity.setText(question.getChoices().get(3).getTitle());
+        activity.setText(question.getChoices().get(0).getTitle());
 
         if (question.getChoices().get(0).id == question.getCorrect().id) correctOption = 0;
         else if (question.getChoices().get(1).id == question.getCorrect().id) correctOption = 1;

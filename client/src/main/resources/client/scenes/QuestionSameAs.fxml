@@ -42,7 +42,7 @@
             <RowConstraints minHeight="10.0" percentHeight="55.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
         <children>
-            <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Which acitivity takes the same amount of energy as:" textAlignment="CENTER" wrappingWidth="283.07574462890625" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Which activity takes the same amount of energy as:" textAlignment="CENTER" wrappingWidth="283.07574462890625" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                 <font>
                     <Font name="Marlett" size="20.0" />
                 </font>

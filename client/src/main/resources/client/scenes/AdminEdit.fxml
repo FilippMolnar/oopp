@@ -51,7 +51,7 @@
          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
       <children>
-         <Button mnemonicParsing="false" onAction="#submitEditActivity" prefHeight="58.0" prefWidth="170.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px; -fx-text-fill: #d6d3ee;" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#submitEditActivity" prefHeight="58.0" prefWidth="170.0" style="-fx-background-radius: 50px; -fx-text-fill: #d6d3ee;" text="Submit" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <font>
                <Font size="16.0" />
             </font>
@@ -106,7 +106,7 @@
                <Insets right="20.0" />
             </GridPane.margin>
          </Text>
-         <Button fx:id="chooseImageButton" onAction="#chooseImage" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: transparent;" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+         <Button fx:id="chooseImageButton" mnemonicParsing="false" onAction="#chooseImage" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: transparent;" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
             <graphic>
                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                   <image>

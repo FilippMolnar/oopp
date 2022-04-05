@@ -253,24 +253,16 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void userReaction(String reaction, String name) {
-
+        if(!(mainCtrl.getCurrentScene().getController().getClass() == getClass())) {
+            return;
+        }
         Pane pane = new Pane();
         ImageView iv;
         Label label = new Label(name);
-        Image img;
-        switch (reaction) {
-            case "happy":
-                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
-                break;
-            case "angry":
-                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
-                break;
-            case "angel":
-                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
-                break;
-            default:
-                return;
-        }
+        String imagePath = "/client/pictures/" + reaction + ".png";
+        System.out.println(imagePath);
+        Image img = new Image(getClass().getResource(imagePath).toString());
+
         iv = new ImageView(img);
         pane.getChildren().add(iv);
         pane.getChildren().add(label);
@@ -279,12 +271,16 @@ public abstract class AbstractQuestion implements Initializable {
         label.setPadding(new Insets(-20, 0, 0, 5));
         TranslateTransition translate = new TranslateTransition();
         translate.setByY(700);
+        double width = parentGridPane.getCellBounds(parentGridPane.getColumnCount() - 1, 0).getWidth() - 70;
+        translate.setFromX(width);
+        translate.setToX(width);
         translate.setDuration(Duration.millis(2800));
         translate.setNode(pane);
         translate.setOnFinished(t -> {
-            pane.getChildren().remove(iv);
-            pane.getChildren().remove(label);
-        }
+                    parentGridPane.getChildren().remove(pane);
+                    pane.getChildren().remove(iv);
+                    pane.getChildren().remove(label);
+                }
         );
         translate.play();
 
@@ -295,30 +291,36 @@ public abstract class AbstractQuestion implements Initializable {
         fade.setToValue(0);
         fade.setNode(pane);
         fade.play();
-        parentGridPane.getChildren().add(pane);
+        parentGridPane.add(pane, parentGridPane.getColumnCount() - 1, 0);
     }
 
     public void angryReact() {
         String path = "/app/reactions";
-        userReaction("angry",mainCtrl.getName());
         if(isMultiPlayer) {
             server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
+        }
+        else {
+            userReaction("angry",mainCtrl.getName());
         }
     }
 
     public void angelReact() {
         String path = "/app/reactions";
-        userReaction("angel",mainCtrl.getName());
         if(isMultiPlayer) {
             server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
+        }
+        else {
+            userReaction("angel",mainCtrl.getName());
         }
     }
 
     public void happyReact() {
         String path = "/app/reactions";
-        userReaction("happy",mainCtrl.getName());
         if(isMultiPlayer) {
             server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
+        }
+        else {
+            userReaction("happy",mainCtrl.getName());
         }
     }
 

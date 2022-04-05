@@ -115,6 +115,13 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
                 DecreaseTimeJoker.decreaseTime(qCtrl);
             }
         });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/increase_time/gameID", Integer.class, gameID -> {
+            System.out.println("increased");
+            LinkedScene current = appController.getCurrentScene();
+            if(current.getController() instanceof AbstractQuestion qCtrl){
+                GoogleJoker.increaseTime(qCtrl);
+            }
+        });
         this.serverUtils.subscribeForSocketMessages("/user/queue/cover_ink/gameID", Integer.class, gameID -> {
             System.out.println("cover_ink");
             LinkedScene current = appController.getCurrentScene();

@@ -435,7 +435,7 @@ public abstract class AbstractQuestion implements Initializable {
         int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
         answer.setScore(newScore);
         mainCtrl.updateScore(newScore);
-        scoreText.setText(mainCtrl.getScore()+"");
+        scoreText.setText("SCORE "+mainCtrl.getScore());
     }
 
     public void backToHomeScreen() {

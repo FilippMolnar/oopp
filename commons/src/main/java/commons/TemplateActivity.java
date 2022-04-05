@@ -11,6 +11,8 @@ public class TemplateActivity {
     public int consumption_in_wh;
     public String source;
 
+    public TemplateActivity() {}
+
     public TemplateActivity(String title, int consumption_in_wh, String source) {
         this.title = title;
         this.consumption_in_wh = consumption_in_wh;

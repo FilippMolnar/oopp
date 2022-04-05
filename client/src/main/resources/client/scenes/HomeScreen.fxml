@@ -31,7 +31,7 @@
          <RowConstraints minHeight="10.0" percentHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES" />
      </rowConstraints>
       <children>
-         <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="151.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Leaderboard" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+         <Button mnemonicParsing="false" onMouseClicked="#showLeaderBoard" prefHeight="54.0" prefWidth="151.0" style="-fx-background-color: #837ABA; -fx-background-radius: 50px;" text="Leaderboard" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
             <font>
                <Font size="15.0" />
             </font></Button>
@@ -79,5 +79,5 @@
       </GridPane.margin>
    </Button>
 
-      
+
       </GridPane>

@@ -55,6 +55,11 @@
                     <Font name="Marlett" size="24.0" />
                 </font>
             </Text>
+         <Label fx:id="cons" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <padding>
+               <Insets bottom="10.0" />
+            </padding>
+         </Label>
         </children>
     </GridPane>
     <GridPane alignment="CENTER" layoutX="13.0" layoutY="289.0" prefHeight="263.0" prefWidth="1269.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
@@ -208,6 +213,9 @@
             </GridPane.margin>
             <Image url="@/client/pictures/angel.png" />
         </ImageView>
+      <Label fx:id="cons_A" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+      <Label fx:id="cons_B" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+      <Label fx:id="cons_C" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
     </GridPane>
 
     <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />

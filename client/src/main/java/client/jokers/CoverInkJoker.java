@@ -9,6 +9,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.util.Timer;
@@ -38,11 +39,14 @@ public class CoverInkJoker extends Joker{
         for (int i = 0; i < noOfSplatters; i++) {
             int duration = qCtrl.getTimerIntegerValue() * 1000;
 
+            Pane pane = new Pane();
+
             /* create splash */
             int splashType = (int)Math.floor((Math.random()*2))+1;
             String path = "/client/pictures/splash"+splashType+".png";
             Image img = new Image(CoverInkJoker.class.getResource(path).toString());
             ImageView iv = new ImageView(img);
+            pane.getChildren().add(iv);
             iv.setX(100.0+Math.random()*800.0);
             iv.setY(100.0+Math.random()*1000.0);
             iv.setPreserveRatio(true);
@@ -52,21 +56,23 @@ public class CoverInkJoker extends Joker{
             TranslateTransition translate = new TranslateTransition();
             translate.setByY(50);
             translate.setDuration(Duration.millis(7000));
-            translate.setNode(iv);
+            translate.setNode(pane);
             translate.play();
 
             FadeTransition fade = new FadeTransition();
             fade.setDuration(Duration.millis(Math.min(7000, duration)));
             fade.setFromValue(10);
             fade.setToValue(0);
-            fade.setNode(iv);
+            fade.setNode(pane);
             fade.setDelay(Duration.millis(4000));
             fade.play();
+
+            pane.setManaged(false);
 
             /* add in random place */
             int row = (int) Math.floor(qCtrl.parentGridPane.getRowCount()*Math.random());
             int column = (int) Math.floor(qCtrl.parentGridPane.getRowCount()*Math.random());
-            qCtrl.parentGridPane.add(iv, row, column);
+            qCtrl.parentGridPane.add(pane, row, column);
 
             /* delete after 7 seconds or after scene change */
             Timer timer = new Timer();
@@ -74,8 +80,8 @@ public class CoverInkJoker extends Joker{
                 @Override
                 public void run() {
                     Platform.runLater( () -> {
-                        iv.setDisable(true);
-                        qCtrl.parentGridPane.getChildren().remove(iv);
+                        pane.setDisable(true);
+                        qCtrl.parentGridPane.getChildren().remove(pane);
                     });
                 }
             };

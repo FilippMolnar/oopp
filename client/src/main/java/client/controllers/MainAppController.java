@@ -32,7 +32,8 @@ public class MainAppController {
     private Stage primaryStage;
     private Scene homeScene;
     private Scene sameAsScene;
-    private Scene leaderBoardScene; private Scene qMultiScene;
+    private Scene leaderBoardScene;
+    private Scene qMultiScene;
     private Scene qInsertScene;
     private Scene questionTransitionScene;
     private Scene homeSingleplayerScene;
@@ -102,22 +103,21 @@ public class MainAppController {
         this.sameAsScene = sameAs.getValue();
         this.sameAsCtrl = sameAs.getKey();
 
+        // create linked scenes of the Scenes
         LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
-        LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
-        LinkedScene sameAsLinked = new LinkedScene(this.sameAsScene);
+        //LinkedScene leaderBoardLinked = new LinkedScene(this.leaderBoardScene);
+        //LinkedScene sameAsLinked = new LinkedScene(this.sameAsScene);
+        //LinkedScene qInsertLinked = new LinkedScene(qInsertScene, qInsertCtrl);
         LinkedScene singleplayerLinked = new LinkedScene(this.homeSingleplayerScene, homeSingleplayer.getKey());
         LinkedScene multiplayerLinked = new LinkedScene(this.homeMultiplayerScene, homeMultiplayer.getKey());
-        LinkedScene adminOverviewLinked = new LinkedScene(this.adminOverviewScene,adminOverview.getKey());
-        LinkedScene adminEditLinked = new LinkedScene(this.adminEditScene,adminEdit.getKey());
-        LinkedScene qInsertLinked = new LinkedScene(qInsertScene, qInsertCtrl);
+        this.adminOverviewLinked = new LinkedScene(this.adminOverviewScene,adminOverview.getKey());
+        this.adminEditLinked = new LinkedScene(this.adminEditScene,adminEdit.getKey());
 
-        // replace leaderBoardLinked by the waiting screen, whose controller can load the questions
+        // set the current scene to the home screen and add the options to go to singleplayer and multi player
         this.currentScene = new LinkedScene(this.homeScene);
+        this.homeScreenLinked = this.currentScene;
         this.currentScene.addNext(multiplayerLinked);
         this.currentScene.addNext(singleplayerLinked);
-        this.homeScreenLinked = this.currentScene;
-        this.adminOverviewLinked = adminOverviewLinked;
-        this.adminEditLinked = adminEditLinked;
 
         multiplayerLinked.addNext(waitingRoomLinked);
 
@@ -134,12 +134,13 @@ public class MainAppController {
         primaryStage.setScene(homeScene);
         primaryStage.show();
 
+        // add CSS to the scenes
         this.homeScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.qMultiScene.getStylesheets().add("client/scenes/waiting_room.css");
-        homeMultiplayerScene.getStylesheets().add("client/scenes/waiting_room.css");
+        this.homeMultiplayerScene.getStylesheets().add("client/scenes/waiting_room.css");
         waitingRoomScene.getStylesheets().add("client/scenes/waiting_room.css");
         this.questionTransitionScene.getStylesheets().add("client/scenes/waiting_room.css");
-        sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
+        this.sameAsScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
     public void setJokers(JokersList jokers) {
@@ -333,6 +334,7 @@ public class MainAppController {
         this.currentScene = this.homeScreenLinked;
     }
 
+    /*
     public void showAdmin() {
         primaryStage.setTitle("Admin");
         primaryStage.setScene(adminOverviewScene);
@@ -351,6 +353,7 @@ public class MainAppController {
         adminEditCtrl.getActivityConsumptionField().setText(String.valueOf(activity.getConsumption()));
         adminEditCtrl.getActivitySourceField().setText(activity.getSource());
     }
+    */
 
     public void updateScore(int amount) {
         this.totalScore += amount;

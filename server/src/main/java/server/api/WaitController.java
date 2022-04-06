@@ -220,6 +220,14 @@ public class WaitController {
         sendToAllOtherUsers(playerList,"queue/cover_hands/gameID", gid, player);
     }
 
+    @MessageMapping("/barrel_roll")
+    public void barrelRoll(Player player) {
+        int gid = (int)player.getGameID();
+        Game currentGame = gameController.getGame(gid);
+        var playerList = currentGame.getPlayers();
+        sendToAllOtherUsers(playerList,"queue/barrel_roll/gameID", gid, player);
+    }
+
     @MessageMapping("/cover_ink")
     public void coverInk(Player player) {
         int gid = (int)player.getGameID();

@@ -44,6 +44,8 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     private Text activity;
     @FXML
     private ImageView answerImage;
+    @FXML
+    private Label cons;
 
 
     public Button getOptionA() {
@@ -66,6 +68,11 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     }
 
     public void setQuestion(Question question) {
+        cons.setText("");
+        cons_A.setText("");
+        cons_B.setText("");
+        cons_C.setText("");
+        cons.setText("");
         setQuestionNumber(mainCtrl.getQuestionIndex());
         super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(4).toList();
@@ -127,6 +134,11 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
+
+        cons_A.setText(question.getChoices().get(0).getConsumption()+" Wh");
+        cons_B.setText(question.getChoices().get(1).getConsumption()+" Wh");
+        cons_C.setText(question.getChoices().get(2).getConsumption()+" Wh");
+        cons.setText(question.getChoices().get(3).getConsumption()+" Wh");
 
         if(isMultiPlayer) {
             sendAnswerAndUpdateScore(mainCtrl, button_id, a);

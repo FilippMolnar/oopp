@@ -136,6 +136,13 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
                 CoverHandsJoker.handsAnimation(qCtrl);
             }
         });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/barrel_roll/gameID", Integer.class, gameID -> {
+            System.out.println("barrel_roll");
+            LinkedScene current = appController.getCurrentScene();
+            if(current.getController() instanceof AbstractQuestion qCtrl){
+                BarrelRollJoker.barrelRoll(qCtrl);
+            }
+        });
 
     }
 

@@ -42,7 +42,7 @@
             <RowConstraints minHeight="10.0" percentHeight="55.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
         <children>
-            <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Which acitivity takes the same amount of energy as:" textAlignment="CENTER" wrappingWidth="283.07574462890625" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <Text fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="Which activity takes the same amount of energy as:" textAlignment="CENTER" wrappingWidth="283.07574462890625" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                 <font>
                     <Font name="Marlett" size="20.0" />
                 </font>
@@ -55,6 +55,11 @@
                     <Font name="Marlett" size="24.0" />
                 </font>
             </Text>
+         <Label fx:id="cons" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <padding>
+               <Insets bottom="10.0" />
+            </padding>
+         </Label>
         </children>
     </GridPane>
     <GridPane alignment="CENTER" layoutX="13.0" layoutY="289.0" prefHeight="263.0" prefWidth="1269.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
@@ -110,11 +115,11 @@
                 </HBox>
             </children>
         </Group>
-        <AnchorPane prefHeight="60.0" prefWidth="153.0" styleClass="question-button" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <AnchorPane prefHeight="60.0" prefWidth="153.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
             <padding>
                 <Insets bottom="10.0" />
             </padding>
-            <HBox alignment="CENTER" layoutX="73.0" layoutY="-5.0" prefHeight="60.0" prefWidth="214.0" AnchorPane.bottomAnchor="-11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="CENTER" layoutX="73.0" layoutY="-5.0" prefHeight="60.0" prefWidth="214.0" styleClass="non-clickable" AnchorPane.bottomAnchor="-11.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <VBox alignment="CENTER">
                     <Text fx:id="scoreText" fill="#d6d3ee" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE 1200">
                         <font>
@@ -208,6 +213,9 @@
             </GridPane.margin>
             <Image url="@/client/pictures/angel.png" />
         </ImageView>
+      <Label fx:id="cons_A" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+      <Label fx:id="cons_B" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+      <Label fx:id="cons_C" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
     </GridPane>
 
     <ImageView fx:id="reaction" fitHeight="40.0" fitWidth="40.0" layoutX="12.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />

@@ -1,7 +1,9 @@
 package client.jokers;
 
 import client.controllers.MainAppController;
+import client.controllers.questions.AbstractQuestion;
 import client.utils.ServerUtils;
+import commons.Player;
 
 import java.awt.*;
 import java.io.IOException;
@@ -18,8 +20,10 @@ public class GoogleJoker extends Joker{
     {
         if(isUsed())return ;
         playSound("google");
+        Player p = new Player(mainCtrl.getName());
+        p.setGameID(mainCtrl.getGameID());
+        serverUtils.sendThroughSocket("/app/increase_time", p);
 
-//        mainCtrl.openBrowser();
         Desktop desktop = Desktop.getDesktop();
         try{
             URI url = new URI("https://www.google.com");
@@ -30,5 +34,9 @@ public class GoogleJoker extends Joker{
 
         use();
         markUsed(mainCtrl);
+    }
+    public static void increaseTime(AbstractQuestion qCtrl)
+    {
+        qCtrl.addTimeForGoogling();
     }
 }

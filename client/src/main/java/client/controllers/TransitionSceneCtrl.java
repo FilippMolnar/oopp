@@ -32,9 +32,9 @@ public class TransitionSceneCtrl extends AbstractQuestion implements ControllerI
      */
     @Override
     public void initializeController() {
-        double animationDuration = 1.7;
+        double animationDuration = 1;
         loadingLine.setEndX(-40); // for animation hardcoded
-        questionText.setText("Question " + (mainCtrl.getQuestionIndex() + 1));
+        questionText.setText("Question " + (mainCtrl.getQuestionIndex()));
         Timeline timeline = new Timeline();
         KeyValue lineLength = new KeyValue(loadingLine.endXProperty(), 128); // some hardcoded value for animation
         EventHandler<ActionEvent> onFinished = t -> {

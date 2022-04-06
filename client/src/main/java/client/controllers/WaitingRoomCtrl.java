@@ -2,10 +2,7 @@ package client.controllers;
 
 import client.LinkedScene;
 import client.controllers.questions.AbstractQuestion;
-import client.jokers.CoverHandsJoker;
-import client.jokers.CoverInkJoker;
-import client.jokers.DecreaseTimeJoker;
-import client.jokers.JokersList;
+import client.jokers.*;
 import client.utils.ServerUtils;
 import commons.Player;
 import commons.Question;
@@ -118,6 +115,13 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
                 DecreaseTimeJoker.decreaseTime(qCtrl);
             }
         });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/increase_time/gameID", Integer.class, gameID -> {
+            System.out.println("increased");
+            LinkedScene current = appController.getCurrentScene();
+            if(current.getController() instanceof AbstractQuestion qCtrl){
+                GoogleJoker.increaseTime(qCtrl);
+            }
+        });
         this.serverUtils.subscribeForSocketMessages("/user/queue/cover_ink/gameID", Integer.class, gameID -> {
             System.out.println("cover_ink");
             LinkedScene current = appController.getCurrentScene();
@@ -130,6 +134,13 @@ public class WaitingRoomCtrl implements Initializable, ControllerInitialize {
             LinkedScene current = appController.getCurrentScene();
             if(current.getController() instanceof AbstractQuestion qCtrl){
                 CoverHandsJoker.handsAnimation(qCtrl);
+            }
+        });
+        this.serverUtils.subscribeForSocketMessages("/user/queue/barrel_roll/gameID", Integer.class, gameID -> {
+            System.out.println("barrel_roll");
+            LinkedScene current = appController.getCurrentScene();
+            if(current.getController() instanceof AbstractQuestion qCtrl){
+                BarrelRollJoker.barrelRoll(qCtrl);
             }
         });
 

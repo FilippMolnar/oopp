@@ -13,7 +13,7 @@ import java.io.File;
 
 import static java.lang.Integer.parseInt;
 
-public class AdminEditCtrl {
+public class AdminEditCtrl implements ControllerInitialize {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
@@ -90,9 +90,19 @@ public class AdminEditCtrl {
      */
     public void showEditActivity(Activity activity) {
         // Show original activity
-        appController.showAdminEdit(activity);
+        //appController.showAdminEdit(activity);
+        activityTitleField.setText(activity.getTitle());
+        activityImageField.setText(activity.getImagePath());
+        activityConsumptionField.setText(String.valueOf(activity.getConsumption()));
+        activitySourceField.setText(activity.getSource());
         selectedActivity = activity;
         // Let user edit, then submit, when submit is clicked, submitEditActivity is called
+    }
+
+    @Override
+    public void initializeController() {
+        Activity a = new Activity("",0, "","");
+        showEditActivity(a);
     }
 
     /**
@@ -101,7 +111,7 @@ public class AdminEditCtrl {
     public void submitEditActivity() {
         // A new activity will be added with the fields filled in at the moment the user clicks submit
         addActivity();
-        appController.showAdmin();
+        appController.showNext();
     }
 
     /**

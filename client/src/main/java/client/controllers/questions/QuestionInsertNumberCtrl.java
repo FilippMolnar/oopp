@@ -55,6 +55,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
     @Override
     public void displayAnswers(List<Integer> answer) {
+        scoreText.setText("SCORE " + mainCtrl.getScore());
         // guard the socket message call with this check
         if(!(mainCtrl.getCurrentScene().getController().getClass() == getClass())) {
             return;
@@ -84,7 +85,6 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         if(isMultiPlayer) {
             sendAnswer(new Answer(true, answer+"", mainCtrl.getGameID(), newScore, mainCtrl.getName()));
         } else {
-            scoreText.setText(mainCtrl.getScore()+"");
             displayAnswers(new ArrayList());
         }
     }
@@ -121,11 +121,10 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         slider.setDisable(false);
 
         this.informationLabel.setVisible(false);
-        this.scoreText.setText(mainCtrl.getScore()+"");
+        this.scoreText.setText("SCORE " + mainCtrl.getScore());
         startTimerAnimation(10);
         resizeImages();
         resetLogic();
-        questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         submitButton.setDisable(false);
         int correct = mainCtrl.getCorrect().getConsumption();
         int min = (int) Math.random()*correct;
@@ -139,6 +138,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     }
 
     public void setQuestion(Question question) {
+        setQuestionNumber(mainCtrl.getQuestionIndex());
         super.setQuestion(question);
         var choice = question.getCorrect();
         int answer = choice.getConsumption();

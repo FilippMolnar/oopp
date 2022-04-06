@@ -98,7 +98,7 @@ public class QuestionController {
         List<Activity> same = activityController.getAllByConsumption(act.getConsumption(),100);
         List<Activity> choices = new ArrayList<>();
         //Activity neither = new Activity("neither", -1, "location of cross");
-        Activity neither = new Activity("neither", -1, "21/brew-coffee.jpg", "");
+        Activity neither = new Activity("Neither of these", -1, "79/cross.png", "");
 
         if (same.size() == 1) same.add(neither);
 
@@ -125,7 +125,7 @@ public class QuestionController {
             if (same.contains(choice) || act.equals(choice) || choices.contains(choice)) continue;
             choices.add(choice);
         }
-        Collections.shuffle(choices);
+        //Collections.shuffle(choices);
         q.setType(QuestionType.EqualEnergy);
         q.setChoices(choices);
         return q;

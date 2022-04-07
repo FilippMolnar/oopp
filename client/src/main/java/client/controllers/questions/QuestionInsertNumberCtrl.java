@@ -127,7 +127,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         resetLogic();
         submitButton.setDisable(false);
         int correct = mainCtrl.getCorrect().getConsumption();
-        int min = (int) Math.random()*correct;
+        int min = (int) (Math.random()*correct);
         slider.setMin(min);
         int max = (int) ((Math.random()+1)*correct);
         System.out.println("Min is : " + min + " : Max is : " + max);

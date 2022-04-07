@@ -242,7 +242,6 @@ public class LeaderBoardCtrl implements ControllerInitialize {
             multiPlayerInitializer();
         }
         else {
-            System.out.println("INITIALIZE SINGLE PLAYER");
             singlePlayerInitializer();
         }
 
@@ -317,6 +316,7 @@ public class LeaderBoardCtrl implements ControllerInitialize {
     }
 
     public void singlePlayerInitializer() {
+        you_pane.setVisible(false);
         List<Score> allScores = serverUtils.getSingleLeaderboard();
         System.out.println("ALL SCORES: " + allScores + allScores.size());
         int i;

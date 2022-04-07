@@ -323,7 +323,9 @@ public class MainAppController {
             questionIndex++;
         }
         if(controller instanceof LeaderBoardCtrl c) {
-            if(questionsInGame != null && questionIndex == questionsInGame.size()) {
+            System.out.println(questionsInGame.size());
+            System.out.println(questionIndex);
+            if(questionsInGame != null && questionIndex == questionsInGame.size()+1) {
                 System.out.println("UPLOADING SCORE");
                 serverUtils.addScore(score);
                 questionIndex = 1;

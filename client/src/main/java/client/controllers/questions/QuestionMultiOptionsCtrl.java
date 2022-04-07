@@ -255,7 +255,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         startTimerAnimation(10);
         resetUI();
         resetLogic();
-        super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         showJokerImages();
     }
 

@@ -60,7 +60,7 @@ public class MainAppController {
     private Score score;
 
     private List<Question> questionsInGame;
-    private int questionIndex = 1;
+    private int questionIndex = 0;
     private JokersList jokers;
 
     @Inject
@@ -269,7 +269,7 @@ public class MainAppController {
     }
 
     public Question getCurrentQuestion(){
-        return questionsInGame.get(questionIndex-1);
+        return questionsInGame.get(questionIndex-2); // -1 because of ++, -1 because of index 0
     }
 
     private void resizeSceneToMaximize(LinkedScene linked){

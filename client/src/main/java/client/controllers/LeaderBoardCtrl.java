@@ -214,12 +214,22 @@ public class LeaderBoardCtrl implements ControllerInitialize {
     }
 
     public void rematch() {
-        List<Question> questions = serverUtils.getRandomQuestions();
-
-        this.appController.showNext();
-        appController.addQuestionScenes(questions, 1);
         this.appController.initializeScore();
         this.appController.showNext();
+        if(appController.isMultiPlayer()) {
+            // show enter name scene
+            HomeScreenMultiplayerCtrl ctrl = (HomeScreenMultiplayerCtrl) appController.getLinkedScene().getController();
+            ctrl.setName(appController.getName());
+            try {
+                ctrl.enterRoom();
+            } catch(InterruptedException e) {
+                System.out.println(e);
+            }
+        } else {
+            List<Question> questions = serverUtils.getRandomQuestions();
+            appController.addQuestionScenes(questions, 1);
+            this.appController.showNext();
+        }
     }
 
     @Override

@@ -67,6 +67,10 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         super(server, mainCtrl);
     }
 
+    public Label getCons() {
+        return this.cons;
+    }
+
     public void setQuestion(Question question) {
         cons.setText("");
         cons_A.setText("");
@@ -76,10 +80,10 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         setQuestionNumber(mainCtrl.getQuestionIndex());
         super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(4).toList();
-        optionA.setText(question.getChoices().get(3).getTitle());
+        optionA.setText(question.getChoices().get(0).getTitle());
         optionB.setText(question.getChoices().get(1).getTitle());
         optionC.setText(question.getChoices().get(2).getTitle());
-        activity.setText(question.getChoices().get(0).getTitle());
+        activity.setText(question.getChoices().get(3).getTitle());
 
         if (question.getChoices().get(0).id == question.getCorrect().id) correctOption = 0;
         else if (question.getChoices().get(1).id == question.getCorrect().id) correctOption = 1;
@@ -134,11 +138,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         optionA.setDisable(true);
         optionB.setDisable(true);
         optionC.setDisable(true);
-
-        cons_A.setText(question.getChoices().get(0).getConsumption()+" Wh");
-        cons_B.setText(question.getChoices().get(1).getConsumption()+" Wh");
-        cons_C.setText(question.getChoices().get(2).getConsumption()+" Wh");
-        cons.setText(question.getChoices().get(3).getConsumption()+" Wh");
 
         if(isMultiPlayer) {
             sendAnswerAndUpdateScore(mainCtrl, button_id, a);

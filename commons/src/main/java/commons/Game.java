@@ -79,7 +79,7 @@ public class Game {
         return optionsStatistics.values().stream().toList();
     }
 
-    public void IncrementQNum() {
+    public void incrementQNum() {
         this.qnum++;
     }
 

@@ -24,8 +24,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Path;
 
 import static com.google.inject.Guice.createInjector;
 

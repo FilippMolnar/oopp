@@ -7,31 +7,17 @@ import commons.Score;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 
 import javax.inject.Inject;
 import java.util.*;
-
-import commons.Score;
-import commons.Question;
-import javafx.geometry.Insets;
-import javafx.util.Duration;
 
 public class LeaderBoardCtrl implements ControllerInitialize {
     private final MainAppController appController;

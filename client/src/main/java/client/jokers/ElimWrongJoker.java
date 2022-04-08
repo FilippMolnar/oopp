@@ -41,12 +41,11 @@ public class ElimWrongJoker extends Joker {
         if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl) {
             int i = 0;
             for (Activity a : question.getChoices()) {
-                if(i==0){
-                    i++;
-                    continue;
+                if(i==3){
+                    break;
                 }
                 if (a.id != question.getCorrect().id) {
-                    wrong_options.add(i-1);
+                    wrong_options.add(i);
                 }
                 i++;
             }

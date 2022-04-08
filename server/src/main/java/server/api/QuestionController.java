@@ -110,7 +110,6 @@ public class QuestionController {
         Question q = new Question();
         q.setCorrect(same.get(idx));
 
-        choices.add(act);
         choices.add(same.get(idx));
 
         if (!choices.contains(neither)) {
@@ -120,12 +119,13 @@ public class QuestionController {
             }
         }
 
-        while (choices.size() < 4) {
+        while (choices.size() < 3) {
             Activity choice = activityController.getRandom();
             if (same.contains(choice) || act.equals(choice) || choices.contains(choice)) continue;
             choices.add(choice);
         }
-        //Collections.shuffle(choices);
+        Collections.shuffle(choices);
+        choices.add(act);
         q.setType(QuestionType.EqualEnergy);
         q.setChoices(choices);
         return q;

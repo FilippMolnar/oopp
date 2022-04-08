@@ -5,7 +5,19 @@
 
 <module name = "Checker">
     <module name="TreeWalker">
+        <property name="tabWidth" value="4"/>
         <module name="UnusedImports" />
+        <module name="AnnotationUseStyle"/>
+        <module name="MissingDeprecated"/>
+        <module name="Ch"/>
+        <module name="SuppressWarnings"/>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="LineLength">
+            <property name="ignorePattern" value="(^.*\$.*\$.*$)|(^.*SELECT .*$)|(^import .*)"/>
+            <property name="max" value="120"/>
+        </module>
+
     </module>
 
     <!-- TODO: decide in your team with other checkers to add! -->

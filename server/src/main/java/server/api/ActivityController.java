@@ -65,7 +65,7 @@ public class ActivityController {
         List<Activity> filtered = new ArrayList<>();
         filtered.add(act.get(seed));
         while(filtered.size() < 3){
-            int rand = (int)(Math.random()*25);
+            int rand = (int)(Math.random()*50);
             Activity act_to_add = act.get(0);
             if(seed-25+rand < 0)
                 act_to_add = act.get(0);

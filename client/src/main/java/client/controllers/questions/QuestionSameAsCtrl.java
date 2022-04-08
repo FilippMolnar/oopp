@@ -71,10 +71,6 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         super(server, mainCtrl);
     }
 
-    public Label getCons() {
-        return this.cons;
-    }
-
     public void setQuestion(Question question) {
         cons.setText("");
         cons_A.setText("");

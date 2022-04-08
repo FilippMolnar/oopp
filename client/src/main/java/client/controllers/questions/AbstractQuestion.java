@@ -196,12 +196,17 @@ public abstract class AbstractQuestion implements Initializable {
         myTimer.schedule(delay, 3000); // wait for 3 seconds
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
-        if (this instanceof QuestionSameAsCtrl q) {
-            q.getCons().setText(question.getChoices().get(3).getConsumption()+" Wh");
+        if (this instanceof QuestionMultiOptionsCtrl q) {
+            cons_A.setVisible(true);
+            cons_B.setVisible(true);
+            cons_C.setVisible(true);
+            cons_A.setText(question.getChoices().get(0).getConsumption()+" Wh");
+            cons_B.setText(question.getChoices().get(1).getConsumption()+" Wh");
+            cons_C.setText(question.getChoices().get(2).getConsumption()+" Wh");
         }
         if (this instanceof QuestionSameAsCtrl q) {
-            q.getCons().setText(question.getChoices().get(0).getConsumption()+" Wh");
-            cons_A.setText(question.getChoices().get(3).getConsumption()+" Wh");
+            q.getCons().setText(question.getChoices().get(3).getConsumption()+" Wh");
+            cons_A.setText(question.getChoices().get(0).getConsumption()+" Wh");
             cons_B.setText(question.getChoices().get(1).getConsumption()+" Wh");
             cons_C.setText(question.getChoices().get(2).getConsumption()+" Wh");
         }

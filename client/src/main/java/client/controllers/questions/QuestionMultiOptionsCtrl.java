@@ -13,7 +13,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,6 +33,29 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         super(server, mainCtrl);
     }
 
+    /**
+     * Initialize the scene
+     */
+    @Override
+    public void initializeController() {
+        this.scoreText.setText("SCORE " + mainCtrl.getScore());
+        startTimerAnimation(10);
+        resetUI();
+        resetLogic();
+        showJokerImages();
+    }
+
+    /**
+     * Initialize the QuestionMultiOptionsCtrl
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("received reaction!");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
+    }
 
     /**
      * Getter for the first button
@@ -149,24 +171,8 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         }
     }
 
-    public void angryReact() {
-        String path = "/app/reactions";
-        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angry"));
-    }
-
-    public void angelReact() {
-        String path = "/app/reactions";
-        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "angel"));
-    }
-
-    public void happyReact() {
-        String path = "/app/reactions";
-        server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
-    }
-
-
     /**
-     * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.
+     * This method should be called whenever this scene is shown to reset the UI
      */
     private void resetUI() {
         selectedOption = -1;
@@ -182,39 +188,10 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     }
 
     /**
-     * Since there is only one instance of the controller.
-     * The controller won't reset it's state when a new scene loads.
-     * Thus, we need to reset everything by ourselves.
+     * Reset the logic
+     * Since there is only one instance of the controller, this needs to be done manually
      */
     private void resetLogic() {
         this.hasSubmittedAnswer = false; // this is false at the beginning of the game
-    }
-
-    /**
-     * function called when each question is rendered
-     */
-    @Override
-    public void initializeController() {
-        this.scoreText.setText("SCORE " + mainCtrl.getScore());
-        startTimerAnimation(10);
-        resetUI();
-        resetLogic();
-        showJokerImages();
-    }
-
-    /**
-     * Called only once by javafx. I register the socket messages here because if I would do this for
-     * each question we would get duplicate function registrations for the same event.
-     *
-     * @param location
-     * @param resources
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
-            System.out.println("received reaction!");
-            userReaction(userReaction.getReaction(), userReaction.getUsername());
-        });
-        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
     }
 }

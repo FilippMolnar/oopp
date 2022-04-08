@@ -47,33 +47,21 @@ public class AdminOverviewCtrl implements Initializable, ControllerInitialize {
     @FXML
     Label error;
 
+    /**
+     * Constructor for AdminEditCtrl
+     * @param serverUtils - the ServerUtils
+     * @param appController - the MainAppController
+     */
     @Inject
     AdminOverviewCtrl(ServerUtils serverUtils, MainAppController appController){
         this.appController = appController;
         this.serverUtils = serverUtils;
-        this.editCtrl = new AdminEditCtrl(serverUtils, appController, this);
+        this.editCtrl = new AdminEditCtrl(serverUtils, appController);
     }
-
-//    List<Activity> activities = serverUtils.getAllActivities();
 
     /**
-     * Refreshes the data in the TableView.
+     * Initialize the AdminOverviewCtrl
      */
-    public void refresh() {
-        serverUtils.initializeServer("localhost");
-        var activities = serverUtils.getAllActivities();
-        data = FXCollections.observableList(activities);
-        this.activityTable.setItems(data);
-    }
-
-    public void initializeController() {
-        refresh();
-    }
-
-    public void setEditCtrl(AdminEditCtrl editCtrl) {
-        this.editCtrl = editCtrl;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         titleColumn.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().getTitle()));
@@ -88,6 +76,31 @@ public class AdminOverviewCtrl implements Initializable, ControllerInitialize {
         consumptionColumn.setCellValueFactory(x -> (new SimpleIntegerProperty(x.getValue().getConsumption())).asObject());
         imageColumn.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().getImagePath()));
         refresh();
+    }
+
+    /**
+     * Initialize the scene
+     */
+    public void initializeController() {
+        refresh();
+    }
+
+    /**
+     * Refreshes the data in the TableView.
+     */
+    public void refresh() {
+        serverUtils.initializeServer("localhost");
+        var activities = serverUtils.getAllActivities();
+        data = FXCollections.observableList(activities);
+        this.activityTable.setItems(data);
+    }
+
+    /**
+     * Set the AdminEditCtrl
+     * @param editCtrl - the AdminEditCtrl
+     */
+    public void setEditCtrl(AdminEditCtrl editCtrl) {
+        this.editCtrl = editCtrl;
     }
 
     /**

@@ -3,7 +3,6 @@ package client.controllers;
 import client.utils.ServerUtils;
 import commons.Question;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import javax.inject.Inject;
@@ -17,24 +16,24 @@ public class HomeScreenSingleplayerCtrl {
     @FXML
     private TextField nameString;
 
-    @FXML
-    private Label labelErrors;
-
+    /**
+     * Constructor for the HomeScreenSingleplayerCtrl
+     * @param serverUtils - the ServerUtils
+     * @param appController - the MainAppController
+     */
     @Inject
     HomeScreenSingleplayerCtrl(ServerUtils serverUtils, MainAppController appController){
         this.appController = appController;
         this.serverUtils = serverUtils;
     }
 
+    /**
+     * Enter the game
+     */
     public void enterRoom(){
         String name = nameString.getText();
         System.out.println(name);
         String finalName = name.substring(0,Math.min(name.length(),16));
-        if (!name.equals(finalName)) {
-            // Send message to player that their name was too long
-            labelErrors.setText("Your name was too long, we limited the number of characters");
-        }
-
         serverUtils.initializeServer("localhost");
         ArrayList<Question> questions = serverUtils.getRandomQuestions();
         appController.addQuestionScenes(questions, 1);
@@ -45,6 +44,9 @@ public class HomeScreenSingleplayerCtrl {
         this.appController.setGameMode(false);
     }
 
+    /**
+     * Goes to homescreen when exit is clicked
+     */
     public void backToHomeScreen() {
         appController.showHomeScreen();
     }

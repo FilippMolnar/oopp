@@ -9,6 +9,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Activity implements Comparable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public long id;
@@ -20,10 +21,12 @@ public class Activity implements Comparable {
     @Getter
     private String source;
 
-    // Consumption is in WH
     @Getter
-    private int consumption;
+    private int consumption; // in Wh
 
+    /**
+     * Empty constructor for an Activity
+     */
     public Activity() {
     }
 
@@ -41,8 +44,6 @@ public class Activity implements Comparable {
         this.consumption = consumption;
         this.source = source;
     }
-
-
 
     /*
      * Compares the consumption of two activities.
@@ -63,10 +64,10 @@ public class Activity implements Comparable {
     }
 
     /**
-     * Compares class to this
+     * Compares class to o
      *
      * @param o - object for comparison
-     * @return
+     * @return if this and o are equal
      */
     public boolean equals(Object o) {
         if (o == null) return false;

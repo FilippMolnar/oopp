@@ -30,6 +30,11 @@ import static org.apache.commons.lang3.builder.ToStringStyle.MULTI_LINE_STYLE;
 public class JokersList {
     private List<Joker> jokers;
 
+    /**
+     * Constructor for a JokersList
+     * @param serverUtils - the ServerUtils
+     * @param isMultiplayer - the game mode (true = multiplayer, false = singleplayer)
+     */
     public JokersList(ServerUtils serverUtils, boolean isMultiplayer) {
         if(!isMultiplayer){
             generateSP(serverUtils);
@@ -58,9 +63,13 @@ public class JokersList {
         for(int i=0; i<3; i++){
             this.jokers.add(j.get(i));
         }
-
     }
 
+    /**
+     * Generate the jokerlist for singleplayer
+     * This only includes double points, google joker and eliminate wrong answer
+     * @param serverUtils - the ServerUtils
+     */
     public void generateSP(ServerUtils serverUtils){
         Joker doublePoints = new DoublePointsJoker("double points", "joker_double_points.png", serverUtils);
         Joker google = new GoogleJoker("google", "joker_google.png", serverUtils);
@@ -72,6 +81,11 @@ public class JokersList {
         this.jokers = j;
     }
 
+    /**
+     * Replaces the used jokers
+     * @param serverUtils - the ServerUtils
+     * @param isMultiplayer - the game mode (true = multiplayer, false = singleplayer)
+     */
     public void replaceUsed(ServerUtils serverUtils, boolean isMultiplayer){
         if(!isMultiplayer){
             generateSP(serverUtils);
@@ -115,14 +129,21 @@ public class JokersList {
                 this.jokers.set(i, notUsed.get(i));
             }
         }
-
     }
 
-
+    /**
+     * Getter for the jokers
+     * @return the jokers
+     */
     public List<Joker> getJokers() {
         return jokers;
     }
 
+    /**
+     * Equals method for a JokersList
+     * @param obj - the object we are comparing to
+     * @return if this and obj are equal (true/false)
+     */
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
@@ -133,6 +154,10 @@ public class JokersList {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
+    /**
+     * ToString method for a JokersList
+     * @return a String representing a JokersList
+     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, MULTI_LINE_STYLE);

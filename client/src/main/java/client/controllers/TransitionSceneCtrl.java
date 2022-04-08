@@ -22,13 +22,19 @@ public class TransitionSceneCtrl extends AbstractQuestion implements ControllerI
     @FXML
     Line loadingLine;
 
+    /**
+     * Constructor for TransitionScene
+     * @param server - the ServerUtils
+     * @param mainCtrl - the MainAppController
+     */
     @Inject
     public TransitionSceneCtrl(ServerUtils server, MainAppController mainCtrl) {
         super(server, mainCtrl);
     }
 
     /**
-     * show the next scene after a delay of animationDuration seconds
+     * Initialize the controller
+     * Show the next scene after a delay of animationDuration seconds
      */
     @Override
     public void initializeController() {

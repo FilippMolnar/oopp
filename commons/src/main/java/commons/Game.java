@@ -1,11 +1,9 @@
 package commons;
 
-
 import java.util.*;
 
 public class Game {
     private final Map<Player, Integer> playerToID = new HashMap<>(); // Maps a player to his id
-    private final Map<Integer, Player> idToPlayer = new HashMap<>(); // Maps a playerID to player
     private final Map<Integer, Boolean> inGame = new HashMap<>(); // Keeps track if player with id is in game
     private int gameID;
     private List<Question> questions = new ArrayList<>();
@@ -57,6 +55,10 @@ public class Game {
         this.requested = count;
     }
 
+    /**
+     * Getter for the number of players in this game
+     * @return the number of players in this game
+     */
     public int getPlayersInGame() {
         return players.size();
     }
@@ -98,13 +100,10 @@ public class Game {
         return optionsStatistics.values().stream().toList();
     }
 
-
-
     /**
      * Increment question number
      */
     public void incrementQNum() {
-
         this.qnum++;
     }
 
@@ -124,14 +123,26 @@ public class Game {
         this.gameID = gameID;
     }
 
+    /**
+     * Getter for the questions in this game
+     * @return the questions in this game
+     */
     public List<Question> getQuestions() {
         return questions;
     }
 
+    /**
+     * Setter for the questions in this game
+     * @param questions - the questions in this game
+     */
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
 
+    /**
+     * Add a player to the game
+     * @param player - the player to be added
+     */
     public void addPlayer(Player player) {
         inGame.put(pnum, true);
         players.add(player);
@@ -155,8 +166,7 @@ public class Game {
     }
 
     /**
-     * TODO optimize if necessary
-     * Currently is set to only make the player 'disabled'
+     * Remove the player
      *
      * @param player to be removed
      */
@@ -176,6 +186,10 @@ public class Game {
         return players;
     }
 
+    /**
+     * Setter for the players
+     * @param players - the players
+     */
     public void setPlayers(Set<Player> players) {
         this.players = players;
     }
@@ -185,30 +199,15 @@ public class Game {
      *
      * @return a list of pairs of score and player in descending order
      */
-
     public Map<Integer, List<String>> getLeaderboard() {
-
-        /*List<Pair<Integer, Player>> scores = new ArrayList<>();
-        for (int i = 0; i < pnum; i++) {
-            if (!inGame.get(i)) continue; // Players which left the game won`t be in the scoreboard
-            Pair<Integer, Player> cscore = Pair.of(scoreboard.get(i), idToPlayer.get(i));
-            scores.add(cscore);
-        }
-<<<<<<< HEAD
-        scores.sort(Map.Entry.comparingByKey());
-        return scores;
-=======
-        Collections.sort(scores, new Comparator<Pair<Integer, Player>>() {
-            @Override
-            public int compare(final Pair<Integer, Player> p1, final Pair<Integer, Player> p2) {
-                if (p1.getKey() < p2.getKey()) return 1;
-                else return -1;
-            }
-        });
-        return scores;*/
         return this.scores_index;
     }
 
+    /**
+     * Update a player's score
+     * @param name - the player
+     * @param score - the score to add to the player's score
+     */
     public void updateScore(String name, int score) {
         /*int id = playerToID.get(player);
         scoreboard.set(id, score);*/
@@ -225,6 +224,11 @@ public class Game {
         this.scores_index.get(oldScore).remove(name);
     }
 
+    /**
+     * Set a player's score
+     * @param name - the player
+     * @param score - the score to add to the player's score
+     */
     public void setScore(String name, int score) {
         /*int id = playerToID.get(player);
         scoreboard.set(id, score);*/
@@ -238,16 +242,11 @@ public class Game {
         }
     }
 
+    /**
+     * Get a player's score
+     * @param player - the player
+     */
     public int getScore(Player player) {
-        /*List<Pair<Integer, Player>> scores = getLeaderboard();
-        int score = 0;
-        for (var integerPlayerPair : scores) {
-            Player p = integerPlayerPair.getRight();
-            if (p.equals(player)) {
-                score = integerPlayerPair.getLeft();
-            }
-        }
-        return score;*/
         return this.players_index.get(player.getName());
     }
 

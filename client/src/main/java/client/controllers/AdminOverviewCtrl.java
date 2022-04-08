@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminOverviewCtrl implements Initializable {
+public class AdminOverviewCtrl implements Initializable, ControllerInitialize {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
@@ -64,6 +64,10 @@ public class AdminOverviewCtrl implements Initializable {
         var activities = serverUtils.getAllActivities();
         data = FXCollections.observableList(activities);
         this.activityTable.setItems(data);
+    }
+
+    public void initializeController() {
+        refresh();
     }
 
     public void setEditCtrl(AdminEditCtrl editCtrl) {

@@ -37,7 +37,7 @@ public class AdminEditCtrl implements ControllerInitialize {
     AdminEditCtrl(ServerUtils serverUtils, MainAppController appController, AdminOverviewCtrl adminOverviewCtrl){
         this.appController = appController;
         this.serverUtils = serverUtils;
-        this.adminOverviewCtrl=adminOverviewCtrl;
+        this.adminOverviewCtrl = adminOverviewCtrl;
     }
 
     public TextField getActivityTitleField() {

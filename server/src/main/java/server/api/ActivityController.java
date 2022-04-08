@@ -101,8 +101,6 @@ public class ActivityController {
                 act_to_add = act.get(act.size()-1);
             else
                 act_to_add = act.get(seed-25+rand);
-            act_to_add = act.get(seed-25+rand);
-
             boolean sameConsumption = false;
             for(Activity a : filtered){
                 if(a.getConsumption() == act_to_add.getConsumption()){

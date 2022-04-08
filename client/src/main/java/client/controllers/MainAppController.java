@@ -57,7 +57,7 @@ public class MainAppController {
     private JokersList jokers;
 
     @Inject
-    MainAppController(ServerUtils serverUtils) {
+    public MainAppController(ServerUtils serverUtils) {
         this.serverUtils = serverUtils;
     }
 
@@ -152,8 +152,7 @@ public class MainAppController {
     public void setQuestionNumber(int number) {
         this.questionIndex = number;
     }
-    public void openBrowser()
-    {
+    public void openBrowser() {
         Desktop desktop = Desktop.getDesktop();
         try{
             URI url = new URI("https://www.google.com");

@@ -79,27 +79,11 @@ public abstract class AbstractQuestion implements Initializable {
     protected Label informationLabel;
 
     @FXML
-    protected Button splashButton;
-
-    @FXML
     protected Label cons_A;
     @FXML
     protected Label cons_B;
     @FXML
     protected Label cons_C;
-
-
-    private int timerIntegerValue;
-    private static boolean google = false;
-    protected int correctOption; // number of the correct option (0,1,2)
-    protected int selectedOption; // number of the selected option (-1,0,1,2) (-1 if timer runs out)
-    protected boolean hasSubmittedAnswer = false;
-
-
-    public int getTimerIntegerValue() {
-        return timerIntegerValue;
-    }
-
 
     @FXML
     protected Text scoreText;
@@ -111,12 +95,73 @@ public abstract class AbstractQuestion implements Initializable {
 
     protected static boolean doublePointsJoker = false;
 
+    private int timerIntegerValue;
+    private static boolean google = false;
+    protected int correctOption; // number of the correct option (0,1,2)
+    protected int selectedOption; // number of the selected option (-1,0,1,2) (-1 if timer runs out)
+    protected boolean hasSubmittedAnswer = false;
+
+    public int getTimerIntegerValue() {
+        return timerIntegerValue;
+    }
+
+    /**
+     * Constructor for AbstractQuestion, the parent of the three question types
+     * @param server - the ServerUtils
+     * @param mainCtrl - the MainAppController
+     */
     @Inject
     public AbstractQuestion(ServerUtils server, MainAppController mainCtrl) {
         this.mainCtrl = mainCtrl;
         this.server = server;
     }
 
+    /**
+     * Setter for the game mode
+     * @param isMultiPlayer - if the game is multiplayer
+     */
+    public void setGameMode(boolean isMultiPlayer) {
+        this.isMultiPlayer = isMultiPlayer;
+    }
+
+    /**
+     * Setter for the questions
+     * @param question - the question to set
+     */
+    public void setQuestion(Question question) {
+        this.question = question;
+        this.hasSubmittedAnswer = false;
+        if (this instanceof QuestionMultiOptionsCtrl) {
+            cons_A.setText("");
+            cons_B.setText("");
+            cons_C.setText("");
+        }
+    }
+
+    /**
+     * Setter for the question number
+     * @param num - the number of the question
+     */
+    public void setQuestionNumber(int num) {
+        this.questionNumber.setText("Question " + num + "/20");
+        if(num % 5 == 0) {
+            mainCtrl.getJokers().replaceUsed(server, mainCtrl.isMultiPlayer());
+            uncheckJokers();
+        }
+    }
+
+    /**
+     * Setter for if the DoublePointsJoker is currently being used
+     * For calculating the score
+     * @param doublePointsJoker - the boolean that describes if the DoublePointsJoker is currently being used
+     */
+    public static void setDoublePointsJoker(boolean doublePointsJoker) {
+        AbstractQuestion.doublePointsJoker = doublePointsJoker;
+    }
+
+    /**
+     * Resets the statistics
+     */
     public void resetChart() {
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
         for (Node chart : charts) {
@@ -125,6 +170,11 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
+    /**
+     * Show statistic charts
+     * @param ans - list of at most three elements, for each index it says how people chose that answer
+     * @param correct - which index is the correct answer
+     */
     public void showChart(List<Integer> ans, int correct) {
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
         List<Node> charts = images.lookupAll("Rectangle").stream().limit(3).toList();
@@ -156,6 +206,10 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
+    /**
+     * Displays the consumptions and correct answer after everyone has answered
+     * @param answerList - the list of consumptions
+     */
     public void displayAnswers(List<Integer> answerList) {
         if(!(mainCtrl.getCurrentScene().getController().getClass() == getClass())) {
             return;
@@ -204,28 +258,9 @@ public abstract class AbstractQuestion implements Initializable {
         cons_C.setText(question.getChoices().get(2).getConsumption()+" Wh");
     }
 
-    public void setGameMode(boolean isMultiPlayer) {
-        this.isMultiPlayer = isMultiPlayer;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-        this.hasSubmittedAnswer = false;
-        if (this instanceof QuestionMultiOptionsCtrl) {
-            cons_A.setText("");
-            cons_B.setText("");
-            cons_C.setText("");
-        }
-    }
-
-    public void setQuestionNumber(int num) {
-        this.questionNumber.setText("Question " + num + "/20");
-        if(num % 5 == 0) {
-            mainCtrl.getJokers().replaceUsed(server, mainCtrl.isMultiPlayer());
-            uncheckJokers();
-        }
-    }
-
+    /**
+     * Reset the disabled look of the jokers
+     */
     public void uncheckJokers(){
         getCircle1().setOpacity(1.0);
         getImage1().setOpacity(1.0);
@@ -235,6 +270,9 @@ public abstract class AbstractQuestion implements Initializable {
         getImage3().setOpacity(1.0);
     }
 
+    /**
+     * Shows the joker images
+     */
     public void showJokerImages(){
         System.out.println("show jokers");
         List<Joker> jokers = mainCtrl.getJokers().getJokers();
@@ -251,26 +289,39 @@ public abstract class AbstractQuestion implements Initializable {
         jokers.get(2).markUsed(mainCtrl);
     }
 
-    public static void setDoublePointsJoker(boolean doublePointsJoker) {
-        AbstractQuestion.doublePointsJoker = doublePointsJoker;
-    }
-
+    /**
+     * Trigger joker one
+     */
     public void triggerJoker1() {
         mainCtrl.getJokers().getJokers().get(0).onClick(mainCtrl);
     }
 
+    /**
+     * Trigger joker two
+     */
     public void triggerJoker2() {
         mainCtrl.getJokers().getJokers().get(1).onClick(mainCtrl);
     }
 
+    /**
+     * Trigger joker three
+     */
     public void triggerJoker3() {
         mainCtrl.getJokers().getJokers().get(2).onClick(mainCtrl);
     }
 
+    /**
+     * When a question is initialized, we start listening for socket messages for the emojis
+     */
     public void initialize(URL location, ResourceBundle resources) {
         server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> userReaction(userReaction.getReaction(), userReaction.getUsername()));
     }
 
+    /**
+     * The method that plays the animation for the userReactions
+     * @param reaction - the reaction that should be player
+     * @param name - the player that sent the reaction
+     */
     public void userReaction(String reaction, String name) {
         if(!(mainCtrl.getCurrentScene().getController().getClass() == getClass())) {
             return;
@@ -305,7 +356,6 @@ public abstract class AbstractQuestion implements Initializable {
 
         FadeTransition fade = new FadeTransition();
         fade.setDuration(Duration.millis(2000));
-        //fade.setDelay(Duration.millis(1000));
         fade.setFromValue(10);
         fade.setToValue(0);
         fade.setNode(pane);
@@ -313,6 +363,9 @@ public abstract class AbstractQuestion implements Initializable {
         parentGridPane.add(pane, parentGridPane.getColumnCount() - 1, 0);
     }
 
+    /**
+     * Linked to angry react button, sends the reaction and player to the animation method
+     */
     public void angryReact() {
         String path = "/app/reactions";
         if(isMultiPlayer) {
@@ -323,6 +376,9 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
+    /**
+     * Linked to angel react button, sends the reaction and player to the animation method
+     */
     public void angelReact() {
         String path = "/app/reactions";
         if(isMultiPlayer) {
@@ -333,6 +389,9 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
+    /**
+     * Linked to happy react button, sends the reaction and player to the animation method
+     */
     public void happyReact() {
         String path = "/app/reactions";
         if(isMultiPlayer) {
@@ -343,25 +402,37 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
+
+    /**
+     * Stops the timer
+     */
     public void stopTimer() {
         timeline.stop();
         timerTask.cancel();
         numberTimer.cancel();
     }
 
+    /**
+     * Cut timer time in half, for the descrease time joker
+     */
     public void cutAnimationInHalf() {
         stopTimer();
         startTimerAnimation(timerIntegerValue / 2);
-
     }
 
-    public void addTimeForGoogling()
-    {
+    /**
+     * Adds time to timer for google joker
+     */
+    public void addTimeForGoogling() {
         google = true;
         stopTimer();
         startTimerAnimation(timerIntegerValue+10);
     }
 
+    /**
+     * Start the timer animation
+     * @param length - the number the timer should start with
+     */
     public void startTimerAnimation(int length) {
         timerIntegerValue = length;
         timerArc.setLength(360);
@@ -394,7 +465,6 @@ public abstract class AbstractQuestion implements Initializable {
         //create a keyValue with factory: scaling the circle 2times
         KeyValue lengthProperty = new KeyValue(timerArc.lengthProperty(), 0);
 
-
         //create a keyFrame, the keyValue is reached at time 2s
         System.out.println(timerValue.getText());
         Duration duration = Duration.millis(length * 1000);
@@ -419,6 +489,9 @@ public abstract class AbstractQuestion implements Initializable {
         timeline.play();
     }
 
+    /**
+     * Disables options when timer runs out
+     */
     public void disableOptions() {
         if (mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl) {
             qCtrl.getOptionA().setDisable(true);
@@ -428,9 +501,8 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     /**
-     * send answer to the server
-     *
-     * @param answer true/false depending if the selected answer was good
+     * Send answer to the server
+     * @param answer - true/false depending on if the selected answer was good
      */
     public void sendAnswer(Answer answer) {
         informationLabel.setVisible(true);
@@ -440,6 +512,10 @@ public abstract class AbstractQuestion implements Initializable {
         server.sendThroughSocket("/app/submit_answer", answer);
     }
 
+    /**
+     * Checks if answer is correct (for singleplayer)
+     * @param answer - the given answer
+     */
     public void checkAnswer(Answer answer) {
         int newScore = calculateScore(answer.isCorrect(), Double.parseDouble(timerValue.getText()));
         answer.setScore(newScore);
@@ -447,6 +523,9 @@ public abstract class AbstractQuestion implements Initializable {
         scoreText.setText("SCORE " + mainCtrl.getScore());
     }
 
+    /**
+     * Method that sends the user back to the homescreen when exit button is clicked
+     */
     public void backToHomeScreen() {
         stopTimer();
         Player player = new Player(mainCtrl.getName());
@@ -454,7 +533,13 @@ public abstract class AbstractQuestion implements Initializable {
         server.sendThroughSocket("/app/disconnectFromGame",player);
         mainCtrl.showHomeScreen();
     }
-    // for single player
+
+    /**
+     * Calculates the score for singleplayer, multiple options question and same as question
+     * @param answerCorrect - if the answer the player gave was correct
+     * @param secondsLeft - how many seconds were left on the timer when the player answered
+     * @return the score that should be added to the player's current score
+     */
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
         int scoreToBeAdded = 0;
         double maxSeconds = 10;
@@ -466,8 +551,13 @@ public abstract class AbstractQuestion implements Initializable {
         return scoreToBeAdded;
     }
 
+    /**
+     * Calculates score when google joker is used, because of the extra time the player gets
+     * @param answerCorrect - if the answer the player gave was correct
+     * @param secondsLeft - how many seconds were left on the timer when the player answered
+     * @return the score that should be added to the player's current score
+     */
     public int calculateScoreGoogle(boolean answerCorrect, double secondsLeft) {
-
         int scoreToBeAdded = 0;
         double maxSeconds = 20;
         int maxPoints = 100;
@@ -478,6 +568,12 @@ public abstract class AbstractQuestion implements Initializable {
         return scoreToBeAdded;
     }
 
+    /**
+     * Sends answer for statistics and updates the score
+     * @param mainCtrl - the MainAppController mainCtrl
+     * @param button_id - which button the user clicked
+     * @param a - the activity that was answered
+     */
     public void sendAnswerAndUpdateScore(MainAppController mainCtrl, String button_id, Activity a) {
         int score;
         if(google == false){score = calculateScore(a.id == question.getCorrect().id, 10.0 - (double) this.getTimerIntegerValue());}
@@ -496,10 +592,18 @@ public abstract class AbstractQuestion implements Initializable {
         }
     }
 
+    /**
+     * Getter for the first joker circle
+     * @return the first joker circle
+     */
     public Circle getCircle1() {
         return circle1;
     }
 
+    /**
+     * Getter for the second joker circle
+     * @return the first joker circle
+     */
     public Circle getCircle2() {
         return circle2;
     }

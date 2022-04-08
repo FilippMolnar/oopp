@@ -209,16 +209,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
         server.sendThroughSocket(path, new UserReaction(mainCtrl.getGameID(), mainCtrl.getName(), "happy"));
     }
 
-    public int calculateScore(boolean answerCorrect, double secondsToAnswer) {
-        int scoreToBeAdded = 0;
-        double maxSeconds = 10;
-        int maxPoints = 100;
-        if (answerCorrect) {
-            scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 1.5)));
-        }
-        return scoreToBeAdded;
-    }
-
 
     /**
      * This method should be called whenever this scene is shown to make sure the buttons are hidden and images resize etc.

@@ -45,7 +45,7 @@ public class JokersList {
         Joker decreaseTime = new DecreaseTimeJoker("decrease time", "joker_decrease_time.png", serverUtils);
         Joker google = new GoogleJoker("google", "joker_google.png", serverUtils);
         Joker elimWrong = new ElimWrongJoker("eliminate wrong answer", "joker_elim_wrong.png", serverUtils);
-        Joker barrelRoll = new BarrelRollJoker("barrel roll", "joker_barrel.png", serverUtils);
+        Joker barrelRoll = new BarrelRollJoker("barrel roll", "joker_barrell.png", serverUtils);
         j.add(doublePoints);
         j.add(coverInk);
         j.add(coverHands);
@@ -87,12 +87,14 @@ public class JokersList {
         Joker decreaseTime = new DecreaseTimeJoker("decrease time", "joker_decrease_time.png", serverUtils);
         Joker google = new GoogleJoker("google", "joker_google.png", serverUtils);
         Joker elimWrong = new ElimWrongJoker("eliminate wrong answer", "joker_elim_wrong.png", serverUtils);
+        Joker barrelRoll = new BarrelRollJoker("barrel roll", "joker_barrell.png", serverUtils);
         j.add(doublePoints);
         j.add(coverInk);
         j.add(coverHands);
         j.add(decreaseTime);
         j.add(google);
         j.add(elimWrong);
+        j.add(barrelRoll);
 
         for(Joker joker : j){
             boolean flag = true;

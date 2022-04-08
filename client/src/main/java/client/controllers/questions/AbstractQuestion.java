@@ -196,10 +196,8 @@ public abstract class AbstractQuestion implements Initializable {
         myTimer.schedule(delay, 3000); // wait for 3 seconds
         informationLabel.setVisible(true);
         informationLabel.setText("Stats received!");
-        if (this instanceof QuestionMultiOptionsCtrl) {
-            cons_A.setText(question.getChoices().get(0).getConsumption()+" Wh");
-            cons_B.setText(question.getChoices().get(1).getConsumption()+" Wh");
-            cons_C.setText(question.getChoices().get(2).getConsumption()+" Wh");
+        if (this instanceof QuestionSameAsCtrl q) {
+            q.getCons().setText(question.getChoices().get(3).getConsumption()+" Wh");
         }
         if (this instanceof QuestionSameAsCtrl q) {
             q.getCons().setText(question.getChoices().get(0).getConsumption()+" Wh");
@@ -224,7 +222,7 @@ public abstract class AbstractQuestion implements Initializable {
     }
 
     public void setQuestionNumber(int num) {
-        this.questionNumber.setText(num + "/20");
+        this.questionNumber.setText("Question " + num + "/20");
         if(num % 5 == 0) {
             mainCtrl.getJokers().replaceUsed(server, mainCtrl.isMultiPlayer());
             uncheckJokers();

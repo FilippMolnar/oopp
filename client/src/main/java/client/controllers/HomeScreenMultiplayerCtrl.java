@@ -45,10 +45,6 @@ public class HomeScreenMultiplayerCtrl {
             return;
         }
 
-        if (!name.equals(finalName)) {
-            // Send message to player that their name was too long
-            labelErrors.setText("Your name was too long, we limited the number of characters");
-        }
         serverUtils.initializeServer(serverField.getText());
         // Get request for the players that are currently waiting
         List<Player> playersInWaitingRoom = serverUtils.getAllNamesInWaitingRoom();
@@ -62,15 +58,17 @@ public class HomeScreenMultiplayerCtrl {
             }
         }
         labelErrors.setText(""); // reset the error label
-                // Show single player. 0 would be single player.
         this.appController.showNext();
-        //this.serverUtils.postName(finalName);
         this.appController.setName(finalName);
         this.serverUtils.sendThroughSocket("/app/enterRoom", new Player(finalName));
     }
 
     public void backToHomeScreen() {
         appController.showHomeScreen();
+    }
+
+    public void setName(String name) {
+        nameString.setText(name);
     }
 
 

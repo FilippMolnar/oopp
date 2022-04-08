@@ -135,6 +135,8 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
             min = max;
             max = temp;
         }
+        slider.setMin(Double.MIN_VALUE);
+        slider.setMax(Double.MAX_VALUE);
         slider.setMin(min);
         slider.setMax(max);
         int middle = (min+max)/2;

@@ -62,6 +62,11 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
 
     private boolean hasSubmittedAnswer = false;
 
+    /**
+     * Constructor for QuestionSameAsCtrl
+     * @param server - the ServerUtils
+     * @param mainCtrl - the MainAppController
+     */
     @Inject
     public QuestionSameAsCtrl(ServerUtils server, MainAppController mainCtrl) {
         super(server, mainCtrl);

@@ -28,31 +28,48 @@ import java.util.*;
 
 public class QuestionMultiOptionsCtrl extends AbstractQuestion implements ControllerInitialize {
 
-
     @FXML
     private GridPane images;
 
-    public Button getOptionA() {
-        return optionA;
-    }
-
-    public Button getOptionB() {
-        return optionB;
-    }
-
-    public Button getOptionC() {
-        return optionC;
-    }
-
-
-    @FXML
-    private Text questionNumber;
-
+    /**
+     * Constructor for QuestionMultiOptionsCtrl
+     * @param server - the ServerUtils
+     * @param mainCtrl - the MainAppController
+     */
     @Inject
     public QuestionMultiOptionsCtrl(ServerUtils server, MainAppController mainCtrl) {
         super(server, mainCtrl);
     }
 
+
+    /**
+     * Getter for the first button
+     * @return the first button
+     */
+    public Button getOptionA() {
+        return optionA;
+    }
+
+    /**
+     * Getter for the second button
+     * @return the second button
+     */
+    public Button getOptionB() {
+        return optionB;
+    }
+
+    /**
+     * Getter for the third button
+     * @return the third button
+     */
+    public Button getOptionC() {
+        return optionC;
+    }
+
+    /**
+     * Sets the question
+     * @param question - the question to set
+     */
     public void setQuestion(Question question) {
         setQuestionNumber(mainCtrl.getQuestionIndex());
         super.setQuestion(question);
@@ -90,10 +107,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     }
 
     /**
-     * function called when user submits an answer
-     * we mark that answer as final for now.
-     *
-     * @param actionEvent event used to get the button
+     * Function called when user submits an answer
+     * We mark that answer as final for now
+     * @param actionEvent - event used to get the button
      */
     public void pressedOption(ActionEvent actionEvent) {
         final Button source = (Button) actionEvent.getSource();
@@ -127,9 +143,7 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
 
 
     /**
-     * This method should be called after the scene is shown because otherwise the stackPane width/height won't exist
-     * I wrapped the images into a <code>StackPane</code> that is resizable and fits the grid cell
-     * After that I set the image to fit the <code>StackPane</code> without losing aspect ratio.
+     * Resize the images
      */
     public void resizeImages() {
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
@@ -140,54 +154,6 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
             view.setFitHeight(pane.getHeight() - 5);
             view.setFitWidth(pane.getWidth() - 5);
         }
-    }
-
-    public void userReaction(String reaction, String name) {
-
-        Pane pane = new Pane();
-        ImageView iv;
-        Label label = new Label(name);
-        Image img;
-        switch (reaction) {
-            case "happy":
-                img = new Image(getClass().getResource("/client/pictures/happy.png").toString());
-                break;
-            case "angry":
-                img = new Image(getClass().getResource("/client/pictures/angry.png").toString());
-                break;
-            case "angel":
-                img = new Image(getClass().getResource("/client/pictures/angel.png").toString());
-                break;
-            default:
-                return;
-        }
-        iv = new ImageView(img);
-        pane.getChildren().add(iv);
-        pane.getChildren().add(label);
-        iv.setMouseTransparent(false);
-        label.setMouseTransparent(false);
-        label.setPadding(new Insets(-20, 0, 0, 5));
-        TranslateTransition translate = new TranslateTransition();
-        translate.setByY(700);
-        translate.setDuration(Duration.millis(2800));
-        translate.setNode(pane);
-        translate.setOnFinished(t -> {
-                    System.out.println("deleted");
-                    pane.getChildren().remove(iv);
-                    pane.getChildren().remove(label);
-                }
-        );
-        translate.play();
-
-        FadeTransition fade = new FadeTransition();
-        fade.setDuration(Duration.millis(2000));
-        //fade.setDelay(Duration.millis(1000));
-        fade.setFromValue(10);
-        fade.setToValue(0);
-        fade.setNode(pane);
-        fade.play();
-        parentGridPane.getChildren().add(pane);
-
     }
 
     public void angryReact() {

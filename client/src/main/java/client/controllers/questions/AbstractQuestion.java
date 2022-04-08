@@ -34,6 +34,16 @@ public abstract class AbstractQuestion implements Initializable {
     protected final ServerUtils server;
     protected final MainAppController mainCtrl;
     protected Question question;
+    protected boolean isMultiPlayer;
+    protected Timeline timeline;
+    TimerTask timerTask;
+    Timer numberTimer;
+    protected static boolean doublePointsJoker = false;
+    private int timerIntegerValue;
+    private static boolean google = false;
+    protected int correctOption; // number of the correct option (0,1,2)
+    protected int selectedOption; // number of the selected option (-1,0,1,2) (-1 if timer runs out)
+    protected boolean hasSubmittedAnswer = false;
 
     @FXML
     protected Button optionA;
@@ -49,7 +59,6 @@ public abstract class AbstractQuestion implements Initializable {
     protected Label countC;
     @FXML
     protected GridPane images;
-
     @FXML
     public GridPane parentGridPane;
     @FXML
@@ -64,46 +73,22 @@ public abstract class AbstractQuestion implements Initializable {
     protected ImageView image2;
     @FXML
     protected ImageView image3;
-
     @FXML
     protected Arc timerArc;
     @FXML
     protected Text timerValue;
-
     @FXML
     protected Text questionNumber;
-
-    protected boolean isMultiPlayer;
-
     @FXML
     protected Label informationLabel;
-
     @FXML
     protected Label cons_A;
     @FXML
     protected Label cons_B;
     @FXML
     protected Label cons_C;
-
     @FXML
     protected Text scoreText;
-
-    protected Timeline timeline;
-
-    TimerTask timerTask;
-    Timer numberTimer;
-
-    protected static boolean doublePointsJoker = false;
-
-    private int timerIntegerValue;
-    private static boolean google = false;
-    protected int correctOption; // number of the correct option (0,1,2)
-    protected int selectedOption; // number of the selected option (-1,0,1,2) (-1 if timer runs out)
-    protected boolean hasSubmittedAnswer = false;
-
-    public int getTimerIntegerValue() {
-        return timerIntegerValue;
-    }
 
     /**
      * Constructor for AbstractQuestion, the parent of the three question types
@@ -157,6 +142,14 @@ public abstract class AbstractQuestion implements Initializable {
      */
     public static void setDoublePointsJoker(boolean doublePointsJoker) {
         AbstractQuestion.doublePointsJoker = doublePointsJoker;
+    }
+
+    /**
+     * Getter for the timer value
+     * @return the timer value
+     */
+    public int getTimerIntegerValue() {
+        return timerIntegerValue;
     }
 
     /**
@@ -602,22 +595,38 @@ public abstract class AbstractQuestion implements Initializable {
 
     /**
      * Getter for the second joker circle
-     * @return the first joker circle
+     * @return the second joker circle
      */
     public Circle getCircle2() {
         return circle2;
     }
 
+    /**
+     * Getter for the third joker circle
+     * @return the third joker circle
+     */
     public Circle getCircle3() {
         return circle3;
     }
 
+    /**
+     * Getter for the first joker image
+     * @return the first joker image
+     */
     public ImageView getImage1() { return image1; }
 
+    /**
+     * Getter for the second joker image
+     * @return the second joker image
+     */
     public ImageView getImage2() {
         return image2;
     }
 
+    /**
+     * Getter for the third joker image
+     * @return the third joker image
+     */
     public ImageView getImage3() {
         return image3;
     }

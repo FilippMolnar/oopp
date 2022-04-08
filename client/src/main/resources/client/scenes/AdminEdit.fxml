@@ -30,13 +30,13 @@
         <GridPane.margin>
             <Insets left="-10.0" />
         </GridPane.margin>
-        <Image url="@../pictures/quizzz.PNG" />
+        <Image url="@/client/pictures/quizzz.PNG" />
     </ImageView>
     <Button fx:id="exitButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-text-fill: transparent;" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
         <graphic>
             <ImageView fitHeight="50.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@../pictures/exit_button.png" />
+                    <Image url="@/client/pictures/exit_button.png" />
                 </image>
             </ImageView>
         </graphic>

@@ -454,6 +454,7 @@ public abstract class AbstractQuestion implements Initializable {
         server.sendThroughSocket("/app/disconnectFromGame",player);
         mainCtrl.showHomeScreen();
     }
+
     // for single player
     public int calculateScore(boolean answerCorrect, double secondsLeft) {
         int scoreToBeAdded = 0;

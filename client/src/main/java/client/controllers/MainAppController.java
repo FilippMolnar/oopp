@@ -12,6 +12,7 @@ import commons.Question;
 import commons.QuestionType;
 import commons.Score;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -97,13 +98,12 @@ public class MainAppController {
         Scene homeMultiplayerScene = homeMultiplayer.getValue();
         Scene adminOverviewScene = adminOverview.getValue();
         Scene adminEditScene = adminEdit.getValue();
-
+        Scene leaderboardScene = leaderBoard.getValue();
 
         // set the Admin Edit controller of the AdminOverviewCtrl instance to the right AdminEditCtrl instance
         AdminOverviewCtrl adminOverviewCtrl = adminOverview.getKey();
         AdminEditCtrl adminEditCtrl = adminEdit.getKey();
         adminOverviewCtrl.setEditCtrl(adminEditCtrl);
-
 
         // create linked scenes of the scenes
         LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
@@ -111,6 +111,7 @@ public class MainAppController {
         LinkedScene multiplayerLinked = new LinkedScene(homeMultiplayerScene, homeMultiplayer.getKey());
         LinkedScene adminOverviewLinked = new LinkedScene(adminOverviewScene,adminOverview.getKey());
         LinkedScene adminEditLinked = new LinkedScene(adminEditScene,adminEdit.getKey());
+        LinkedScene leaderboardLinked = new LinkedScene(leaderboardScene, leaderBoard.getKey());
 
         // link the waiting room to the multiplayer scene
         multiplayerLinked.addNext(waitingRoomLinked);
@@ -125,13 +126,14 @@ public class MainAppController {
         this.currentScene.addNext(multiplayerLinked);
         this.currentScene.addNext(singleplayerLinked);
         this.currentScene.addNext(adminOverviewLinked);
+        this.currentScene.addNext(leaderboardLinked);
 
         // maximize the window and set the current scene
         primaryStage.setMaximized(true);
         resizeSceneToMaximize(homeScreenLinked);
         primaryStage.setScene(homeScene);
         primaryStage.show();
-
+        primaryStage.getIcons().add(new Image("client/pictures/taskbar-icon.png"));
 
         // add CSS to the scenes
         homeScene.getStylesheets().add("client/scenes/waiting_room.css");

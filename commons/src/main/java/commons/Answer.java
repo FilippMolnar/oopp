@@ -13,6 +13,9 @@ public class Answer {
     private int score;
     private String username;
 
+    /**
+     * Empty constructor for an Answer
+     */
     public Answer(){}
 
     /**
@@ -31,7 +34,6 @@ public class Answer {
         this.score = score;
     }
 
-
     /**
      * Answer Constructor
      * @param isCorrect - is this answer correct
@@ -46,9 +48,9 @@ public class Answer {
     }
 
     /**
-     * Compaeres if o is equal to this instance
-     * @param o
-     * @return
+     * Compares if o is equal to this instance
+     * @param o - the object we are comparing
+     * @return if this is equal to o
      */
     @Override
     public boolean equals(Object o) {
@@ -57,7 +59,6 @@ public class Answer {
         Answer answer = (Answer) o;
         return isCorrect == answer.isCorrect && gameID == answer.gameID && score == answer.score && option.equals(answer.option) && username.equals(answer.username);
     }
-
 
     @Override
     public int hashCode() {
@@ -77,10 +78,9 @@ public class Answer {
                 '}';
     }
 
-
     /**
      * Getter for username
-     * @return
+     * @return the username
      */
     public String getName() {
         return this.username;

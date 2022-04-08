@@ -12,10 +12,22 @@ import java.net.URISyntaxException;
 
 
 public class GoogleJoker extends Joker{
-    public GoogleJoker(String name, String imagepath, ServerUtils serverUtils)
-    {
-        super(name, imagepath, serverUtils);
+
+    /**
+     * Constructor for a GoogleJoker
+     * @param name - name of the player
+     * @param imagePath - image path
+     * @param serverUtils - the ServerUtils
+     */
+    public GoogleJoker(String name, String imagePath, ServerUtils serverUtils) {
+        super(name, imagePath, serverUtils);
     }
+
+    /**
+     * Method that is called when the joker is clicked
+     * This uses the joker
+     * @param mainCtrl - the MainAppController
+     */
     public void onClick(MainAppController mainCtrl)
     {
         if(isUsed())return ;
@@ -35,6 +47,11 @@ public class GoogleJoker extends Joker{
         use();
         markUsed(mainCtrl);
     }
+
+    /**
+     * Increases the time for googling (just for the player that uses it)
+     * @param qCtrl - the AbstractQuestion controller
+     */
     public static void increaseTime(AbstractQuestion qCtrl)
     {
         qCtrl.addTimeForGoogling();

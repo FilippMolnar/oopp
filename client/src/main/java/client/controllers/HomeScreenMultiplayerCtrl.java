@@ -3,7 +3,6 @@ package client.controllers;
 import client.utils.ServerUtils;
 import commons.Player;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -15,7 +14,6 @@ public class HomeScreenMultiplayerCtrl {
     private final MainAppController appController;
     private final ServerUtils serverUtils;
 
-
     @FXML
     private TextField nameString;
 
@@ -24,16 +22,30 @@ public class HomeScreenMultiplayerCtrl {
 
     @FXML
     private TextField serverField;
-    @FXML
-    private ComboBox<String> serversDropdown;
 
-
+    /**
+     * Constructor for the HomeScreenMultiplayerCtrl
+     * @param serverUtils - the ServerUtils
+     * @param appController - the MainAppController
+     */
     @Inject
     HomeScreenMultiplayerCtrl(ServerUtils serverUtils, MainAppController appController) {
         this.appController = appController;
         this.serverUtils = serverUtils;
     }
 
+    /**
+     * Sets the name of a player
+     * @param name - the name of a player
+     */
+    public void setName(String name) {
+        nameString.setText(name);
+    }
+
+    /**
+     * Method to enter the waiting room
+     * @throws InterruptedException - is thrown when method is interrupted
+     */
     public void enterRoom() throws InterruptedException {
         appController.initializeScore();
         appController.setGameMode(true);
@@ -63,13 +75,11 @@ public class HomeScreenMultiplayerCtrl {
         this.serverUtils.sendThroughSocket("/app/enterRoom", new Player(finalName));
     }
 
+    /**
+     * Goes to homescreen when exit is clicked
+     */
     public void backToHomeScreen() {
         appController.showHomeScreen();
     }
-
-    public void setName(String name) {
-        nameString.setText(name);
-    }
-
 
 }

@@ -18,14 +18,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class MainAppController {
@@ -56,12 +50,31 @@ public class MainAppController {
     private int questionIndex = 0;
     private JokersList jokers;
 
+    /**
+     * Constructor for MainAppController
+     * @param serverUtils - the ServerUtils
+     */
     @Inject
     public MainAppController(ServerUtils serverUtils) {
         this.serverUtils = serverUtils;
     }
 
-    public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Scene> waitingRoomPair,
+    /**
+     * Initialize the MainAppController
+     * @param primaryStage - the window that is always visible
+     * @param waitingRoom - waiting room scene and controller
+     * @param home - homescreen scene and controller
+     * @param homeSingleplayer - singleplayer homescreen and controller
+     * @param homeMultiplayer - multiplayer homescreen and controller
+     * @param leaderBoard - leaderboard scene and controller
+     * @param qMulti - multi options question scene and controller
+     * @param qInsert - insert number question scene and controller
+     * @param sameAs - same as question scene and controller
+     * @param qTransition - question transition scene and controller
+     * @param adminOverview - admin overview scene and controller
+     * @param adminEdit - admin edit scene and controller
+     */
+    public void initialize(Stage primaryStage, Pair<WaitingRoomCtrl, Scene> waitingRoom,
                            Pair<HomeScreenCtrl, Scene> home,
                            Pair<HomeScreenSingleplayerCtrl, Scene> homeSingleplayer,
                            Pair<HomeScreenMultiplayerCtrl, Scene> homeMultiplayer,
@@ -78,7 +91,6 @@ public class MainAppController {
         this.primaryStage = primaryStage;
         this.jokers = new JokersList(serverUtils, false);
 
-
         // initializing scenes and controllers for questions
         this.leaderBoardScene = leaderBoard.getValue();
         this.leaderBoardCtrl = leaderBoard.getKey();
@@ -92,7 +104,7 @@ public class MainAppController {
         this.sameAsCtrl = sameAs.getKey();
 
         // initializing the scenes we need to create the first LinkedScenes
-        Scene waitingRoomScene = waitingRoomPair.getValue();
+        Scene waitingRoomScene = waitingRoom.getValue();
         Scene homeScene = home.getValue();
         Scene homeSingleplayerScene = homeSingleplayer.getValue();
         Scene homeMultiplayerScene = homeMultiplayer.getValue();
@@ -106,7 +118,7 @@ public class MainAppController {
         adminOverviewCtrl.setEditCtrl(adminEditCtrl);
 
         // create linked scenes of the scenes
-        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoomPair.getKey());
+        LinkedScene waitingRoomLinked = new LinkedScene(waitingRoomScene, waitingRoom.getKey());
         LinkedScene singleplayerLinked = new LinkedScene(homeSingleplayerScene, homeSingleplayer.getKey());
         LinkedScene multiplayerLinked = new LinkedScene(homeMultiplayerScene, homeMultiplayer.getKey());
         LinkedScene adminOverviewLinked = new LinkedScene(adminOverviewScene,adminOverview.getKey());
@@ -145,23 +157,155 @@ public class MainAppController {
         this.qInsertScene.getStylesheets().add("client/scenes/waiting_room.css");
     }
 
+    /**
+     * Setter for the joker list
+     * @param jokers - the joker list
+     */
     public void setJokers(JokersList jokers) {
         this.jokers = jokers;
     }
 
+    /**
+     * Setter for the question number
+     * @param number - the question number
+     */
     public void setQuestionNumber(int number) {
         this.questionIndex = number;
     }
-    public void openBrowser() {
-        Desktop desktop = Desktop.getDesktop();
-        try{
-            URI url = new URI("https://www.google.com");
-            desktop.browse(url);
-        }catch(URISyntaxException | IOException e){
-            e.printStackTrace();
-        }
+
+
+    /**
+     * Getter for the player name
+     * @return the player name
+     */
+    public String getName() {
+        return this.name;
+
     }
 
+    /**
+     * Getter for the current scene
+     * @return the current scene
+     */
+    public LinkedScene getCurrentScene() {
+        return currentScene;
+    }
+
+    /**
+     * Setter for the player name
+     * @param name - the player name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Getter for the score
+     * @return the score
+     */
+    public int getScore() {
+        return this.score.getScore();
+    }
+
+    /**
+     * Setter for the score
+     * @param score - the score
+     */
+    public void setScore(int score) {
+        this.score.setScore(score);
+    }
+
+    /**
+     * Initialize the score
+     */
+    public void initializeScore() {
+        this.score = new Score(this.name, 0);
+    }
+
+    /**
+     * Getter for the joker list
+     * @return the joker list
+     */
+    public JokersList getJokers() {
+        return this.jokers;
+    }
+
+    /**
+     * Setter for the game ID
+     * @param gameID - the game ID
+     */
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
+    }
+
+    /**
+     * Getter for the game ID
+     * @return the game ID
+     */
+    public int getGameID() {
+        return this.gameID;
+    }
+
+    /**
+     * Getter for the question index
+     * @return the question index
+     */
+    public int getQuestionIndex() {
+        return questionIndex;
+    }
+
+    /**
+     * Getter for the correct activity
+     * @return the correct activity
+     */
+    public Activity getCorrect() {
+        return questionsInGame.get(questionIndex-2).getCorrect();
+    }
+
+    /**
+     * Getter for the current scene
+     * @return the current scene
+     */
+    public LinkedScene getLinkedScene() {
+        return this.currentScene;
+    }
+
+    /**
+     * Setter for the game mode
+     * @param isMultiPlayer - if the game mode is multiplayer or not
+     */
+    public void setGameMode(boolean isMultiPlayer) {
+        this.isMultiPlayer = isMultiPlayer;
+    }
+
+    /**
+     * Getter for the current question
+     * @return the current question
+     */
+    public Question getCurrentQuestion(){
+        return questionsInGame.get(questionIndex-2); // -1 because of ++, -1 because of index 0
+    }
+
+    /**
+     * Updates the score
+     * @param amount - the score that should be added
+     */
+    public void updateScore(int amount) {
+        this.score.addScore(amount);
+    }
+
+    /**
+     * Getter for the gameMode
+     * @return true if multiplayer, false if singleplayer
+     */
+    public boolean isMultiPlayer() {
+        return this.isMultiPlayer;
+    }
+
+    /**
+     * Method that plays the sound
+     * @param dirPath - directory path to the sound folder
+     */
     public static void playSound(String dirPath) {
         String path = "src/main/resources/client/sounds/" + dirPath;
         File[] dir = new File(path).listFiles();
@@ -171,68 +315,10 @@ public class MainAppController {
         mediaPlayer.play();
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public LinkedScene getCurrentScene() {
-        return currentScene;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getScore() {
-        return this.score.getScore();
-    }
-
-    public void setScore(int score) {
-        this.score.setScore(score);
-    }
-
-    public void addScore(int toAdd) {
-        this.score.addScore(toAdd);
-    }
-
-    public void initializeScore() {
-        this.score = new Score(this.name, 0);
-    }
-
-    public JokersList getJokers() {
-        return this.jokers;
-    }
-
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
-
-    public int getGameID() {
-        return this.gameID;
-    }
-
-    public int getQuestionIndex() {
-        return questionIndex;
-    }
-
-    public Activity getCorrect() {
-        return questionsInGame.get(questionIndex-2).getCorrect();
-    }
-
-    public LinkedScene getLinkedScene() {
-        return this.currentScene;
-    }
-
-    public void setGameMode(boolean isMultiPlayer) {
-        this.isMultiPlayer = isMultiPlayer;
-    }
-
     /**
-     * This method takes a list of actual question  and inserts
-     * them into the LinkedScene navigation.
-     *
-     * @param questions List of questions objects, generated by the server
-     * @param mode      either 0 or 1. 0 indicates single player mode, 1 multiplayer.
+     * This method takes a list of actual question and inserts them into the LinkedScene navigation.
+     * @param questions - List of questions objects, generated by the server
+     * @param mode - Either 0 or 1. 0 indicates single player mode, 1 multiplayer.
      **/
     public void addQuestionScenes(List<Question> questions, int mode) {
         questionIndex = 1;
@@ -275,10 +361,10 @@ public class MainAppController {
         showNext(0);
     }
 
-    public Question getCurrentQuestion(){
-        return questionsInGame.get(questionIndex-2); // -1 because of ++, -1 because of index 0
-    }
-
+    /**
+     * Resize scene to maximize it
+     * @param linked - the scene to resize
+     */
     private void resizeSceneToMaximize(LinkedScene linked){
         Pane element = (Pane) linked.getScene().getRoot(); // this assumes that root of the scene is a pane
         element.setMinWidth(primaryStage.getWidth());
@@ -287,8 +373,7 @@ public class MainAppController {
 
     /**
      * @param i in case multiple scenes follow the current scene,
-     * the index of the following scenes is used to specify which
-     * one to show next.
+     * the index of the following scenes is used to specify which one to show next
      */
     public void showNext(int i) {
         System.out.println("SHOWING NEXT");
@@ -332,10 +417,8 @@ public class MainAppController {
         }
     }
 
-    /*
-     * Almost every scene has a button to return to the homescreen.
-     * That button activates this function. Which switches from the
-     * current scene to the homescreen.
+    /**
+     * Goes to homescreen when exit is clicked
      */
     public void showHomeScreen() {
         this.isMultiPlayer = false;
@@ -344,25 +427,5 @@ public class MainAppController {
         primaryStage.setScene(homeScreenLinked.getScene());
         primaryStage.show();
         this.currentScene = this.homeScreenLinked;
-    }
-
-    public void updateScore(int amount) {
-        this.score.addScore(amount);
-    }
-
-    public int getTotalScore() {
-        return this.score.getScore();
-    }
-
-    public Map<Integer, List<String>> getLeaderboard() {
-        return serverUtils.getLeaderboard(gameID);
-    }
-
-    public void setQuestionIndex(int questionIndex) {
-        this.questionIndex = questionIndex;
-    }
-
-    public boolean isMultiPlayer() {
-        return this.isMultiPlayer;
     }
 }

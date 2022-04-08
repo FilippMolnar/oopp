@@ -36,6 +36,7 @@ public class MyFXML {
     }
 
     /**
+     * Load method
      * @param c     class type to load, the controller's class, eg: <code>QuoteOverviewCtrl.class</code>
      * @param parts array that gives the path to the <code>.fxml</code> file
      * @param <T>   controller's type
@@ -55,8 +56,8 @@ public class MyFXML {
     }
 
     /**
-     *
-     * @param parts  array that gives the path to the <code>.fxml</code> file
+     * Gets the location of the file
+     * @param parts array that gives the path to the <code>.fxml</code> file
      * @return URI of the file location
      */
     private URL getLocation(String... parts) {

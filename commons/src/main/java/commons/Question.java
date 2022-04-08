@@ -13,24 +13,38 @@ public class Question{
     private QuestionType type;
     private Activity correct;
 
-    public Question(){
+    /**
+     * An empty constructor for a Question
+     */
+    public Question(){}
 
-    }
-
+    /**
+     * Constructor for a Question
+     */
     public Question(Activity correct, List<Activity> choices, QuestionType type) {
         this.type = type;
         this.choices = choices;
         this.correct = correct;
 
-        // sorts in decending order
-        //CHOICES.sort(new ActivityComparator());
+        // sorts in descending order
+        // CHOICES.sort(new ActivityComparator());
         this.choices.sort(Comparator.naturalOrder());
     }
 
+    /**
+     * Checks if the given activity is the correct one
+     * @param a - the given activity
+     * @return if the activity is the correct one (true) or not (false)
+     */
     public Boolean isCorrect(Activity a) {
         return a.equals(correct);
     }
 
+    /**
+     * Compares if o is equal to this instance
+     * @param o - the object we are comparing
+     * @return if this is equal to o
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,6 +58,9 @@ public class Question{
         return Objects.hash(choices, type, correct);
     }
 
+    /**
+     * @return Human-readable format of this Class
+     */
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();

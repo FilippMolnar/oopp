@@ -36,10 +36,16 @@ public class Joker {
     private boolean used;
     protected ServerUtils serverUtils;
     @SuppressWarnings("unused")
-    private Joker() {
-        // for object mapper
-    }
 
+    // For object mapper
+    private Joker() {}
+
+    /**
+     * Constructor for a Joker
+     * @param name - name of the player
+     * @param imagePath - image path
+     * @param serverUtils - the ServerUtils
+     */
     public Joker(String name, String imagePath, ServerUtils serverUtils) {
         this.name = name;
         this.imagePath = imagePath;
@@ -55,10 +61,21 @@ public class Joker {
         this.used = true;
     }
 
+    /**
+     * Method that is called when the joker is clicked
+     * This uses the joker
+     * This one is overwritten by all the joker types
+     * @param mainCtrl - the MainAppController
+     */
     public void onClick(MainAppController mainCtrl){
-        System.out.println("joker");
+        System.out.println("Joker");
     }
 
+    /**
+     * Equals method for a Joker
+     * @param obj - the object we are comparing to
+     * @return if this and obj are equal (true/false)
+     */
     @Override
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);

@@ -32,38 +32,72 @@ public class Player {
     private String name;
     private String socketID;
 
-    @SuppressWarnings("unused")
+
+    /**
+     * Empty constructor for a Player
+     */
     private Player() {
         // for object mapper
     }
 
+    /**
+     * Constructor for a Player
+     */
     public Player(String name) {
         this.name = name;
     }
 
+    /**
+     * Constructor for a Player
+     */
     public Player(String name, String socketID) {
         this.name = name;
         this.socketID = socketID;
     }
 
+    /**
+     * Getter for the game ID
+     * @return the game ID
+     */
     public long getGameID() {
         return this.id;
     }
 
+    /**
+     * Setter for the game ID
+     * @param id - the game ID
+     */
     public void setGameID(int id) {
         this.id = id;
     }
 
+    /**
+     * Getter for the name
+     * @return the name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Getter for the socket ID
+     * @return the socket ID
+     */
     public String getSocketID() {
         return this.socketID;
     }
 
+    /**
+     * Setter for the socket ID
+     * @param socketID - the socket ID
+     */
     public void setSocketID(String socketID) {this.socketID=socketID;}
 
+    /**
+     * Compares if obj is equal to this instance
+     * @param obj - the object we are comparing
+     * @return if this is equal to obj
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == this)
@@ -79,6 +113,9 @@ public class Player {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
+    /**
+     * @return Human-readable format of this Class
+     */
     @Override
     public String toString() {
         return "Player{" +

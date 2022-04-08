@@ -12,10 +12,21 @@ import java.util.ArrayList;
 
 public class ElimWrongJoker extends Joker {
 
+    /**
+     * Constructor for an ElimWrongJoker
+     * @param name - name of the player
+     * @param imagePath - image path
+     * @param serverUtils - the ServerUtils
+     */
     public ElimWrongJoker(String name, String imagePath, ServerUtils serverUtils) {
         super(name, imagePath, serverUtils);
     }
 
+    /**
+     * Method that is called when the joker is clicked
+     * This uses the joker
+     * @param mainCtrl - the MainAppController
+     */
     public void onClick(MainAppController mainCtrl) {
         if (isUsed()) {
             return;

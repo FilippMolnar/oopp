@@ -16,10 +16,22 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class CoverInkJoker extends Joker{
+
+    /**
+     * Constructor for a CoverInkJoker
+     * @param name - name of the player
+     * @param imagePath - image path
+     * @param serverUtils - the ServerUtils
+     */
     public CoverInkJoker(String name, String imagePath, ServerUtils serverUtils) {
         super(name, imagePath, serverUtils);
     }
 
+    /**
+     * Method that is called when the joker is clicked
+     * This uses the joker
+     * @param mainCtrl - the MainAppController
+     */
     public void onClick(MainAppController mainCtrl){
         if(isUsed()){
             return;
@@ -33,6 +45,10 @@ public class CoverInkJoker extends Joker{
         markUsed(mainCtrl);
     }
 
+    /**
+     * Plays the animation for the ink
+     * @param qCtrl - the AbstractQuestion controller
+     */
     public static void splashAnimation(AbstractQuestion qCtrl) {
         playSound("ink");
         int noOfSplatters = 3+ (int) Math.round(Math.random()*3);
@@ -88,6 +104,4 @@ public class CoverInkJoker extends Joker{
             timer.schedule(timerTask, Math.min(7000, duration));
         }
     }
-
-
 }

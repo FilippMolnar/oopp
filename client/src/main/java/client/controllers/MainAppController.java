@@ -11,7 +11,6 @@ import commons.Activity;
 import commons.Question;
 import commons.QuestionType;
 import commons.Score;
-import jakarta.ws.rs.core.Link;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;

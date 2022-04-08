@@ -156,7 +156,11 @@ public class WaitController {
         if (optionalPlayer.isPresent()) {
             Player player = optionalPlayer.get();
             game.removePlayer(player);
-            if (lobbyPlayers.remove(player)) {
+            System.out.println("Socket id of the found player is : " + player.getSocketID());
+            boolean removed = lobbyPlayers.removeIf(p ->
+                p.getSocketID().equals(player.getSocketID()) && p.getName().equals(player.getName())
+            );
+            if (removed) {
                 LOGGER.info("Socket message: Player " + player.getName() + " disconnected because he closed the socket!");
                 simpMessagingTemplate.convertAndSend("/topic/disconnect", player);
             } else {

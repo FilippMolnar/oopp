@@ -174,7 +174,7 @@ class GameTest {
         game.setQuestions(ls);
 
         assertEquals(game.getQuestion(),q);
-        game.IncrementQNum();
+        game.incrementQNum();
         assertEquals(game.getQuestion(),q1);
     }
 

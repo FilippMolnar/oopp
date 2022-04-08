@@ -62,15 +62,17 @@ public class HomeScreenMultiplayerCtrl {
             }
         }
         labelErrors.setText(""); // reset the error label
-                // Show single player. 0 would be single player.
         this.appController.showNext();
-        //this.serverUtils.postName(finalName);
         this.appController.setName(finalName);
         this.serverUtils.sendThroughSocket("/app/enterRoom", new Player(finalName));
     }
 
     public void backToHomeScreen() {
         appController.showHomeScreen();
+    }
+
+    public void setName(String name) {
+        nameString.setText(name);
     }
 
 

@@ -215,7 +215,11 @@ public class MainAppController {
     }
 
     public Activity getCorrect() {
-        return questionsInGame.get(questionIndex-1).getCorrect();
+        return questionsInGame.get(questionIndex-2).getCorrect();
+    }
+
+    public LinkedScene getLinkedScene() {
+        return this.currentScene;
     }
 
     public void setGameMode(boolean isMultiPlayer) {
@@ -230,8 +234,13 @@ public class MainAppController {
      * @param mode      either 0 or 1. 0 indicates single player mode, 1 multiplayer.
      **/
     public void addQuestionScenes(List<Question> questions, int mode) {
+        questionIndex = 1;
         // make sure the previous game is removed from the next scenes
-        homeScreenLinked.reset(1);
+        if(mode == 1) {
+            homeScreenLinked.reset(mode);
+        } else if (mode == 0) {
+            homeScreenLinked.getNext().reset(0);
+        }
         LinkedScene current = this.currentScene;
         questionsInGame = questions;
         for (int i = 0; i < questions.size(); i++) {
@@ -314,8 +323,6 @@ public class MainAppController {
                 System.out.println("UPLOADING SCORE");
                 serverUtils.addScore(score);
                 questionIndex = 1;
-            } else {
-                c.disableRematch();
             }
         }
         if (controller instanceof ControllerInitialize controllerInit) {

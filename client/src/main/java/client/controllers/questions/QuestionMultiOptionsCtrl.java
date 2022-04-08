@@ -251,11 +251,9 @@ public class QuestionMultiOptionsCtrl extends AbstractQuestion implements Contro
     @Override
     public void initializeController() {
         this.scoreText.setText("SCORE " + mainCtrl.getScore());
-        //questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         startTimerAnimation(10);
         resetUI();
         resetLogic();
-        super.questionNumber.setText("Question " + (mainCtrl.getQuestionIndex()) + "/20");
         showJokerImages();
     }
 

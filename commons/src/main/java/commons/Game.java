@@ -3,9 +3,6 @@ package commons;
 
 import java.util.*;
 
-/**
- * TO BE TESTED
- */
 public class Game {
     private final Map<Player, Integer> playerToID = new HashMap<>(); // Maps a player to his id
     private final Map<Integer, Player> idToPlayer = new HashMap<>(); // Maps a playerID to player
@@ -20,6 +17,9 @@ public class Game {
     private Map<String, Integer> players_index; // For quickly finding the score of a specific user
     private Map<Integer, List<String>> scores_index; // For quickly sorting the scores.
 
+    /**
+     * Game constructor
+     */
     public Game() {
         optionsStatistics.put("optionA", 0);
         optionsStatistics.put("optionB", 0);
@@ -28,6 +28,10 @@ public class Game {
         this.players_index = new HashMap<>();
     }
 
+    /**
+     * Game constructor with defined gameID
+     * @param gameID - game ID
+     */
     public Game(int gameID) {
         this.gameID = gameID;
         optionsStatistics.put("optionA",0);
@@ -37,10 +41,18 @@ public class Game {
         this.players_index = new HashMap<>();
     }
 
+    /**
+     * Getter for requested
+     * @return how many players have requested a new question
+     */
     public int getRequested() {
         return requested;
     }
 
+    /**
+     * Setter for requested
+     * @param count - count of how many players have requested a new question
+     */
     public void setRequested(int count) {
         this.requested = count;
     }
@@ -68,6 +80,9 @@ public class Game {
         return false;
     }
 
+    /**
+     * Reset statistics to 0
+     */
     public void resetOptions() {
         optionsStatistics.clear();
         optionsStatistics.put("optionA", 0);
@@ -75,18 +90,33 @@ public class Game {
         optionsStatistics.put("optionC", 0);
     }
 
+    /**
+     * Getter for options statistics
+     * @return statictics for options of how many players answered which option
+     */
     public List<Integer> getOptionsStatistics() {
         return optionsStatistics.values().stream().toList();
     }
 
+    /**
+     * Increment question number
+     */
     public void IncrementQNum() {
         this.qnum++;
     }
 
+    /**
+     * Getter for game ID
+     * @return gameID
+     */
     public int getGameID() {
         return gameID;
     }
 
+    /**
+     * Setter for game ID
+     * @param gameID - game ID
+     */
     public void setGameID(int gameID) {
         this.gameID = gameID;
     }

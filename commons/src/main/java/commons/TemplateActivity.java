@@ -35,11 +35,11 @@ public class TemplateActivity {
         this.source = source;
     }
 
-    public int getConsumption_in_wh() {
+    public int getConsumptionInWh() {
         return consumption_in_wh;
     }
 
-    public void setConsumption_in_wh(int consumption_in_wh) {
+    public void setConsumptionInWh(int consumption_in_wh) {
         this.consumption_in_wh = consumption_in_wh;
     }
 

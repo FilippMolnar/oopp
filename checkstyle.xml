@@ -5,7 +5,11 @@
 
 <module name = "Checker">
     <module name="TreeWalker">
+        <property name="tabWidth" value="4"/>
         <module name="UnusedImports" />
+        <module name="MissingDeprecated"/>
+        <module name="SuppressWarnings"/>
+        <module name="MethodName"/>
     </module>
 
     <!-- TODO: decide in your team with other checkers to add! -->

@@ -41,7 +41,7 @@ public class JokersList {
 
         Joker doublePoints = new DoublePointsJoker("double points", "joker_double_points.png", serverUtils);
         Joker coverInk = new CoverInkJoker("cover ink", "joker_ink.png", serverUtils);
-        Joker coverHands = new CoverHandsJoker("cover hands", "joker_hands.png", serverUtils);
+        Joker coverHands = new CoverHandsJoker("cover hands", "joker_hand.png", serverUtils);
         Joker decreaseTime = new DecreaseTimeJoker("decrease time", "joker_decrease_time.png", serverUtils);
         Joker google = new GoogleJoker("google", "joker_google.png", serverUtils);
         Joker elimWrong = new ElimWrongJoker("eliminate wrong answer", "joker_elim_wrong.png", serverUtils);
@@ -83,7 +83,7 @@ public class JokersList {
 
         Joker doublePoints = new DoublePointsJoker("double points", "joker_double_points.png", serverUtils);
         Joker coverInk = new CoverInkJoker("cover ink", "joker_ink.png", serverUtils);
-        Joker coverHands = new CoverHandsJoker("cover hands", "joker_hands.png", serverUtils);
+        Joker coverHands = new CoverHandsJoker("cover hands", "joker_hand.png", serverUtils);
         Joker decreaseTime = new DecreaseTimeJoker("decrease time", "joker_decrease_time.png", serverUtils);
         Joker google = new GoogleJoker("google", "joker_google.png", serverUtils);
         Joker elimWrong = new ElimWrongJoker("eliminate wrong answer", "joker_elim_wrong.png", serverUtils);

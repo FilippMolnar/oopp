@@ -34,13 +34,13 @@
          <RowConstraints minHeight="10.0" percentHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES" />
      </rowConstraints>
       <children>
-         <Button mnemonicParsing="false" prefHeight="54.0" prefWidth="151.0" style="-fx-background-radius: 50px;" text="Leaderboard" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+         <Button onAction="#showLeaderBoard" mnemonicParsing="false" prefHeight="54.0" prefWidth="151.0" style="-fx-background-radius: 50px;" text="Leaderboard" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
             <font>
                <Font size="15.0" />
             </font></Button>
          <ImageView fitHeight="54.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
             <image>
-               <Image url="@../pictures/podium.png" />
+               <Image url="@/client/pictures/podium.png" />
             </image>
             <GridPane.margin>
                <Insets bottom="70.0" />
@@ -63,7 +63,7 @@
       <GridPane.margin>
          <Insets left="-10.0" />
       </GridPane.margin>
-      <Image url="@../pictures/quizzz.PNG" />
+      <Image url="@/client/pictures/quizzz.PNG" />
    </ImageView>
    <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#enterSinglePlayer" prefHeight="92.0" prefWidth="228.0" style="-fx-background-radius: 50px;" text="Singleplayer mode" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
       <font>

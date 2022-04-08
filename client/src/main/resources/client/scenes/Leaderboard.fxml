@@ -230,7 +230,7 @@
             </Label>
             <ImageView fitHeight="75.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <image>
-                  <Image url="@../pictures/podium.png" />
+                  <Image url="@/client/pictures/podium.png" />
                </image>
             </ImageView>
          </children>

@@ -174,7 +174,7 @@
                         <Insets left="10.0" />
                     </GridPane.margin>
                     <image>
-                        <Image url="@../pictures/happy.png" />
+                        <Image url="@/client/pictures/happy.png" />
                     </image>
                 </ImageView>
                 <ImageView fitHeight="150.0" fitWidth="45.0" onMouseClicked="#angryReact" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
@@ -182,7 +182,7 @@
                         <Insets left="10.0" />
                     </GridPane.margin>
                     <image>
-                        <Image url="@../pictures/angry.png" />
+                        <Image url="@/client/pictures/angry.png" />
                     </image>
                 </ImageView>
                 <ImageView fitHeight="150.0" fitWidth="45.0" onMouseClicked="#angelReact" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
@@ -190,7 +190,7 @@
                         <Insets left="10.0" />
                     </GridPane.margin>
                     <image>
-                        <Image url="@../pictures/angel.png" />
+                        <Image url="@/client/pictures/angel.png" />
                     </image>
                 </ImageView>
                 <Button fx:id="submitButton" styleClass="question-button" text="SUBMIT" onMouseClicked="#submitAnswer" prefHeight="60.0" prefWidth="214.0" mnemonicParsing="false" textAlignment="CENTER" textFill="#d6d3ee" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
@@ -203,4 +203,10 @@
         <MFXSlider fx:id="slider" prefHeight="1.0" prefWidth="313.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
         </MFXSlider>
     </children>
+    <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="552.0" layoutY="15.0" onMouseClicked="#backToHomeScreen" pickOnBounds="true" preserveRatio="true" styleClass="back_image" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+        <GridPane.margin>
+            <Insets left="10.0" top="40.0" />
+        </GridPane.margin>
+        <Image url="@/client/pictures/exit_button.png" />
+    </ImageView>
 </GridPane>

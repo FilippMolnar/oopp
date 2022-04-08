@@ -67,12 +67,21 @@ public class ActivityController {
         while(filtered.size() < 3){
             int rand = (int)(Math.random()*20);
             Activity act_to_add = act.get(0);
-            if(seed-10+rand < 0)
+            if(seed-25+rand < 0)
                 act_to_add = act.get(0);
-            else if(seed-10+rand >= act.size())
+            else if(seed-25+rand >= act.size())
                 act_to_add = act.get(act.size()-1);
             else
-                act_to_add = act.get(seed-10+rand);
+                act_to_add = act.get(seed-25+rand);
+            act_to_add = act.get(seed-25+rand);
+            boolean sameConsumption = false;
+            for(Activity a : filtered){
+                if(a.getConsumption() == act_to_add.getConsumption()){
+                    sameConsumption=true;
+                    break;
+                }
+            }
+            if(sameConsumption) continue;
             if(!filtered.contains(act_to_add)){
                 filtered.add(act_to_add);
             }

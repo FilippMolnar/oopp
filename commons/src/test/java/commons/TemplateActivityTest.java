@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TemplateActivityTest {
     TemplateActivity temp = new TemplateActivity("Name", 100 , "Source");
     @Test
-    void ConstructorTest() {
+    void constructorTest() {
         assertNotNull(temp);
     }
 
@@ -23,15 +23,15 @@ class TemplateActivityTest {
     }
 
     @Test
-    void getConsumption_in_wh() {
-        assertEquals(temp.getConsumption_in_wh(),100);
+    void getConsumptionInWh() {
+        assertEquals(temp.getConsumptionInWh(),100);
     }
 
     @Test
-    void setConsumption_in_wh() {
-        temp.setConsumption_in_wh(200);
-        assertEquals(temp.getConsumption_in_wh(),200);
-        assertNotEquals(temp.getConsumption_in_wh(),2000);
+    void setConsumptionInWh() {
+        temp.setConsumptionInWh(200);
+        assertEquals(temp.getConsumptionInWh(),200);
+        assertNotEquals(temp.getConsumptionInWh(),2000);
     }
 
     @Test
@@ -73,7 +73,7 @@ class TemplateActivityTest {
     {
         String exp = "TemplateActivity{" +
                 "title='" + temp.getTitle() + '\'' +
-                ", consumption_in_wh=" + temp.getConsumption_in_wh() +
+                ", consumption_in_wh=" + temp.getConsumptionInWh() +
                 ", source='" + temp.getSource() + '\'' +
                 '}';
         assertTrue(exp.equals(temp.toString()));

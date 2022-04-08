@@ -27,6 +27,14 @@ public class Activity implements Comparable {
     public Activity() {
     }
 
+    /**
+     * Activity constructor
+     *
+     * @param title - title
+     * @param consumption - consumption in Wh
+     * @param imgPath - path to image
+     * @param source - source
+     */
     public Activity(String title, int consumption, String imgPath, String source) {
         this.imagePath = imgPath;
         this.title = title;
@@ -54,6 +62,12 @@ public class Activity implements Comparable {
         return this.consumption > a.consumption ? -1 : 0;
     }
 
+    /**
+     * Compares class to this
+     *
+     * @param o - object for comparison
+     * @return
+     */
     public boolean equals(Object o) {
         if (o == null) return false;
         if (!(o instanceof Activity)) return false;
@@ -65,6 +79,9 @@ public class Activity implements Comparable {
                 && this.source.equals(that.source);
     }
 
+    /**
+     * @return Human-readable format of this Class
+     */
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();

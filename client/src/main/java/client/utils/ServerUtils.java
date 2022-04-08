@@ -89,7 +89,7 @@ public class ServerUtils {
     }
 
     /**
-     * Utility function to be used from the client to register events when there is a message on a channel. <br\>
+     * Utility function to be used from the client to register events when there is a message on a channel.
      * The client <code>StompSession</code>(A subprotocol of websockets) listens to messages coming and calls
      * the consumer function
      *
@@ -139,7 +139,7 @@ public class ServerUtils {
 
     /**
      * Does a get request on the mapping <code>api/wait</code> receiving a list of players that are
-     * already in the waiting room. <br\>
+     * already in the waiting room.
      * It is used by the <code>WaitingRoomCtrl</code> class to initialize the
      * UI based on the list it receives.
      *

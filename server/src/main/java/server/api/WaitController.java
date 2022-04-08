@@ -72,6 +72,11 @@ public class WaitController {
         addPlayerToGameID(player);
     }
 
+    /**
+     * Gets a list of 20 randomly chosen questions
+     * It consists of 8 questions of type equal, 4 estimate questions and 8 of type most
+     * @return The list of random questions
+     */
     @GetMapping("/getRandomQuestions")
     public List<Question> getRandomQuestionTypes() {
         // 0 -> equal energy
@@ -91,6 +96,10 @@ public class WaitController {
         return list;
     }
 
+    /**
+     * Get 20 totally random questions not considering their type
+     * @return A List of 20 random questions
+     */
     public List<Question> get20RandomMostLeastQuestions() {
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < 20; i++)
@@ -122,10 +131,19 @@ public class WaitController {
         gameID++;
     }
 
+    /**
+     * Adds the player to the current game
+     * @param player The player which should be added to game
+     */
     public void addPlayerToGameID(Player player) {
         gameController.addPlayerToGame(gameID, player);
     }
 
+    /**
+     * Adds the player to the waiting room
+     * @param player The player to be added to waiting room
+     * @param principal
+     */
     @MessageMapping("/enterRoom")
     public void addNameSockets(@Payload Player player, Principal principal) {
         LOGGER.info("add player with name " + player.getName() + " to the waiting room(gameID = "
@@ -134,11 +152,19 @@ public class WaitController {
         addNamePost(player);
     }
 
+    /**
+     * Get mapping from client to get all players in the lobby
+     * @return list of players in lobby
+     */
     @GetMapping(path = {"", "/"})
     public List<Player> getLobbyPlayers() {
         return lobbyPlayers;
     }
 
+    /**
+     * Handler for player disconnection
+     * @param event given by server on player disconnection
+     */
     @EventListener
     public void handleSessionDisconnect(SessionDisconnectEvent event) {
         StompHeaderAccessor headers = StompHeaderAccessor.wrap(event.getMessage());
@@ -171,6 +197,10 @@ public class WaitController {
         }
     }
 
+    /**
+     * Request from client to disconnect the player from the game
+     * @param player The player who disconnects
+     */
     @MessageMapping("/disconnectFromGame")
     public void disconnectFromGame(Player player) {
         LOGGER.info("Receiving : " + player);
@@ -184,7 +214,10 @@ public class WaitController {
         }
     }
 
-
+    /**
+     * Request from client to disconnect player from waiting room
+     * @param player The player to be disconnected
+     */
     @MessageMapping("/disconnect")
     public void playerDisconnectWaitingRoom(Player player) {
         int gameID = (int)player.getGameID();
@@ -199,6 +232,10 @@ public class WaitController {
         }
     }
 
+    /**
+     * Request from client to decrease time for players
+     * @param player The player who requests time decrease
+     */
     @MessageMapping("/decrease_time")
     public void decreaseTime(Player player) {
         int gid = (int)player.getGameID();
@@ -207,6 +244,10 @@ public class WaitController {
         sendToAllOtherUsers(playerList,"queue/decrease_time/gameID", gid, player);
     }
 
+    /**
+     * Request from client to increase the player`s time in order to google
+     * @param player The player who googles
+     */
     @MessageMapping("/increase_time")
     public void googling(Player player)
     {
@@ -216,6 +257,10 @@ public class WaitController {
         sendToUser(playerList,"/queue/increase_time/gameID", gid, player);
     }
 
+    /**
+     * Request from client to show cover hands to his opponents
+     * @param player The player who used cover hands joker
+     */
     @MessageMapping("/cover_hands")
     public void coverHands(Player player) {
         int gid = (int)player.getGameID();
@@ -224,6 +269,10 @@ public class WaitController {
         sendToAllOtherUsers(playerList,"queue/cover_hands/gameID", gid, player);
     }
 
+    /**
+     * Request from client to perform barrel roll to opponents
+     * @param player The player who used barrel roll joker
+     */
     @MessageMapping("/barrel_roll")
     public void barrelRoll(Player player) {
         int gid = (int)player.getGameID();
@@ -232,6 +281,10 @@ public class WaitController {
         sendToAllOtherUsers(playerList,"queue/barrel_roll/gameID", gid, player);
     }
 
+    /**
+     * Request from client to show ink to opponents` screens
+     * @param player The player who used cover ink joker
+     */
     @MessageMapping("/cover_ink")
     public void coverInk(Player player) {
         int gid = (int)player.getGameID();
@@ -240,6 +293,13 @@ public class WaitController {
         sendToAllOtherUsers(playerList,"queue/cover_ink/gameID", gid, player);
     }
 
+    /**
+     * Send info through socket to all players in a game except the one requesting it
+     * @param playerList The list of players to whom info should be sent
+     * @param destination The socket location
+     * @param gID GameID
+     * @param player The player who requests to send info
+     */
     public void sendToAllOtherUsers(Set<Player> playerList, String destination, int gID, Player player){
         if(playerList == null) return;
         for (Player p : playerList) {
@@ -249,6 +309,12 @@ public class WaitController {
         }
     }
 
+    /**
+     * Send info to the user who requested it
+     * @param destination socket location
+     * @param gID GameID
+     * @param player The player who requested to send info
+     */
     public void sendToUser(Set<Player> playerList, String destination, int gID, Player player)
     {
         if(playerList == null) return;

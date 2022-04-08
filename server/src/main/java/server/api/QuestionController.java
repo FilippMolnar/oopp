@@ -22,6 +22,13 @@ public class QuestionController {
         this.activityController = activityController;
     }
 
+    /**
+     * Get a certain amount of random questions of each type
+     * @param typeMostLeast Num of questions of type most
+     * @param typeMostEstimate Num of questions of type estimate
+     * @param typeEqual Num of questions of type equal
+     * @return The list of randomly generated questions
+     */
     public List<Question> generateRandomQuestions(int typeMostLeast,int typeMostEstimate, int typeEqual){
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < typeMostLeast; i++)
@@ -34,11 +41,19 @@ public class QuestionController {
         return questions;
     }
 
+    /**
+     * Get 20 random questions
+     * @return The list of generated questions
+     */
     @GetMapping("/generate_20")
     public List<Question> get20RandomQuestions() {
         return generateRandomQuestions(9,6,5);
     }
 
+    /**
+     * Get a random question of random type
+     * @return Generated question
+     */
     @GetMapping("/question")
     public Question getRandomQuestion() {
         int pick = new Random().nextInt(3);

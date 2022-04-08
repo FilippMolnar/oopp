@@ -19,12 +19,22 @@ public class ActivityController {
         activities = act;
     }
 
+    /**
+     * Add an activity to the repository
+     * @param act Activity to be added
+     * @return true if the activity is successfully added and false otherwise
+     */
     public boolean addActivity(Activity act) {
         if(act == null) return false;
         activities.save(act);
         return true;
     }
 
+    /**
+     * Post request to add an activity to repository
+     * @param activity Activity to be added
+     * @return A response of whether the request was successful
+     */
     @PostMapping(path = "/activities")
     public ResponseEntity<Activity> addAct(@RequestBody Activity activity) {
         if (activity == null || activity.getTitle() == null
@@ -36,6 +46,10 @@ public class ActivityController {
         return ResponseEntity.ok(added);
     }
 
+    /**
+     * Get request to get all activities in repository
+     * @return A list of all activities
+     */
     @GetMapping(path = "/data/all")
     public List<Activity> getAllActivities() {
         System.out.println("get all");
@@ -44,6 +58,10 @@ public class ActivityController {
         return a;
     }
 
+    /**
+     * Get request to get a random activity from repository
+     * @return the randomly chosen activity
+     */
     @GetMapping(path = "/data/rand")
     public Activity getRandom() {
         long size = activities.count();
@@ -51,11 +69,21 @@ public class ActivityController {
         return activities.findAll().get(idx);
     }
 
+    /**
+     * Get request to get all activities from repository with consumption in a certain range
+     * @param cons the needed consumption
+     * @param range the range of acceptable difference
+     * @return the list of all activities in this range
+     */
     @GetMapping(path = "/data/fetch/{cons}/{range}")
     public List<Activity> getAllByConsumption(@PathVariable("cons")int cons,@PathVariable("range")int range) {
         return activities.getByConsumption(cons, range);
     }
 
+    /**
+     * Get request to get three random activities from repository which have a close consumption
+     * @return A list of three activites
+     */
     @GetMapping(path = "/data/rand_range")
     public List<Activity> getThreeRandomActivities() {
         List<Activity> act = activities.findAll();
@@ -73,11 +101,8 @@ public class ActivityController {
                 act_to_add = act.get(act.size()-1);
             else
                 act_to_add = act.get(seed-25+rand);
-<<<<<<< HEAD
-
-=======
             act_to_add = act.get(seed-25+rand);
->>>>>>> refactoring-and-javadoc
+
             boolean sameConsumption = false;
             for(Activity a : filtered){
                 if(a.getConsumption() == act_to_add.getConsumption()){
@@ -93,16 +118,30 @@ public class ActivityController {
         return filtered;
     }
 
+    /**
+     * Get request to get all activities with a certain consumption from repository
+     * @param cons the asked consumption
+     * @return a list of all activities with consumption cons
+     */
     @GetMapping(path = "/data/fetch/{cons}")
     public List<Activity> getAllByConsumption(@PathVariable("cons")int cons) {
         return activities.getByConsumption(cons, 100);
     }
 
+    /**
+     * Get request to get all activities from repository which have a different consumption from cons
+     * @param cons the given consumption
+     * @return a list of these activities
+     */
     @GetMapping(path = "/data/diff/{cons}")
     public List<Activity>getAllDiffCons(@PathVariable("cons")int cons) {
         return activities.getAllDiff(cons, 100);
     }
 
+    /**
+     * Post request to delete an activity from repository
+     * @param activity the activity to be deleted
+     */
     @PostMapping("/activities/delete")
     @Transactional
     public void deleteActivity(@RequestBody Activity activity) {

@@ -133,7 +133,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         if (min > max) {
             int temp = min;
             min = max;
-            max = min;
+            max = temp;
         }
         slider.setMin(min);
         slider.setMax(max);

@@ -80,7 +80,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         setQuestionNumber(mainCtrl.getQuestionIndex());
         super.setQuestion(question);
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(4).toList();
-        if ("Neither of these".equals(question.getChoices().get(3).getTitle())) {
+        if ("Neither of these".equals(question.getChoices().get(0).getTitle())) {
             cons_A.setVisible(false);
         }
         else {
@@ -98,7 +98,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         else {
             cons_C.setVisible(true);
         }
-        optionA.setText(question.getChoices().get(3).getTitle());
+        optionA.setText(question.getChoices().get(0).getTitle());
         optionB.setText(question.getChoices().get(1).getTitle());
         optionC.setText(question.getChoices().get(2).getTitle());
         activity.setText(question.getChoices().get(3).getTitle());

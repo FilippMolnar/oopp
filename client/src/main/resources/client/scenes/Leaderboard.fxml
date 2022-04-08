@@ -27,14 +27,6 @@
       <RowConstraints maxHeight="144.9860076904297" minHeight="10.0" percentHeight="30.0" prefHeight="77.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
-         <padding>
-            <Insets bottom="10.0" top="10.0" />
-         </padding>
-         <GridPane.margin>
-            <Insets top="60.0" />
-         </GridPane.margin>
-      </Button>
       <ScrollPane fx:id="scrollPane" maxHeight="400.0" maxWidth="360.0" minViewportHeight="30.0" prefViewportHeight="30.0" prefWidth="200.0" style="-fx-background-color: #625998;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <content>
             <GridPane fx:id="parentGridPane" maxHeight="1.7976931348623157E308" maxWidth="360.0" prefHeight="488.0" prefWidth="344.0" style="-fx-background-color: #625998#625998; -fx-border-style: none;">
@@ -265,14 +257,36 @@
             <Insets right="10.0" />
          </GridPane.margin>
       </GridPane>
-      <Line fx:id="loadingLine" endX="260.5" startX="-100.0" stroke="#d6d3ee" strokeLineCap="ROUND" strokeWidth="5.0" visible="false" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
-      <Button fx:id="rematchButton" mnemonicParsing="false" onAction="#rematch" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Rematch" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-         <padding>
-            <Insets bottom="10.0" top="10.0" />
-         </padding>
-         <GridPane.margin>
-            <Insets bottom="30.0" />
-         </GridPane.margin>
-      </Button>
+      <GridPane vgap="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Home" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="rematchButton" mnemonicParsing="false" onAction="#rematch" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #4B427D#4B427D;" text="Rematch" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets bottom="30.0" />
+               </GridPane.margin>
+            </Button>
+            <Line fx:id="loadingLine" endX="260.5" startX="-100.0" stroke="#d6d3ee" strokeLineCap="ROUND" strokeWidth="5.0" visible="false" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets bottom="10.0" top="20.0" />
+               </GridPane.margin>
+            </Line>
+         </children>
+      </GridPane>
    </children>
 </GridPane>

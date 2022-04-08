@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AdminOverviewCtrl implements Initializable {
+public class AdminOverviewCtrl implements Initializable, ControllerInitialize {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
@@ -66,6 +66,10 @@ public class AdminOverviewCtrl implements Initializable {
         this.activityTable.setItems(data);
     }
 
+    public void initializeController() {
+        refresh();
+    }
+
     public void setEditCtrl(AdminEditCtrl editCtrl) {
         this.editCtrl = editCtrl;
     }
@@ -111,6 +115,7 @@ public class AdminOverviewCtrl implements Initializable {
         Activity a = new Activity("",0, "","");
         //appController.showAdminEdit(a);
         appController.showNext();
+        refresh();
     }
 
     /**
@@ -128,6 +133,7 @@ public class AdminOverviewCtrl implements Initializable {
             appController.showNext();
             editCtrl.showEditActivity(selectedActivity);
         }
+        refresh();
     }
 
     /**
@@ -137,6 +143,7 @@ public class AdminOverviewCtrl implements Initializable {
         Activity a = retrieveActivity();
         serverUtils.deleteActivity(a);
         activityTable.getItems().remove(a);
+        refresh();
     }
 
 }

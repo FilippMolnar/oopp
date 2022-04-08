@@ -321,7 +321,7 @@ public class MainAppController {
         }
         if(controller instanceof LeaderBoardCtrl c && !isMultiPlayer) {
             // send the single player score before showing the leaderboard
-            if(questionsInGame != null && questionIndex == questionsInGame.size()) {
+            if(questionsInGame != null && questionIndex == questionsInGame.size() + 1) {
                 System.out.println("UPLOADING SCORE");
                 serverUtils.addScore(score);
                 questionIndex = 1;

@@ -45,5 +45,8 @@ public class HomeScreenCtrl {
 
     public void showLeaderBoard() {
         appController.showNext(3);
+        LeaderBoardCtrl ctrl = (LeaderBoardCtrl) appController.getLinkedScene().getController();
+        ctrl.getRematchButton().setOpacity(0);
+        ctrl.getRematchButton().setDisable(true);
     }
 }

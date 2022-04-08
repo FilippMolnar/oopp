@@ -42,11 +42,10 @@ public class ElimWrongJoker extends Joker {
             int i = 0;
             for (Activity a : question.getChoices()) {
                 if(i==0){
-                    i++;
-                    continue;
+                    break;
                 }
                 if (a.id != question.getCorrect().id) {
-                    wrong_options.add(i-1);
+                    wrong_options.add(i);
                 }
                 i++;
             }

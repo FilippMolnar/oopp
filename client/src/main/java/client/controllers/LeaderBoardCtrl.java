@@ -344,4 +344,8 @@ public class LeaderBoardCtrl implements ControllerInitialize {
             after20Questions();
         }
     }
+
+    public Button getRematchButton() {
+        return rematchButton;
+    }
 }

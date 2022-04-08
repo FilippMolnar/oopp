@@ -1,6 +1,7 @@
 package client.jokers;
 
 import client.controllers.MainAppController;
+import client.controllers.questions.QuestionInsertNumberCtrl;
 import client.controllers.questions.QuestionMultiOptionsCtrl;
 import client.controllers.questions.QuestionSameAsCtrl;
 import client.utils.ServerUtils;
@@ -19,16 +20,39 @@ public class ElimWrongJoker extends Joker {
         if (isUsed()) {
             return;
         }
+        if (mainCtrl.getCurrentScene().getController() instanceof QuestionInsertNumberCtrl qCtrl) {
+            return;
+        }
+
         playSound("remove-answer");
         Question question = mainCtrl.getCurrentQuestion();
+
         ArrayList<Integer> wrong_options = new ArrayList<>();
-        int i = 0;
-        for (Activity a : question.getChoices()) {
-            if (a.id != question.getCorrect().id) {
-                wrong_options.add(i);
+        if (mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl) {
+            int i = 0;
+            for (Activity a : question.getChoices()) {
+                if (a.id != question.getCorrect().id) {
+                    wrong_options.add(i);
+                }
+                i++;
             }
-            i++;
         }
+
+        if (mainCtrl.getCurrentScene().getController() instanceof QuestionSameAsCtrl qCtrl) {
+            int i = 0;
+            for (Activity a : question.getChoices()) {
+                if(i==0){
+                    i++;
+                    continue;
+                }
+                if (a.id != question.getCorrect().id) {
+                    wrong_options.add(i-1);
+                }
+                i++;
+            }
+        }
+
+
         int index = (int) (Math.random() * wrong_options.size());
         if (mainCtrl.getCurrentScene().getController() instanceof QuestionMultiOptionsCtrl qCtrl) {
             switch (wrong_options.get(index)) {
@@ -45,8 +69,8 @@ public class ElimWrongJoker extends Joker {
                 case 1 -> qCtrl2.getOptionB().setDisable(true);
                 case 2 -> qCtrl2.getOptionC().setDisable(true);
             }
-            markUsed(mainCtrl);
             use();
+            markUsed(mainCtrl);
         }
     }
 }

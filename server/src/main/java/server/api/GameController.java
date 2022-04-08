@@ -34,10 +34,19 @@ public class GameController {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
+    /**
+     * Create a new game
+     * @param gameID the ID of the new game
+     */
     public void addNewGame(int gameID) {
         games.put(gameID, new Game(gameID));
     }
 
+    /**
+     * Adds a new player to given game
+     * @param gameID the ID of the game
+     * @param player the player to be added to game
+     */
     public void addPlayerToGame(int gameID, Player player) {
         if (games.get(gameID) == null) {
             addNewGame(gameID);
@@ -45,14 +54,30 @@ public class GameController {
         games.get(gameID).addPlayer(player);
         socketToGame.put(player.getSocketID(), getGame(gameID));
     }
+
+    /**
+     * Get game instance with given socket
+     * @param socketID the socketID of the game
+     * @return the game corresponding to this socket
+     */
     public Game getGameFromSocket(String socketID) {
         return socketToGame.get(socketID);
     }
 
+    /**
+     * Remove a player from a game
+     * @param gameID the ID of the game
+     * @param player the player to be removed
+     */
     public void removePlayer(int gameID, Player player) {
         games.get(gameID).removePlayer(player);
     }
 
+    /**
+     * Get a game by its ID
+     * @param gameID ID of the game
+     * @return the game corresponding to this ID
+     */
     public Game getGame(int gameID) {
         return games.get(gameID);
     }
@@ -71,6 +96,11 @@ public class GameController {
         return cur.getLeaderboard();
     }
 
+    /**
+     * Set a player`s score in the given game
+     * @param gameID the ID of the given game
+     * @param pair Pair with the player and his new score
+     */
     @PostMapping(path = "/game/score/{gameID}")
     public void setScore(@PathVariable("gameID") int gameID, Pair<Player, Integer> pair) {
         Game cur = getGame(gameID);
@@ -79,22 +109,40 @@ public class GameController {
         cur.setScore(player.getName(), score);
     }
 
+    /**
+     * Request to get a game instance corresponding to this ID
+     * @param gameID the ID of the game to be retrieved
+     * @return the game corresponding to this ID
+     */
     @GetMapping(path = "/game/getGame/{gameID}")
     public Game getGameMapping(@PathVariable("gameID") int gameID) {
         return getGame(gameID);
     }
 
+    /**
+     * Request to get all questions for a given game
+     * @param gameID the ID of the game
+     * @return List of questions in the game
+     */
     @GetMapping(path = "/game/getQuestions/{gameID}")
     public List<Question> getGameQuestions(@PathVariable("gameID") int gameID) {
         Game currentGame = getGame(gameID);
         return currentGame.getQuestions();
     }
 
+    /**
+     * Request to get the leaderboard for singleplayer
+     * @return A list of scores in singleplayer leaderboard
+     */
     @GetMapping("api/game/getSingleLeaderboard")
     public List<Score> getSingleLeaderboard() {
         return scoreRepository.getLeaderboard();
     }
 
+    /**
+     * Request to send his reaction
+     * @param ur the reaction to be sent
+     */
     @MessageMapping("/reactions")
     public void userReact(@Payload UserReaction ur) {
         int gameID = ur.getGameID();

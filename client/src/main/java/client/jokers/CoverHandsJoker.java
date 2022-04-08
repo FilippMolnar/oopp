@@ -14,10 +14,22 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class CoverHandsJoker extends Joker{
+
+    /**
+     * Constructor for a CoverHandsJoker
+     * @param name - name of the player
+     * @param imagePath - image path
+     * @param serverUtils - the ServerUtils
+     */
     public CoverHandsJoker(String name, String imagePath, ServerUtils serverUtils) {
         super(name, imagePath, serverUtils);
     }
 
+    /**
+     * Method that is called when the joker is clicked
+     * This uses the joker
+     * @param mainCtrl - the MainAppController
+     */
     public void onClick(MainAppController mainCtrl){
         if(isUsed()){
             return;
@@ -31,6 +43,10 @@ public class CoverHandsJoker extends Joker{
         markUsed(mainCtrl);
     }
 
+    /**
+     * Plays the animation for the hands
+     * @param qCtrl - the AbstractQuestion controller
+     */
     public static void handsAnimation(AbstractQuestion qCtrl){
         playSound("hands");
         int duration = qCtrl.getTimerIntegerValue() * 1000;

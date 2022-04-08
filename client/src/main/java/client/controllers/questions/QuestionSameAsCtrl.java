@@ -47,30 +47,81 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     @FXML
     private Label cons;
 
-
-    public Button getOptionA() {
-        return optionA;
-    }
-
-    public Label getCons() {
-        return cons;
-    }
-
-    public Button getOptionB() {
-        return optionB;
-    }
-
-    public Button getOptionC() {
-        return optionC;
-    }
-
-    private boolean hasSubmittedAnswer = false;
-
+    /**
+     * Constructor for QuestionSameAsCtrl
+     * @param server - the ServerUtils
+     * @param mainCtrl - the MainAppController
+     */
     @Inject
     public QuestionSameAsCtrl(ServerUtils server, MainAppController mainCtrl) {
         super(server, mainCtrl);
     }
 
+    /**
+     * Initialize the scene
+     */
+    @Override
+    public void initializeController() {
+        scoreText.setText("SCORE " + mainCtrl.getScore());
+        startTimerAnimation(10);
+        resizeImages();
+        hasSubmittedAnswer = false;
+        optionA.setDisable(false);
+        optionB.setDisable(false);
+        optionC.setDisable(false);
+        showJokerImages();
+        resetUI();
+        resetLogic();
+    }
+
+    /**
+     * Initialize the scene
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("received reaction!");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
+    }
+
+    /**
+     * Getter for the first button
+     * @return the first button
+     */
+    public Button getOptionA() {
+        return optionA;
+    }
+
+    /**
+     * Getter for the second button
+     * @return the second button
+     */
+    public Button getOptionB() {
+        return optionB;
+    }
+
+    /**
+     * Getter for the third button
+     * @return the third button
+     */
+    public Button getOptionC() {
+        return optionC;
+    }
+
+    /**
+     * Getter for the consumptions
+     * @return the consumption
+     */
+    public Label getCons() {
+        return cons;
+    }
+
+    /**
+     * Sets the question
+     * @param question - the question to set
+     */
     public void setQuestion(Question question) {
         cons.setText("");
         cons_A.setText("");
@@ -134,10 +185,9 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     }
 
     /**
-     * function called when user submits an answer
-     * we mark that answer as final for now.
-     *
-     * @param actionEvent event used to get the button
+     * Function called when user submits an answer
+     * We mark that answer as final for now
+     * @param actionEvent - event used to get the button
      */
     public void pressedOption(ActionEvent actionEvent) {
         final Node source = (Node) actionEvent.getSource();
@@ -166,9 +216,7 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
 
 
     /**
-     * This method should be called after the scene is shown because otherwise the stackPane width/height won't exist
-     * I wrapped the images into a <code>StackPane</code> that is resizable and fits the grid cell
-     * After that I set the image to fit the <code>StackPane</code> without losing aspect ratio.
+     * Resize the images
      */
     public void resizeImages() {
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(3).toList();
@@ -190,6 +238,9 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
         }
     }
 
+    /**
+     * This method should be called whenever this scene is shown to reset the UI
+     */
     private void resetUI() {
         informationLabel.setVisible(false);
         countA.setVisible(false);
@@ -202,35 +253,11 @@ public class QuestionSameAsCtrl extends AbstractQuestion implements ControllerIn
     }
 
     /**
-     * Since there is only one instance of the controller.
-     * The controller won't reset it's state when a new scene loads.
-     * Thus, we need to reset everything by ourselves.
+     * Reset the logic
+     * Since there is only one instance of the controller, this needs to be done manually
      */
     private void resetLogic() {
         selectedOption = -1;
         this.hasSubmittedAnswer = false; // this is false at the beginning of the game
-    }
-
-    @Override
-    public void initializeController() {
-        scoreText.setText("SCORE " + mainCtrl.getScore());
-        startTimerAnimation(10);
-        resizeImages();
-        hasSubmittedAnswer = false;
-        optionA.setDisable(false);
-        optionB.setDisable(false);
-        optionC.setDisable(false);
-        showJokerImages();
-        resetUI();
-        resetLogic();
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
-            System.out.println("received reaction!");
-            userReaction(userReaction.getReaction(), userReaction.getUsername());
-        });
-        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
     }
 }

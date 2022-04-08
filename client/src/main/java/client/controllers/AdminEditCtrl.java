@@ -17,7 +17,6 @@ public class AdminEditCtrl implements ControllerInitialize {
 
     private final MainAppController appController;
     private final ServerUtils serverUtils;
-    private final AdminOverviewCtrl adminOverviewCtrl;
 
     @FXML
     private TextField activityTitleField;
@@ -33,27 +32,15 @@ public class AdminEditCtrl implements ControllerInitialize {
     File sourceFile;
     File destinationFile;
 
+    /**
+     * Constructor for AdminEditCtrl
+     * @param serverUtils - the ServerUtils
+     * @param appController - the MainAppController
+     */
     @Inject
-    AdminEditCtrl(ServerUtils serverUtils, MainAppController appController, AdminOverviewCtrl adminOverviewCtrl){
+    AdminEditCtrl(ServerUtils serverUtils, MainAppController appController){
         this.appController = appController;
         this.serverUtils = serverUtils;
-        this.adminOverviewCtrl = adminOverviewCtrl;
-    }
-
-    public TextField getActivityTitleField() {
-        return activityTitleField;
-    }
-
-    public TextField getActivitySourceField() {
-        return activitySourceField;
-    }
-
-    public TextField getActivityConsumptionField() {
-        return activityConsumptionField;
-    }
-
-    public TextField getActivityImageField() {
-        return activityImageField;
     }
 
     /**
@@ -99,6 +86,9 @@ public class AdminEditCtrl implements ControllerInitialize {
         // Let user edit, then submit, when submit is clicked, submitEditActivity is called
     }
 
+    /**
+     * Initialize the scene
+     */
     @Override
     public void initializeController() {
         Activity a = new Activity("",0, "","");
@@ -122,7 +112,6 @@ public class AdminEditCtrl implements ControllerInitialize {
         fileChooser.setTitle("Select image file");
         File file = fileChooser.showOpenDialog(null);
         String filePath = file.getAbsolutePath();
-//        src/main/resources/GoodActivities//oven.png
         String newPath = "src/main/resources/GoodActivities//";
         String ending;
         if (filePath.contains("\\")) {

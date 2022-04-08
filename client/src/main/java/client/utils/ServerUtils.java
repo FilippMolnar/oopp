@@ -19,9 +19,7 @@ import commons.*;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.GenericType;
-import jakarta.ws.rs.core.Response;
 import javafx.application.Platform;
-import org.apache.commons.lang3.tuple.Pair;
 import org.glassfish.jersey.client.ClientConfig;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
@@ -41,22 +39,25 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 public class ServerUtils {
 
-    // use this variable to define the server address and port to connect to
+    // Use this variable to define the server address and port to connect to
     private String SERVER;
+
     private final List<List<Object>> subscribeParameters = new ArrayList<>();
     private StompSession session;
     private String WEBSOCKET_SERVER;
     private Set<List<Object>> connections = new HashSet<>();
 
-
+    /**
+     * Initialize the server
+     * @param server - the server address
+     */
     public void initializeServer(String server) {
-        // 172.435q3...
         SERVER = "http://" + server + ":8080";
         WEBSOCKET_SERVER = "ws://" + server + ":8080/websocket";
         System.out.println("Session is : " + session);
         if(session != null){
             System.out.println("Session is not null so disconnecting!");
-            session.disconnect(); // close all socket subscriptions with this session
+            session.disconnect(); // Close all socket subscriptions with this session
         }
         session = connect(WEBSOCKET_SERVER);
         for (List<Object> l : subscribeParameters) {
@@ -66,9 +67,8 @@ public class ServerUtils {
     }
 
     /**
-     * Connects the websockets to a url specifed in <code>WebSocketConfig</code> class on the server side
-     *
-     * @param url url to connect to
+     * Connects the websockets to a URL specified in <code>WebSocketConfig</code> class on the server side
+     * @param url URL to connect to
      * @return a new StompSession
      */
     private StompSession connect(String url) {
@@ -89,8 +89,8 @@ public class ServerUtils {
     }
 
     /**
-     * Utility function to be used from the client to register events when there is a message on a channel. <br\>
-     * The client <code>StompSession</code>(A subprotocol of websockets) listens to messages coming and calls
+     * Utility function to be used from the client to register events when there is a message on a channel.
+     * The client <code>StompSession</code> (A subprotocol of websockets) listens to messages coming and calls
      * the consumer function
      *
      * @param dest      the channel name where the client wants to listen to
@@ -106,6 +106,7 @@ public class ServerUtils {
             System.out.println("Trying to subscribe to messages twice or from outside initialize() called once per controller");
         }
     }
+
     public <T> void subscribeSocketFromList(String dest, Class<T> classType, Consumer<T> consumer) {
         System.out.println("Registered to listen on the track " + dest);
         session.subscribe(dest, new StompFrameHandler() {
@@ -127,7 +128,7 @@ public class ServerUtils {
     }
 
     /**
-     * Method to be used in the future to send data from the client to the server through websockets
+     * Method to be used to send data from the client to the server through websockets
      *
      * @param destination url provided in a socket controller with <code>@MessageMapping</code>
      * @param obj         object to send over the socket protocol
@@ -139,7 +140,7 @@ public class ServerUtils {
 
     /**
      * Does a get request on the mapping <code>api/wait</code> receiving a list of players that are
-     * already in the waiting room. <br\>
+     * already in the waiting room.
      * It is used by the <code>WaitingRoomCtrl</code> class to initialize the
      * UI based on the list it receives.
      *
@@ -154,16 +155,6 @@ public class ServerUtils {
                 });
     }
 
-    public Question getRandomQuestion() {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/wait/question")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(new GenericType<>() {
-                });
-    }
-
-
     public void postStartGame() {
         ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/wait/start")
@@ -172,23 +163,10 @@ public class ServerUtils {
                 .post(null);
     }
 
-    /**
-     * Does a post request to the api endpoint <code>api/wait</code> sending a Player object
-     *
-     * @param name the name of the player
-     */
-    public void postName(String name) {
-        ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/wait")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(new Player(name), APPLICATION_JSON), Player.class);
-    }
 
     /**
-     * gets 20 question objects from the server
-     * This method should be used to store the questions on the client
-     * side
+     * Gets 20 question objects from the server
+     * This method should be used to store the questions on the client side
      *
      * @param gameID id of the game
      * @return a list of 20 question retrieved from the server
@@ -202,33 +180,6 @@ public class ServerUtils {
                 });
     }
 
-    public Pair postGameScore(int gameID, Pair<Player, Integer> result) {
-        return ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/game/score")
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .post(Entity.entity(result, APPLICATION_JSON), Pair.class);
-    }
-
-    public Map<Player, Integer> getScoreboard(int gameID) {
-        var q = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/leaderboard/" + gameID)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(Response.class);
-        Map<Player, Integer> scoreboard = q.readEntity(Map.class);
-        return scoreboard;
-    }
-
-    public Game getGameMapping(int gameID) {
-        var q = ClientBuilder.newClient(new ClientConfig())
-                .target(SERVER).path("api/game/getGame/" + gameID)
-                .request(APPLICATION_JSON)
-                .accept(APPLICATION_JSON)
-                .get(Response.class);
-        return q.readEntity(Game.class);
-    }
-    // "/game/leaderboard/{gameID}"
     public Map<Integer, List<String>> getLeaderboard(int gameID) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/game/leaderboard/" + gameID)
@@ -286,7 +237,12 @@ public class ServerUtils {
                 .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
     }
 
-    // Method to add activity that is called from AdminEditCtrl and works with addActivity in ActivityController
+    /**
+     * Method that adds activity
+     * It is called from AdminEditCtrl and works with addActivity in ActivityController
+     * @param activity - the activity to be added 
+     * @return
+     */
     public Activity addAct(Activity activity) {
         return ClientBuilder.newClient(new ClientConfig())
                 .target(SERVER).path("api/activities")
@@ -294,7 +250,4 @@ public class ServerUtils {
                 .accept(APPLICATION_JSON)
                 .post(Entity.entity(activity, APPLICATION_JSON), Activity.class);
     }
-
-
-
 }

@@ -24,8 +24,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Path;
 
 import static com.google.inject.Guice.createInjector;
 
@@ -39,20 +37,9 @@ public class Main extends Application {
     }
 
     /**
-     * return the URL to the .fxml file
-     *
-     * @param parts path to the .fxml file
-     * @return the location of the path
-     */
-    private URL getLocation(String... parts) {
-        var path = Path.of("", parts).toString();
-        return Main.class.getClassLoader().getResource(path);
-    }
-
-    /**
      * This way of loading the stages makes sure the <code>Juice</code> injects the right dependencies to the controllers
      *
-     * @param primaryStage
+     * @param primaryStage - the window that is always visible
      */
     private void loadUsingTemplateDependencyInjection(Stage primaryStage) {
         var waitingRoom = FXML.load(WaitingRoomCtrl.class,

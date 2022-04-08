@@ -11,7 +11,6 @@ import io.github.palexdev.materialfx.controls.MFXSlider;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -27,20 +26,13 @@ import java.util.*;
 public class QuestionInsertNumberCtrl extends AbstractQuestion implements ControllerInitialize {
 
     @FXML
-    private TextField number;
-
-    @FXML
     private Button submitButton;
-
     @FXML
     private Text scoreText;
     @FXML
     private MFXSlider slider;
-
     @FXML
     private GridPane images;
-    @FXML
-    private Text questionNumber;
     @FXML
     private Text activity;
     @FXML
@@ -48,11 +40,56 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     @FXML
     protected GridPane parentGridPane;
 
+    /**
+     * Constructor for QuestionInsertNumberCtrl
+     * @param server - the ServerUtils
+     * @param mainCtrl - the MainAppController
+     */
     @Inject
     public QuestionInsertNumberCtrl(ServerUtils server, MainAppController mainCtrl) {
         super(server, mainCtrl);
     }
 
+    /**
+     * Initialize the QuestionInsertNumberCtrl
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
+            System.out.println("received reaction!");
+            userReaction(userReaction.getReaction(), userReaction.getUsername());
+        });
+        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
+    }
+
+    /**
+     * Initialize the scene
+     */
+    @Override
+    public void initializeController() {
+        slider.setMouseTransparent(false);
+        slider.setDisable(false);
+        this.informationLabel.setVisible(false);
+        this.scoreText.setText("SCORE " + mainCtrl.getScore());
+        startTimerAnimation(10);
+        resizeImages();
+        resetLogic();
+        submitButton.setDisable(false);
+        int correct = mainCtrl.getCorrect().getConsumption();
+        int min = (int) (Math.random()*correct);
+        slider.setMin(min);
+        int max = (int) ((Math.random()+1)*correct);
+        System.out.println("Min is : " + min + " : Max is : " + max);
+        slider.setMax(max);
+        int middle = (min+max)/2;
+        slider.setValue(middle);
+        showJokerImages();
+    }
+
+    /**
+     * Displays the consumptions and correct answer after everyone has answered
+     * @param answer - the list of consumptions
+     */
     @Override
     public void displayAnswers(List<Integer> answer) {
         scoreText.setText("SCORE " + mainCtrl.getScore());
@@ -74,6 +111,9 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         myTimer.schedule(delay, 3000); // wait for 4 seconds
     }
 
+    /**
+     * Submits the answer
+     */
     public void submitAnswer() {
         stopTimer();
         int answer = (int) slider.getValue();
@@ -89,66 +129,14 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
         }
     }
 
-    /*
-    public int calculateScore(int answer, double secondsLeft) {
-        int currentScore = mainCtrl.getScore();
-
-        int scoreToBeAdded = 0;
-        double maxSeconds = 10;
-        System.out.println(Math.abs(1 - (double)answer /
-                (double)mainCtrl.getCorrect().getConsumption()) + "");
-        int maxPoints = (int)(150.0 * Math.abs(1 - (double)answer /
-                (double)mainCtrl.getCorrect().getConsumption()));
-        double secondsToAnswer = maxSeconds - secondsLeft;
-        scoreToBeAdded = (int) Math.round(maxPoints * (1 - ((secondsToAnswer / maxSeconds) / 2)));
-        System.out.println(scoreToBeAdded);
-        return currentScore + scoreToBeAdded;
-    }
-    */
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        server.subscribeForSocketMessages("/user/queue/reactions", UserReaction.class, userReaction -> {
-            System.out.println("received reaction!");
-            userReaction(userReaction.getReaction(), userReaction.getUsername());
-        });
-        server.subscribeForSocketMessages("/user/queue/statistics", List.class, this::displayAnswers);
-    }
-
-    @Override
-    public void initializeController() {
-        slider.setMouseTransparent(false);
-        slider.setDisable(false);
-
-        this.informationLabel.setVisible(false);
-        this.scoreText.setText("SCORE " + mainCtrl.getScore());
-        startTimerAnimation(10);
-        resizeImages();
-        resetLogic();
-        submitButton.setDisable(false);
-        int correct = mainCtrl.getCorrect().getConsumption();
-        int min = (int) (Math.random()*correct);
-        int max = (int) ((Math.random()+1)*correct);
-        System.out.println("Min is : " + min + " : Max is : " + max);
-        if (min > max) {
-            int temp = min;
-            min = max;
-            max = temp;
-        }
-        slider.setMin(Double.MIN_VALUE);
-        slider.setMax(Double.MAX_VALUE);
-        slider.setMin(min);
-        slider.setMax(max);
-        int middle = (min+max)/2;
-        slider.setValue(middle);
-        showJokerImages();
-    }
-
+    /**
+     * Sets the question
+     * @param question - the question to set
+     */
     public void setQuestion(Question question) {
         setQuestionNumber(mainCtrl.getQuestionIndex());
         super.setQuestion(question);
         var choice = question.getCorrect();
-        int answer = choice.getConsumption();
         activity.setText(choice.getTitle());
         Path path = Paths.get(choice.getImagePath());
         System.out.println(path.toString());
@@ -169,9 +157,7 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
 
 
     /**
-     * This method should be called after the scene is shown because otherwise the stackPane width/height won't exist
-     * I wrapped the images into a <code>StackPane</code> that is resizable and fits the grid cell
-     * After that I set the image to fit the <code>StackPane</code> without losing aspect ratio.
+     * Resize the images
      */
     public void resizeImages() {
         List<Node> imageViews = images.lookupAll(".image-view").stream().limit(4).toList();
@@ -185,15 +171,18 @@ public class QuestionInsertNumberCtrl extends AbstractQuestion implements Contro
     }
 
     /**
-     * Since there is only one instance of the controller.
-     * The controller won't reset it's state when a new scene loads.
-     * Thus, we need to reset everything by ourselves.
+     * Reset the logic
+     * Since there is only one instance of the controller, this needs to be done manually
      */
     private void resetLogic() {
         this.hasSubmittedAnswer = false; // this is false at the beginning of the game
     }
 
-
+    /**
+     * Method to calculate score for the estimate question
+     * @param secondsToAnswer - the seconds it took the player to answer the question
+     * @return the score to be added to the player's score
+     */
     public int calculateScore(double secondsToAnswer) {
         int answerPlayer = (int) slider.getValue();
         int correctAnswer = question.getCorrect().getConsumption();

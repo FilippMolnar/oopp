@@ -7,20 +7,11 @@ import commons.Score;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.StrokeType;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -28,16 +19,7 @@ import javafx.util.Duration;
 import javax.inject.Inject;
 import java.util.*;
 
-import commons.Score;
-import commons.Question;
-import javafx.geometry.Insets;
-import javafx.util.Duration;
-
 public class LeaderBoardCtrl implements ControllerInitialize {
-
-    @FXML
-    private GridPane spots;
-
     private final MainAppController appController;
     private final ServerUtils serverUtils;
 
@@ -73,12 +55,10 @@ public class LeaderBoardCtrl implements ControllerInitialize {
     private Label rank8_name;
     @FXML
     private Label rank8_score;
-
     @FXML
     private Button rematchButton;
     @FXML
     private Button homeButton;
-
     @FXML
     private GridPane rank1_pane;
     @FXML
@@ -95,15 +75,12 @@ public class LeaderBoardCtrl implements ControllerInitialize {
     private GridPane rank7_pane;
     @FXML
     private GridPane rank8_pane;
-
     @FXML
     private ScrollPane scrollPane;
     @FXML
     private GridPane parentGridPane;
-
     @FXML
     private Line loadingLine;
-
     @FXML
     private GridPane you_pane;
     @FXML
@@ -116,30 +93,76 @@ public class LeaderBoardCtrl implements ControllerInitialize {
     private Map<Integer, List<String>> leaderboard;
     private List<GridPane> panes;
 
+    /**
+     * Constructor for LeaderBoardCtrl
+     * @param serverUtils - the ServerUtils
+     * @param appController - the MainAppController
+     */
     @Inject
     LeaderBoardCtrl(MainAppController appController, ServerUtils serverUtils) {
         this.appController = appController;
         this.serverUtils = serverUtils;
     }
+
+    /**
+     * Initialize the LeaderBoardCtrl
+     */
+    @Override
+    public void initializeController() {
+        appController.playSound("leaderboard");
+        names = List.of(rank1_name, rank2_name, rank3_name, rank4_name, rank5_name, rank6_name, rank7_name, rank8_name);
+        scores = List.of(rank1_score, rank2_score, rank3_score, rank4_score, rank5_score, rank6_score, rank7_score, rank8_score);
+        panes = List.of(rank1_pane, rank2_pane, rank3_pane, rank4_pane, rank5_pane, rank6_pane, rank7_pane, rank8_pane);
+        if (appController.isMultiPlayer()) {
+            multiPlayerInitializer();
+        }
+        else {
+            singlePlayerInitializer();
+        }
+    }
+
+    public Button getRematchButton() {
+        return rematchButton;
+    }
+
+    /**
+     * Hide the back and rematch button
+     */
     public void hideBackAndRematch() {
         homeButton.setVisible(false);
         rematchButton.setVisible(false);
     }
+
+    /**
+     * Show the back and rematch button
+     */
     public void showBackAndRematch() {
         homeButton.setVisible(true);
         rematchButton.setVisible(true);
     }
 
+    /**
+     * Start the loading animation for the leaderboard
+     * Hide the back and rematch buttons
+     */
     public void after10Questions() {
         loadingAnimation();
         hideBackAndRematch();
     }
+
+    /**
+     * Fill the leaderboard
+     * Show the back and rematch buttons
+     */
     public void after20Questions() {
         loadingLine.setVisible(false);
         fillWithValues();
         showBackAndRematch();
     }
 
+    /**
+     * Loading animation for the middle leaderboard
+     */
     public void loadingAnimation() {
         loadingLine.setVisible(true);
         ScaleTransition st = new ScaleTransition(Duration.millis(5000), loadingLine);
@@ -150,9 +173,11 @@ public class LeaderBoardCtrl implements ControllerInitialize {
             });
         });
         st.play();
-
     }
 
+    /**
+     * Fill the leaderboard with values
+     */
     public void fillWithValues() {
         int i = 0;
         int maxEntries = 8;
@@ -207,12 +232,17 @@ public class LeaderBoardCtrl implements ControllerInitialize {
         }
     }
 
-
-    public void goBack(){
+    /**
+     * Go back to homescreen
+     */
+    public void goBack() {
         this.appController.initializeScore();
         this.appController.showHomeScreen();
     }
 
+    /**
+     * Rematch, start a new game with the same player(s)
+     */
     public void rematch() {
         this.appController.initializeScore();
         this.appController.showNext();
@@ -232,89 +262,9 @@ public class LeaderBoardCtrl implements ControllerInitialize {
         }
     }
 
-    @Override
-    public void initializeController() {
-        appController.playSound("leaderboard");
-        names = List.of(rank1_name, rank2_name, rank3_name, rank4_name, rank5_name, rank6_name, rank7_name, rank8_name);
-        scores = List.of(rank1_score, rank2_score, rank3_score, rank4_score, rank5_score, rank6_score, rank7_score, rank8_score);
-        panes = List.of(rank1_pane, rank2_pane, rank3_pane, rank4_pane, rank5_pane, rank6_pane, rank7_pane, rank8_pane);
-        if (appController.isMultiPlayer()) {
-            multiPlayerInitializer();
-        }
-        else {
-            singlePlayerInitializer();
-        }
-
-    }
-
-    public void disableRematch() {
-        rematchButton.setDisable(true);
-        rematchButton.setVisible(false);
-    }
-
-    private void createLeaderboardSpot(Score score, int row) {
-        RowConstraints newRow  = new RowConstraints();
-        newRow.setPrefHeight(30.0);
-        spots.getRowConstraints().add(newRow);
-
-        GridPane a = new GridPane();
-        a.setPrefWidth(458.0);
-        a.setMaxWidth(500.0);
-        a.getStyleClass().add("non-clickable");
-        a.getStyleClass().add("client/scenes/waiting_room.css");
-        GridPane.setHalignment(a, HPos.CENTER);
-        GridPane.setValignment(a, VPos.CENTER);
-        GridPane.setHgrow(a, Priority.ALWAYS);
-        Circle c = new Circle();
-        c.setFill(Paint.valueOf("#1f93ff00"));
-        c.setLayoutY(25.0);
-        GridPane.setMargin(c, new Insets(0, 0, 0, 13)); // was 29
-        c.setRadius(16.0);
-        String color;
-        switch(row) {
-            case 1:
-               color = "cbbc50";
-               break;
-            case 2:
-               color = "5e5c69";
-               break;
-            case 3:
-               color = "cb5708";
-               break;
-            default:
-               color = "d6d3ee";
-               break;
-        }
-        c.setStroke(Paint.valueOf(color));
-        c.setStrokeType(StrokeType.INSIDE);
-        c.setStrokeWidth(2.0);
-        Text t = new Text();
-        t.setFill(Paint.valueOf("#cbbc50"));
-        t.setLayoutY(29.0);
-        int offset = 25 - ((int)(Math.log(row) / Math.log(10)))*4;
-        GridPane.setMargin(t, new Insets(0, 0, 0, offset));
-        t.setStrokeType(StrokeType.OUTSIDE);
-        t.setStrokeWidth(0.0);
-        t.setText(row+"");
-        Text t2 = new Text();
-        t2.setFill(Paint.valueOf("#d6d3ee"));
-        t2.setLayoutY(32.0);
-        GridPane.setMargin(t2, new Insets(0, 0, 0, 60));
-        t2.setStrokeType(StrokeType.OUTSIDE);
-        t2.setStrokeWidth(0.0);
-        t2.setText(score.getName());
-        t2.setFont(Font.font(java.awt.Font.SERIF, 18.0));
-        Label l = new Label();
-        l.setLayoutY(17.0);
-        GridPane.setMargin(l, new Insets(0, 0, 0, 276));
-        l.setText(score.getScore() + "");
-        a.getChildren().add(c);
-        a.getChildren().add(t);
-        a.getChildren().add(t2);
-        a.getChildren().add(l);
-        spots.add(a, 0, row, 2, 1);
-    }
-
+    /**
+     * Initialize singleplayer
+     */
     public void singlePlayerInitializer() {
         you_pane.setVisible(false);
         List<Score> allScores = serverUtils.getSingleLeaderboard();
@@ -335,6 +285,9 @@ public class LeaderBoardCtrl implements ControllerInitialize {
         }
     }
 
+    /**
+     * Initialize multiplayer
+     */
     public void multiPlayerInitializer() {
         fillWithValues();
         if (appController.getQuestionIndex() == 11) {
@@ -343,9 +296,5 @@ public class LeaderBoardCtrl implements ControllerInitialize {
         else {
             after20Questions();
         }
-    }
-
-    public Button getRematchButton() {
-        return rematchButton;
     }
 }

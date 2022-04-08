@@ -34,6 +34,10 @@ public class AssignPrincipalHandshakeHandler extends DefaultHandshakeHandler {
         };
     }
 
+    /**
+     * Generate a random ID for the new user which connects
+     * @return the randomly generated ID
+     */
     public String generateRandomUsername() {
         return UUID.randomUUID().toString();
     }

@@ -37,6 +37,12 @@ public class ImportData {
         }
     }
 
+    /**
+     *  Import a given activity to the database
+     * @param jsonPath the path to the json file
+     * @param imagePath the path to the image file
+     * @param groupName the number of the group which suggested the activity
+     */
     private void addActivityToDb(File jsonPath, File imagePath, String groupName) {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -51,8 +57,12 @@ public class ImportData {
         }
     }
 
+    /**
+     * Imports all activities from the given folder to database
+     * @return a prompt that the loading was successful
+     */
     @GetMapping(path = "/load")
-    public String ImportAllFiles() {
+    public String importAllFiles() {
         String resourceFolder = "src/main/resources/GoodActivities";
         File dir = new File(resourceFolder);
         File[] directories = dir.listFiles(File::isDirectory);

@@ -20,11 +20,19 @@ public class ScoreController {
         this.repo = scoreRepository;
     }
 
+    /**
+     * Get leaderboard from database
+     * @return a list of scores in the leaderboard
+     */
     @GetMapping(path = { "", "/" })
     public List<Score> getAll() {
         return repo.getLeaderboard();
     }
 
+    /**
+     * Add a score to the leaderboard in database
+     * @param score The score to be added to leaderboard
+     */
     @PostMapping(path = { "", "/" })
     public void add(@RequestBody Score score) {
         repo.save(score);
